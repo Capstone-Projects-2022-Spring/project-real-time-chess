@@ -1,0 +1,19 @@
+{
+  "name": "real-time-chess",
+  "version": "0.0.1",
+  "description": "A realtime chess application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Capstone-Projects-2022-Spring/project-real-time-chess.git"
+  },
+  "author": "Viraj Shah",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Capstone-Projects-2022-Spring/project-real-time-chess/issues"
+  },
+  "homepage": "https://github.com/Capstone-Projects-2022-Spring/project-real-time-chess#readme"
+}
