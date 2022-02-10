@@ -5,6 +5,7 @@ export interface TabbedComponentProps {
         label: string;
         element: JSX.Element;
     }[];
+    activeTab?: number;
 }
 
 export default class TabbedComponent extends React.Component<TabbedComponentProps, {}> {
@@ -14,10 +15,14 @@ export default class TabbedComponent extends React.Component<TabbedComponentProp
 
     render() {
         return (
-            <div>
-                {this.props.tabs.map((tab) => {
-                    return <button>{tab.label}</button>;
-                })}
+            <div style={{ textAlign: 'center' }}>
+                <div className="tabbed-component-button-group">
+                    {this.props.tabs.map((tab) => {
+                        return <button className="tabbed-component-button">{tab.label}</button>;
+                    })}
+                </div>
+
+                <div>{this.props.tabs[this.props.activeTab ?? 0].element}</div>
             </div>
         );
     }

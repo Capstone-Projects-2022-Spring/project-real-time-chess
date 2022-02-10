@@ -1,0 +1,31 @@
+.tabbed-component-button-group {
+    box-sizing: border-box;
+    display: inline-flex;
+    background-image: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
+    padding: 2px;
+    border-radius: 2rem;
+    margin-bottom: 1rem;
+
+    .tabbed-component-button {
+        background: white;
+        border: none;
+        box-sizing: border-box;
+        padding: 0.25rem;
+        margin-left: 1px;
+        margin-right: 1px;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .tabbed-component-button:first-child {
+        border-top-left-radius: 2rem;
+        border-bottom-left-radius: 2rem;
+        margin-left: 0;
+    }
+
+    .tabbed-component-button:last-child {
+        border-top-right-radius: 2rem;
+        border-bottom-right-radius: 2rem;
+        margin-right: 0;
+    }
+}

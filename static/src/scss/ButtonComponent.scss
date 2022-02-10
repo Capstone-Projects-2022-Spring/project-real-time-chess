@@ -1,0 +1,14 @@
+button.button-component {
+    background-image: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
+    border: none;
+    padding: 2px;
+    box-sizing: border;
+
+    div {
+        background: white;
+        height: 100%;
+        width: 100%;
+        padding: 0.5rem 1rem;
+        box-sizing: border;
+    }
+}

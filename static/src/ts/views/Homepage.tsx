@@ -1,4 +1,5 @@
 import * as React from 'react';
+import SignUpTabComponent from '../components/SignUpTab';
 import TabbedComponent from '../components/TabbedComponent';
 
 export default class Homepage extends React.Component<{}, {}> {
@@ -9,7 +10,7 @@ export default class Homepage extends React.Component<{}, {}> {
         this.tabs = [
             {
                 label: 'Sign Up',
-                element: <div />,
+                element: <SignUpTabComponent />,
             },
             {
                 label: 'Login',
