@@ -1,8 +1,21 @@
 import * as React from 'react';
+import TabbedComponent from '../components/TabbedComponent';
 
 export default class Homepage extends React.Component<{}, {}> {
+    private tabs: { label: string; element: JSX.Element }[];
+
     constructor(props: {} = {}) {
         super(props);
+        this.tabs = [
+            {
+                label: 'Sign Up',
+                element: <div />,
+            },
+            {
+                label: 'Login',
+                element: <div />,
+            },
+        ];
     }
 
     render() {
@@ -14,8 +27,7 @@ export default class Homepage extends React.Component<{}, {}> {
                     </div>
 
                     <div className="col-12 col-md-6">
-                        <button>Login</button>
-                        <button>Sign Up</button>
+                        <TabbedComponent tabs={this.tabs} />
                     </div>
                 </div>
             </div>
