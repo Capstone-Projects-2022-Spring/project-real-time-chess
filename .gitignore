@@ -1,2 +1,4 @@
 node_modules
 dist
+static/public/css
+static/public/js
