@@ -1,4 +1,6 @@
 {
+    "include": ["./src"],
+    "exclude": ["./static", "node_modules", "dist"],
     "compilerOptions": {
         /* Basic Options */
         "target": "ES2017" /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', or 'ESNEXT'. */,
@@ -50,6 +52,5 @@
         // "experimentalDecorators": true,        /* Enables experimental support for ES7 decorators. */
         // "emitDecoratorMetadata": true,         /* Enables experimental support for emitting type metadata for decorators. */
         // "skipLibCheck": true
-    },
-    "exclude": ["node_modules", "dist"]
+    }
 }
