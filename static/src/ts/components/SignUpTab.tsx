@@ -27,15 +27,18 @@ export default class SignUpTabComponent extends React.Component<{}, {}> {
                 </div>
 
                 <div className="row mb-4">
-                    <div className="col-6">
+                    <div className="col-12">
                         <InputField label="Email" />
-                    </div>
-                    <div className="col-6">
-                        <InputField label="Password" />
                     </div>
                 </div>
 
                 <div className="row mb-4">
+                    <div className="col-12">
+                        <InputField label="Password" />
+                    </div>
+                </div>
+
+                <div className="row">
                     <div className="col-12">
                         <ButtonComponent label="Sign Up" className="w-100" />
                     </div>

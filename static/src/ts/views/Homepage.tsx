@@ -23,13 +23,19 @@ export default class Homepage extends React.Component<{}, {}> {
         return (
             <div className="container">
                 <div className="row">
-                    <div className="col-12 col-md-6">
+                    <div className="col-12">
                         <h1>Homepage</h1>
                     </div>
-
-                    <div className="col-12 col-md-6">
+                </div>
+                <div className="row">
+                    <div className="col"></div>
+                    <div
+                        className="col-12 col-md-6 col-lg-4 col-xl-3 p-4"
+                        style={{ background: 'white', borderRadius: '1em' }}
+                    >
                         <TabbedComponent tabs={this.tabs} />
                     </div>
+                    <div className="col"></div>
                 </div>
             </div>
         );
