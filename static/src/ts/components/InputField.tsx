@@ -6,12 +6,6 @@ export interface InputFieldProps {
     value?: string;
     isValid?: boolean;
     type?: string;
-    button?: {
-        icon: {
-            default: string;
-            alt: string;
-        };
-    };
 }
 
 export interface InputFieldState {
@@ -49,17 +43,7 @@ export default abstract class InputField extends React.Component<InputFieldProps
                     type={this.state.type}
                     placeholder={this.state.placeholder}
                     onInput={e => this.whenUpdated(e as React.ChangeEvent<HTMLInputElement>)}
-                    style={{ width: this.props.button ? 'calc(100% - 2.2rem)' : '100%' }}
                 />
-                <button style={{ display: this.props.button ? 'inline' : 'none' }}>
-                    <img
-                        src={
-                            this.state.buttonState
-                                ? this.props.button?.icon.default
-                                : this.props.button?.icon.alt
-                        }
-                    />
-                </button>
                 <div>{this.state.label ?? ''}</div>
             </div>
         );
