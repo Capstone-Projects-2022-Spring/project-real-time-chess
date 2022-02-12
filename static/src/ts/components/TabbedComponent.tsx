@@ -34,6 +34,7 @@ export default class TabbedComponent extends React.Component<
                                 onClick={() => {
                                     this.setState({ activeTab: i });
                                 }}
+                                key={i}
                             >
                                 {tab.label}
                             </button>
