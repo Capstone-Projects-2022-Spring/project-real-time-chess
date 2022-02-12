@@ -1,6 +1,6 @@
 import * as React from 'react';
 import ButtonComponent from './ButtonComponent';
-import { EmailFieldComponent, NameFieldComponent, PasswordFieldComponent } from './InputField';
+import InputField from './InputField';
 
 export interface SignUpTabProps {
     fname: string;
@@ -19,22 +19,22 @@ export default class SignUpTabComponent extends React.Component<{}, {}> {
             <div>
                 <div className="row mb-4">
                     <div className="col-6">
-                        <NameFieldComponent label="First Name" />
+                        <InputField label="First Name" />
                     </div>
                     <div className="col-6">
-                        <NameFieldComponent label="Last Name" />
+                        <InputField label="Last Name" />
                     </div>
                 </div>
 
                 <div className="row mb-4">
                     <div className="col-12">
-                        <EmailFieldComponent label="Email" />
+                        <InputField label="Email" />
                     </div>
                 </div>
 
                 <div className="row mb-4">
                     <div className="col-12">
-                        <PasswordFieldComponent label="Password" />
+                        <InputField label="Password" />
                     </div>
                 </div>
 
