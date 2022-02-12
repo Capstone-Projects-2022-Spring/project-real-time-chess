@@ -25,10 +25,16 @@ export default class Homepage extends React.Component<{}, {}> {
             <div className="container">
                 <div className="row">
                     <div className="col-12">
-                        <h1>Homepage</h1>
+                        <h1 style={{ textAlign: 'center' }}>Real Time Chess</h1>
+                    </div>
+                    <div
+                        className="col-12"
+                        style={{ fontSize: '1.5rem', color: 'gray', textAlign: 'center' }}
+                    >
+                        Hello World Application
                     </div>
                 </div>
-                <div className="row">
+                <div className="row" style={{ marginTop: '4rem' }}>
                     <div className="col"></div>
                     <div
                         className="col-12 col-md-6 col-lg-4 col-xl-3 p-4"
