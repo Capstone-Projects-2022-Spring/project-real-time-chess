@@ -9,7 +9,7 @@ export interface SignUpTabProps {
     password: string;
 }
 
-export default class SignUpTabComponent extends React.Component<{}, {}> {
+export default class LoginTabComponent extends React.Component<{}, {}> {
     constructor(props: SignUpTabProps = { fname: '', lname: '', email: '', password: '' }) {
         super(props);
     }
@@ -18,17 +18,8 @@ export default class SignUpTabComponent extends React.Component<{}, {}> {
         return (
             <div>
                 <div className="row mb-4">
-                    <div className="col-6">
-                        <InputField label="First Name" />
-                    </div>
-                    <div className="col-6">
-                        <InputField label="Last Name" />
-                    </div>
-                </div>
-
-                <div className="row mb-4">
                     <div className="col-12">
-                        <InputField label="Email" />
+                        <InputField label="Username or Email" />
                     </div>
                 </div>
 
@@ -40,7 +31,7 @@ export default class SignUpTabComponent extends React.Component<{}, {}> {
 
                 <div className="row">
                     <div className="col-12">
-                        <ButtonComponent label="Sign Up" className="w-100" />
+                        <ButtonComponent label="Login" className="w-100" />
                     </div>
                 </div>
             </div>

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import LoginTabComponent from '../components/LoginTab';
 import SignUpTabComponent from '../components/SignUpTab';
 import TabbedComponent from '../components/TabbedComponent';
 
@@ -14,7 +15,7 @@ export default class Homepage extends React.Component<{}, {}> {
             },
             {
                 label: 'Login',
-                element: <div />,
+                element: <LoginTabComponent />,
             },
         ];
     }
