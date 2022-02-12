@@ -10,5 +10,10 @@ button.button-component {
         width: 100%;
         padding: 0.5rem 1rem;
         box-sizing: border;
+        transition: 0.1s background;
+    }
+
+    div:hover {
+        background: none;
     }
 }
