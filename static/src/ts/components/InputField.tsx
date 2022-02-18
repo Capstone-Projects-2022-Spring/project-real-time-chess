@@ -6,6 +6,7 @@ export interface InputFieldProps {
     value?: string;
     isValid?: boolean;
     type?: string;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export interface InputFieldState {
@@ -40,7 +41,7 @@ export default abstract class InputField extends React.Component<InputFieldProps
                     value={this.state.value}
                     type={this.state.type}
                     placeholder={this.state.placeholder}
-                    onInput={e => this.whenUpdated(e as React.ChangeEvent<HTMLInputElement>)}
+                    onChange={e => this.whenUpdated(e as React.ChangeEvent<HTMLInputElement>)}
                 />
                 <div>{this.state.label ?? ''}</div>
             </div>
@@ -58,6 +59,7 @@ export default abstract class InputField extends React.Component<InputFieldProps
             console.error(e);
             this.setState({ isValid: 'iv' });
         }
+        this.props.onChange(event);
     }
 
     /**

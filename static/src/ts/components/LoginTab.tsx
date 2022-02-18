@@ -2,16 +2,23 @@ import * as React from 'react';
 import ButtonComponent from './ButtonComponent';
 import InputField from './InputField';
 
-export interface SignUpTabProps {
-    fname: string;
-    lname: string;
-    email: string;
+export interface LoginTabProps {
+    user?: string;
+    password?: string;
+}
+
+export interface LoginTabState {
+    user: string;
     password: string;
 }
 
-export default class LoginTabComponent extends React.Component<{}, {}> {
-    constructor(props: SignUpTabProps = { fname: '', lname: '', email: '', password: '' }) {
+export default class LoginTabComponent extends React.Component<LoginTabProps, LoginTabState> {
+    constructor(props: LoginTabProps) {
         super(props);
+        this.state = {
+            user: this.props.user ?? '',
+            password: this.props.password ?? '',
+        };
     }
 
     render() {
@@ -19,19 +26,23 @@ export default class LoginTabComponent extends React.Component<{}, {}> {
             <div>
                 <div className="row mb-4">
                     <div className="col-12">
-                        <InputField label="Username or Email" />
+                        <InputField label="Username or Email" onChange={() => void 0} />
                     </div>
                 </div>
 
                 <div className="row mb-4">
                     <div className="col-12">
-                        <InputField label="Password" />
+                        <InputField label="Password" onChange={() => void 0} />
                     </div>
                 </div>
 
                 <div className="row">
                     <div className="col-12">
-                        <ButtonComponent label="Login" className="w-100" />
+                        <ButtonComponent
+                            label="Login"
+                            className="w-100"
+                            onClick={() => console.log('Clicked')}
+                        />
                     </div>
                 </div>
             </div>

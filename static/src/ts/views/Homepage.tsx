@@ -11,11 +11,11 @@ export default class Homepage extends React.Component<{}, {}> {
         this.tabs = [
             {
                 label: 'Sign Up',
-                element: <SignUpTabComponent />,
+                element: <SignUpTabComponent fname="" lname="" email="" password="" />,
             },
             {
                 label: 'Login',
-                element: <LoginTabComponent />,
+                element: <LoginTabComponent user="" password="" />,
             },
         ];
     }
