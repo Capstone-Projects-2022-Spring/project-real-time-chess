@@ -5,4 +5,4 @@ npm install
 sudo npm install -g sass
 
 # Install webpack globally
-sudo npm install -g webpack
+sudo npm install -g webpack webpack-cli
