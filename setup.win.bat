@@ -2,4 +2,4 @@
 npm install
 
 # Install sass and webpack globally
-sudo npm install -g sass webpack webpack-cli
+sudo npm install -g sass webpack webpack-cli prettier
