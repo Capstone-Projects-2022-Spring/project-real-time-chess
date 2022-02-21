@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Users from '../access/Users';
 import SignUpModel from '../models/SignUpModel';
 import ButtonComponent from './ButtonComponent';
 import { EmailFieldComponent, NameFieldComponent, PasswordFieldComponent } from './InputField';
@@ -30,8 +31,10 @@ export default class SignUpTabComponent extends React.Component<SignUpTabProps, 
 
     getFormData(): SignUpModel {
         return {
-            fname: this.state.fname,
-            lname: this.state.lname,
+            name: {
+                first: this.state.fname,
+                last: this.state.lname,
+            },
             email: this.state.email,
             password: this.state.password,
         };
@@ -79,7 +82,7 @@ export default class SignUpTabComponent extends React.Component<SignUpTabProps, 
                             label="Sign Up"
                             className="w-100"
                             onClick={() => {
-                                console.log('Sign Up Button clicked!');
+                                Users.signup(this.getFormData());
                             }}
                         />
                     </div>

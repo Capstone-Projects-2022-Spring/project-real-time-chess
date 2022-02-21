@@ -1,6 +1,8 @@
 export default interface SignUpModel {
-    fname: string;
-    lname: string;
+    name: {
+        first: string;
+        last: string;
+    };
     email: string;
     password: string;
 }
