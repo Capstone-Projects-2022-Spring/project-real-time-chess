@@ -8,7 +8,10 @@ html(lang='en-US')
         link(rel='stylesheet' href='/css/style.css')
         script(src="/socket.io/socket.io.js")
         script const socket = io();
-        script socket.on("connect", () => {console.log(socket.id);});
+        script. 
+            socket.on("connect", function () {
+                console.log(socket.id);
+                });
     body
         #react-app-target
         script(src="/js/bundle.js")

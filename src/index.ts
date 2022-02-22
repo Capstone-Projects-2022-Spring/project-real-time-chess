@@ -4,6 +4,7 @@ import DatabaseConnector from './dao/DatabaseConnector';
 import UserDAO from './dao/UserDAO';
 
 // import required to integrate socket.io
+import { createServer } from "http";
 import { Server } from "socket.io";
 
 const app = express();
@@ -12,9 +13,8 @@ const bodyParser = require('body-parser');
 
 // init server using socket.io
 // server is created here instead of using app.listen(...)
-const io = new Server(app.listen(PORT, () => {
-    console.log(`Listening on PORT: ${PORT}`);
-}));
+const httpServer = createServer(app);
+const io = new Server(httpServer);
 
 DatabaseConnector.open();
 
@@ -44,5 +44,9 @@ app.post('/api/user/create', (req, res) => {
 });
 
 io.on("connection", (socket) => {
-    console.log(socket.id);
+    console.log("Connection made with client, Socket ID: " + socket.id);
+});
+
+httpServer.listen(PORT, () => {
+    console.log(`Listening on PORT: ${PORT}`);
 });
