@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Users from '../access/Users';
 import ButtonComponent from './ButtonComponent';
 import InputField from './InputField';
 
@@ -41,7 +42,12 @@ export default class LoginTabComponent extends React.Component<LoginTabProps, Lo
                         <ButtonComponent
                             label="Login"
                             className="w-100"
-                            onClick={() => console.log('Clicked')}
+                            onClick={() => {
+                                Users.login({
+                                    user: this.state.user,
+                                    password: this.state.password,
+                                });
+                            }}
                         />
                     </div>
                 </div>

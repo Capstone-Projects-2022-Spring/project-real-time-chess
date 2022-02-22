@@ -34,6 +34,17 @@ app.post('/api/user/create', (req, res) => {
         );
 });
 
+app.post('/api/user/login', (req, res) => {
+    const dao = new UserDAO();
+    dao.authenticateLogin(req.body)
+        .then(auth => {
+            res.cookie('uid', auth.uid);
+            res.cookie('auth', auth.key);
+            res.send({ success: true, auth });
+        })
+        .catch(error => res.send({ success: false, error }));
+});
+
 app.listen(PORT, () => {
     console.log(`Listening on PORT: ${PORT}`);
 });
