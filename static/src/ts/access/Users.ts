@@ -30,7 +30,7 @@ export default class Users {
                     if (response.data.success) {
                         resolve(true);
                     } else {
-                        reject(false);
+                        reject(response.data.error);
                     }
                 });
             } else {

@@ -1,5 +1,6 @@
 import cookieParser = require('cookie-parser');
 import * as express from 'express';
+import { ObjectId } from 'mongodb';
 import * as path from 'path';
 import DatabaseConnector from './dao/DatabaseConnector';
 import UserDAO from './dao/UserDAO';
@@ -47,6 +48,20 @@ app.post('/api/user/login', (req, res) => {
         .catch(error => {
             res.send({ success: false, error });
         });
+});
+
+app.get('/api/user/authenticate', (req, res) => {
+    const dao = new UserDAO();
+    dao.authenticateKey(new ObjectId(req.cookies.uid), req.cookies.auth)
+        .then(passed => {
+            console.log(passed);
+            if (passed) {
+                res.send({ success: true });
+            } else {
+                res.send({ success: false, error: new Error('Invalid certificate') });
+            }
+        })
+        .catch(error => res.send({ success: false, error }));
 });
 
 app.listen(PORT, () => {
