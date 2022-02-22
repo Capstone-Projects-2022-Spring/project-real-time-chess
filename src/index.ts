@@ -1,3 +1,4 @@
+import cookieParser = require('cookie-parser');
 import * as express from 'express';
 import * as path from 'path';
 import DatabaseConnector from './dao/DatabaseConnector';
@@ -11,6 +12,7 @@ DatabaseConnector.open();
 
 app.use(express.static(path.resolve('./static/public')));
 app.use(bodyParser({ extended: true }));
+app.use(cookieParser());
 
 app.set('view engine', 'pug');
 
