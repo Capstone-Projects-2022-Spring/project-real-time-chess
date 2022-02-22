@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Users from '../access/Users';
 import ButtonComponent from './ButtonComponent';
-import InputField from './InputField';
+import { PasswordFieldComponent, TextFieldComponent } from './InputField';
 
 export interface LoginTabProps {
     user?: string;
@@ -27,13 +27,20 @@ export default class LoginTabComponent extends React.Component<LoginTabProps, Lo
             <div>
                 <div className="row mb-4">
                     <div className="col-12">
-                        <InputField label="Username or Email" onChange={() => void 0} />
+                        <TextFieldComponent
+                            label="Username or Email"
+                            onChange={e => this.setState({ user: e.target.value })}
+                        />
                     </div>
                 </div>
 
                 <div className="row mb-4">
                     <div className="col-12">
-                        <InputField label="Password" onChange={() => void 0} />
+                        <PasswordFieldComponent
+                            label="Password"
+                            type="password"
+                            onChange={e => this.setState({ password: e.target.value })}
+                        />
                     </div>
                 </div>
 

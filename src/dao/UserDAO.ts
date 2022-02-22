@@ -48,20 +48,21 @@ export default class UserDAO extends BaseDAO<IUser> {
     }
 
     async authenticateLogin(formData: UserLoginFormData): Promise<AuthInfo> {
-        return new Promise((resolve, reject) => {
-            this.findOne({ username: formData.user })
-                .then(user => {
-                    if (user && user.password === formData.password) {
-                        const key = this.generateAuthKey();
-                        resolve({
-                            uid: user._id,
-                            key,
-                        });
-                    } else {
-                        reject(new Error('Invalid username or password'));
-                    }
-                })
-                .catch(err => reject(err));
+        return new Promise(async (resolve, reject) => {
+            let user = await this.findOne({ email: formData.user });
+            if (!user) {
+                user = await this.findOne({ username: formData.user });
+            }
+
+            if (user.password === formData.password) {
+                const key = this.generateAuthKey();
+                resolve({
+                    uid: user._id,
+                    key,
+                });
+            } else {
+                reject(new Error('Invalid username or password'));
+            }
         });
     }
 

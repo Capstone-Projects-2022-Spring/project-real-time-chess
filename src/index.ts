@@ -42,7 +42,9 @@ app.post('/api/user/login', (req, res) => {
             res.cookie('auth', auth.key);
             res.send({ success: true, auth });
         })
-        .catch(error => res.send({ success: false, error }));
+        .catch(error => {
+            res.send({ success: false, error });
+        });
 });
 
 app.listen(PORT, () => {
