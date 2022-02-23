@@ -1,10 +1,26 @@
 # Real-Time Chess [Capstone Project]
 
+1. [Required Development Tools](#required-development-tools)
+2. [Preferred Development Tools](#preferred-development-tools)
+3. [Build Instructions](#build-instructions)
+
+## Required Development Tools
+
+| Use Case           | Software/Utility | Rationale                                              |
+| ------------------ | ---------------- | ------------------------------------------------------ |
+| Autoformat         | Prettier         | So code style **always** conforms to project standards |
+| Runtime            | NodeJS           | To run the webserver                                   |
+| Package Management | NPM              | To automatically install/manage dependencies           |
+| TS Compilation\*   | TypeScript       | To compile TS code to JavaScript via `tsc`             |
+| JS Compression\*   | Webpack          | To compress and pack all client-side JS code           |
+| SCSS Compilation\* | SASS             | To compile `.scss` files to `.css`                     |
+
 ## Preferred Development Tools
 
-|                                                                                                                                             | Tool               | Rationale |
-| ------------------------------------------------------------------------------------------------------------------------------------------- | ------------------ | --------- |
-| ![](https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Visual_Studio_Code_1.35_icon.svg/2048px-Visual_Studio_Code_1.35_icon.svg.png) | Visual Studio Code |
+| Use Case          | Software/Utility  | Rationale                                   |
+| ----------------- | ----------------- | ------------------------------------------- |
+| **All** Coding    | Microsoft VS COde | Support for all standard extensions.        |
+| Managing Database | MongoDB Compass   | To view/edit MongoDB documents/collections. |
 
 ## Build Instructions
 
