@@ -9,10 +9,13 @@ import * as Error from './constants/Error';
 import { createServer } from "http";
 import { Server } from "socket.io";
 
-// these serve as both room names and
-// keys for the clients to use as
-// passwords to private games
-const lobbies: { roomKey: string; player1: string; player2: string; }[] = [];
+interface GameLobby {
+    roomKey: string,
+    player1: string,
+    player2: string
+}
+
+const lobbies = new Map<string,GameLobby>();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -56,11 +59,13 @@ io.on("connection", (socket) => {
 
 io.on(Event.CREATE_LOBBY, (socket) => {
     let key = '';
-    for (let i = 0; i < 8; i++) {
-        key += Math.floor(Math.random()%36);
-    }
+    do {
+        for (let i = 0; i < 8; i++) {
+            key += Math.floor(Math.random()%36);
+        }
+    } while (lobbies.has(key));
     socket.join(key);
-    lobbies.push({
+    lobbies.set(key, {
         roomKey: key,
         player1: socket.id,
         player2: ''
@@ -69,24 +74,38 @@ io.on(Event.CREATE_LOBBY, (socket) => {
 });
 
 io.on(Event.JOIN_LOBBY, (socket, roomKey) => {
-    if (lobbies[roomKey].player2 === ''){
-        socket.join(roomKey);
-        lobbies[roomKey].player2 = socket.id;
-        io.to(socket.id).emit(Event.JOIN_LOBBY_SUCCESS);
+    let currentLobby = lobbies.get(roomKey);
+    if (currentLobby != undefined) {
+        if (currentLobby.player2 === ''){
+            socket.join(roomKey);
+            currentLobby = socket.id;
+            io.to(socket.id).emit(Event.JOIN_LOBBY_SUCCESS);
+        } else if (currentLobby.player1 === '') {
+            socket.join(roomKey);
+            currentLobby.player1 = socket.id;
+            io.to(socket.id).emit(Event.JOIN_LOBBY_SUCCESS);
+        } else {
+            io.to(socket.id).emit(Event.JOIN_LOBBY_FAILED, Error.LOBBY_FULL_ERROR);
+        }
     } else {
-        io.to(socket.id).emit(Event.JOIN_LOBBY_FAILED, Error.LOBBY_FULL_ERROR);
+        io.to(socket.id).emit(Event.JOIN_LOBBY_FAILED, Error.LOBBY_CLOSED_ERROR);
     }
 });
 
 io.on(Event.LEAVE_LOBBY, (socket, roomKey) => {
-    let currentLobby = lobbies[roomKey];
-    if (currentLobby.player1 === socket.id) {
-        currentLobby.player1 = '';
+    let currentLobby = lobbies.get(roomKey);
+    if (currentLobby != undefined) {
+        if (currentLobby.player1 === socket.id) {
+            currentLobby.player1 = '';
+        }
+        if (currentLobby.player2 === socket.id) {
+            currentLobby.player2 = '';
+        }
+        socket.leave(roomKey);
+        if (currentLobby.player1 === '' && currentLobby.player2 === '') {
+            lobbies.delete(roomKey);
+        }
     }
-    if (currentLobby.player2 === socket.id) {
-        currentLobby.player2 === '';
-    }
-    socket.leave(roomKey);
 });
 
 httpServer.listen(PORT, () => {
