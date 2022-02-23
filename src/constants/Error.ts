@@ -1,0 +1,1 @@
+export const LOBBY_FULL_ERROR = "Error: Lobby full.";
