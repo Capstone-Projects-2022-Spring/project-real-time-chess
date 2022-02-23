@@ -78,7 +78,7 @@ io.on(Event.JOIN_LOBBY, (socket, roomKey) => {
     if (currentLobby != undefined) {
         if (currentLobby.player2 === ''){
             socket.join(roomKey);
-            currentLobby = socket.id;
+            currentLobby.player2 = socket.id;
             io.to(socket.id).emit(Event.JOIN_LOBBY_SUCCESS);
         } else if (currentLobby.player1 === '') {
             socket.join(roomKey);
