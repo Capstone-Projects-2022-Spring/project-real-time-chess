@@ -8,7 +8,7 @@
 
 | Use Case           | Software/Utility | Rationale                                              |
 | ------------------ | ---------------- | ------------------------------------------------------ |
-| Autoformat         | Prettier         | So code style **always** conforms to project standards |
+| **Autoformat**     | **Prettier**     | So code style **always** conforms to project standards |
 | Runtime            | NodeJS           | To run the webserver                                   |
 | Package Management | NPM              | To automatically install/manage dependencies           |
 | TS Compilation\*   | TypeScript       | To compile TS code to JavaScript via `tsc`             |
