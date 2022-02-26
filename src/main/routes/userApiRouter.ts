@@ -54,8 +54,8 @@ export function authenticateUserRoute(
 
 const userApiRouter = express.Router();
 
-userApiRouter.post('/api/user/create', createUserRoute);
-userApiRouter.post('/api/user/login', loginUserRoute);
-userApiRouter.get('/api/user/authenticate', authenticateUserRoute);
+userApiRouter.post('/create', createUserRoute);
+userApiRouter.post('/login', loginUserRoute);
+userApiRouter.get('/authenticate', authenticateUserRoute);
 
 export default userApiRouter;
