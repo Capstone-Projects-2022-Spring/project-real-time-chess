@@ -1,4 +1,5 @@
-import cookieParser = require('cookie-parser');
+import * as bodyParser from 'body-parser';
+import * as cookieParser from 'cookie-parser';
 import * as express from 'express';
 import { ObjectId } from 'mongodb';
 import * as path from 'path';
@@ -7,7 +8,6 @@ import UserDAO from './dao/UserDAO';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const bodyParser = require('body-parser');
 
 DatabaseConnector.open();
 
@@ -29,12 +29,7 @@ app.post('/api/user/create', (req, res) => {
                 success: true,
             })
         )
-        .catch(error =>
-            res.send({
-                success: false,
-                error,
-            })
-        );
+        .catch(err => res.send(new ErrorAPIResponse(err)));
 });
 
 app.post('/api/user/login', (req, res) => {
@@ -45,9 +40,7 @@ app.post('/api/user/login', (req, res) => {
             res.cookie('auth', auth.key);
             res.send({ success: true, auth });
         })
-        .catch(error => {
-            res.send({ success: false, error });
-        });
+        .catch(err => res.send(new ErrorAPIResponse(err)));
 });
 
 app.get('/api/user/authenticate', (req, res) => {
@@ -55,15 +48,39 @@ app.get('/api/user/authenticate', (req, res) => {
     dao.authenticateKey(new ObjectId(req.cookies.uid), req.cookies.auth)
         .then(passed => {
             console.log(passed);
-            if (passed) {
-                res.send({ success: true });
-            } else {
-                res.send({ success: false, error: new Error('Invalid certificate') });
-            }
+            if (passed) res.send({ success: true });
+            else res.send(new ErrorAPIResponse(new Error('Invalid certificate')));
         })
-        .catch(error => res.send({ success: false, error }));
+        .catch(error => res.send(new ErrorAPIResponse(error)));
 });
 
 app.listen(PORT, () => {
-    console.log(`Listening on PORT: ${PORT}`);
+    console.log(`
+    ▢----------------------▢--------------------------▢
+    | Field                | Value                    |
+    ▢----------------------▢--------------------------▢
+      Listening on PORT      ${PORT}
+      Website                http://localhost:${PORT}
+    ▢----------------------▢--------------------------▢`);
 });
+
+interface APIResponse {
+    success: boolean;
+    error?: Error;
+}
+
+abstract class BaseAPIResponse implements APIResponse {
+    success: boolean;
+    error?: Error;
+
+    constructor(success: boolean, error?: Error) {
+        this.success = success;
+        this.error = error;
+    }
+}
+
+export class ErrorAPIResponse extends BaseAPIResponse {
+    constructor(error: Error | string) {
+        super(false, typeof error === 'string' ? new Error(error) : error);
+    }
+}
