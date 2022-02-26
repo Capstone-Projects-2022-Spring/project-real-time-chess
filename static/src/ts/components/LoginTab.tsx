@@ -25,6 +25,12 @@ export default class LoginTabComponent extends React.Component<LoginTabProps, Lo
     render() {
         return (
             <div>
+                <div className="row p-2">
+                    <div className="col-12">
+                        <h2>Login</h2>
+                    </div>
+                </div>
+
                 <div className="row mb-4">
                     <div className="col-12">
                         <TextFieldComponent

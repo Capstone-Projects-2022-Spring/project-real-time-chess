@@ -43,6 +43,12 @@ export default class SignUpTabComponent extends React.Component<SignUpTabProps, 
     render() {
         return (
             <div>
+                <div className="row p-2">
+                    <div className="col-12">
+                        <h2>Sign Up</h2>
+                    </div>
+                </div>
+
                 <div className="row mb-4">
                     <div className="col-6">
                         <NameFieldComponent
