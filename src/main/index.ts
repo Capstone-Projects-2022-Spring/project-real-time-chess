@@ -73,14 +73,14 @@ abstract class BaseAPIResponse implements APIResponse {
     success: boolean;
     error?: Error;
 
-    constructor(success: boolean, error?: Error | string) {
+    constructor(success: boolean, error?: Error) {
         this.success = success;
-        this.error = typeof error === 'string' ? new Error(error) : error;
+        this.error = error;
     }
 }
 
-class ErrorAPIResponse extends BaseAPIResponse {
-    constructor(error: Error) {
-        super(false, error);
+export class ErrorAPIResponse extends BaseAPIResponse {
+    constructor(error: Error | string) {
+        super(false, typeof error === 'string' ? new Error(error) : error);
     }
 }
