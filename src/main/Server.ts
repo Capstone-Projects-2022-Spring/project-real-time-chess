@@ -6,7 +6,7 @@ import apiRouter from './routes/apiRouter';
 import * as path from 'path';
 import * as Error from './constants/Error';
 import * as Event from './constants/Event';
-import { createServer } from 'http';
+import * as http from 'http';
 import { Server } from 'socket.io';
 
 interface GameLobby {
@@ -19,12 +19,14 @@ export default class RTCServer {
     private app: express.Express;
     private PORT: number;
     private lobbies = new Map<string, GameLobby>();
-    private httpServer = createServer(this.app);
-    private io = new Server(httpServer);
+    private httpServer: http.Server;
+    private io: Server;
 
     constructor() {
         this.app = express();
         this.PORT = parseInt(process.env.PORT ?? '3000');
+        this.httpServer = http.createServer(this.app);
+        this.io = new Server(this.httpServer);
 
         DatabaseConnector.open();
 
@@ -60,37 +62,37 @@ export default class RTCServer {
                 for (let i = 0; i < 8; i++) {
                     key += Math.floor(Math.random() % 36);
                 }
-            } while (lobbies.has(key));
+            } while (this.lobbies.has(key));
             socket.join(key);
-            lobbies.set(key, {
+            this.lobbies.set(key, {
                 roomKey: key,
                 player1: socket.id,
                 player2: '',
             });
-            io.to(socket.id).emit(Event.CREATE_LOBBY_SUCCESS);
+            this.io.to(socket.id).emit(Event.CREATE_LOBBY_SUCCESS);
         });
 
-        io.on(Event.JOIN_LOBBY, (socket, roomKey) => {
-            let currentLobby = lobbies.get(roomKey);
+        this.io.on(Event.JOIN_LOBBY, (socket, roomKey) => {
+            let currentLobby = this.lobbies.get(roomKey);
             if (currentLobby != undefined) {
                 if (currentLobby.player2 === '') {
                     socket.join(roomKey);
                     currentLobby.player2 = socket.id;
-                    io.to(socket.id).emit(Event.JOIN_LOBBY_SUCCESS);
+                    this.io.to(socket.id).emit(Event.JOIN_LOBBY_SUCCESS);
                 } else if (currentLobby.player1 === '') {
                     socket.join(roomKey);
                     currentLobby.player1 = socket.id;
-                    io.to(socket.id).emit(Event.JOIN_LOBBY_SUCCESS);
+                    this.io.to(socket.id).emit(Event.JOIN_LOBBY_SUCCESS);
                 } else {
-                    io.to(socket.id).emit(Event.JOIN_LOBBY_FAILED, Error.LOBBY_FULL_ERROR);
+                    this.io.to(socket.id).emit(Event.JOIN_LOBBY_FAILED, Error.LOBBY_FULL_ERROR);
                 }
             } else {
-                io.to(socket.id).emit(Event.JOIN_LOBBY_FAILED, Error.LOBBY_CLOSED_ERROR);
+                this.io.to(socket.id).emit(Event.JOIN_LOBBY_FAILED, Error.LOBBY_CLOSED_ERROR);
             }
         });
 
-        io.on(Event.LEAVE_LOBBY, (socket, roomKey) => {
-            let currentLobby = lobbies.get(roomKey);
+        this.io.on(Event.LEAVE_LOBBY, (socket, roomKey) => {
+            let currentLobby = this.lobbies.get(roomKey);
             if (currentLobby != undefined) {
                 if (currentLobby.player1 === socket.id) {
                     currentLobby.player1 = '';
@@ -100,13 +102,13 @@ export default class RTCServer {
                 }
                 socket.leave(roomKey);
                 if (currentLobby.player1 === '' && currentLobby.player2 === '') {
-                    lobbies.delete(roomKey);
+                    this.lobbies.delete(roomKey);
                 }
             }
         });
 
-        httpServer.listen(PORT, () => {
-            console.log(`Listening on PORT: ${PORT}`);
+        this.httpServer.listen(this.PORT, () => {
+            console.log(`Listening on PORT: ${this.PORT}`);
         });
     }
 }
