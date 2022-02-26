@@ -1,4 +1,5 @@
-import cookieParser = require('cookie-parser');
+import * as bodyParser from 'body-parser';
+import * as cookieParser from 'cookie-parser';
 import * as express from 'express';
 import { ObjectId } from 'mongodb';
 import * as path from 'path';
@@ -7,7 +8,6 @@ import UserDAO from './dao/UserDAO';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const bodyParser = require('body-parser');
 
 DatabaseConnector.open();
 
