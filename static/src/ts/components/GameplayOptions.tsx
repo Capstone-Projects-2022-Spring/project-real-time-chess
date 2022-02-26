@@ -29,6 +29,18 @@ export default class GameplayOptions extends React.Component<{}, {}> {
                         <ButtonComponent label="AI v AI" width="100%" onClick={() => void 0} />
                     </div>
                 </div>
+
+                <div className="row">
+                    <div className="col-12">
+                        <div className="alert alert-primary" role="alert">
+                            Click{' '}
+                            <a href="#" className="alert-link">
+                                here
+                            </a>{' '}
+                            to learn how to play.
+                        </div>
+                    </div>
+                </div>
             </div>
         );
     }
