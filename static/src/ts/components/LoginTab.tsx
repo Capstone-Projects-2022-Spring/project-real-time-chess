@@ -1,6 +1,9 @@
 import * as React from 'react';
+import Swal from 'sweetalert2';
 import Users from '../access/Users';
+import UINavigator from '../models/UINavigator';
 import ButtonComponent from './ButtonComponent';
+import GameplayOptions from './GameplayOptions';
 import { PasswordFieldComponent, TextFieldComponent } from './InputField';
 
 export interface LoginTabProps {
@@ -59,7 +62,22 @@ export default class LoginTabComponent extends React.Component<LoginTabProps, Lo
                                 Users.login({
                                     user: this.state.user,
                                     password: this.state.password,
-                                });
+                                })
+                                    .then(success => {
+                                        console.log(success);
+                                        if (success) UINavigator.render(<GameplayOptions />);
+                                        else
+                                            Swal.fire({
+                                                title: 'Login Failed',
+                                                text: 'Incorrect username or password',
+                                            });
+                                    })
+                                    .catch(error => {
+                                        Swal.fire({
+                                            title: 'Login Failed',
+                                            text: error.message,
+                                        });
+                                    });
                             }}
                         />
                     </div>

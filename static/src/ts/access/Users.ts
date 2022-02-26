@@ -3,19 +3,26 @@ import LoginModel from '../models/LoginModel';
 import SignUpModel from '../models/SignUpModel';
 
 export default class Users {
-    static signup(form: SignUpModel): void {
-        axios.post('/api/user/create', form).then(response => {
-            console.log(response);
+    static async signup(form: SignUpModel): Promise<boolean> {
+        return new Promise((resolve, reject) => {
+            axios
+                .post('/api/user/create', form)
+                .then(response => resolve(response.data.success))
+                .catch(err => reject(err));
         });
     }
 
-    static login(form: LoginModel): void {
-        axios.post('/api/user/login', form).then(response => {
-            if (response.data.success) {
-                localStorage.setItem('cert', JSON.stringify(response.data.auth));
-            } else {
-                alert('Login failed');
-            }
+    static async login(form: LoginModel): Promise<boolean> {
+        return new Promise((resolve, reject) => {
+            axios
+                .post('/api/user/login', form)
+                .then(response => {
+                    if (response.data.success) {
+                        localStorage.setItem('cert', JSON.stringify(response.data.auth));
+                    }
+                    resolve(response.data.success);
+                })
+                .catch(err => reject(err));
         });
     }
 

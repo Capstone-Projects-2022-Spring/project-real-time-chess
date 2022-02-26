@@ -3,6 +3,7 @@ import Users from '../access/Users';
 import SignUpModel from '../models/SignUpModel';
 import ButtonComponent from './ButtonComponent';
 import { EmailFieldComponent, NameFieldComponent, PasswordFieldComponent } from './InputField';
+import Swal from 'sweetalert2';
 
 export interface SignUpTabProps {
     fname: string;
@@ -88,7 +89,26 @@ export default class SignUpTabComponent extends React.Component<SignUpTabProps, 
                             label="Sign Up"
                             className="w-100"
                             onClick={() => {
-                                Users.signup(this.getFormData());
+                                Users.signup(this.getFormData())
+                                    .then(created => {
+                                        if (created) {
+                                            Swal.fire({
+                                                title: 'Signup Successful',
+                                                text: `${this.state.fname}, good news. You're signed up!`,
+                                            });
+                                        } else {
+                                            Swal.fire({
+                                                title: 'Signup Failed',
+                                                text: 'We do not know why',
+                                            });
+                                        }
+                                    })
+                                    .catch(err => {
+                                        Swal.fire({
+                                            title: 'Signup Failed',
+                                            text: `Reason: ${err.message}`,
+                                        });
+                                    });
                             }}
                         />
                     </div>

@@ -6,6 +6,7 @@ export interface TabbedComponentProps {
         element: JSX.Element;
     }[];
     activeTab?: number;
+    className?: string;
 }
 
 export interface TabbedComponentState {
@@ -25,7 +26,7 @@ export default class TabbedComponent extends React.Component<
 
     render() {
         return (
-            <div style={{ textAlign: 'center' }}>
+            <div style={{ textAlign: 'center' }} className={this.props.className}>
                 <div className="tabbed-component-button-group">
                     {this.props.tabs.map((tab, i) => {
                         return (

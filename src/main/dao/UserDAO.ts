@@ -70,11 +70,9 @@ export default class UserDAO extends BaseDAO<IUser> {
     }
 
     async authenticateKey(uid: ObjectId, key: string): Promise<boolean> {
-        console.log(uid, key);
         return new Promise((resolve, reject) => {
             this.findOne({ _id: uid })
                 .then(user => {
-                    console.log(user);
                     if (user && user.auths.includes(key)) {
                         resolve(true);
                     } else {

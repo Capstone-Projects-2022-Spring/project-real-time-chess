@@ -1,14 +1,16 @@
+@import 'Variables';
+
 button.button-component {
-    background-image: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
+    background-image: $primary-gradient;
     border: none;
-    padding: 2px;
+    padding: $border-width;
     box-sizing: border;
 
     div {
         background: white;
         height: 100%;
         width: 100%;
-        padding: 0.5rem 1rem;
+        padding: $standard-padding;
         box-sizing: border;
         transition: 0.1s background;
     }
