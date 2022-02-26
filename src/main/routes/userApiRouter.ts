@@ -45,7 +45,6 @@ export function authenticateUserRoute(
     const dao = new UserDAO();
     dao.authenticateKey(new ObjectId(req.cookies.uid), req.cookies.auth)
         .then(passed => {
-            console.log(passed);
             if (passed) res.send({ success: true });
             else res.send(new ErrorAPIResponse(new Error('Invalid certificate')));
         })
