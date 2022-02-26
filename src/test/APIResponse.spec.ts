@@ -1,5 +1,5 @@
 import assert = require('assert');
-import { ErrorAPIResponse } from 'src/main';
+import { ErrorAPIResponse } from 'src/main/APIResponse';
 
 describe('ErrorAPIResponse', () => {
     describe('#constructor(string)', () => {
