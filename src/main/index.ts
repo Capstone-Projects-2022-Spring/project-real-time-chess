@@ -1,4 +1,4 @@
-import Server from './Server';
+import RTCServer from './Server';
 
-const server = new Server();
+const server = new RTCServer();
 server.listen();
