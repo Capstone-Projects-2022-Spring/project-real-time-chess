@@ -1,9 +1,11 @@
-interface APIResponse {
+import { AuthInfo } from './dao/UserDAO';
+
+export interface APIResponse {
     success: boolean;
     error?: Error;
 }
 
-abstract class BaseAPIResponse implements APIResponse {
+export abstract class BaseAPIResponse implements APIResponse {
     success: boolean;
     error?: Error;
 
@@ -16,5 +18,14 @@ abstract class BaseAPIResponse implements APIResponse {
 export class ErrorAPIResponse extends BaseAPIResponse {
     constructor(error: Error | string) {
         super(false, typeof error === 'string' ? new Error(error) : error);
+    }
+}
+
+export class LoginAPIResponse extends BaseAPIResponse {
+    auth: AuthInfo;
+
+    constructor(auth: AuthInfo) {
+        super(true);
+        this.auth = auth;
     }
 }
