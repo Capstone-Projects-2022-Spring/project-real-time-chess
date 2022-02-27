@@ -7,6 +7,7 @@ import { Server } from 'socket.io';
 import * as Error from './constants/Error';
 import * as Event from './constants/Event';
 import DatabaseConnector from './dao/DatabaseConnector';
+import Logger from './Logger';
 import apiRouter from './routes/apiRouter';
 
 /**
@@ -84,7 +85,7 @@ export default class RTCServer {
         // ▢----------------------▢--------------------------▢`);
         //     });
         this.io.on('connection', socket => {
-            console.log(`Connection made with client, Socket ID: ${socket.id}`);
+            Logger.info(`Connection made with client, Socket ID: ${socket.id}`);
         });
 
         this.io.on(Event.CREATE_LOBBY, socket => {
@@ -139,7 +140,7 @@ export default class RTCServer {
         });
 
         this.httpServer.listen(this.PORT, () => {
-            console.log(`Listening on PORT: ${this.PORT}`);
+            Logger.info(`Listening on PORT: ${this.PORT}`);
         });
     }
 }

@@ -1,4 +1,5 @@
 import { Db, MongoClient, ServerApiVersion } from 'mongodb';
+import Logger from '../Logger';
 
 export default class DatabaseConnector {
     private static URI =
@@ -17,13 +18,14 @@ export default class DatabaseConnector {
 
         DatabaseConnector.client.connect(err => {
             if (err) {
-                console.error(err);
+                Logger.error('Could not connect to database. Error below:');
+                Logger.error(err);
                 throw err;
             } else if (DatabaseConnector.client) {
                 DatabaseConnector._database = DatabaseConnector.client.db('RTC');
-                console.log('Connected to database');
+                Logger.info('Connected to database');
             } else {
-                console.error('Could not connect to database');
+                Logger.error('Could not connect to database. No error provided.');
             }
         });
     }
