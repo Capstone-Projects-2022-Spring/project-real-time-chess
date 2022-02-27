@@ -11,22 +11,26 @@ export interface CreateUserRequestBody {
 }
 
 export function createUserRoute(
-    req: express.Request<{}, BaseAPIResponse, CreateUserRequestBody>,
-    res: express.Response<BaseAPIResponse>
+    req: express.Request<Record<string, never>, BaseAPIResponse, CreateUserRequestBody>,
+    res: express.Response<BaseAPIResponse>,
 ) {
     const dao = new UserDAO();
     dao.createUser(req.body)
         .then(() =>
             res.send({
                 success: true,
-            })
+            }),
         )
         .catch(err => res.send(new ErrorAPIResponse(err)));
 }
 
 export function loginUserRoute(
-    req: express.Request<{}, LoginAPIResponse, { user: string; password: string }>,
-    res: express.Response<LoginAPIResponse | ErrorAPIResponse>
+    req: express.Request<
+        Record<string, never>,
+        LoginAPIResponse,
+        { user: string; password: string }
+    >,
+    res: express.Response<LoginAPIResponse | ErrorAPIResponse>,
 ) {
     const dao = new UserDAO();
     dao.authenticateLogin(req.body)
@@ -40,7 +44,7 @@ export function loginUserRoute(
 
 export function authenticateUserRoute(
     req: express.Request,
-    res: express.Response<BaseAPIResponse>
+    res: express.Response<BaseAPIResponse>,
 ) {
     const dao = new UserDAO();
     dao.authenticateKey(new ObjectId(req.cookies.uid), req.cookies.auth)

@@ -1,13 +1,13 @@
 import bodyParser = require('body-parser');
 import cookieParser = require('cookie-parser');
 import express = require('express');
-import DatabaseConnector from './dao/DatabaseConnector';
-import apiRouter from './routes/apiRouter';
+import * as http from 'http';
 import * as path from 'path';
+import { Server } from 'socket.io';
 import * as Error from './constants/Error';
 import * as Event from './constants/Event';
-import * as http from 'http';
-import { Server } from 'socket.io';
+import DatabaseConnector from './dao/DatabaseConnector';
+import apiRouter from './routes/apiRouter';
 
 /**
  * Type definition of a game lobby object.
@@ -30,9 +30,13 @@ interface GameLobby {
  */
 export default class RTCServer {
     private app: express.Express;
+
     private PORT: number;
+
     private lobbies = new Map<string, GameLobby>();
+
     private httpServer: http.Server;
+
     private io: Server;
 
     /**
@@ -42,7 +46,7 @@ export default class RTCServer {
      */
     constructor() {
         this.app = express();
-        this.PORT = parseInt(process.env.PORT ?? '3000');
+        this.PORT = parseInt(process.env.PORT ?? '3000', 10);
         this.httpServer = http.createServer(this.app);
         this.io = new Server(this.httpServer);
 
@@ -80,7 +84,7 @@ export default class RTCServer {
         // ▢----------------------▢--------------------------▢`);
         //     });
         this.io.on('connection', socket => {
-            console.log('Connection made with client, Socket ID: ' + socket.id);
+            console.log(`Connection made with client, Socket ID: ${socket.id}`);
         });
 
         this.io.on(Event.CREATE_LOBBY, socket => {
@@ -100,8 +104,8 @@ export default class RTCServer {
         });
 
         this.io.on(Event.JOIN_LOBBY, (socket, roomKey) => {
-            let currentLobby = this.lobbies.get(roomKey);
-            if (currentLobby != undefined) {
+            const currentLobby = this.lobbies.get(roomKey);
+            if (currentLobby !== undefined) {
                 if (currentLobby.player2 === '') {
                     socket.join(roomKey);
                     currentLobby.player2 = socket.id;
@@ -119,8 +123,8 @@ export default class RTCServer {
         });
 
         this.io.on(Event.LEAVE_LOBBY, (socket, roomKey) => {
-            let currentLobby = this.lobbies.get(roomKey);
-            if (currentLobby != undefined) {
+            const currentLobby = this.lobbies.get(roomKey);
+            if (currentLobby !== undefined) {
                 if (currentLobby.player1 === socket.id) {
                     currentLobby.player1 = '';
                 }

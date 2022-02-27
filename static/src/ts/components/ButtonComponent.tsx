@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { NoState } from '../models/types';
 
 /**
  * Interface for the properties of the ButtonComponent.
@@ -18,13 +19,9 @@ export interface ButtonComponentProps {
  *
  * @export
  * @class ButtonComponent
- * @extends {React.Component<ButtonComponentProps, {}>}
+ * @extends {React.Component<ButtonComponentProps, NoState>}
  */
-export default class ButtonComponent extends React.Component<ButtonComponentProps, {}> {
-    constructor(props: ButtonComponentProps) {
-        super(props);
-    }
-
+export default class ButtonComponent extends React.Component<ButtonComponentProps, NoState> {
     render() {
         return (
             <button
