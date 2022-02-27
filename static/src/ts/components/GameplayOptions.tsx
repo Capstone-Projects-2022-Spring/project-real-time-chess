@@ -2,6 +2,13 @@ import * as React from 'react';
 import Swal from 'sweetalert2';
 import ButtonComponent from './ButtonComponent';
 
+/**
+ * Gameplay options page which allows a user to choose which game mode they want to play.
+ *
+ * @export
+ * @class GameplayOptions
+ * @extends {React.Component<{}, {}>}
+ */
 export default class GameplayOptions extends React.Component<{}, {}> {
     constructor(props: {}) {
         super(props);
@@ -52,7 +59,21 @@ export default class GameplayOptions extends React.Component<{}, {}> {
         );
     }
 
+    /**
+     * Displays a sweet alert modal with an index of how to play the game.
+     *
+     * @static
+     *
+     * @memberOf GameplayOptions
+     */
     static displayHowToPlay(): void {
+        /**
+         * Generates a bootstrap list group item.
+         *
+         * @param {string} text The text to include in the list item.
+         * @param {() => void} action The action to invoke when clicked.
+         * @returns {HTMLLIElement} The generated list item.
+         */
         function makeListItem(text: string, action: () => void) {
             const li = document.createElement('li');
             li.innerHTML = text;
@@ -63,6 +84,12 @@ export default class GameplayOptions extends React.Component<{}, {}> {
             return li;
         }
 
+        /**
+         * Generates a bootstrap list group.
+         *
+         * @param {...HTMLLIElement[]} items The list items to include in the list group.
+         * @returns {HTMLLIElement} The generated list group.
+         */
         function makeList(...items: HTMLLIElement[]) {
             const list = document.createElement('ul');
             list.classList.add('list-group');
@@ -70,6 +97,10 @@ export default class GameplayOptions extends React.Component<{}, {}> {
             return list;
         }
 
+        /**
+         * Display game modes modal.
+         *
+         */
         function displayGameModes(): void {
             Swal.fire({
                 title: 'Game Modes',

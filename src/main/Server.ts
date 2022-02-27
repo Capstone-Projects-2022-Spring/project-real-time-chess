@@ -9,12 +9,25 @@ import * as Event from './constants/Event';
 import * as http from 'http';
 import { Server } from 'socket.io';
 
+/**
+ * Type definition of a game lobby object.
+ *
+ * @interface GameLobby
+ */
 interface GameLobby {
     roomKey: string;
     player1: string;
     player2: string;
 }
 
+/**
+ * The RTCServer class is responsible for starting the server and handling
+ * all incoming routes, along with distributing the workload of all incoming
+ * API requests and WebSocket events.
+ *
+ * @export
+ * @class RTCServer
+ */
 export default class RTCServer {
     private app: express.Express;
     private PORT: number;
@@ -22,6 +35,11 @@ export default class RTCServer {
     private httpServer: http.Server;
     private io: Server;
 
+    /**
+     * Creates an instance of RTCServer.
+     *
+     * @memberOf RTCServer
+     */
     constructor() {
         this.app = express();
         this.PORT = parseInt(process.env.PORT ?? '3000');
@@ -42,6 +60,15 @@ export default class RTCServer {
         });
     }
 
+    /**
+     * Begins listening on the specified port. The port
+     * is automatically specified based on the environment.
+     * If an environment variable (`process.env.PORT`) is not
+     * defined, then the default port (`3000`) is used.
+     *
+     *
+     * @memberOf RTCServer
+     */
     listen() {
         //     this.app.listen(this.PORT, () => {
         //         console.log(`
