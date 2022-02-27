@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Swal from 'sweetalert2';
+import { NoProps, NoState } from '../models/types';
 import ButtonComponent from './ButtonComponent';
 
 /**
@@ -7,13 +8,9 @@ import ButtonComponent from './ButtonComponent';
  *
  * @export
  * @class GameplayOptions
- * @extends {React.Component<{}, {}>}
+ * @extends {React.Component<NoProps, NoState>}
  */
-export default class GameplayOptions extends React.Component<{}, {}> {
-    constructor(props: {}) {
-        super(props);
-    }
-
+export default class GameplayOptions extends React.Component<NoProps, NoState> {
     render() {
         return (
             <div className="container">
@@ -25,16 +22,24 @@ export default class GameplayOptions extends React.Component<{}, {}> {
 
                 <div className="row">
                     <div className="col">
-                        <ButtonComponent label="You v AI" width="100%" onClick={() => void 0} />
+                        <ButtonComponent label="You v AI" width="100%" onClick={() => undefined} />
                     </div>
                     <div className="col">
-                        <ButtonComponent label="You v Friend" width="100%" onClick={() => void 0} />
+                        <ButtonComponent
+                            label="You v Friend"
+                            width="100%"
+                            onClick={() => undefined}
+                        />
                     </div>
                     <div className="col">
-                        <ButtonComponent label="You v Random" width="100%" onClick={() => void 0} />
+                        <ButtonComponent
+                            label="You v Random"
+                            width="100%"
+                            onClick={() => undefined}
+                        />
                     </div>
                     <div className="col">
-                        <ButtonComponent label="AI v AI" width="100%" onClick={() => void 0} />
+                        <ButtonComponent label="AI v AI" width="100%" onClick={() => undefined} />
                     </div>
                 </div>
 
@@ -107,20 +112,20 @@ export default class GameplayOptions extends React.Component<{}, {}> {
                 html: makeList(
                     makeListItem(
                         '<strong>You v AI</strong> - This is a singleplayer mode where you go up against artificial intelligence. You can adjust the difficulty of the AI to your liking.',
-                        () => void 0
+                        () => undefined,
                     ),
                     makeListItem(
                         '<strong>You v Friend</strong> - This is a multiplayer game where you can play against a friend.',
-                        () => void 0
+                        () => undefined,
                     ),
                     makeListItem(
                         '<strong>You v Random</strong> - This is a multiplayer game where you can play against a randomly matched opponent.',
-                        () => void 0
+                        () => undefined,
                     ),
                     makeListItem(
                         '<strong>AI v AI</strong> - This is a zero-player game mode where two AI bots play each other. You can assign the difficulty of each bot.',
-                        () => void 0
-                    )
+                        () => undefined,
+                    ),
                 ),
             });
         }
