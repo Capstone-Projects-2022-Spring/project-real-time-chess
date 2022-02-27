@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Swal from 'sweetalert2';
-import { NoProps, NoState } from '../models/types';
+import { NoProps } from '../models/types';
 import ButtonComponent from './ButtonComponent';
 
 /**
@@ -10,7 +10,14 @@ import ButtonComponent from './ButtonComponent';
  * @class GameplayOptions
  * @extends {React.Component<NoProps, NoState>}
  */
-export default class GameplayOptions extends React.Component<NoProps, NoState> {
+export default class GameplayOptions extends React.Component<NoProps, { hoverImage: string }> {
+    constructor(props: NoProps) {
+        super(props);
+        this.state = {
+            hoverImage: '',
+        };
+    }
+
     render() {
         return (
             <div className="container">
@@ -21,24 +28,44 @@ export default class GameplayOptions extends React.Component<NoProps, NoState> {
                 </div>
 
                 <div className="row">
-                    <div className="col">
+                    <div
+                        className="col"
+                        onMouseOver={() => {
+                            this.setState({ hoverImage: '/img/YouVAI.png' });
+                        }}
+                    >
                         <ButtonComponent label="You v AI" width="100%" onClick={() => undefined} />
                     </div>
-                    <div className="col">
+                    <div
+                        className="col"
+                        onMouseOver={() => {
+                            this.setState({ hoverImage: '/img/YouVFriend.png' });
+                        }}
+                    >
                         <ButtonComponent
                             label="You v Friend"
                             width="100%"
                             onClick={() => undefined}
                         />
                     </div>
-                    <div className="col">
+                    <div
+                        className="col"
+                        onMouseOver={() => {
+                            this.setState({ hoverImage: '/img/YouVRandom.png' });
+                        }}
+                    >
                         <ButtonComponent
                             label="You v Random"
                             width="100%"
                             onClick={() => undefined}
                         />
                     </div>
-                    <div className="col">
+                    <div
+                        className="col"
+                        onMouseOver={() => {
+                            this.setState({ hoverImage: '/img/AIVAI.png' });
+                        }}
+                    >
                         <ButtonComponent label="AI v AI" width="100%" onClick={() => undefined} />
                     </div>
                 </div>
@@ -59,6 +86,14 @@ export default class GameplayOptions extends React.Component<NoProps, NoState> {
                             </div>
                         </div>
                     </div>
+                </div>
+
+                <div className="row">
+                    <div className="col"></div>
+                    <div className="col-12 col-md-6 col-lg-4 mt-2 text-center">
+                        <img src={this.state.hoverImage} className="w-100" />
+                    </div>
+                    <div className="col"></div>
                 </div>
             </div>
         );
