@@ -4,7 +4,8 @@ import Users from '../access/Users';
 import UINavigator from '../models/UINavigator';
 import ButtonComponent from './ButtonComponent';
 import GameplayOptions from './GameplayOptions';
-import { PasswordFieldComponent, TextFieldComponent } from './InputField';
+import PasswordFieldComponent from './PasswordFieldComponent';
+import TextFieldComponent from './TextFieldComponent';
 
 export interface LoginTabProps {
     user?: string;

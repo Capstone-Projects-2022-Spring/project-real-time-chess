@@ -3,7 +3,9 @@ import Swal from 'sweetalert2';
 import Users from '../access/Users';
 import SignUpModel from '../models/SignUpModel';
 import ButtonComponent from './ButtonComponent';
-import { EmailFieldComponent, NameFieldComponent, PasswordFieldComponent } from './InputField';
+import EmailFieldComponent from './EmailFieldComponent';
+import NameFieldComponent from './NameFieldComponent';
+import PasswordFieldComponent from './PasswordFieldComponent';
 
 export interface SignUpTabProps {
     fname: string;
