@@ -43,7 +43,7 @@ export default class TabbedComponent extends React.Component<
                     })}
                 </div>
 
-                <div>{this.props.tabs[this.state.activeTab ?? 0].element}</div>
+                <div>{this.props.tabs[this.state.activeTab ?? 0]?.element}</div>
             </div>
         );
     }
