@@ -2,11 +2,12 @@ import * as React from 'react';
 import LoginTabComponent from '../components/LoginTab';
 import SignUpTabComponent from '../components/SignUpTab';
 import TabbedComponent from '../components/TabbedComponent';
+import { NoProps, NoState } from '../models/types';
 
-export default class Homepage extends React.Component<{}, {}> {
+export default class Homepage extends React.Component<NoProps, NoState> {
     private tabs: { label: string; element: JSX.Element }[];
 
-    constructor(props: {} = {}) {
+    constructor(props: NoProps) {
         super(props);
         this.tabs = [
             {

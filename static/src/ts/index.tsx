@@ -1,9 +1,9 @@
-import Homepage from './views/Homepage';
-import * as ReactDOM from 'react-dom';
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import Users from './access/Users';
-import UINavigator from './models/UINavigator';
 import GameplayOptions from './components/GameplayOptions';
+import UINavigator from './models/UINavigator';
+import Homepage from './views/Homepage';
 
 ReactDOM.render(<Homepage />, document.getElementById('react-app-target'));
 

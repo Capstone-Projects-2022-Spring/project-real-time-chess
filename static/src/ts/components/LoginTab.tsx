@@ -64,13 +64,13 @@ export default class LoginTabComponent extends React.Component<LoginTabProps, Lo
                                     password: this.state.password,
                                 })
                                     .then(success => {
-                                        console.log(success);
                                         if (success) UINavigator.render(<GameplayOptions />);
-                                        else
+                                        else {
                                             Swal.fire({
                                                 title: 'Login Failed',
                                                 text: 'Incorrect username or password',
                                             });
+                                        }
                                     })
                                     .catch(error => {
                                         Swal.fire({
