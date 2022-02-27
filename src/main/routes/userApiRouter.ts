@@ -1,7 +1,8 @@
 import express = require('express');
 import { ObjectId } from 'mongodb';
-import { BaseAPIResponse, ErrorAPIResponse, LoginAPIResponse } from '../APIResponse';
+import { BaseAPIResponse, ErrorAPIResponse } from '../APIResponse';
 import UserDAO from '../dao/UserDAO';
+import LoginAPIResponse from '../LoginAPIResponse';
 
 export interface CreateUserRequestBody {
     name: { first: string; last: string };
