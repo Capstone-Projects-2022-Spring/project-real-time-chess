@@ -21,6 +21,7 @@ export interface APIResponse {
  */
 export abstract class BaseAPIResponse implements APIResponse {
     success: boolean;
+
     error?: Error;
 
     /**

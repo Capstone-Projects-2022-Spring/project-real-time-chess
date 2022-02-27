@@ -26,6 +26,7 @@ module.exports = {
         'import/extensions': 'off',
         'no-plusplus': 'off',
         'class-methods-use-this': 'off',
+        'no-underscore-dangle': 'off',
     },
     parserOptions: {
         project: ['./tsconfig.json', './static/src/ts/tsconfig.json'],

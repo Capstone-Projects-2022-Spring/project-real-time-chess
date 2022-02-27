@@ -3,7 +3,9 @@ import { Db, MongoClient, ServerApiVersion } from 'mongodb';
 export default class DatabaseConnector {
     private static URI =
         'mongodb+srv://admin:admin@cluster0.eu8bc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+
     private static client: MongoClient | undefined;
+
     private static _database?: Db;
 
     static open() {
