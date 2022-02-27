@@ -23,6 +23,7 @@ module.exports = {
         'implicit-arrow-linebreak': 'off',
         'function-paren-newline': 'off',
         'arrow-parens': 'off',
+        'import/extensions': 'off',
     },
     parserOptions: {
         project: ['./tsconfig.json', './static/src/ts/tsconfig.json'],
