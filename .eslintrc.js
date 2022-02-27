@@ -24,6 +24,8 @@ module.exports = {
         'function-paren-newline': 'off',
         'arrow-parens': 'off',
         'import/extensions': 'off',
+        'no-plusplus': 'off',
+        'class-methods-use-this': 'off',
     },
     parserOptions: {
         project: ['./tsconfig.json', './static/src/ts/tsconfig.json'],
