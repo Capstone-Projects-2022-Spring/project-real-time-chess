@@ -25,7 +25,7 @@ module.exports = {
         'arrow-parens': 'off',
     },
     parserOptions: {
-        project: './tsconfig.json',
+        project: ['./tsconfig.json', './static/src/ts/tsconfig.json'],
     },
     ignorePatterns: ['*.js', 'dist/**/*', 'test/**/*'],
 };
