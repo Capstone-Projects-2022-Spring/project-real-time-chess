@@ -1,5 +1,11 @@
 import * as React from 'react';
 
+/**
+ * Interface for the properties of the ButtonComponent.
+ *
+ * @export
+ * @interface ButtonComponentProps
+ */
 export interface ButtonComponentProps {
     label: string | JSX.Element;
     className?: string;
@@ -7,6 +13,13 @@ export interface ButtonComponentProps {
     onClick: () => void;
 }
 
+/**
+ * A react button component which allows for simple text and click functionality.
+ *
+ * @export
+ * @class ButtonComponent
+ * @extends {React.Component<ButtonComponentProps, {}>}
+ */
 export default class ButtonComponent extends React.Component<ButtonComponentProps, {}> {
     constructor(props: ButtonComponentProps) {
         super(props);
