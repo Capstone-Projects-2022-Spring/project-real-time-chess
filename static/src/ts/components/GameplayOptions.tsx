@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Swal from 'sweetalert2';
-import { NoProps, NoState } from '../models/types';
+import { NoProps } from '../models/types';
 import ButtonComponent from './ButtonComponent';
 
 /**
@@ -10,7 +10,18 @@ import ButtonComponent from './ButtonComponent';
  * @class GameplayOptions
  * @extends {React.Component<NoProps, NoState>}
  */
-export default class GameplayOptions extends React.Component<NoProps, NoState> {
+export default class GameplayOptions extends React.Component<
+    NoProps,
+    { hoverImage: string; hoverImageCaption: string }
+> {
+    constructor(props: NoProps) {
+        super(props);
+        this.state = {
+            hoverImage: '',
+            hoverImageCaption: '',
+        };
+    }
+
     render() {
         return (
             <div className="container">
@@ -21,24 +32,60 @@ export default class GameplayOptions extends React.Component<NoProps, NoState> {
                 </div>
 
                 <div className="row">
-                    <div className="col">
+                    <div
+                        className="col"
+                        onMouseOver={() => {
+                            this.setState({
+                                hoverImage: '/img/YouVAI.png',
+                                hoverImageCaption:
+                                    "You v AI: Play against artificial intelligence. If you're scared, lower the difficulty.",
+                            });
+                        }}
+                    >
                         <ButtonComponent label="You v AI" width="100%" onClick={() => undefined} />
                     </div>
-                    <div className="col">
+                    <div
+                        className="col"
+                        onMouseOver={() => {
+                            this.setState({
+                                hoverImage: '/img/YouVFriend.png',
+                                hoverImageCaption:
+                                    'You v Friend: Play against someone you already know via a game code.',
+                            });
+                        }}
+                    >
                         <ButtonComponent
                             label="You v Friend"
                             width="100%"
                             onClick={() => undefined}
                         />
                     </div>
-                    <div className="col">
+                    <div
+                        className="col"
+                        onMouseOver={() => {
+                            this.setState({
+                                hoverImage: '/img/YouVRandom.png',
+                                hoverImageCaption:
+                                    'You v Random: Play against a random opponent similar to your skill level.',
+                            });
+                        }}
+                    >
                         <ButtonComponent
                             label="You v Random"
                             width="100%"
                             onClick={() => undefined}
                         />
                     </div>
-                    <div className="col">
+                    <div
+                        className="col"
+                        onMouseOver={() => {
+                            this.setState({
+                                hoverImage: '/img/AIVAI.png',
+                                hoverImageCaption:
+                                    'AI v AI: Love watching chess, but not playing it? Make two bots play each other.',
+                            });
+                        }}
+                    >
                         <ButtonComponent label="AI v AI" width="100%" onClick={() => undefined} />
                     </div>
                 </div>
@@ -59,6 +106,15 @@ export default class GameplayOptions extends React.Component<NoProps, NoState> {
                             </div>
                         </div>
                     </div>
+                </div>
+
+                <div className="row">
+                    <div className="col"></div>
+                    <div className="col-12 col-md-6 col-lg-4 mt-2 text-center game-mode-hover-img-container light-shadow">
+                        <img src={this.state.hoverImage} className="w-100" />
+                        {this.state.hoverImageCaption}
+                    </div>
+                    <div className="col"></div>
                 </div>
             </div>
         );
