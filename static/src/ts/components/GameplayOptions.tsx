@@ -10,11 +10,15 @@ import ButtonComponent from './ButtonComponent';
  * @class GameplayOptions
  * @extends {React.Component<NoProps, NoState>}
  */
-export default class GameplayOptions extends React.Component<NoProps, { hoverImage: string }> {
+export default class GameplayOptions extends React.Component<
+    NoProps,
+    { hoverImage: string; hoverImageCaption: string }
+> {
     constructor(props: NoProps) {
         super(props);
         this.state = {
             hoverImage: '',
+            hoverImageCaption: '',
         };
     }
 
@@ -31,7 +35,11 @@ export default class GameplayOptions extends React.Component<NoProps, { hoverIma
                     <div
                         className="col"
                         onMouseOver={() => {
-                            this.setState({ hoverImage: '/img/YouVAI.png' });
+                            this.setState({
+                                hoverImage: '/img/YouVAI.png',
+                                hoverImageCaption:
+                                    "You v AI: Play against artificial intelligence. If you're scared, lower the difficulty.",
+                            });
                         }}
                     >
                         <ButtonComponent label="You v AI" width="100%" onClick={() => undefined} />
@@ -39,7 +47,11 @@ export default class GameplayOptions extends React.Component<NoProps, { hoverIma
                     <div
                         className="col"
                         onMouseOver={() => {
-                            this.setState({ hoverImage: '/img/YouVFriend.png' });
+                            this.setState({
+                                hoverImage: '/img/YouVFriend.png',
+                                hoverImageCaption:
+                                    'You v Friend: Play against someone you already know via a game code.',
+                            });
                         }}
                     >
                         <ButtonComponent
@@ -51,7 +63,11 @@ export default class GameplayOptions extends React.Component<NoProps, { hoverIma
                     <div
                         className="col"
                         onMouseOver={() => {
-                            this.setState({ hoverImage: '/img/YouVRandom.png' });
+                            this.setState({
+                                hoverImage: '/img/YouVRandom.png',
+                                hoverImageCaption:
+                                    'You v Random: Play against a random opponent similar to your skill level.',
+                            });
                         }}
                     >
                         <ButtonComponent
@@ -63,7 +79,11 @@ export default class GameplayOptions extends React.Component<NoProps, { hoverIma
                     <div
                         className="col"
                         onMouseOver={() => {
-                            this.setState({ hoverImage: '/img/AIVAI.png' });
+                            this.setState({
+                                hoverImage: '/img/AIVAI.png',
+                                hoverImageCaption:
+                                    'AI v AI: Love watching chess, but not playing it? Make two bots play each other.',
+                            });
                         }}
                     >
                         <ButtonComponent label="AI v AI" width="100%" onClick={() => undefined} />
@@ -90,8 +110,9 @@ export default class GameplayOptions extends React.Component<NoProps, { hoverIma
 
                 <div className="row">
                     <div className="col"></div>
-                    <div className="col-12 col-md-6 col-lg-4 mt-2 text-center">
+                    <div className="col-12 col-md-6 col-lg-4 mt-2 text-center game-mode-hover-img-container light-shadow">
                         <img src={this.state.hoverImage} className="w-100" />
+                        {this.state.hoverImageCaption}
                     </div>
                     <div className="col"></div>
                 </div>
