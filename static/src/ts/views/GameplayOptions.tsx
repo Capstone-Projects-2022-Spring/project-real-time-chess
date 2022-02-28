@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Swal from 'sweetalert2';
 import { NoProps } from '../models/types';
-import ButtonComponent from './ButtonComponent';
+import ButtonComponent from '../components/ButtonComponent';
 
 /**
  * Gameplay options page which allows a user to choose which game mode they want to play.

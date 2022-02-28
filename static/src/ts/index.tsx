@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import Users from './access/Users';
-import GameplayOptions from './components/GameplayOptions';
+import GameplayOptions from './views/GameplayOptions';
 import UINavigator from './models/UINavigator';
 import Homepage from './views/Homepage';
 
