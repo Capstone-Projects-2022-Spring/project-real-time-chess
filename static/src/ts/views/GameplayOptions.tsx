@@ -2,6 +2,7 @@ import * as React from 'react';
 import Swal from 'sweetalert2';
 import { NoProps } from '../models/types';
 import ButtonComponent from '../components/ButtonComponent';
+import Chessboard from '../components/Chessboard';
 
 /**
  * Gameplay options page which allows a user to choose which game mode they want to play.
@@ -113,6 +114,14 @@ export default class GameplayOptions extends React.Component<
                     <div className="col-12 col-md-6 col-lg-4 mt-2 text-center game-mode-hover-img-container light-shadow">
                         <img src={this.state.hoverImage} className="w-100" />
                         {this.state.hoverImageCaption}
+                    </div>
+                    <div className="col"></div>
+                </div>
+
+                <div className="row">
+                    <div className="col"></div>
+                    <div className="col-6">
+                        <Chessboard background="blue" />
                     </div>
                     <div className="col"></div>
                 </div>
