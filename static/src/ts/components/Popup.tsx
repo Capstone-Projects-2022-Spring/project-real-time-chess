@@ -22,8 +22,14 @@ export default class PopupComponent extends React.Component<PopupProps> {
     }
 
     static show(popup: JSX.Element): void {
-        const target = document.getElementById('react-overlay-target');
+        const target = document.getElementById('react-overlay-target')!;
         ReactDOM.render(popup, target);
-        target?.classList.add('active');
+        target.classList.add('active');
+    }
+
+    static hide() {
+        const target = document.getElementById('react-overlay-target')!;
+        ReactDOM.unmountComponentAtNode(target);
+        target.classList.remove('active');
     }
 }
