@@ -1,7 +1,12 @@
 import * as React from 'react';
+// import { Chessboard } from 'react-chessboard';
 import Swal from 'sweetalert2';
 import ButtonComponent from '../components/ButtonComponent';
+// import ChessboardComponent from '../components/ChessboardComponent';
+// import Popup from '../components/Popup';
 import { NoProps } from '../models/types';
+import UINavigator from '../models/UINavigator';
+import BoardScreen from './BoardScreen';
 
 /**
  * Gameplay options page which allows a user to choose which game mode they want to play.
@@ -42,7 +47,15 @@ export default class GameplayOptions extends React.Component<
                             });
                         }}
                     >
-                        <ButtonComponent label="You v AI" width="100%" onClick={() => undefined} />
+                        <ButtonComponent label="You v AI" width="100%" onClick={() => {
+                            UINavigator.render(
+                                <BoardScreen 
+                                    mode={'AI'}
+                                    username={''}
+                                />,
+                            );
+                                }}
+                        />
                     </div>
                     <div
                         className="col"
@@ -119,6 +132,9 @@ export default class GameplayOptions extends React.Component<
             </div>
         );
     }
+
+
+
 
     /**
      * Displays a sweet alert modal with an index of how to play the game.
