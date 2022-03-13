@@ -1,4 +1,6 @@
 import * as React from 'react';
+import Swal from 'sweetalert2';
+import GameAccess from '../access/GameAccess';
 import ButtonComponent from './ButtonComponent';
 import EmojiKeyboard from './EmojiKeyboard';
 
@@ -13,7 +15,17 @@ export default class FriendGameSetupComponent extends React.Component {
                             Create a game. Then you will be given a game code. Send the game code to
                             your friend so they can join the game.
                         </p>
-                        <ButtonComponent label="Create Game" onClick={() => undefined} />
+                        <ButtonComponent
+                            label="Create Game"
+                            onClick={() => {
+                                GameAccess.createGame().then(() => {
+                                    Swal.fire({
+                                        title: 'Game Created',
+                                        text: 'Share this game code with your friend: ',
+                                    });
+                                });
+                            }}
+                        />
                     </div>
 
                     <div className="col-12 col-md-6">
