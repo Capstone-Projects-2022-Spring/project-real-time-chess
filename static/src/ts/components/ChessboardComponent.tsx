@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { Chessboard } from 'react-chessboard';
 import { Chess } from 'chess.js';
-const chess = new Chess()
+import { useState } from 'react';
+// const chess = new Chess()
 
 interface ChessboardComponentProps {
     background: string;
@@ -24,10 +25,16 @@ export default class ChessboardComponent extends React.Component<
 
     render() {
         return (
-            <div style={{ background: this.state.background, color: 'white', padding: '' }}>
-                <Chessboard />
+            <div style={{ background: this.state.background, color: 'white', 
+                padding: '50px 50px 50px 50px'
+            }}>
+                <Chessboard 
+                    arePremovesAllowed={false}
+                    
+                />
             </div>
         );
     }
 }
+
 
