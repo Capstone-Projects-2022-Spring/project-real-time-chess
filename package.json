@@ -30,6 +30,7 @@
         "assert": "^2.0.0",
         "axios": "^0.25.0",
         "body-parser": "^1.19.1",
+        "chess.ts": "^0.16.2",
         "cookie-parser": "^1.4.6",
         "eslint-config-airbnb-typescript": "^16.1.0",
         "express": "^4.17.2",
