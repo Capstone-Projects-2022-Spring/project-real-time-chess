@@ -12,7 +12,8 @@
         "start": "node dist/main/index.js",
         "clean": "rm -r dist",
         "coverage": "nyc --reporter=lcov --reporter=text-lcov mocha --timeout 10000 -r ts-node-test-register -r tsconfig-paths/register \"src/test/**/*.spec.ts\" --exit",
-        "test": "mocha --reporter spec -r ts-node-test-register -r tsconfig-paths/register \"src/test/**/*.spec.ts\" --exit"
+        "test": "mocha --reporter spec -r ts-node-test-register -r tsconfig-paths/register \"src/test/**/*.spec.ts\" --exit",
+        "gen-uml": "tsuml2 --glob src/**/*.ts"
     },
     "repository": {
         "type": "git",
