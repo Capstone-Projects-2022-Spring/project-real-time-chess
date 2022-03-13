@@ -36,7 +36,7 @@ export interface BoardScreenState {
                 <div className="row">
                     <div className="col">
                         <h1 style={{ textAlign: 'center' }}>Chessboard</h1>
-                        <ChessboardComponent background='white'/>
+                        <ChessboardComponent background='white' position={'start'} mode={this.state.mode}/>
                     </div>
                 </div>
             </div>

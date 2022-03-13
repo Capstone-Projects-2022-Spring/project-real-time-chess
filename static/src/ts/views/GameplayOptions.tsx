@@ -50,12 +50,10 @@ export default class GameplayOptions extends React.Component<
                         <ButtonComponent label="You v AI" width="100%" onClick={() => {
                             UINavigator.render(
                                 <BoardScreen 
-                                    mode={'AI'}
-                                    username={''}
-                                />,
+                                    mode={'YouvAI'}
+                                    username={''}/>,
                             );
-                                }}
-                        />
+                        }}/>
                     </div>
                     <div
                         className="col"
@@ -67,11 +65,13 @@ export default class GameplayOptions extends React.Component<
                             });
                         }}
                     >
-                        <ButtonComponent
-                            label="You v Friend"
-                            width="100%"
-                            onClick={() => undefined}
-                        />
+                        <ButtonComponent label="You v Friend" width="100%" onClick={() => {
+                            UINavigator.render(
+                                <BoardScreen 
+                                    mode={'YouvFriend'}
+                                    username={''}/>,
+                            );
+                        }}/>
                     </div>
                     <div
                         className="col"
@@ -83,11 +83,13 @@ export default class GameplayOptions extends React.Component<
                             });
                         }}
                     >
-                        <ButtonComponent
-                            label="You v Random"
-                            width="100%"
-                            onClick={() => undefined}
-                        />
+                        <ButtonComponent label="You v Random" width="100%" onClick={() => {
+                            UINavigator.render(
+                                <BoardScreen 
+                                    mode={'YouvRandom'}
+                                    username={''}/>,
+                            );
+                        }}/>
                     </div>
                     <div
                         className="col"
@@ -99,7 +101,13 @@ export default class GameplayOptions extends React.Component<
                             });
                         }}
                     >
-                        <ButtonComponent label="AI v AI" width="100%" onClick={() => undefined} />
+                        <ButtonComponent label="AI v AI" width="100%" onClick={() => {
+                            UINavigator.render(
+                                <BoardScreen 
+                                    mode={'AIvAI'}
+                                    username={''}/>,
+                            );
+                        }}/>
                     </div>
                 </div>
 
