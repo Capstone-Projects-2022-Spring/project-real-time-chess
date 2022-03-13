@@ -1,4 +1,5 @@
 import * as express from 'express';
+import { GameCreatedResponse } from '../APIResponse';
 import ChessGame from '../ChessGame';
 import UserDAO from '../dao/UserDAO';
 
@@ -11,7 +12,7 @@ gameRouter.post('/create', (req, res) => {
         const game = new ChessGame();
         game.black = user;
         games.push(game);
-        res.send({ success: true });
+        res.send(new GameCreatedResponse(['bruh']));
     });
 });
 

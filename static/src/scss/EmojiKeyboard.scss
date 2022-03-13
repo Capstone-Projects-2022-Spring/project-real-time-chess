@@ -1,0 +1,28 @@
+.emoji-keyboard {
+    .emoji-keyboard-value {
+        width: 100%;
+        background: rgba(0, 0, 0, 0.25);
+        padding: 0.25rem;
+        border-radius: 0.125rem;
+    }
+
+    .emoji-keys {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-around;
+        flex-wrap: wrap;
+
+        .emoji-keyboard-button {
+            padding: 0.5rem;
+            font-size: 2rem;
+            border-radius: 0.5rem;
+        }
+
+        .emoji-keyboard-button:hover {
+            background: white;
+            box-shadow: 0 0 5rem 0 rgba(0, 0, 0, 0.25);
+        }
+    }
+}

@@ -1,13 +1,14 @@
+import ChessBoard from './ChessBoard';
 import { IUser } from './dao/UserDAO';
 
 export default class ChessGame {
-    private game: ChessGame;
+    private game: ChessBoard;
     private _black?: IUser;
     private _white?: IUser;
     private turn: 'b' | 'w';
 
     constructor() {
-        this.game = new ChessGame();
+        this.game = new ChessBoard();
         this.turn = 'w';
     }
 

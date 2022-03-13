@@ -56,3 +56,12 @@ export class ErrorAPIResponse extends BaseAPIResponse {
         super(false, typeof error === 'string' ? new Error(error) : error);
     }
 }
+
+export class GameCreatedResponse extends BaseAPIResponse {
+    gameKey: string[];
+
+    constructor(gameKey: string[]) {
+        super(true);
+        this.gameKey = gameKey;
+    }
+}
