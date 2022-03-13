@@ -3,28 +3,14 @@ import * as React from 'react';
 import { Chessboard } from 'react-chessboard';
 // const chess = new Chess();
 
-interface ChessboardComponentProps {
-    background: string;
-}
-
-interface ChessboardComponentState {
-    background: string;
-}
-
-export default class ChessboardComponent extends React.Component<
-    ChessboardComponentProps,
-    ChessboardComponentState
-> {
-    constructor(props: ChessboardComponentProps) {
+export default class ChessboardComponent extends React.Component<{}, {}> {
+    constructor(props: {}) {
         super(props);
-        this.state = {
-            background: props.background,
-        };
     }
 
     render() {
         return (
-            <div style={{ background: this.state.background, color: 'white', padding: '' }}>
+            <div>
                 <Chessboard />
             </div>
         );
