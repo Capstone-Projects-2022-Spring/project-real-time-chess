@@ -1,5 +1,4 @@
 import * as React from 'react';
-import ButtonComponent from '../components/ButtonComponent';
 import ChessboardComponent from '../components/ChessboardComponent';
 // import { NoProps } from '../models/types';
 
@@ -11,7 +10,7 @@ import ChessboardComponent from '../components/ChessboardComponent';
  * @extends {React.Component<BoardScreenProps, BoardScreenState>}
  */
 
- export interface BoardScreenProps {
+export interface BoardScreenProps {
     mode: string;
     username: string;
 }
@@ -21,7 +20,7 @@ export interface BoardScreenState {
     username: string;
 }
 
- export default class BoardScreen extends React.Component<BoardScreenProps, BoardScreenState> {
+export default class BoardScreen extends React.Component<BoardScreenProps, BoardScreenState> {
     constructor(props: BoardScreenProps) {
         super(props);
         this.state = {
@@ -36,7 +35,7 @@ export interface BoardScreenState {
                 <div className="row">
                     <div className="col">
                         <h1 style={{ textAlign: 'center' }}>Chessboard</h1>
-                        <ChessboardComponent background='white'/>
+                        <ChessboardComponent background="white" />
                     </div>
                 </div>
             </div>

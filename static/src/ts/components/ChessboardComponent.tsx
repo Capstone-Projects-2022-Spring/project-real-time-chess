@@ -1,7 +1,7 @@
+// import { Chess } from 'chess.js';
 import * as React from 'react';
 import { Chessboard } from 'react-chessboard';
-import { Chess } from 'chess.js';
-const chess = new Chess()
+// const chess = new Chess();
 
 interface ChessboardComponentProps {
     background: string;
@@ -30,4 +30,3 @@ export default class ChessboardComponent extends React.Component<
         );
     }
 }
-
