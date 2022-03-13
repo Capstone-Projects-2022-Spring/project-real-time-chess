@@ -1,7 +1,9 @@
 import ChessBoard from './ChessBoard';
 import { IUser } from './dao/UserDAO';
+import SupportedEmojis from './SupportedEmojis';
 
 export default class ChessGame {
+    gameKey: string[];
     private game: ChessBoard;
     private _black?: IUser;
     private _white?: IUser;
@@ -10,6 +12,7 @@ export default class ChessGame {
     constructor() {
         this.game = new ChessBoard();
         this.turn = 'w';
+        this.gameKey = ChessGame.generateGameKey();
     }
 
     public set black(user: IUser | undefined) {
@@ -31,5 +34,12 @@ export default class ChessGame {
     move(from: [number, number], to: [number, number]) {
         this.game.move(from, to);
         this.turn = this.turn === 'w' ? 'b' : 'w';
+    }
+
+    static generateGameKey(): string[] {
+        const emojis: string[] = [];
+        for (let i = 0; i < 5; i++)
+            emojis.push(SupportedEmojis[Math.floor(Math.random() * SupportedEmojis.length)]!.name);
+        return emojis;
     }
 }

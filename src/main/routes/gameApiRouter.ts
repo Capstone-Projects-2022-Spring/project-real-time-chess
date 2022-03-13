@@ -12,7 +12,7 @@ gameRouter.post('/create', (req, res) => {
         const game = new ChessGame();
         game.black = user;
         games.push(game);
-        res.send(new GameCreatedResponse(['bruh']));
+        res.send(new GameCreatedResponse(game.gameKey));
     });
 });
 
