@@ -1,3 +1,4 @@
+// import { Chess } from 'chess.js';
 import * as React from 'react';
 import { Chessboard } from 'react-chessboard';
 import { Chess } from 'chess.js';
