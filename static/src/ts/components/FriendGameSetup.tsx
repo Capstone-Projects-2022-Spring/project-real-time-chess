@@ -18,12 +18,25 @@ export default class FriendGameSetupComponent extends React.Component {
                         <ButtonComponent
                             label="Create Game"
                             onClick={() => {
-                                GameAccess.createGame().then(() => {
-                                    Swal.fire({
-                                        title: 'Game Created',
-                                        text: 'Share this game code with your friend: ',
+                                GameAccess.createGame()
+                                    .then(response => {
+                                        if (response.success)
+                                            Swal.fire({
+                                                title: 'Game Created',
+                                                text: `Share this game code with your friend: ${response.gameKey}`,
+                                            });
+                                        else
+                                            Swal.fire({
+                                                title: 'Error',
+                                                text: response.error!.message,
+                                            });
+                                    })
+                                    .catch(error => {
+                                        Swal.fire({
+                                            title: 'Error',
+                                            text: error.message,
+                                        });
                                     });
-                                });
                             }}
                         />
                     </div>

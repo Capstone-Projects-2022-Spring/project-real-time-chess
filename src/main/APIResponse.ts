@@ -1,15 +1,4 @@
 /**
- * The bare minimum interface to be implemented by a response object.
- *
- * @export
- * @interface APIResponse
- */
-export interface APIResponse {
-    success: boolean;
-    error?: Error;
-}
-
-/**
  * The base class for all API responses.
  *
  * @export
@@ -57,7 +46,7 @@ export class ErrorAPIResponse extends BaseAPIResponse {
     }
 }
 
-export class GameCreatedResponse extends BaseAPIResponse {
+export class GameCreatedResponse extends BaseAPIResponse implements IGameCreatedResponse {
     gameKey: string[];
 
     constructor(gameKey: string[]) {

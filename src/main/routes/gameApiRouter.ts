@@ -1,5 +1,5 @@
 import * as express from 'express';
-import { GameCreatedResponse } from '../APIResponse';
+import { ErrorAPIResponse, GameCreatedResponse } from '../APIResponse';
 import ChessGame from '../ChessGame';
 import UserDAO from '../dao/UserDAO';
 
@@ -8,12 +8,18 @@ const games: ChessGame[] = [];
 
 gameRouter.post('/create', (req, res) => {
     const dao = new UserDAO();
-    dao.findOne({ _id: req.query.uid }).then(user => {
-        const game = new ChessGame();
-        game.black = user;
-        games.push(game);
-        res.send(new GameCreatedResponse(game.gameKey));
-    });
+    dao.findOne({ _id: req.query.uid })
+        .then(user => {
+            console.log(user);
+            const game = new ChessGame();
+            game.black = user;
+            games.push(game);
+            res.send(new GameCreatedResponse(game.gameKey));
+        })
+        .catch(err => {
+            console.log(err);
+            res.send(new ErrorAPIResponse('Could not find user'));
+        });
 });
 
 gameRouter.post('/move', (req, res) => {

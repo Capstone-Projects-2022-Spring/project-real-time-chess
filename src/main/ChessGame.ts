@@ -16,11 +16,11 @@ export default class ChessGame {
     }
 
     public set black(user: IUser | undefined) {
-        this.black = user;
+        this._black = user;
     }
 
     public set white(user: IUser | undefined) {
-        this.white = user;
+        this._white = user;
     }
 
     public get black(): IUser | undefined {
