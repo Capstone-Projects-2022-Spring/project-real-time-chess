@@ -11,12 +11,10 @@ export interface PopupProps {
 export default class PopupComponent extends React.Component<PopupProps> {
     render() {
         return (
-            <div className="popup">
-                <div className="popup_inner">
-                    <h1>{this.props.title}</h1>
-                    <p>{this.props.text}</p>
-                    {this.props.buttons}
-                </div>
+            <div className="popup-component">
+                <h1>{this.props.title}</h1>
+                <p>{this.props.text}</p>
+                {this.props.buttons}
             </div>
         );
     }
