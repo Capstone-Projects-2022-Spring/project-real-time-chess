@@ -3,9 +3,10 @@ import * as ReactDOM from 'react-dom';
 import Users from './access/Users';
 import GameplayOptions from './views/GameplayOptions';
 import UINavigator from './models/UINavigator';
-import Homepage from './views/Homepage';
+//import Homepage from './views/Homepage';
+import GameRooms from './views/GameRooms';
 
-ReactDOM.render(<Homepage />, document.getElementById('react-app-target'));
+ReactDOM.render(<GameRooms />, document.getElementById('react-app-target'));
 
 if (Users.hasCert()) {
     Users.authenticateCertificate()
