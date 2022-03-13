@@ -12,7 +12,8 @@
         "start": "node dist/main/index.js",
         "clean": "rm -r dist",
         "coverage": "nyc --reporter=lcov --reporter=text-lcov mocha --timeout 10000 -r ts-node-test-register -r tsconfig-paths/register \"src/test/**/*.spec.ts\" --exit",
-        "test": "mocha --reporter spec -r ts-node-test-register -r tsconfig-paths/register \"src/test/**/*.spec.ts\" --exit"
+        "test": "mocha --reporter spec -r ts-node-test-register -r tsconfig-paths/register \"src/test/**/*.spec.ts\" --exit",
+        "gen-uml": "tsuml2 --glob static/src/**/*.ts"
     },
     "repository": {
         "type": "git",
@@ -28,6 +29,7 @@
         "assert": "^2.0.0",
         "axios": "^0.25.0",
         "body-parser": "^1.19.1",
+        "chess.js": "^0.12.1",
         "cookie-parser": "^1.4.6",
         "eslint-config-airbnb-typescript": "^16.1.0",
         "express": "^4.17.2",
@@ -44,10 +46,12 @@
         "@types/assert": "^1.5.6",
         "@types/axios": "^0.14.0",
         "@types/body-parser": "^1.19.2",
+        "@types/chess.js": "^0.11.2",
         "@types/chessboardjs": "^0.3.2",
         "@types/cookie-parser": "^1.4.2",
         "@types/express": "^4.17.13",
         "@types/mocha": "^9.1.0",
+        "@types/node": "^17.0.21",
         "@types/pug": "^2.0.6",
         "@types/react": "^17.0.39",
         "@types/react-dom": "^17.0.11",
