@@ -14,6 +14,7 @@
         "coverage": "nyc --reporter=lcov --reporter=text-lcov mocha --timeout 10000 -r ts-node-test-register -r tsconfig-paths/register \"src/test/**/*.spec.ts\" --exit",
         "test": "mocha --reporter spec -r ts-node-test-register -r tsconfig-paths/register \"src/test/**/*.spec.ts\" --exit",
         "gen-uml": "tsuml2 --glob static/src/**/*.ts",
+        "lint": "eslint .",
         "document": "npm run document-server & npm run document-client",
         "document-server": "typedoc --tsconfig ./tsconfig.json --entryPointStrategy expand ./src/main --out ./docs/server",
         "document-client": "typedoc --tsconfig ./static/src/ts/tsconfig.json --entryPointStrategy expand ./static/src/ts --out ./docs/client"
