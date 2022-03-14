@@ -9,14 +9,20 @@ jobs:
         steps:
             - name: Checkout code
               uses: actions/checkout@main
-              
+
             - name: Setup Node
               uses: actions/setup-node@v1
               with:
-                node-version: '16.x'
-                
+                  node-version: '16.x'
+
             - name: Install Dependencies
               run: npm install
-              
+
             - name: ESLint
               run: npx eslint .
+
+            - name: Build Project
+              run: npm run build
+
+            - name: Run Mocha Unit Tests
+              run: npm run test

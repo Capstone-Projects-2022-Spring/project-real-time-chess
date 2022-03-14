@@ -1,8 +1,9 @@
 import * as React from 'react';
 import GameAccess from '../access/GameAccess';
+import { NoProps } from '../models/types';
 
-export default class ChatComponent extends React.Component<{}, { messages: IGameMessage[] }> {
-    constructor(props: {}) {
+export default class ChatComponent extends React.Component<NoProps, { messages: IGameMessage[] }> {
+    constructor(props: NoProps) {
         super(props);
         this.state = { messages: [] };
     }
