@@ -8,17 +8,32 @@ const games: ChessGame[] = [];
 
 gameRouter.post('/create', (req, res) => {
     const dao = new UserDAO();
-    dao.findOne({ _id: req.query.uid })
+    dao.findOne({ _id: req.cookies.uid })
         .then(user => {
-            console.log(user);
             const game = new ChessGame();
             game.black = user;
             games.push(game);
             res.send(new GameCreatedResponse(game.gameKey));
         })
-        .catch(err => {
-            console.log(err);
+        .catch(() => {
             res.send(new ErrorAPIResponse('Could not find user'));
+        });
+});
+
+gameRouter.post('/join', (req, res) => {
+    const dao = new UserDAO();
+    dao.findOne({ _id: req.cookies.uid })
+        .then(user => {
+            const game = games.find(game => game.gameKey === req.body.gameKey);
+            if (game) {
+                game.white = user;
+                res.send(new GameCreatedResponse(game.gameKey));
+            } else {
+                res.send(new ErrorAPIResponse('Could not find game'));
+            }
+        })
+        .catch(err => {
+            res.send(new ErrorAPIResponse(err));
         });
 });
 

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Swal from 'sweetalert2';
-import SupportedEmojis from '../../../../types/SupportedEmojis';
+import SupportedEmojis from '../../../../src/types/SupportedEmojis';
 import GameAccess from '../access/GameAccess';
 import ButtonComponent from './ButtonComponent';
 import EmojiKeyboard from './EmojiKeyboard';
