@@ -1,5 +1,5 @@
 {
-    "include": ["./src"],
+    "include": ["./src", "src/types"],
     "exclude": ["./static", "node_modules", "dist"],
     "compilerOptions": {
         "target": "ES2017",
@@ -25,10 +25,10 @@
         "moduleResolution": "node",
         "baseUrl": "./",
         "paths": {},
-        "rootDirs": [],
-        "typeRoots": [],
+        "typeRoots": ["src/types"],
         "types": ["mocha"],
         "sourceRoot": "./src",
-        "mapRoot": "./dist"
+        "mapRoot": "./dist",
+        "composite": true
     }
 }

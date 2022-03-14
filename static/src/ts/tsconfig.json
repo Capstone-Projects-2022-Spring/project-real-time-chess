@@ -1,8 +1,8 @@
 {
-    "include": ["./"],
+    "include": ["./", "../../../src/types"],
     "exclude": [],
     "compilerOptions": {
-        "rootDir": "./",
+        "rootDir": "../../../",
         "outDir": "../../public/js",
         "noImplicitAny": true,
         "module": "es6",
@@ -22,10 +22,10 @@
         "noImplicitReturns": true /* Report error when not all code paths in function return a value. */,
         "noFallthroughCasesInSwitch": true /* Report errors for fallthrough cases in switch statement. */,
         "paths": {} /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */,
-        "rootDirs": [] /* List of root folders whose combined content represents the structure of the project at runtime. */,
-        "typeRoots": [] /* List of folders to include type definitions from. */,
+        "typeRoots": ["../../../src/types"] /* List of folders to include type definitions from. */,
         "types": [] /* Type declaration files to be included in compilation. */,
         "sourceMap": true /* Generates corresponding '.map' file. */,
-        "noUncheckedIndexedAccess": true
+        "noUncheckedIndexedAccess": true,
+        "composite": true
     }
 }

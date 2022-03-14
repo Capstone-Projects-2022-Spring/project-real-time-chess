@@ -6,13 +6,14 @@
     height: 100%;
     z-index: 0;
     pointer-events: none;
-    display: flex;
+    display: none;
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
 }
 
 #react-overlay-target.active {
+    display: flex;
     -webkit-backdrop-filter: blur(5rem);
     backdrop-filter: blur(5rem);
     z-index: 1000;
