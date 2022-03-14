@@ -27,6 +27,8 @@ module.exports = {
         'no-plusplus': 'off',
         'class-methods-use-this': 'off',
         'no-underscore-dangle': 'off',
+        'object-curly-newline': 'off',
+        '@typescript-eslint/brace-style': 'off',
     },
     parserOptions: {
         project: ['./tsconfig.json', './static/src/ts/tsconfig.json'],
