@@ -35,7 +35,7 @@ export default class BoardScreen extends React.Component<BoardScreenProps, Board
                 <div className="row">
                     <div className="col">
                         <h1 style={{ textAlign: 'center' }}>Chessboard</h1>
-                        <ChessboardComponent />
+                        <ChessboardComponent orientation="w" />
                     </div>
                 </div>
             </div>

@@ -20,7 +20,7 @@ export default class GameAccess {
         });
     }
 
-    static async move(source: Square, target: Square) {
+    static async move(source: Square, target: Square): Promise<APIResponse> {
         return new Promise((resolve, reject) => {
             axios
                 .post('/api/game/move', { source, target })

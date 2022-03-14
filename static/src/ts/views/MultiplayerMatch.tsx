@@ -2,7 +2,7 @@ import * as React from 'react';
 import ChatComponent from '../components/ChatComponent';
 import ChessboardComponent from '../components/ChessboardComponent';
 
-export default class MultiplayerMtch extends React.Component {
+export default class MultiplayerMatch extends React.Component<{ orientation: 'b' | 'w' }> {
     render() {
         return (
             <div className="container">
@@ -15,7 +15,7 @@ export default class MultiplayerMtch extends React.Component {
                 <div className="row">
                     <div className="col"></div>
                     <div className="col-6">
-                        <ChessboardComponent />
+                        <ChessboardComponent orientation={this.props.orientation} />
                     </div>
                     <div className="col-2">
                         <ChatComponent />
