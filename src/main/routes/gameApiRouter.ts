@@ -3,6 +3,7 @@ import { ObjectId } from 'mongodb';
 import { ErrorAPIResponse, GameCreatedResponse, GameMessagesResponse } from '../APIResponse';
 import ChessGame from '../ChessGame';
 import UserDAO from '../dao/UserDAO';
+import ArrayUtils from '../utils/ArrayUtils';
 
 const gameRouter = express.Router();
 const games: ChessGame[] = [];
@@ -33,7 +34,9 @@ gameRouter.post('/join', (req, res) => {
     const dao = new UserDAO();
     dao.findOne({ _id: new ObjectId(req.cookies.uid) })
         .then(user => {
-            const game = games.find(game => game.gameKey === req.body.gameKey);
+            const game = games.find(game =>
+                ArrayUtils.strictCompare(game.gameKey, req.body.gameKey),
+            );
             if (game) {
                 game.white = user;
                 game.addMessage({ message: `${user.name.first} joined the game.` });
@@ -42,8 +45,8 @@ gameRouter.post('/join', (req, res) => {
                 res.send(new ErrorAPIResponse('Could not find game'));
             }
         })
-        .catch(err => {
-            res.send(new ErrorAPIResponse(err));
+        .catch(() => {
+            res.send(new ErrorAPIResponse('Unknown Database Error'));
         });
 });
 
@@ -71,10 +74,7 @@ gameRouter.post('/move', (req, res) => {
 
 gameRouter.get('/messages', (req, res) => {
     const uid = new ObjectId(req.cookies.uid);
-    console.log('UID', uid);
-    console.log('GAMES', games);
     const game = games.find(game => game.black?._id?.equals(uid) || game.white?._id?.equals(uid));
-    console.log('GAME', game);
     if (game) {
         res.send(new GameMessagesResponse(game.getMessages()));
     } else {
