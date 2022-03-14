@@ -8,10 +8,10 @@ declare interface APIResponse {
     error?: Error;
 }
 
-declare interface IGameCreatedResponse extends APIResponse {
+declare interface IGameCreatedAPIResponse extends APIResponse {
     gameKey: string[];
 }
 
-declare interface IGameMessagesResponse extends APIResponse {
+declare interface IGameMessagesAPIResponse extends APIResponse {
     messages: IGameMessage[];
 }
