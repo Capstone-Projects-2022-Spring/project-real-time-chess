@@ -1,7 +1,9 @@
 import * as React from 'react';
 import Swal from 'sweetalert2';
 import GameAccess from '../access/GameAccess';
+import UINavigator from '../models/UINavigator';
 import SupportedEmojis from '../SupportedEmojis';
+import MultiplayerMatch from '../views/MultiplayerMatch';
 import ButtonComponent from './ButtonComponent';
 import EmojiKeyboard from './EmojiKeyboard';
 
@@ -61,6 +63,9 @@ export default class FriendGameSetupComponent extends React.Component<{}, { game
                         <div style="font-size: 2.5rem">
                             ${FriendGameSetupComponent.emojiNameListToEmoji(response.gameKey)}
                         </div>`,
+                        didClose: () => {
+                            UINavigator.render(<MultiplayerMatch />);
+                        },
                     });
                 else
                     Swal.fire({

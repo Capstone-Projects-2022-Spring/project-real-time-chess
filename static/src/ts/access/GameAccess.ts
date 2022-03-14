@@ -18,4 +18,19 @@ export default class GameAccess {
                 .catch(err => reject(err));
         });
     }
+
+    static async getMessages(): Promise<IGameMessage[]> {
+        return new Promise((resolve, reject) => {
+            axios
+                .get('/api/game/messages')
+                .then(response => {
+                    if (response.data.success) {
+                        resolve(response.data.messages);
+                    } else {
+                        reject(response.data.error);
+                    }
+                })
+                .catch(err => reject(err));
+        });
+    }
 }

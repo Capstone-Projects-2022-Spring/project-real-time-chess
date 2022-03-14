@@ -1,6 +1,6 @@
-import SupportedEmojis from './SupportedEmojis';
 import ChessBoard from './ChessBoard';
 import { IUser } from './dao/UserDAO';
+import SupportedEmojis from './SupportedEmojis';
 
 export default class ChessGame {
     gameKey: string[];
@@ -8,11 +8,17 @@ export default class ChessGame {
     private _black?: IUser;
     private _white?: IUser;
     private turn: 'b' | 'w';
+    private messages: IGameMessage[];
 
     constructor() {
         this.game = new ChessBoard();
         this.turn = 'w';
         this.gameKey = ChessGame.generateGameKey();
+        this.messages = [];
+    }
+
+    public addMessage(message: IGameMessage) {
+        this.messages.push(message);
     }
 
     public set black(user: IUser | undefined) {

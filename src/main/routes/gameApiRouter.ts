@@ -13,6 +13,9 @@ gameRouter.post('/create', (req, res) => {
             const game = new ChessGame();
             game.black = user;
             games.push(game);
+            game.addMessage({
+                message: `${user.username} created the game.`,
+            });
             res.send(new GameCreatedResponse(game.gameKey));
         })
         .catch(() => {
@@ -27,6 +30,7 @@ gameRouter.post('/join', (req, res) => {
             const game = games.find(game => game.gameKey === req.body.gameKey);
             if (game) {
                 game.white = user;
+                game.addMessage({ message: `${user.username} joined the game.` });
                 res.send(new GameCreatedResponse(game.gameKey));
             } else {
                 res.send(new ErrorAPIResponse('Could not find game'));
