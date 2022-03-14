@@ -1,6 +1,6 @@
 import * as React from 'react';
 // import ButtonComponent from '../components/ButtonComponent';
-import ChessboardComponent from '../components/ChessboardComponent';
+import ChessboardComponent from '../components/AIvAIBoard';
 // import { NoProps } from '../models/types';
 
 /**
@@ -36,6 +36,9 @@ export interface BoardScreenState {
                 <div className="row">
                     <div className="col">
                         <h1 style={{ textAlign: 'center' }}>Chessboard</h1>
+                        if (this.state.mode === 'AIvAI'){
+                            <AIvAIBoard background= 'white'/>
+                        }
                         <ChessboardComponent background='white' position={'start'} mode={this.state.mode}/>
                     </div>
                 </div>

@@ -4,23 +4,23 @@ import { Chess } from 'chess.ts';
 import ButtonComponent from './ButtonComponent';
 const chess = new Chess()
 
-interface ChessboardComponentProps {
+interface YouvAIProps {
     background: string;
     position: string;
     mode: string;
 }
 
-interface ChessboardComponentState {
+interface YouvAIState {
     background: string;
     position: string;
     mode: string;
 }
 
-export default class ChessboardComponent extends React.Component<
-    ChessboardComponentProps,
-    ChessboardComponentState
+export default class YouvAI extends React.Component<
+    YouvAIProps,
+    YouvAIState
 > {
-    constructor(props: ChessboardComponentProps) {
+    constructor(props: YouvAIProps) {
         super(props);
         this.state = {
             background: props.background,
@@ -29,25 +29,18 @@ export default class ChessboardComponent extends React.Component<
         };
     }
 
-    AIplay() {
-        if (!chess.gameOver()) {
-            const moves = chess.moves()
-            const move: string = moves[Math.floor(Math.random() * moves.length)]!
-            console.log(chess.move(move))
-            console.log(chess.fen())
-            this.setState({
-                position: chess.fen()
-            })
-        }
-    }
-
     YouvAIplay(){
         while(!chess.gameOver()){
+
             //let the player make a move
             //determine when the piece is dropped
             //update the fen string
             //call AIResponse
         }
+    }
+
+    userMove(sourceSquare, targetSquare){
+        
     }
 
     AIResponse(): void {
@@ -66,22 +59,18 @@ export default class ChessboardComponent extends React.Component<
         return (
             <div>
                 {<Chessboard
-                    //arePiecesDraggable={true}
                     //figure out how to make oNLY the players pieces draggable
                     //consider assigning hte player a random color
                     //^if you do that, change board orientation
                     //could highlight all possible move positions onPieceClick
                     //onPieceClick{()=>//callsomemethod}
-                    //onPieceDrop => update fen string
-                    arePiecesDraggable={false}
+                    onPieceDrop={this.YouvAIplay}
+                    arePiecesDraggable={true}
                     animationDuration={200}
                     position={this.state.position}
                 /> }
-                <ButtonComponent label='Make A Move' onClick={()=>{
-                    if (this.state.mode === 'AIvAI')
-                        this.AIplay()
-                    //if(this.state.mode === 'YouvAI')
-                    //  this.YouvAIplay()
+                <ButtonComponent label='Start Game' onClick={()=>{
+                    this.YouvAIplay()
                 }}/>
             </div>
           );
