@@ -9,4 +9,13 @@ export default class GameAccess {
                 .catch(err => reject(err));
         });
     }
+
+    static async joinGame(gameKey: string[]): Promise<APIResponse> {
+        return new Promise((resolve, reject) => {
+            axios
+                .post('/api/game/join', { gameKey })
+                .then(response => resolve(response.data))
+                .catch(err => reject(err));
+        });
+    }
 }

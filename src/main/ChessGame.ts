@@ -1,4 +1,4 @@
-import SupportedEmojis from 'src/types/SupportedEmojis';
+import SupportedEmojis from './SupportedEmojis';
 import ChessBoard from './ChessBoard';
 import { IUser } from './dao/UserDAO';
 

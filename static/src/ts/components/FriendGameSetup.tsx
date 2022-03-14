@@ -1,11 +1,18 @@
 import * as React from 'react';
 import Swal from 'sweetalert2';
-import SupportedEmojis from '../../../../src/types/SupportedEmojis';
 import GameAccess from '../access/GameAccess';
+import SupportedEmojis from '../SupportedEmojis';
 import ButtonComponent from './ButtonComponent';
 import EmojiKeyboard from './EmojiKeyboard';
 
-export default class FriendGameSetupComponent extends React.Component {
+export default class FriendGameSetupComponent extends React.Component<{}, { gameKey: string[] }> {
+    constructor(props: {}) {
+        super(props);
+        this.state = {
+            gameKey: [],
+        };
+    }
+
     render() {
         return (
             <div className="container">
@@ -25,8 +32,19 @@ export default class FriendGameSetupComponent extends React.Component {
                     <div className="col-12 col-md-6">
                         <h2>Join Game</h2>
                         <p>Get the game code from whoever created the game.</p>
-                        <EmojiKeyboard />
-                        <ButtonComponent label="Join Game" onClick={() => undefined} />
+                        <EmojiKeyboard
+                            onChange={value => {
+                                this.setState({
+                                    gameKey: value.map(({ emoji }) => emoji),
+                                });
+                            }}
+                        />
+                        <ButtonComponent
+                            label="Join Game"
+                            onClick={() => {
+                                GameAccess.joinGame(this.state.gameKey);
+                            }}
+                        />
                     </div>
                 </div>
             </div>
