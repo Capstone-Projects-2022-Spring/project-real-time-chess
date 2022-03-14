@@ -57,8 +57,34 @@ gameRouter.post('/move', (req, res) => {
             if (authorized) {
                 const game = games.find(game => game.black?._id?.equals(req.cookies.uid));
                 if (game) {
-                    game.move(req.body.from, req.body.to);
-                    res.send({ success: true });
+                    const { source, target } = req.body;
+                    const move = game.move(source, target);
+                    if (move) {
+                        res.send({ success: true, move });
+                    } else {
+                        res.send(new ErrorAPIResponse('Invalid move'));
+                    }
+                } else {
+                    res.send({
+                        success: false,
+                        error: new Error('No game with user ' + req.cookies.cookie),
+                    });
+                }
+            } else res.send({ success: false, error: new Error('Invalid User') });
+        })
+        .catch(err => {
+            res.send({ success: false, error: err });
+        });
+});
+
+gameRouter.get('/fen', (req, res) => {
+    const dao = new UserDAO();
+    dao.authenticateKey(new ObjectId(req.cookies.uid), req.cookies.auth)
+        .then(authorized => {
+            if (authorized) {
+                const game = games.find(game => game.black?._id?.equals(req.cookies.uid));
+                if (game) {
+                    res.send({ success: true, fen: game.fen });
                 } else {
                     res.send({
                         success: false,
