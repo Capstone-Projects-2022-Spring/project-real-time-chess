@@ -26,7 +26,6 @@ interface GameLobby {
  * all incoming routes, along with distributing the workload of all incoming
  * API requests and WebSocket events.
  *
- * @export
  * @class RTCServer
  */
 export default class RTCServer {

@@ -1,7 +1,6 @@
 /**
  * The base class for all API responses.
  *
- * @export
  * @abstract
  * @class BaseAPIResponse
  * @implements {APIResponse}
@@ -27,7 +26,6 @@ export abstract class BaseAPIResponse implements APIResponse {
 /**
  * The API response when an error occurs on the server.
  *
- * @export
  * @class ErrorAPIResponse
  * @extends {BaseAPIResponse}
  */

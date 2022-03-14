@@ -1,10 +1,7 @@
 import * as React from 'react';
-// import { Chessboard } from 'react-chessboard';
 import Swal from 'sweetalert2';
 import ButtonComponent from '../components/ButtonComponent';
 import FriendGameSetupComponent from '../components/FriendGameSetup';
-// import ChessboardComponent from '../components/ChessboardComponent';
-// import Popup from '../components/Popup';
 import { NoProps } from '../models/types';
 import UINavigator from '../models/UINavigator';
 import BoardScreen from './BoardScreen';
@@ -12,7 +9,6 @@ import BoardScreen from './BoardScreen';
 /**
  * Gameplay options page which allows a user to choose which game mode they want to play.
  *
- * @export
  * @class GameplayOptions
  * @extends {React.Component<NoProps, NoState>}
  */

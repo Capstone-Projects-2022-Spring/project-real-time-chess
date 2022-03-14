@@ -4,7 +4,6 @@ import { NoState } from '../models/types';
 /**
  * Interface for the properties of the ButtonComponent.
  *
- * @export
  * @interface ButtonComponentProps
  */
 export interface ButtonComponentProps {
@@ -17,7 +16,6 @@ export interface ButtonComponentProps {
 /**
  * A react button component which allows for simple text and click functionality.
  *
- * @export
  * @class ButtonComponent
  * @extends {React.Component<ButtonComponentProps, NoState>}
  */

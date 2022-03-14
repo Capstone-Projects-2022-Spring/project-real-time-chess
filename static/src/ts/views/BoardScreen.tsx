@@ -5,7 +5,6 @@ import ChessboardComponent from '../components/ChessboardComponent';
 /**
  * Gameplay options page which allows a user to choose which game mode they want to play.
  *
- * @export
  * @class BoardScreen
  * @extends {React.Component<BoardScreenProps, BoardScreenState>}
  */

@@ -4,7 +4,6 @@ import { AuthInfo } from './dao/UserDAO';
 /**
  * The API response when a successful request is made to log a user in.
  *
- * @export
  * @class LoginAPIResponse
  * @extends {BaseAPIResponse}
  */

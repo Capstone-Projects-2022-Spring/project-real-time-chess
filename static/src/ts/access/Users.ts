@@ -6,7 +6,6 @@ import SignUpModel from '../models/SignUpModel';
  * A utility class which allows the client to interact
  * with the Users API.
  *
- * @export
  * @class Users
  */
 export default class Users {
