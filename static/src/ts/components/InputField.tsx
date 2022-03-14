@@ -49,7 +49,6 @@ export default abstract class InputField extends React.Component<InputFieldProps
         try {
             this.setState({ isValid: this.validate() ? 'v' : 'ic' });
         } catch (e) {
-            console.error(e);
             this.setState({ isValid: 'iv' });
         }
         this.props.onChange(event);

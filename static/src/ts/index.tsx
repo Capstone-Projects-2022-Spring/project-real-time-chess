@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import Swal from 'sweetalert2';
 import Users from './access/Users';
 import GameplayOptions from './views/GameplayOptions';
 import UINavigator from './models/UINavigator';
@@ -12,7 +13,11 @@ if (Users.hasCert()) {
         .then(() => {
             UINavigator.render(<GameplayOptions />);
         })
-        .catch(err => {
-            console.log(err);
+        .catch(() => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Account Error',
+                text: 'It seems like you are not logged in. Please try logging in again',
+            });
         });
 }

@@ -45,21 +45,3 @@ export class ErrorAPIResponse extends BaseAPIResponse {
         super(false, typeof error === 'string' ? new Error(error) : error);
     }
 }
-
-export class GameCreatedResponse extends BaseAPIResponse implements IGameCreatedResponse {
-    gameKey: string[];
-
-    constructor(gameKey: string[]) {
-        super(true);
-        this.gameKey = gameKey;
-    }
-}
-
-export class GameMessagesResponse extends BaseAPIResponse implements IGameMessagesResponse {
-    messages: IGameMessage[];
-
-    constructor(messages: IGameMessage[]) {
-        super(true);
-        this.messages = messages;
-    }
-}

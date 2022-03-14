@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Square } from 'chess.js';
 
 export default class GameAccess {
-    static async createGame(): Promise<IGameCreatedResponse> {
+    static async createGame(): Promise<IGameCreatedAPIResponse> {
         return new Promise((resolve, reject) => {
             axios
                 .post('/api/game/create')

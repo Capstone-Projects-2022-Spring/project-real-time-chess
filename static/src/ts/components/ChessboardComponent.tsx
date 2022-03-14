@@ -22,7 +22,6 @@ export default class ChessboardComponent extends React.Component<
     }
 
     syncBoard() {
-        console.log('Syncing board');
         GameAccess.getFEN()
             .then(fen => {
                 this.setState({
@@ -30,8 +29,12 @@ export default class ChessboardComponent extends React.Component<
                 });
                 this.stopAutoSync();
             })
-            .catch(err => {
-                console.log(err);
+            .catch(() => {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Game Error',
+                    text: 'It seems like the server is not sending the chess board. The issue should resolve itself.',
+                });
             });
     }
 
@@ -76,14 +79,13 @@ export default class ChessboardComponent extends React.Component<
                                     });
                                 });
                             return true;
-                        } else {
+                        }
                             Swal.fire({
                                 icon: 'warning',
                                 title: 'Invalid move',
                                 text: 'Please try again',
                             });
                             return false;
-                        }
                     }}
                 />
             </div>
@@ -92,6 +94,6 @@ export default class ChessboardComponent extends React.Component<
 
     private tryMove(source: string, target: string): boolean {
         const move = this.state.game.move(`${source}-${target}`, { sloppy: true });
-        return move === null ? false : true;
+        return move !== null;
     }
 }

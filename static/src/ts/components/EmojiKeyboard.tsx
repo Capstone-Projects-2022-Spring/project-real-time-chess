@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 export interface EmojiKeyboardState {
     value: EmojiSerializationRecord[];
 }
@@ -52,8 +53,9 @@ export default class EmojiKeyboard extends React.Component<EmojiKeyboardProps, E
                                         value: [...this.state.value, emojiRecord],
                                     },
                                     () => {
-                                        if (this.props.onChange)
+                                        if (this.props.onChange) {
                                             this.props.onChange(this.state.value);
+                                        }
                                     },
                                 );
                             }}
