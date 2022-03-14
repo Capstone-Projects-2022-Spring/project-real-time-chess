@@ -11,3 +11,7 @@ declare interface APIResponse {
 declare interface IGameCreatedResponse extends APIResponse {
     gameKey: string[];
 }
+
+declare interface IGameMessagesResponse extends APIResponse {
+    messages: IGameMessage[];
+}

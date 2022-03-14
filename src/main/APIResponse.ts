@@ -54,3 +54,12 @@ export class GameCreatedResponse extends BaseAPIResponse implements IGameCreated
         this.gameKey = gameKey;
     }
 }
+
+export class GameMessagesResponse extends BaseAPIResponse implements IGameMessagesResponse {
+    messages: IGameMessage[];
+
+    constructor(messages: IGameMessage[]) {
+        super(true);
+        this.messages = messages;
+    }
+}

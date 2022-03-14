@@ -13,15 +13,14 @@ export default class MultiplayerMtch extends React.Component {
                 </div>
 
                 <div className="row">
-                    <div className="col">
-                        <div className="col-6">
-                            <ChessboardComponent />
-                        </div>
-                        <div className="col-2 bg-dark">
-                            <ChatComponent />
-                        </div>
-                        <div className="col"></div>
+                    <div className="col"></div>
+                    <div className="col-6">
+                        <ChessboardComponent />
                     </div>
+                    <div className="col-2">
+                        <ChatComponent />
+                    </div>
+                    <div className="col"></div>
                 </div>
             </div>
         );

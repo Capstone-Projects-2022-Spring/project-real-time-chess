@@ -21,6 +21,10 @@ export default class ChessGame {
         this.messages.push(message);
     }
 
+    public getMessages(): IGameMessage[] {
+        return this.messages;
+    }
+
     public set black(user: IUser | undefined) {
         this._black = user;
     }

@@ -14,7 +14,15 @@ export default class ChatComponent extends React.Component<{}, { messages: IGame
 
     render() {
         return (
-            <div style={{ width: '100%', height: '100%' }}>
+            <div
+                style={{
+                    width: '100%',
+                    height: '100%',
+                    background: 'rgb(240, 240, 240)',
+                    borderRadius: '1rem',
+                    padding: '1rem',
+                }}
+            >
                 {...this.state.messages.map(message => <div>{message.message}</div>)}
             </div>
         );
