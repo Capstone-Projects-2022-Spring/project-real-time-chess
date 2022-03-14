@@ -8,6 +8,12 @@ module.exports = {
                 use: 'ts-loader',
                 exclude: /node_modules/,
             },
+            {
+                test: /chess.js/,
+                parser: {
+                    amd: false,
+                },
+            },
         ],
     },
     resolve: {

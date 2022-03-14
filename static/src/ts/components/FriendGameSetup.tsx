@@ -1,14 +1,18 @@
 import * as React from 'react';
 import Swal from 'sweetalert2';
 import GameAccess from '../access/GameAccess';
+import { NoProps } from '../models/types';
 import UINavigator from '../models/UINavigator';
 import SupportedEmojis from '../SupportedEmojis';
 import MultiplayerMatch from '../views/MultiplayerMatch';
 import ButtonComponent from './ButtonComponent';
 import EmojiKeyboard from './EmojiKeyboard';
 
-export default class FriendGameSetupComponent extends React.Component<{}, { gameKey: string[] }> {
-    constructor(props: {}) {
+export default class FriendGameSetupComponent extends React.Component<
+    NoProps,
+    { gameKey: string[] }
+> {
+    constructor(props: NoProps) {
         super(props);
         this.state = {
             gameKey: [],
@@ -47,7 +51,9 @@ export default class FriendGameSetupComponent extends React.Component<{}, { game
                                 GameAccess.joinGame(this.state.gameKey)
                                     .then(response => {
                                         if (response.success) {
-                                            UINavigator.render(<MultiplayerMatch />);
+                                            UINavigator.render(
+                                                <MultiplayerMatch orientation="w" />,
+                                            );
                                         } else {
                                             Swal.fire({
                                                 icon: 'error',
@@ -74,7 +80,7 @@ export default class FriendGameSetupComponent extends React.Component<{}, { game
     static createGame() {
         GameAccess.createGame()
             .then(response => {
-                if (response.success)
+                if (response.success) {
                     Swal.fire({
                         title: 'Game Created',
                         html: `Share this game code with your friend:
@@ -82,14 +88,15 @@ export default class FriendGameSetupComponent extends React.Component<{}, { game
                             ${FriendGameSetupComponent.emojiNameListToEmoji(response.gameKey)}
                         </div>`,
                         didClose: () => {
-                            UINavigator.render(<MultiplayerMatch />);
+                            UINavigator.render(<MultiplayerMatch orientation="b" />);
                         },
                     });
-                else
+                } else {
                     Swal.fire({
                         title: 'Error',
                         text: response.error!.message,
                     });
+                }
             })
             .catch(error => {
                 Swal.fire({

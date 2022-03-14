@@ -1,18 +1,20 @@
-import ChessBoard from './ChessBoard';
+import { Chess, ChessInstance, Move, Square } from 'chess.js';
 import { IUser } from './dao/UserDAO';
 import SupportedEmojis from './SupportedEmojis';
 
 export default class ChessGame {
     gameKey: string[];
-    private game: ChessBoard;
+
+    private game: ChessInstance;
+
     private _black?: IUser;
+
     private _white?: IUser;
-    private turn: 'b' | 'w';
+
     private messages: IGameMessage[];
 
     constructor() {
-        this.game = new ChessBoard();
-        this.turn = 'w';
+        this.game = new Chess();
         this.gameKey = ChessGame.generateGameKey();
         this.messages = [];
     }
@@ -29,27 +31,31 @@ export default class ChessGame {
         this._black = user;
     }
 
-    public set white(user: IUser | undefined) {
-        this._white = user;
-    }
-
     public get black(): IUser | undefined {
         return this._black;
+    }
+
+    public set white(user: IUser | undefined) {
+        this._white = user;
     }
 
     public get white(): IUser | undefined {
         return this._white;
     }
 
-    move(from: [number, number], to: [number, number]) {
-        this.game.move(from, to);
-        this.turn = this.turn === 'w' ? 'b' : 'w';
+    public get fen(): string {
+        return this.game.fen();
+    }
+
+    move(source: Square, target: Square): Move | null {
+        return this.game.move(`${source}-${target}`, { sloppy: true });
     }
 
     static generateGameKey(): string[] {
         const emojis: string[] = [];
-        for (let i = 0; i < 5; i++)
+        for (let i = 0; i < 5; i++) {
             emojis.push(SupportedEmojis[Math.floor(Math.random() * SupportedEmojis.length)]!.name);
+        }
         return emojis;
     }
 }
