@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Square } from 'chess.js';
 
 export default class GameAccess {
     static async createGame(): Promise<IGameCreatedResponse> {
@@ -19,6 +20,21 @@ export default class GameAccess {
         });
     }
 
+    static async move(source: Square, target: Square): Promise<APIResponse> {
+        return new Promise((resolve, reject) => {
+            axios
+                .post('/api/game/move', { source, target })
+                .then(response => {
+                    if (response.data.success) {
+                        resolve(response.data);
+                    } else {
+                        reject(response.data.error);
+                    }
+                })
+                .catch(err => reject(err));
+        });
+    }
+
     static async getMessages(): Promise<IGameMessage[]> {
         return new Promise((resolve, reject) => {
             axios
@@ -26,6 +42,21 @@ export default class GameAccess {
                 .then(response => {
                     if (response.data.success) {
                         resolve(response.data.messages);
+                    } else {
+                        reject(response.data.error);
+                    }
+                })
+                .catch(err => reject(err));
+        });
+    }
+
+    static async getFEN(): Promise<string> {
+        return new Promise((resolve, reject) => {
+            axios
+                .get('/api/game/fen')
+                .then(response => {
+                    if (response.data.success) {
+                        resolve(response.data.fen);
                     } else {
                         reject(response.data.error);
                     }

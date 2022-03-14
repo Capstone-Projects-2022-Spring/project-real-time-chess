@@ -26,6 +26,7 @@
         "types": [] /* Type declaration files to be included in compilation. */,
         "sourceMap": true /* Generates corresponding '.map' file. */,
         "noUncheckedIndexedAccess": true,
-        "composite": true
+        "composite": true,
+        "allowSyntheticDefaultImports": true
     }
 }
