@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Chessboard } from 'react-chessboard';
 import { Chess } from 'chess.ts';
 import ButtonComponent from './ButtonComponent';
+import ChessBoard from "../../../../src/main/ChessBoard";
 const chess = new Chess()
 
 interface YouvAIProps {
@@ -57,8 +58,9 @@ export default class YouvAI extends React.Component<
         }
     }
 
-    userMove(sourceSquare: string, targetSquare: string): boolean{
+    userMove(sourceSquare: Chessboard., targetSquare): boolean{
         //attempt to make the move, update the position FEN string if move is valid and return true
+
         return false
     }
 
@@ -84,6 +86,7 @@ export default class YouvAI extends React.Component<
                     //could highlight all possible move positions onPieceClick
                     //onPieceClick{()=>//callsomemethod}
                     onPieceDrop={this.userMove}
+                    onSquareClick={}
                     arePiecesDraggable={true}
                     animationDuration={200}
                     position={this.state.position}
