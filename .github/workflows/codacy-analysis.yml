@@ -18,42 +18,5 @@ jobs:
             - name: Run Codacy Analysis CLI
               uses: codacy/codacy-analysis-cli-action@master
               
-            - name: Codacy Analysis CLI
-              # You may pin to the exact commit or the version.
-              # uses: codacy/codacy-analysis-cli-action@f38648320929161d81646834fbee4d75f6502aea
-              uses: codacy/codacy-analysis-cli-action@4.0.2
-              with:
-                # API project token to retrieve your remote Codacy configuration for the project being analyzed
-                project-token: ${{ secrets.GITHUB_TOKEN }}
-                # The directory to be analyzed
-                directory: ./         
-                # Maximum number of issues allowed for the analysis to succeed
-#                 max-allowed-issues: # optional, default is 2147483647
-                # The name of the tool to analyze the code
-#                 tool: # optional
-                # Maximum time each tool has to execute
-#                 tool-timeout: # optional
-                # Upload analysis results to Codacy
-#                 upload: # optional
-                # Maximum number of results in each batch to upload to Codacy
-#                 upload-batch-size: # optional
-                # Fail the analysis if any tool fails to run
-#                 fail-if-incomplete: # optional
-                # Allow network access for tools
-#                 allow-network: # optional
-                # Force files to be readable by changing the permissions before running the analysis
-#                 force-file-permissions: # optional
-                # Reduce issue severity by one level, for non-security issues, for compatibility with GitHub's code scanning feature. This option will only have an effect when used in conjunction with '--format sarif'.
-#                 gh-code-scanning-compat: # optional
-                # Run dockerized tools. Possible values (true|false) Check the full list in https://docs.codacy.com/repositories-configure/codacy-configuration-file/#which-tools-can-be-configured-and-which-name-should-i-use
-#                 run-docker-tools: # optional, default is true
-                # Run GoSec. Possible values (true|false)
-#                 run-gosec: # optional
-                # Run StaticCheck. Possible values (true|false)
-#                 run-staticcheck: # optional
-                # Path to a file containing the output of Clang Tidy.
-#                 clang-tidy-output: # optional
-                # Path to a file containing the output of Faux Pas.
-#                 faux-pas-output: # optional
-                # Skip validation on uncommitted changes
-#                 skip-uncommitted-files-check: # optional
+            - name: ESLint
+              run: npx eslint .
