@@ -47,7 +47,9 @@ export default class FriendGameSetupComponent extends React.Component<{}, { game
                                 GameAccess.joinGame(this.state.gameKey)
                                     .then(response => {
                                         if (response.success) {
-                                            UINavigator.render(<MultiplayerMatch />);
+                                            UINavigator.render(
+                                                <MultiplayerMatch orientation="w" />,
+                                            );
                                         } else {
                                             Swal.fire({
                                                 icon: 'error',
@@ -82,7 +84,7 @@ export default class FriendGameSetupComponent extends React.Component<{}, { game
                             ${FriendGameSetupComponent.emojiNameListToEmoji(response.gameKey)}
                         </div>`,
                         didClose: () => {
-                            UINavigator.render(<MultiplayerMatch />);
+                            UINavigator.render(<MultiplayerMatch orientation="b" />);
                         },
                     });
                 else
