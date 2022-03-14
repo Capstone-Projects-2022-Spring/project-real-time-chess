@@ -1,0 +1,38 @@
+.emoji-keyboard {
+    background: white;
+    border-radius: 1rem;
+    padding: 1rem;
+    max-width: 20rem;
+    width: 100%;
+    border: 2px solid rgba(0, 0, 0, 0.05);
+
+    .emoji-keyboard-value {
+        width: 100%;
+        background: rgba(0, 0, 0, 0.05);
+        padding: 0.5rem;
+        border-radius: 0.25rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .emoji-keys {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+
+        .emoji-keyboard-button {
+            padding: 0.5rem;
+            font-size: 2rem;
+            border-radius: 0.5rem;
+            background: white;
+            border: 2px solid rgba(0, 0, 0, 0.05);
+            margin-bottom: 0.5rem;
+        }
+
+        .emoji-keyboard-button:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+    }
+}

@@ -1,0 +1,21 @@
+@import 'Variables';
+
+button.button-component {
+    background-image: $primary-gradient;
+    border: none;
+    padding: $border-width;
+    box-sizing: border;
+
+    div {
+        background: white;
+        height: 100%;
+        width: 100%;
+        padding: $standard-padding;
+        box-sizing: border;
+        transition: 0.1s background;
+    }
+
+    div:hover {
+        background: none;
+    }
+}

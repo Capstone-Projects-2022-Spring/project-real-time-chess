@@ -1,0 +1,18 @@
+@import 'Variables';
+
+.alert {
+    border: none;
+    padding: $border-width;
+    border-radius: 0;
+    border-radius: $standard-padding;
+
+    div {
+        background: rgba(255, 255, 255, 0.9);
+        padding: $standard-padding;
+        border-radius: $standard-padding - $border-width;
+    }
+}
+
+.alert.alert-primary {
+    background: $primary-gradient;
+}

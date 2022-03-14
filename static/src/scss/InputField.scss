@@ -1,0 +1,39 @@
+@import 'Variables';
+
+.input-field-component {
+    background-image: $primary-gradient;
+    min-height: 3rem;
+    font-size: 0.8rem;
+    padding: $border-width;
+    color: white;
+    font-weight: bold;
+
+    input {
+        width: 100%;
+        height: $input-height;
+        padding-left: $standard-padding;
+        padding-right: $standard-padding;
+        border: none;
+        outline: none;
+    }
+
+    button {
+        width: $input-height;
+        height: $input-height;
+        border: none;
+        background: none;
+    }
+
+    div {
+        padding-left: $standard-padding;
+        text-align: left;
+    }
+}
+
+.input-field-component[data-valid='v'] {
+    background-image: $success-gradient;
+}
+
+.input-field-component[data-valid='iv'] {
+    background-image: $danger-gradient;
+}

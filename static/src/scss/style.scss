@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+Antique:wght@300;400;500;700;900&display=swap');
+
+$default-font-family: 'Zen Kaku Gothic Antique', sans-serif;
+
+* {
+    font-family: $default-font-family;
+}
+
+body {
+    background: #fafafa;
+}
+
+@import 'InputField';
+@import 'TabbedComponent';
+@import 'ButtonComponent';
+@import 'BootStrapAlert';
+@import 'OverlayTarget';
+@import 'PopupComponent';
+@import 'EmojiKeyboard.scss';
+
+.light-shadow {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.game-mode-hover-img-container {
+    background: white;
+    border-radius: 2rem;
+    padding: 2rem;
+}
