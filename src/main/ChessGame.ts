@@ -1,6 +1,6 @@
 import ChessBoard from './ChessBoard';
 import { IUser } from './dao/UserDAO';
-import SupportedEmojis from './SupportedEmojis';
+import SupportedEmojis from '../../types/SupportedEmojis';
 
 export default class ChessGame {
     gameKey: string[];

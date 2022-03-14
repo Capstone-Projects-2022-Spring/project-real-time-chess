@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Swal from 'sweetalert2';
+import SupportedEmojis from '../../../../types/SupportedEmojis';
 import GameAccess from '../access/GameAccess';
 import ButtonComponent from './ButtonComponent';
 import EmojiKeyboard from './EmojiKeyboard';
@@ -17,27 +18,7 @@ export default class FriendGameSetupComponent extends React.Component {
                         </p>
                         <ButtonComponent
                             label="Create Game"
-                            onClick={() => {
-                                GameAccess.createGame()
-                                    .then(response => {
-                                        if (response.success)
-                                            Swal.fire({
-                                                title: 'Game Created',
-                                                text: `Share this game code with your friend: ${response.gameKey}`,
-                                            });
-                                        else
-                                            Swal.fire({
-                                                title: 'Error',
-                                                text: response.error!.message,
-                                            });
-                                    })
-                                    .catch(error => {
-                                        Swal.fire({
-                                            title: 'Error',
-                                            text: error.message,
-                                        });
-                                    });
-                            }}
+                            onClick={() => FriendGameSetupComponent.createGame()}
                         />
                     </div>
 
@@ -50,5 +31,38 @@ export default class FriendGameSetupComponent extends React.Component {
                 </div>
             </div>
         );
+    }
+
+    static createGame() {
+        GameAccess.createGame()
+            .then(response => {
+                if (response.success)
+                    Swal.fire({
+                        title: 'Game Created',
+                        html: `Share this game code with your friend:
+                        <div style="font-size: 2.5rem">
+                            ${FriendGameSetupComponent.emojiNameListToEmoji(response.gameKey)}
+                        </div>`,
+                    });
+                else
+                    Swal.fire({
+                        title: 'Error',
+                        text: response.error!.message,
+                    });
+            })
+            .catch(error => {
+                Swal.fire({
+                    title: 'Error',
+                    text: error.message,
+                });
+            });
+    }
+
+    static emojiNameToEmoji(name: string): string {
+        return SupportedEmojis.find(emojiRecord => emojiRecord.name === name)!.emoji as string;
+    }
+
+    static emojiNameListToEmoji(nameList: string[]): string {
+        return nameList.map(FriendGameSetupComponent.emojiNameToEmoji).join('');
     }
 }
