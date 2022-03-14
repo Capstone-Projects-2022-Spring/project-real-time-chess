@@ -1,22 +1,21 @@
 name: CI
 on: push
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Using NodeJS
-      uses: actions/setup-node@v2
-        with:
-          node-version: '16.x'
-    - name: Install modules
-      run: npm install
-    - name: Run ESLint
-      uses: ninosaurus/eslint-check@v5
-      with:
-        eslint-config-path: "./.eslintrc.js"
-        custom-directory: "./"
-        repo-token: ${{secrets.GITHUB_TOKEN}}
-    - name: Build Project
-      run: npm run build
-    
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - name: Using NodeJS
+              uses: actions/setup-node@v2
+              with:
+                  node-version: '16.x'
+            - name: Install modules
+              run: npm install
+            - name: Run ESLint
+              uses: ninosaurus/eslint-check@v5
+              with:
+                  eslint-config-path: './.eslintrc.js'
+                  custom-directory: './'
+                  repo-token: ${{secrets.GITHUB_TOKEN}}
+            - name: Build Project
+              run: npm run build
