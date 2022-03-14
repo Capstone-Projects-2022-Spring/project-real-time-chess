@@ -47,10 +47,15 @@ export default class EmojiKeyboard extends React.Component<EmojiKeyboardProps, E
                         <div
                             className="emoji-keyboard-button"
                             onClick={() => {
-                                this.setState({
-                                    value: [...this.state.value, emojiRecord],
-                                });
-                                if (this.props.onChange) this.props.onChange(this.state.value);
+                                this.setState(
+                                    {
+                                        value: [...this.state.value, emojiRecord],
+                                    },
+                                    () => {
+                                        if (this.props.onChange)
+                                            this.props.onChange(this.state.value);
+                                    },
+                                );
                             }}
                             key={emojiRecord.name}
                         >

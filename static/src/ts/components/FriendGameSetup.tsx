@@ -37,14 +37,32 @@ export default class FriendGameSetupComponent extends React.Component<{}, { game
                         <EmojiKeyboard
                             onChange={value => {
                                 this.setState({
-                                    gameKey: value.map(({ emoji }) => emoji),
+                                    gameKey: value.map(({ name }) => name),
                                 });
                             }}
                         />
                         <ButtonComponent
                             label="Join Game"
                             onClick={() => {
-                                GameAccess.joinGame(this.state.gameKey);
+                                GameAccess.joinGame(this.state.gameKey)
+                                    .then(response => {
+                                        if (response.success) {
+                                            UINavigator.render(<MultiplayerMatch />);
+                                        } else {
+                                            Swal.fire({
+                                                icon: 'error',
+                                                title: 'Error',
+                                                text: response.error!.message,
+                                            });
+                                        }
+                                    })
+                                    .catch(err => {
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Error',
+                                            text: err.message,
+                                        });
+                                    });
                             }}
                         />
                     </div>
