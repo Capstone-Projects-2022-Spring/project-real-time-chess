@@ -7,21 +7,21 @@ import EmailFieldComponent from './EmailFieldComponent';
 import NameFieldComponent from './NameFieldComponent';
 import PasswordFieldComponent from './PasswordFieldComponent';
 
-export interface SignUpTabProps {
+interface SignUpTabProps {
     fname: string;
     lname: string;
     email: string;
     password: string;
 }
 
-export interface SignUpTabState {
+interface SignUpTabState {
     fname: string;
     lname: string;
     email: string;
     password: string;
 }
 
-export default class SignUpTabComponent extends React.Component<SignUpTabProps, SignUpTabState> {
+class SignUpTabComponent extends React.Component<SignUpTabProps, SignUpTabState> {
     constructor(props: SignUpTabProps) {
         super(props);
         this.state = {
@@ -119,3 +119,6 @@ export default class SignUpTabComponent extends React.Component<SignUpTabProps, 
         );
     }
 }
+
+export default SignUpTabComponent;
+export { SignUpTabProps, SignUpTabState };

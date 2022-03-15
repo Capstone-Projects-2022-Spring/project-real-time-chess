@@ -1,7 +1,7 @@
 import InputFieldValidationError from '../errors/InputFieldValidationError';
 import TextFieldComponent from './TextFieldComponent';
 
-export default class EmailFieldComponent extends TextFieldComponent {
+class EmailFieldComponent extends TextFieldComponent {
     override validate() {
         if (this.state.value.indexOf(' ') >= 0) {
             throw new InputFieldValidationError('An email should not have any spaces in it');
@@ -13,3 +13,5 @@ export default class EmailFieldComponent extends TextFieldComponent {
         return true;
     }
 }
+
+export default EmailFieldComponent;

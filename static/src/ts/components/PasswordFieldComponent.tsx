@@ -1,7 +1,7 @@
 import InputFieldValidationError from '../errors/InputFieldValidationError';
 import InputField from './InputField';
 
-export default class PasswordFieldComponent extends InputField {
+class PasswordFieldComponent extends InputField {
     private static readonly allowedChars =
         "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!@#$%^&*()<>?;:'[]{}-=_+|";
 
@@ -47,3 +47,5 @@ export default class PasswordFieldComponent extends InputField {
         return true;
     }
 }
+
+export default PasswordFieldComponent;
