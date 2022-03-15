@@ -31,5 +31,8 @@
         "mapRoot": "./dist",
         "composite": true,
         "allowSyntheticDefaultImports": true
+    },
+    "ts-node": {
+        "files": true
     }
 }

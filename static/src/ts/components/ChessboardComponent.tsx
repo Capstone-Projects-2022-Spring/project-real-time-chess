@@ -4,7 +4,7 @@ import { Chessboard } from 'react-chessboard';
 import Swal from 'sweetalert2';
 import GameAccess from '../access/GameAccess';
 
-export default class ChessboardComponent extends React.Component<
+class ChessboardComponent extends React.Component<
     { orientation: 'b' | 'w' },
     {
         game: ChessInstance;
@@ -80,12 +80,12 @@ export default class ChessboardComponent extends React.Component<
                                 });
                             return true;
                         }
-                            Swal.fire({
-                                icon: 'warning',
-                                title: 'Invalid move',
-                                text: 'Please try again',
-                            });
-                            return false;
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Invalid move',
+                            text: 'Please try again',
+                        });
+                        return false;
                     }}
                 />
             </div>
@@ -97,3 +97,5 @@ export default class ChessboardComponent extends React.Component<
         return move !== null;
     }
 }
+
+export default ChessboardComponent;

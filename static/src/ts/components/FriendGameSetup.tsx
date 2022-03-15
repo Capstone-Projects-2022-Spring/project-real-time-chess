@@ -8,10 +8,7 @@ import MultiplayerMatch from '../views/MultiplayerMatch';
 import ButtonComponent from './ButtonComponent';
 import EmojiKeyboard from './EmojiKeyboard';
 
-export default class FriendGameSetupComponent extends React.Component<
-    NoProps,
-    { gameKey: string[] }
-> {
+class FriendGameSetupComponent extends React.Component<NoProps, { gameKey: string[] }> {
     constructor(props: NoProps) {
         super(props);
         this.state = {
@@ -114,3 +111,5 @@ export default class FriendGameSetupComponent extends React.Component<
         return nameList.map(FriendGameSetupComponent.emojiNameToEmoji).join('');
     }
 }
+
+export default FriendGameSetupComponent;

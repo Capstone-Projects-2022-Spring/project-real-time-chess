@@ -1,22 +1,15 @@
 /**
  * The base class for all API responses.
- *
- * @export
- * @abstract
- * @class BaseAPIResponse
- * @implements {APIResponse}
  */
-export abstract class BaseAPIResponse implements APIResponse {
+abstract class BaseAPIResponse implements APIResponse {
     success: boolean;
 
     error?: Error;
 
     /**
      * Creates an instance of BaseAPIResponse.
-     * @param {boolean} success Whether the desired task was successfully completed.
-     * @param {Error} [error] The error that occurred while trying to complete the request.
-     *
-     * @memberOf BaseAPIResponse
+     * @param success - Whether the desired task was successfully completed.
+     * @param error - The error that occurred while trying to complete the request.
      */
     constructor(success: boolean, error?: Error) {
         this.success = success;
@@ -26,22 +19,18 @@ export abstract class BaseAPIResponse implements APIResponse {
 
 /**
  * The API response when an error occurs on the server.
- *
- * @export
- * @class ErrorAPIResponse
- * @extends {BaseAPIResponse}
  */
-export class ErrorAPIResponse extends BaseAPIResponse {
+class ErrorAPIResponse extends BaseAPIResponse {
     /**
      * Creates an instance of ErrorAPIResponse.
-     * @param {(Error | string)} error The error that occurred.
+     * @param error - The error that occurred.
      * If a string is provided instead of an error object, then
      * the string will be used to create an error object with
      * the string as the specified error message.
-     *
-     * @memberOf ErrorAPIResponse
      */
     constructor(error: Error | string) {
         super(false, typeof error === 'string' ? new Error(error) : error);
     }
 }
+
+export { BaseAPIResponse, ErrorAPIResponse };

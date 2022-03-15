@@ -1,26 +1,17 @@
 import * as React from 'react';
 import ChessboardComponent from '../components/ChessboardComponent';
-// import { NoProps } from '../models/types';
 
-/**
- * Gameplay options page which allows a user to choose which game mode they want to play.
- *
- * @export
- * @class BoardScreen
- * @extends {React.Component<BoardScreenProps, BoardScreenState>}
- */
-
-export interface BoardScreenProps {
+interface BoardScreenProps {
     mode: string;
     username: string;
 }
 
-export interface BoardScreenState {
+interface BoardScreenState {
     mode: string;
     username: string;
 }
 
-export default class BoardScreen extends React.Component<BoardScreenProps, BoardScreenState> {
+class BoardScreen extends React.Component<BoardScreenProps, BoardScreenState> {
     constructor(props: BoardScreenProps) {
         super(props);
         this.state = {
@@ -42,3 +33,6 @@ export default class BoardScreen extends React.Component<BoardScreenProps, Board
         );
     }
 }
+
+export default BoardScreen;
+export { BoardScreenProps, BoardScreenState };

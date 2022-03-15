@@ -1,9 +1,6 @@
 import { BaseAPIResponse } from './APIResponse';
 
-export default class GameCreatedAPIResponse
-    extends BaseAPIResponse
-    implements IGameCreatedAPIResponse
-{
+class GameCreatedAPIResponse extends BaseAPIResponse implements IGameCreatedAPIResponse {
     gameKey: string[];
 
     constructor(gameKey: string[]) {
@@ -11,3 +8,5 @@ export default class GameCreatedAPIResponse
         this.gameKey = gameKey;
     }
 }
+
+export default GameCreatedAPIResponse;

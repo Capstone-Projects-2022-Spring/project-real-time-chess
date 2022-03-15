@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Square } from 'chess.js';
 
-export default class GameAccess {
+class GameAccess {
     static async createGame(): Promise<IGameCreatedAPIResponse> {
         return new Promise((resolve, reject) => {
             axios
@@ -65,3 +65,5 @@ export default class GameAccess {
         });
     }
 }
+
+export default GameAccess;

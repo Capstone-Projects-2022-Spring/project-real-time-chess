@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export interface TabbedComponentProps {
+interface TabbedComponentProps {
     tabs: {
         label: string;
         element: JSX.Element;
@@ -9,14 +9,11 @@ export interface TabbedComponentProps {
     className?: string;
 }
 
-export interface TabbedComponentState {
+interface TabbedComponentState {
     activeTab: number;
 }
 
-export default class TabbedComponent extends React.Component<
-    TabbedComponentProps,
-    TabbedComponentState
-> {
+class TabbedComponent extends React.Component<TabbedComponentProps, TabbedComponentState> {
     constructor(props: TabbedComponentProps) {
         super(props);
         this.state = {
@@ -46,3 +43,6 @@ export default class TabbedComponent extends React.Component<
         );
     }
 }
+
+export default TabbedComponent;
+export { TabbedComponentProps, TabbedComponentState };

@@ -1,4 +1,4 @@
-export default interface SignUpModel {
+interface SignUpModel {
     name: {
         first: string;
         last: string;
@@ -6,3 +6,5 @@ export default interface SignUpModel {
     email: string;
     password: string;
 }
+
+export default SignUpModel;

@@ -1,10 +1,10 @@
 import * as React from 'react';
 
-export interface EmojiKeyboardState {
+interface EmojiKeyboardState {
     value: EmojiSerializationRecord[];
 }
 
-export interface EmojiKeyboardProps {
+interface EmojiKeyboardProps {
     onChange?: (value: EmojiSerializationRecord[]) => void;
 }
 
@@ -27,7 +27,7 @@ const gameKeyEmojis: EmojiSerializationRecord[] = [
     { emoji: '🤓', name: 'nerd-face' },
 ];
 
-export default class EmojiKeyboard extends React.Component<EmojiKeyboardProps, EmojiKeyboardState> {
+class EmojiKeyboard extends React.Component<EmojiKeyboardProps, EmojiKeyboardState> {
     constructor(props: EmojiKeyboardProps) {
         super(props);
         this.state = {
@@ -69,3 +69,6 @@ export default class EmojiKeyboard extends React.Component<EmojiKeyboardProps, E
         );
     }
 }
+
+export default EmojiKeyboard;
+export { EmojiKeyboardProps, EmojiKeyboardState };

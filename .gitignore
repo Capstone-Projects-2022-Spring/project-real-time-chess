@@ -4,3 +4,4 @@ static/public/css
 static/public/js
 server.log
 tsconfig.tsbuildinfo
+docs

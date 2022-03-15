@@ -5,22 +5,15 @@ import SignUpModel from '../models/SignUpModel';
 /**
  * A utility class which allows the client to interact
  * with the Users API.
- *
- * @export
- * @class Users
  */
-export default class Users {
+class Users {
     /**
      * Submits a signup request to the server.
      *
-     * @static
-     * @param {SignUpModel} form The user data from the sign up
-     * form.
-     * @returns {Promise<boolean>} A promise which resolves upon
+     * @param form - The user data from the sign up form.
+     * @returns A promise which resolves upon
      * successful signup. If the signup fails, the promise will
      * be rejected with an error.
-     *
-     * @memberOf Users
      */
     static async signup(form: SignUpModel): Promise<boolean> {
         return new Promise((resolve, reject) => {
@@ -34,13 +27,10 @@ export default class Users {
     /**
      * Logins in a user by providing their email and password.
      *
-     * @static
-     * @param {LoginModel} form The login form data.
-     * @returns {Promise<boolean>} A promise which resolves upon
+     * @param form - The login form data.
+     * @returns A promise which resolves upon
      * successful login. If the login fails, the promise will reject
      * with an error.
-     *
-     * @memberOf Users
      */
     static async login(form: LoginModel): Promise<boolean> {
         return new Promise((resolve, reject) => {
@@ -59,11 +49,8 @@ export default class Users {
     /**
      * Checks if the client has an authentication certificate.
      *
-     * @static
-     * @returns {boolean} True if the client has an authentication,
+     * @returns True if the client has an authentication,
      * false otherwise.
-     *
-     * @memberOf Users
      */
     static hasCert(): boolean {
         return localStorage.getItem('cert') !== null;
@@ -74,11 +61,7 @@ export default class Users {
      * This requires no data to be sent to the server as
      * the cookies should be sent with the request.
      *
-     * @static
-     * @returns {Promise<boolean>} True if the user is
-     * authenticated, false otherwise.
-     *
-     * @memberOf Users
+     * @returns True if the user is authenticated, false otherwise.
      */
     static authenticateCertificate(): Promise<boolean> {
         return new Promise((resolve, reject) => {
@@ -96,3 +79,5 @@ export default class Users {
         });
     }
 }
+
+export default Users;

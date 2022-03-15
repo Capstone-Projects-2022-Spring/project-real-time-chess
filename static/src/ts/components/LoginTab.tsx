@@ -7,17 +7,17 @@ import GameplayOptions from '../views/GameplayOptions';
 import PasswordFieldComponent from './PasswordFieldComponent';
 import TextFieldComponent from './TextFieldComponent';
 
-export interface LoginTabProps {
+interface LoginTabProps {
     user?: string;
     password?: string;
 }
 
-export interface LoginTabState {
+interface LoginTabState {
     user: string;
     password: string;
 }
 
-export default class LoginTabComponent extends React.Component<LoginTabProps, LoginTabState> {
+class LoginTabComponent extends React.Component<LoginTabProps, LoginTabState> {
     constructor(props: LoginTabProps) {
         super(props);
         this.state = {
@@ -87,3 +87,6 @@ export default class LoginTabComponent extends React.Component<LoginTabProps, Lo
         );
     }
 }
+
+export default LoginTabComponent;
+export { LoginTabProps, LoginTabState };
