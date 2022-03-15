@@ -47,11 +47,11 @@ runPhase('DEPS', 'Installing NPM Dependencies', 'npm install', 'installation')
                     runPhase(
                         'BUILD',
                         'Building server-side TS project',
-                        'npm run build-server',
+                        'npm run build:server',
                         'tsc',
                     ),
                     runPhase('BUILD', 'Building client-side TS project', 'webpack', 'webpack'),
-                    runPhase('BUILD', 'Building SCSS files > CSS', 'npm run build-sass', 'sass'),
+                    runPhase('BUILD', 'Building SCSS files > CSS', 'npm run build:scss', 'sass'),
                 ])
                     .then(() => {
                         runPhase('TEST', 'Running server-side tests', 'npm run test', 'tests').then(
