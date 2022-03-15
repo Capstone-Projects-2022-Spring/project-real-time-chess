@@ -7,18 +7,19 @@
     "root": "./dist",
     "scripts": {
         "build": "node build.js",
-        "build-server": "tsc",
-        "build-sass": "sass static/src/scss:static/public/css",
+        "build:server": "tsc",
+        "build:client": "npm run build:sass ; webpack",
+        "build:scss": "sass static/src/scss:static/public/css",
         "start": "node dist/main/index.js",
         "clean": "rm -r dist docs node_modules static/public/css static/public/js tsconfig.tsbuildinfo",
         "rotate-logs": "cat server.log; rm server.log",
         "coverage": "nyc --reporter=lcov --reporter=text-lcov mocha --timeout 10000 -r ts-node-test-register -r tsconfig-paths/register \"src/test/**/*.spec.ts\" --exit",
         "test": "mocha --reporter spec -r ts-node-test-register -r tsconfig-paths/register \"src/test/**/*.spec.ts\" --exit",
-        "gen-uml": "tsuml2 --glob static/src/**/*.ts",
+        "gen-uml": "tplant --input src/main/index.ts --output out.svg",
         "lint": "eslint .",
         "document": "npm run document-server & npm run document-client",
-        "document-server": "typedoc --tsconfig ./tsconfig.json --entryPointStrategy expand ./src/main --out ./docs/server",
-        "document-client": "typedoc --tsconfig ./static/src/ts/tsconfig.json --entryPointStrategy expand ./static/src/ts --out ./docs/client"
+        "document:server": "typedoc --tsconfig ./tsconfig.json --entryPointStrategy expand ./src/main --out ./docs/server",
+        "document:client": "typedoc --tsconfig ./static/src/ts/tsconfig.json --entryPointStrategy expand ./static/src/ts --out ./docs/client"
     },
     "repository": {
         "type": "git",
@@ -69,6 +70,7 @@
         "nyc": "^15.1.0",
         "prettier": "^2.5.1",
         "sass": "^1.49.9",
+        "tplant": "^3.1.0",
         "ts-loader": "^9.2.6",
         "ts-node-test-register": "^10.0.0",
         "tsconfig-paths": "^3.12.0",
