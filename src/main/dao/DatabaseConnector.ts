@@ -9,6 +9,9 @@ export default class DatabaseConnector {
 
     private static _database?: Db;
 
+    /**
+     * Opens a connection to the database.
+     */
     static open() {
         DatabaseConnector.client = new MongoClient(DatabaseConnector.URI, {
             // useNewUrlParser: true,
@@ -30,10 +33,18 @@ export default class DatabaseConnector {
         });
     }
 
+    /**
+     * Closes the database connection.
+     */
     static close() {
         if (DatabaseConnector.client) DatabaseConnector.client.close();
     }
 
+    /**
+     * The object which allows queries to the database.
+     *
+     * @readonly
+     */
     static get database(): Db | undefined {
         return DatabaseConnector._database;
     }
