@@ -23,6 +23,16 @@
 | **All** Coding    | Microsoft VS COde | Support for all standard extensions.        |
 | Managing Database | MongoDB Compass   | To view/edit MongoDB documents/collections. |
 
+## UML Diagrams
+
+### Server Side
+
+![](README/server-uml.svg)
+
+### Client Side
+
+![](README/client-uml.svg)
+
 ## NPM Scripts
 
 ### Build
