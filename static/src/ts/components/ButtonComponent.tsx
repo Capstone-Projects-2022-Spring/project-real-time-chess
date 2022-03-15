@@ -3,8 +3,6 @@ import { NoState } from '../models/types';
 
 /**
  * Interface for the properties of the ButtonComponent.
- *
- * @interface ButtonComponentProps
  */
 export interface ButtonComponentProps {
     label: string | JSX.Element;
@@ -15,9 +13,6 @@ export interface ButtonComponentProps {
 
 /**
  * A react button component which allows for simple text and click functionality.
- *
- * @class ButtonComponent
- * @extends {React.Component<ButtonComponentProps, NoState>}
  */
 export default class ButtonComponent extends React.Component<ButtonComponentProps, NoState> {
     render() {

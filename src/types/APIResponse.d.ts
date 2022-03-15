@@ -1,7 +1,5 @@
 /**
  * The bare minimum interface to be implemented by a response object.
- *
- * @interface APIResponse
  */
 declare interface APIResponse {
     success: boolean;

@@ -1,13 +1,5 @@
 import * as React from 'react';
 import ChessboardComponent from '../components/ChessboardComponent';
-// import { NoProps } from '../models/types';
-
-/**
- * Gameplay options page which allows a user to choose which game mode they want to play.
- *
- * @class BoardScreen
- * @extends {React.Component<BoardScreenProps, BoardScreenState>}
- */
 
 export interface BoardScreenProps {
     mode: string;

@@ -8,9 +8,6 @@ import BoardScreen from './BoardScreen';
 
 /**
  * Gameplay options page which allows a user to choose which game mode they want to play.
- *
- * @class GameplayOptions
- * @extends {React.Component<NoProps, NoState>}
  */
 export default class GameplayOptions extends React.Component<
     NoProps,
@@ -130,18 +127,14 @@ export default class GameplayOptions extends React.Component<
 
     /**
      * Displays a sweet alert modal with an index of how to play the game.
-     *
-     * @static
-     *
-     * @memberOf GameplayOptions
      */
     static displayHowToPlay(): void {
         /**
          * Generates a bootstrap list group item.
          *
-         * @param {string} text The text to include in the list item.
-         * @param {() => void} action The action to invoke when clicked.
-         * @returns {HTMLLIElement} The generated list item.
+         * @param text - The text to include in the list item.
+         * @param action - The action to invoke when clicked.
+         * @returns The generated list item.
          */
         function makeListItem(text: string, action: () => void) {
             const li = document.createElement('li');
@@ -156,8 +149,8 @@ export default class GameplayOptions extends React.Component<
         /**
          * Generates a bootstrap list group.
          *
-         * @param {...HTMLLIElement[]} items The list items to include in the list group.
-         * @returns {HTMLLIElement} The generated list group.
+         * @param items - The list items to include in the list group.
+         * @returns The generated list group.
          */
         function makeList(...items: HTMLLIElement[]) {
             const list = document.createElement('ul');

@@ -12,8 +12,6 @@ import apiRouter from './routes/apiRouter';
 
 /**
  * Type definition of a game lobby object.
- *
- * @interface GameLobby
  */
 interface GameLobby {
     roomKey: string;
@@ -25,8 +23,6 @@ interface GameLobby {
  * The RTCServer class is responsible for starting the server and handling
  * all incoming routes, along with distributing the workload of all incoming
  * API requests and WebSocket events.
- *
- * @class RTCServer
  */
 export default class RTCServer {
     private app: express.Express;
@@ -41,8 +37,6 @@ export default class RTCServer {
 
     /**
      * Creates an instance of RTCServer.
-     *
-     * @memberOf RTCServer
      */
     constructor() {
         this.app = express();
@@ -69,9 +63,6 @@ export default class RTCServer {
      * is automatically specified based on the environment.
      * If an environment variable (`process.env.PORT`) is not
      * defined, then the default port (`3000`) is used.
-     *
-     *
-     * @memberOf RTCServer
      */
     listen() {
         //     this.app.listen(this.PORT, () => {

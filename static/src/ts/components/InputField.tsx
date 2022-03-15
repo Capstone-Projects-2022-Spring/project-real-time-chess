@@ -1,5 +1,7 @@
 import * as React from 'react';
 
+export type ThrowsInputFieldValidationError = never;
+
 export interface InputFieldProps {
     label?: string;
     placeholder?: string;
@@ -60,12 +62,8 @@ export default abstract class InputField extends React.Component<InputFieldProps
      * true. If the value is invalid but could be valid if the user appends more characters, then
      * false is returned.
      *
-     * @abstract
-     * @returns {boolean | never} True if the valud is valid, false if it could potentially be
+     * @returns True if the valud is valid, false if it could potentially be
      * valid. If neither applies, the value is invalid and throws an error instead.
-     * @throws {InputFieldValidationError} If the value is invalid.
-     *
-     * @memberOf InputField
      */
-    abstract validate(): boolean | never;
+    abstract validate(): boolean | ThrowsInputFieldValidationError;
 }
