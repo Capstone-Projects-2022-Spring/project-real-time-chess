@@ -1,7 +1,7 @@
 /**
  * The RealTimeChess Utility Class for Array manipulation.
  */
-export default class ArrayUtils {
+class ArrayUtils {
     /**
      * Strictly compares each elements in two arrays.
      * This uses the `===` operator to compare each element, so
@@ -21,3 +21,5 @@ export default class ArrayUtils {
         return true;
     }
 }
+
+export default ArrayUtils;

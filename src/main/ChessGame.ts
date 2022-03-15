@@ -2,7 +2,7 @@ import { Chess, ChessInstance, Move, Square } from 'chess.js';
 import { IUser } from './dao/UserDAO';
 import SupportedEmojis from './SupportedEmojis';
 
-export default class ChessGame {
+class ChessGame {
     gameKey: string[];
 
     private game: ChessInstance;
@@ -59,3 +59,5 @@ export default class ChessGame {
         return emojis;
     }
 }
+
+export default ChessGame;

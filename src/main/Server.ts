@@ -12,7 +12,7 @@ import apiRouter from './routes/apiRouter';
  * all incoming routes, along with distributing the workload of all incoming
  * API requests and WebSocket events.
  */
-export default class RTCServer {
+class RTCServer {
     private app: express.Express;
 
     private PORT: number;
@@ -63,3 +63,5 @@ export default class RTCServer {
         });
     }
 }
+
+export default RTCServer;

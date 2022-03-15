@@ -1,7 +1,7 @@
 import { Db, MongoClient, ServerApiVersion } from 'mongodb';
 import Logger from '../Logger';
 
-export default class DatabaseConnector {
+class DatabaseConnector {
     private static URI =
         'mongodb+srv://admin:admin@cluster0.eu8bc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 
@@ -49,3 +49,5 @@ export default class DatabaseConnector {
         return DatabaseConnector._database;
     }
 }
+
+export default DatabaseConnector;

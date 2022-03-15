@@ -4,7 +4,7 @@ import BaseDAO from './BaseDAO';
 /**
  * The required information for the signup form.
  */
-export interface UserRegistrationFormData {
+interface UserRegistrationFormData {
     name: {
         first: string;
         last: string;
@@ -17,7 +17,7 @@ export interface UserRegistrationFormData {
 /**
  * The required information to login to an account.
  */
-export interface UserLoginFormData {
+interface UserLoginFormData {
     user: string;
     password: string;
 }
@@ -25,7 +25,7 @@ export interface UserLoginFormData {
 /**
  * The data belonging to a User in the database
  */
-export interface IUser extends Document {
+interface IUser extends Document {
     _id?: ObjectId;
     name: {
         first: string;
@@ -45,7 +45,7 @@ export interface IUser extends Document {
  *
  * `key` is saved as `cookies.auth`
  */
-export interface AuthInfo {
+interface AuthInfo {
     uid: ObjectId;
     key: string;
 }
@@ -53,7 +53,7 @@ export interface AuthInfo {
 /**
  * Data Access Object for the User collection.
  */
-export default class UserDAO extends BaseDAO<IUser> {
+class UserDAO extends BaseDAO<IUser> {
     override get collectionName(): string {
         return 'users';
     }
@@ -142,3 +142,6 @@ export default class UserDAO extends BaseDAO<IUser> {
         );
     }
 }
+
+export default UserDAO;
+export { IUser, AuthInfo, UserRegistrationFormData, UserLoginFormData };

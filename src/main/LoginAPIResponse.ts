@@ -4,7 +4,7 @@ import { AuthInfo } from './dao/UserDAO';
 /**
  * The API response when a successful request is made to log a user in.
  */
-export default class LoginAPIResponse extends BaseAPIResponse {
+class LoginAPIResponse extends BaseAPIResponse {
     auth: AuthInfo;
 
     /**
@@ -17,3 +17,5 @@ export default class LoginAPIResponse extends BaseAPIResponse {
         this.auth = auth;
     }
 }
+
+export default LoginAPIResponse;

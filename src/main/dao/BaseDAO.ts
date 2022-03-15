@@ -4,7 +4,7 @@ import DatabaseConnector from './DatabaseConnector';
 /**
  * Base DAO class. All other DAOs use this elementary class.
  */
-export default abstract class BaseDAO<Schema extends Mongo.Document> {
+abstract class BaseDAO<Schema extends Mongo.Document> {
     /**
      * The collection name which the DAO accesses
      */
@@ -66,3 +66,5 @@ export default abstract class BaseDAO<Schema extends Mongo.Document> {
             : undefined;
     }
 }
+
+export default BaseDAO;

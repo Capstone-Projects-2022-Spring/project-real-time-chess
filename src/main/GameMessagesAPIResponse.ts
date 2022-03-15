@@ -1,9 +1,6 @@
 import { BaseAPIResponse } from './APIResponse';
 
-export default class GameMessagesAPIResponse
-    extends BaseAPIResponse
-    implements IGameMessagesAPIResponse
-{
+class GameMessagesAPIResponse extends BaseAPIResponse implements IGameMessagesAPIResponse {
     messages: IGameMessage[];
 
     constructor(messages: IGameMessage[]) {
@@ -11,3 +8,5 @@ export default class GameMessagesAPIResponse
         this.messages = messages;
     }
 }
+
+export default GameMessagesAPIResponse;

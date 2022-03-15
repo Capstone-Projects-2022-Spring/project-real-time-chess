@@ -1,7 +1,7 @@
 /**
  * The base class for all API responses.
  */
-export abstract class BaseAPIResponse implements APIResponse {
+abstract class BaseAPIResponse implements APIResponse {
     success: boolean;
 
     error?: Error;
@@ -20,7 +20,7 @@ export abstract class BaseAPIResponse implements APIResponse {
 /**
  * The API response when an error occurs on the server.
  */
-export class ErrorAPIResponse extends BaseAPIResponse {
+class ErrorAPIResponse extends BaseAPIResponse {
     /**
      * Creates an instance of ErrorAPIResponse.
      * @param error - The error that occurred.
@@ -32,3 +32,5 @@ export class ErrorAPIResponse extends BaseAPIResponse {
         super(false, typeof error === 'string' ? new Error(error) : error);
     }
 }
+
+export { BaseAPIResponse, ErrorAPIResponse };
