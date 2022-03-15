@@ -9,7 +9,7 @@ import BoardScreen from './BoardScreen';
 /**
  * Gameplay options page which allows a user to choose which game mode they want to play.
  */
-export default class GameplayOptions extends React.Component<
+class GameplayOptions extends React.Component<
     NoProps,
     { hoverImage: string; hoverImageCaption: string }
 > {
@@ -193,3 +193,5 @@ export default class GameplayOptions extends React.Component<
         });
     }
 }
+
+export default GameplayOptions;
