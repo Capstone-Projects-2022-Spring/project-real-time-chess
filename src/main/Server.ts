@@ -1,7 +1,6 @@
 import bodyParser = require('body-parser');
 import cookieParser = require('cookie-parser');
 import express = require('express');
-import * as http from 'http';
 import * as path from 'path';
 import DatabaseConnector from './dao/DatabaseConnector';
 import Logger from './Logger';
@@ -17,15 +16,12 @@ class RTCServer {
 
     private PORT: number;
 
-    private httpServer: http.Server;
-
     /**
      * Creates an instance of RTCServer.
      */
     constructor() {
         this.app = express();
         this.PORT = parseInt(process.env.PORT ?? '3000', 10);
-        this.httpServer = http.createServer(this.app);
 
         DatabaseConnector.open();
 
@@ -49,17 +45,13 @@ class RTCServer {
      */
     listen() {
         this.app.listen(this.PORT, () => {
-            console.log(`
+            Logger.info(`
         ▢----------------------▢--------------------------▢
         | Field                | Value                    |
         ▢----------------------▢--------------------------▢
           Listening on PORT      ${this.PORT}
           Website                http://localhost:${this.PORT}
         ▢----------------------▢--------------------------▢`);
-        });
-
-        this.httpServer.listen(this.PORT, () => {
-            Logger.info(`Listening on PORT: ${this.PORT}`);
         });
     }
 }
