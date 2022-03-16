@@ -1,4 +1,5 @@
 import { ObjectId, Document } from 'mongodb';
+import InvalidCredentialsError from '../errors/InvalidCredentialsError';
 import BaseDAO from './BaseDAO';
 
 /**

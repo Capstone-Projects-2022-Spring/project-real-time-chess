@@ -4,3 +4,5 @@ class InvalidCredentialsError extends Error {
         this.name = 'InvalidCredentialsError';
     }
 }
+
+export default InvalidCredentialsError;

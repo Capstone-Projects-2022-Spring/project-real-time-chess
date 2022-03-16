@@ -1,6 +1,7 @@
 import { ObjectId } from 'mongodb';
 import ChessGame from './ChessGame';
 import UserDAO, { IUser } from './dao/UserDAO';
+import InvalidCredentialsError from './errors/InvalidCredentialsError';
 
 class GameManager {
     private static games: ChessGame[] = [];
