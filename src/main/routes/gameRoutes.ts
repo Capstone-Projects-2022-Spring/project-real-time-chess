@@ -6,6 +6,12 @@ import GameCreatedAPIResponse from '../GameCreatedAPIResponse';
 import GameManager from '../GameManager';
 import GameMessagesAPIResponse from '../GameMessagesAPIResponse';
 
+/**
+ * The handler for requests where a game is created
+ *
+ * @param req - The express request object
+ * @param res - The express response object
+ */
 function createGame(req: Request, res: Response) {
     GameManager.verifyUserAccess(req.cookies.uid, req.cookies.auth)
         .then(user => {
@@ -21,6 +27,12 @@ function createGame(req: Request, res: Response) {
         });
 }
 
+/**
+ * The handler for requests where a user joins a game.
+ *
+ * @param req - The express request object
+ * @param res - The express response object
+ */
 function joinGame(req: Request, res: Response) {
     const uid = new ObjectId(req.cookies.uid);
     GameManager.verifyUserAccess(req.cookies.uid, req.cookies.auth)
@@ -39,6 +51,12 @@ function joinGame(req: Request, res: Response) {
         });
 }
 
+/**
+ * The handler for requests where a user moves a chessboard piece
+ *
+ * @param req - The express request object
+ * @param res - The express response object
+ */
 function movePiece(req: Request, res: Response) {
     const dao = new UserDAO();
     const uid = new ObjectId(req.cookies.uid);
@@ -67,6 +85,13 @@ function movePiece(req: Request, res: Response) {
         });
 }
 
+/**
+ * The handler for when the client requests the Forsyth-Edwards Notation.
+ * This is used by ChessJS to configure the pieces on the board.
+ *
+ * @param req - The express request object
+ * @param res - The express response object
+ */
 function getFEN(req: Request, res: Response) {
     const dao = new UserDAO();
     const uid = new ObjectId(req.cookies.uid);
@@ -89,6 +114,12 @@ function getFEN(req: Request, res: Response) {
         });
 }
 
+/**
+ * The handler for when the client requests the game messages.
+ *
+ * @param req - The express request object.
+ * @param res - The express response object.
+ */
 function getMessages(req: Request, res: Response) {
     const uid = new ObjectId(req.cookies.uid);
     const game = GameManager.findGameByUser(uid);

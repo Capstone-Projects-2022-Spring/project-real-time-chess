@@ -4,6 +4,9 @@ import { BaseAPIResponse, ErrorAPIResponse } from '../APIResponse';
 import UserDAO from '../dao/UserDAO';
 import LoginAPIResponse from '../LoginAPIResponse';
 
+/**
+ * The interface for all user registration forms.
+ */
 interface CreateUserRequestBody {
     name: { first: string; last: string };
     email: string;
@@ -11,6 +14,12 @@ interface CreateUserRequestBody {
     password: string;
 }
 
+/**
+ * The handler for the user registration route.
+ *
+ * @param req The Express request object.
+ * @param res The Express response object.
+ */
 function createUserRoute(
     req: express.Request<Record<string, never>, BaseAPIResponse, CreateUserRequestBody>,
     res: express.Response<BaseAPIResponse>,
@@ -25,6 +34,12 @@ function createUserRoute(
         .catch(err => res.send(new ErrorAPIResponse(err)));
 }
 
+/**
+ * The handler for handling a login form request.
+ *
+ * @param req The Express request object
+ * @param res The Express response object
+ */
 function loginUserRoute(
     req: express.Request<
         Record<string, never>,
@@ -43,6 +58,12 @@ function loginUserRoute(
         .catch(err => res.send(new ErrorAPIResponse(err)));
 }
 
+/**
+ * The handler for handling a certificate authentication request.
+ *
+ * @param req The Express request object.
+ * @param res The Express response object.
+ */
 function authenticateUserRoute(req: express.Request, res: express.Response<BaseAPIResponse>) {
     const dao = new UserDAO();
     dao.authenticateKey(new ObjectId(req.cookies.uid), req.cookies.auth)
