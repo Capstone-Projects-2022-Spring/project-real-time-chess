@@ -22,10 +22,11 @@ class GameManager {
             dao.authenticateKey(new ObjectId(uid), auth).then(allowed => {
                 if (allowed) {
                     dao.findOne({ _id: uid }).then(user => {
-                        resolve(user);
+                        if (user) resolve(user);
+                        else reject(new InvalidCredentialsError());
                     });
                 } else {
-                    reject(new Error('User not authorized'));
+                    reject(new InvalidCredentialsError());
                 }
             });
         });

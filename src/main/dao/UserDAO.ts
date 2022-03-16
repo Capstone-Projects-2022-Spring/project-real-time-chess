@@ -99,7 +99,7 @@ class UserDAO extends BaseDAO<IUser> {
                         key,
                     });
                 } else {
-                    reject(new Error('Invalid username or password'));
+                    reject(new InvalidCredentialsError('Incoreect username, email, or password'));
                 }
             });
         });
@@ -123,7 +123,7 @@ class UserDAO extends BaseDAO<IUser> {
                     if (user && user.auths.includes(key)) {
                         resolve(true);
                     } else {
-                        reject(new Error('Invalid key'));
+                        reject(new InvalidCredentialsError());
                     }
                 })
                 .catch(err => reject(err));
