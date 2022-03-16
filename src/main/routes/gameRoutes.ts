@@ -1,28 +1,16 @@
 import { Request, Response } from 'express';
 import { ObjectId } from 'mongodb';
 import { ErrorAPIResponse } from '../APIResponse';
-import ChessGame from '../ChessGame';
 import UserDAO from '../dao/UserDAO';
 import GameCreatedAPIResponse from '../GameCreatedAPIResponse';
+import GameManager from '../GameManager';
 import GameMessagesAPIResponse from '../GameMessagesAPIResponse';
 
-const games: ChessGame[] = [];
-
-function findGameByUser(uid: ObjectId): ChessGame | null {
-    return games.find(g => g.black?._id?.equals(uid) || g.white?._id?.equals(uid)) ?? null;
-}
-
 function createGame(req: Request, res: Response) {
-    const dao = new UserDAO();
-    dao.findOne({ _id: new ObjectId(req.cookies.uid) })
+    GameManager.verifyUserAccess(req.cookies.uid, req.cookies.auth)
         .then(user => {
-            if (user) {
-                const game = new ChessGame();
-                game.black = user;
-                games.push(game);
-                game.addMessage({
-                    message: `${user.name.first} created the game.`,
-                });
+            const game = GameManager.createGame(user);
+            if (game) {
                 res.send(new GameCreatedAPIResponse(game.gameKey));
             } else {
                 res.send(new ErrorAPIResponse('User not found.'));
@@ -34,21 +22,16 @@ function createGame(req: Request, res: Response) {
 }
 
 function joinGame(req: Request, res: Response) {
-    const dao = new UserDAO();
     const uid = new ObjectId(req.cookies.uid);
-    dao.authenticateKey(uid, req.cookies.auth)
-        .then(allowed => {
-            if (allowed) {
-                const game = findGameByUser(uid);
-                if (game) {
-                    dao.findOne({ _id: uid }).then(user => {
-                        game.white = user;
-                        game.addMessage({ message: `${user.name.first} joined the game.` });
-                        res.send(new GameCreatedAPIResponse(game.gameKey));
-                    });
-                } else {
-                    res.send(new ErrorAPIResponse('Could not find game'));
-                }
+    GameManager.verifyUserAccess(req.cookies.uid, req.cookies.auth)
+        .then(user => {
+            const game = GameManager.findGameByUser(uid);
+            if (game) {
+                game.white = user;
+                game.addMessage({ message: `${user.name.first} joined the game.` });
+                res.send(new GameCreatedAPIResponse(game.gameKey));
+            } else {
+                res.send(new ErrorAPIResponse('Could not find game'));
             }
         })
         .catch(() => {
@@ -62,7 +45,7 @@ function movePiece(req: Request, res: Response) {
     dao.authenticateKey(uid, req.cookies.auth)
         .then(authorized => {
             if (authorized) {
-                const game = games.find(g => g.black?._id?.equals(uid));
+                const game = GameManager.findGameByUser(uid);
                 if (game) {
                     const { source, target } = req.body;
                     const move = game.move(source, target);
@@ -90,7 +73,7 @@ function getFEN(req: Request, res: Response) {
     dao.authenticateKey(uid, req.cookies.auth)
         .then(authorized => {
             if (authorized) {
-                const game = games.find(g => g.black?._id?.equals(uid));
+                const game = GameManager.findGameByUser(uid);
                 if (game) {
                     res.send({ success: true, fen: game.fen });
                 } else {
@@ -108,7 +91,7 @@ function getFEN(req: Request, res: Response) {
 
 function getMessages(req: Request, res: Response) {
     const uid = new ObjectId(req.cookies.uid);
-    const game = games.find(g => g.black?._id?.equals(uid) || g.white?._id?.equals(uid));
+    const game = GameManager.findGameByUser(uid);
     if (game) {
         res.send(new GameMessagesAPIResponse(game.getMessages()));
     } else {
