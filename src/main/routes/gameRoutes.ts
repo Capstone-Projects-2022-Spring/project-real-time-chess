@@ -5,9 +5,12 @@ import ChessGame from '../ChessGame';
 import UserDAO from '../dao/UserDAO';
 import GameCreatedAPIResponse from '../GameCreatedAPIResponse';
 import GameMessagesAPIResponse from '../GameMessagesAPIResponse';
-import ArrayUtils from '../utils/ArrayUtils';
 
 const games: ChessGame[] = [];
+
+function findGameByUser(uid: ObjectId): ChessGame | null {
+    return games.find(g => g.black?._id?.equals(uid) || g.white?._id?.equals(uid)) ?? null;
+}
 
 function createGame(req: Request, res: Response) {
     const dao = new UserDAO();
@@ -32,15 +35,20 @@ function createGame(req: Request, res: Response) {
 
 function joinGame(req: Request, res: Response) {
     const dao = new UserDAO();
-    dao.findOne({ _id: new ObjectId(req.cookies.uid) })
-        .then(user => {
-            const game = games.find(g => ArrayUtils.strictCompare(g.gameKey, req.body.gameKey));
-            if (game) {
-                game.white = user;
-                game.addMessage({ message: `${user.name.first} joined the game.` });
-                res.send(new GameCreatedAPIResponse(game.gameKey));
-            } else {
-                res.send(new ErrorAPIResponse('Could not find game'));
+    const uid = new ObjectId(req.cookies.uid);
+    dao.authenticateKey(uid, req.cookies.auth)
+        .then(allowed => {
+            if (allowed) {
+                const game = findGameByUser(uid);
+                if (game) {
+                    dao.findOne({ _id: uid }).then(user => {
+                        game.white = user;
+                        game.addMessage({ message: `${user.name.first} joined the game.` });
+                        res.send(new GameCreatedAPIResponse(game.gameKey));
+                    });
+                } else {
+                    res.send(new ErrorAPIResponse('Could not find game'));
+                }
             }
         })
         .catch(() => {
@@ -50,10 +58,11 @@ function joinGame(req: Request, res: Response) {
 
 function movePiece(req: Request, res: Response) {
     const dao = new UserDAO();
-    dao.authenticateKey(new ObjectId(req.cookies.uid), req.cookies.auth)
+    const uid = new ObjectId(req.cookies.uid);
+    dao.authenticateKey(uid, req.cookies.auth)
         .then(authorized => {
             if (authorized) {
-                const game = games.find(g => g.black?._id?.equals(req.cookies.uid));
+                const game = games.find(g => g.black?._id?.equals(uid));
                 if (game) {
                     const { source, target } = req.body;
                     const move = game.move(source, target);
@@ -77,16 +86,17 @@ function movePiece(req: Request, res: Response) {
 
 function getFEN(req: Request, res: Response) {
     const dao = new UserDAO();
-    dao.authenticateKey(new ObjectId(req.cookies.uid), req.cookies.auth)
+    const uid = new ObjectId(req.cookies.uid);
+    dao.authenticateKey(uid, req.cookies.auth)
         .then(authorized => {
             if (authorized) {
-                const game = games.find(g => g.black?._id?.equals(req.cookies.uid));
+                const game = games.find(g => g.black?._id?.equals(uid));
                 if (game) {
                     res.send({ success: true, fen: game.fen });
                 } else {
                     res.send({
                         success: false,
-                        error: new Error(`No game with user ${req.cookies.cookie}`),
+                        error: new Error(`No game with user ${uid}`),
                     });
                 }
             } else res.send({ success: false, error: new Error('Invalid User') });
