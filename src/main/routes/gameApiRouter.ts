@@ -1,4 +1,4 @@
-import * as express from 'express';
+import { Request, Response } from 'express';
 import { ObjectId } from 'mongodb';
 import { ErrorAPIResponse } from '../APIResponse';
 import ChessGame from '../ChessGame';
@@ -7,10 +7,9 @@ import GameCreatedAPIResponse from '../GameCreatedAPIResponse';
 import GameMessagesAPIResponse from '../GameMessagesAPIResponse';
 import ArrayUtils from '../utils/ArrayUtils';
 
-const gameRouter = express.Router();
 const games: ChessGame[] = [];
 
-gameRouter.post('/create', (req, res) => {
+function createGame(req: Request, res: Response) {
     const dao = new UserDAO();
     dao.findOne({ _id: new ObjectId(req.cookies.uid) })
         .then(user => {
@@ -29,9 +28,9 @@ gameRouter.post('/create', (req, res) => {
         .catch(err => {
             res.send(new ErrorAPIResponse(err));
         });
-});
+}
 
-gameRouter.post('/join', (req, res) => {
+function joinGame(req: Request, res: Response) {
     const dao = new UserDAO();
     dao.findOne({ _id: new ObjectId(req.cookies.uid) })
         .then(user => {
@@ -47,9 +46,9 @@ gameRouter.post('/join', (req, res) => {
         .catch(() => {
             res.send(new ErrorAPIResponse('Unknown Database Error'));
         });
-});
+}
 
-gameRouter.post('/move', (req, res) => {
+function movePiece(req: Request, res: Response) {
     const dao = new UserDAO();
     dao.authenticateKey(new ObjectId(req.cookies.uid), req.cookies.auth)
         .then(authorized => {
@@ -74,9 +73,9 @@ gameRouter.post('/move', (req, res) => {
         .catch(err => {
             res.send({ success: false, error: err });
         });
-});
+}
 
-gameRouter.get('/fen', (req, res) => {
+function getFEN(req: Request, res: Response) {
     const dao = new UserDAO();
     dao.authenticateKey(new ObjectId(req.cookies.uid), req.cookies.auth)
         .then(authorized => {
@@ -95,9 +94,9 @@ gameRouter.get('/fen', (req, res) => {
         .catch(err => {
             res.send({ success: false, error: err });
         });
-});
+}
 
-gameRouter.get('/messages', (req, res) => {
+function getMessages(req: Request, res: Response) {
     const uid = new ObjectId(req.cookies.uid);
     const game = games.find(g => g.black?._id?.equals(uid) || g.white?._id?.equals(uid));
     if (game) {
@@ -105,6 +104,6 @@ gameRouter.get('/messages', (req, res) => {
     } else {
         res.send(new ErrorAPIResponse('Could not find game'));
     }
-});
+}
 
-export default gameRouter;
+export { createGame, joinGame, movePiece, getFEN, getMessages };
