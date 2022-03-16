@@ -4,14 +4,14 @@ import { BaseAPIResponse, ErrorAPIResponse } from '../APIResponse';
 import UserDAO from '../dao/UserDAO';
 import LoginAPIResponse from '../LoginAPIResponse';
 
-export interface CreateUserRequestBody {
+interface CreateUserRequestBody {
     name: { first: string; last: string };
     email: string;
     username: string;
     password: string;
 }
 
-export function createUserRoute(
+function createUserRoute(
     req: express.Request<Record<string, never>, BaseAPIResponse, CreateUserRequestBody>,
     res: express.Response<BaseAPIResponse>,
 ) {
@@ -25,7 +25,7 @@ export function createUserRoute(
         .catch(err => res.send(new ErrorAPIResponse(err)));
 }
 
-export function loginUserRoute(
+function loginUserRoute(
     req: express.Request<
         Record<string, never>,
         LoginAPIResponse,
@@ -43,10 +43,7 @@ export function loginUserRoute(
         .catch(err => res.send(new ErrorAPIResponse(err)));
 }
 
-export function authenticateUserRoute(
-    req: express.Request,
-    res: express.Response<BaseAPIResponse>,
-) {
+function authenticateUserRoute(req: express.Request, res: express.Response<BaseAPIResponse>) {
     const dao = new UserDAO();
     dao.authenticateKey(new ObjectId(req.cookies.uid), req.cookies.auth)
         .then(passed => {
@@ -56,10 +53,4 @@ export function authenticateUserRoute(
         .catch(error => res.send(new ErrorAPIResponse(error)));
 }
 
-const userApiRouter = express.Router();
-
-userApiRouter.post('/create', createUserRoute);
-userApiRouter.post('/login', loginUserRoute);
-userApiRouter.get('/authenticate', authenticateUserRoute);
-
-export default userApiRouter;
+export { createUserRoute, loginUserRoute, authenticateUserRoute };

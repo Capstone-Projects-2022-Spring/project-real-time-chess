@@ -1,26 +1,16 @@
-import * as express from 'express';
+import { Request, Response } from 'express';
 import { ObjectId } from 'mongodb';
 import { ErrorAPIResponse } from '../APIResponse';
-import ChessGame from '../ChessGame';
 import UserDAO from '../dao/UserDAO';
 import GameCreatedAPIResponse from '../GameCreatedAPIResponse';
+import GameManager from '../GameManager';
 import GameMessagesAPIResponse from '../GameMessagesAPIResponse';
-import ArrayUtils from '../utils/ArrayUtils';
 
-const gameRouter = express.Router();
-const games: ChessGame[] = [];
-
-gameRouter.post('/create', (req, res) => {
-    const dao = new UserDAO();
-    dao.findOne({ _id: new ObjectId(req.cookies.uid) })
+function createGame(req: Request, res: Response) {
+    GameManager.verifyUserAccess(req.cookies.uid, req.cookies.auth)
         .then(user => {
-            if (user) {
-                const game = new ChessGame();
-                game.black = user;
-                games.push(game);
-                game.addMessage({
-                    message: `${user.name.first} created the game.`,
-                });
+            const game = GameManager.createGame(user);
+            if (game) {
                 res.send(new GameCreatedAPIResponse(game.gameKey));
             } else {
                 res.send(new ErrorAPIResponse('User not found.'));
@@ -29,13 +19,13 @@ gameRouter.post('/create', (req, res) => {
         .catch(err => {
             res.send(new ErrorAPIResponse(err));
         });
-});
+}
 
-gameRouter.post('/join', (req, res) => {
-    const dao = new UserDAO();
-    dao.findOne({ _id: new ObjectId(req.cookies.uid) })
+function joinGame(req: Request, res: Response) {
+    const uid = new ObjectId(req.cookies.uid);
+    GameManager.verifyUserAccess(req.cookies.uid, req.cookies.auth)
         .then(user => {
-            const game = games.find(g => ArrayUtils.strictCompare(g.gameKey, req.body.gameKey));
+            const game = GameManager.findGameByUser(uid);
             if (game) {
                 game.white = user;
                 game.addMessage({ message: `${user.name.first} joined the game.` });
@@ -47,14 +37,15 @@ gameRouter.post('/join', (req, res) => {
         .catch(() => {
             res.send(new ErrorAPIResponse('Unknown Database Error'));
         });
-});
+}
 
-gameRouter.post('/move', (req, res) => {
+function movePiece(req: Request, res: Response) {
     const dao = new UserDAO();
-    dao.authenticateKey(new ObjectId(req.cookies.uid), req.cookies.auth)
+    const uid = new ObjectId(req.cookies.uid);
+    dao.authenticateKey(uid, req.cookies.auth)
         .then(authorized => {
             if (authorized) {
-                const game = games.find(g => g.black?._id?.equals(req.cookies.uid));
+                const game = GameManager.findGameByUser(uid);
                 if (game) {
                     const { source, target } = req.body;
                     const move = game.move(source, target);
@@ -74,20 +65,21 @@ gameRouter.post('/move', (req, res) => {
         .catch(err => {
             res.send({ success: false, error: err });
         });
-});
+}
 
-gameRouter.get('/fen', (req, res) => {
+function getFEN(req: Request, res: Response) {
     const dao = new UserDAO();
-    dao.authenticateKey(new ObjectId(req.cookies.uid), req.cookies.auth)
+    const uid = new ObjectId(req.cookies.uid);
+    dao.authenticateKey(uid, req.cookies.auth)
         .then(authorized => {
             if (authorized) {
-                const game = games.find(g => g.black?._id?.equals(req.cookies.uid));
+                const game = GameManager.findGameByUser(uid);
                 if (game) {
                     res.send({ success: true, fen: game.fen });
                 } else {
                     res.send({
                         success: false,
-                        error: new Error(`No game with user ${req.cookies.cookie}`),
+                        error: new Error(`No game with user ${uid}`),
                     });
                 }
             } else res.send({ success: false, error: new Error('Invalid User') });
@@ -95,16 +87,16 @@ gameRouter.get('/fen', (req, res) => {
         .catch(err => {
             res.send({ success: false, error: err });
         });
-});
+}
 
-gameRouter.get('/messages', (req, res) => {
+function getMessages(req: Request, res: Response) {
     const uid = new ObjectId(req.cookies.uid);
-    const game = games.find(g => g.black?._id?.equals(uid) || g.white?._id?.equals(uid));
+    const game = GameManager.findGameByUser(uid);
     if (game) {
         res.send(new GameMessagesAPIResponse(game.getMessages()));
     } else {
         res.send(new ErrorAPIResponse('Could not find game'));
     }
-});
+}
 
-export default gameRouter;
+export { createGame, joinGame, movePiece, getFEN, getMessages };
