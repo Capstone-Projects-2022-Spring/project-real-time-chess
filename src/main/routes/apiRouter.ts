@@ -1,6 +1,6 @@
 import express = require('express');
-import { createGame, getFEN, getMessages, joinGame, movePiece } from './gameApiRouter';
-import { createUserRoute, loginUserRoute, authenticateUserRoute } from './userApiRouter';
+import { createGame, getFEN, getMessages, joinGame, movePiece } from './gameRoutes';
+import { createUserRoute, loginUserRoute, authenticateUserRoute } from './userRoutes';
 
 const apiRouter = express.Router();
 const userApiRouter = express.Router();
