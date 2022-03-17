@@ -35,6 +35,10 @@ class RTCServer {
         this.app.get('/', (_, res) => {
             res.render('index');
         });
+
+        this.app.get('/logs', (_, res) => {
+            res.sendFile(path.resolve('./server.log'));
+        });
     }
 
     /**

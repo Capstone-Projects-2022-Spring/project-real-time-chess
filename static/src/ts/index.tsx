@@ -5,6 +5,7 @@ import Users from './access/Users';
 import GameplayOptions from './views/GameplayOptions';
 import UINavigator from './models/UINavigator';
 import Homepage from './views/Homepage';
+import WinstonViewer from './views/WinstonViewer';
 
 ReactDOM.render(<Homepage />, document.getElementById('react-app-target'));
 
@@ -21,3 +22,10 @@ if (Users.hasCert()) {
             });
         });
 }
+
+Object.defineProperty(window, 'WinstonViewer', {
+    value: () => {
+        UINavigator.render(<WinstonViewer />);
+    },
+    writable: false,
+});

@@ -39,7 +39,7 @@ class ChessboardComponent extends React.Component<
     }
 
     beginAutoSync() {
-        this.syncInterval = setInterval(() => this.syncBoard(), 1000);
+        this.syncInterval = window.setInterval(() => this.syncBoard(), 1000);
     }
 
     stopAutoSync() {
