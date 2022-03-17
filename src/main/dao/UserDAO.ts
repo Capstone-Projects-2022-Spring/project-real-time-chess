@@ -1,4 +1,5 @@
 import { ObjectId, Document } from 'mongodb';
+import InvalidCredentialsError from '../errors/InvalidCredentialsError';
 import BaseDAO from './BaseDAO';
 
 /**
@@ -99,7 +100,7 @@ class UserDAO extends BaseDAO<IUser> {
                         key,
                     });
                 } else {
-                    reject(new Error('Invalid username or password'));
+                    reject(new InvalidCredentialsError('Incoreect username, email, or password'));
                 }
             });
         });
@@ -123,7 +124,7 @@ class UserDAO extends BaseDAO<IUser> {
                     if (user && user.auths.includes(key)) {
                         resolve(true);
                     } else {
-                        reject(new Error('Invalid key'));
+                        reject(new InvalidCredentialsError());
                     }
                 })
                 .catch(err => reject(err));
@@ -140,6 +141,13 @@ class UserDAO extends BaseDAO<IUser> {
             Math.random().toString(36).substring(2, 15) +
             Math.random().toString(36).substring(2, 15)
         );
+    }
+
+    static sanitize(user: IUser): ISanitizedUser {
+        return {
+            username: user.username,
+            name: user.name,
+        };
     }
 }
 

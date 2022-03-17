@@ -6,10 +6,25 @@ declare interface APIResponse {
     error?: Error;
 }
 
+declare interface IErrorAPIResponse {
+    success: false;
+    error: Error;
+}
+
 declare interface IGameCreatedAPIResponse extends APIResponse {
     gameKey: string[];
 }
 
 declare interface IGameMessagesAPIResponse extends APIResponse {
     messages: IGameMessage[];
+}
+
+declare interface IGameStateAPIResponse extends APIResponse {
+    fen: string;
+    messages: IGameMessage[];
+    gameKey: string[];
+    players: {
+        black?: ISanitizedUser;
+        white?: ISanitizedUser;
+    };
 }

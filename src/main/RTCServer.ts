@@ -30,10 +30,18 @@ class RTCServer {
         this.app.use(express.static(path.resolve('./static/public')));
         this.app.use(bodyParser({ extended: true }));
         this.app.use(cookieParser());
+        this.app.use((req, _, next) => {
+            Logger.info(`${req.method} ${req.url} – [IP=${req.ip}] [UID=${req.cookies.uid}]`);
+            next();
+        });
         this.app.use('/api', apiRouter);
 
         this.app.get('/', (_, res) => {
             res.render('index');
+        });
+
+        this.app.get('/logs', (_, res) => {
+            res.sendFile(path.resolve('./server.log'));
         });
     }
 

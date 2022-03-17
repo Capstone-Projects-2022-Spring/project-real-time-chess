@@ -1,10 +1,11 @@
 import ChessGame from 'src/main/ChessGame';
 import { expect } from 'chai';
+import GameManager from 'src/main/GameManager';
 
 let game: ChessGame;
 
 beforeEach(() => {
-    game = new ChessGame();
+    game = new ChessGame(GameManager.generateGameKey());
 });
 
 describe('ChessGame', () => {
