@@ -124,8 +124,16 @@ class GameRoutes {
                         const move = game.move(source, target);
                         if (move) {
                             res.send({ success: true, move });
+                            Logger.info(
+                                `User successfully made a move\nUID: ${
+                                    req.cookies.uid
+                                }\nMove: ${JSON.stringify(move)}\nFEN: ${game.fen}`,
+                            );
                         } else {
                             res.send(new ErrorAPIResponse('Invalid move'));
+                            Logger.info(
+                                `User submitted an invalid move\nUID: ${req.cookies.uid}\nFrom: ${source}\nTo: ${target}\nFEN: ${game.fen}`,
+                            );
                         }
                     } else {
                         res.send({
@@ -133,7 +141,10 @@ class GameRoutes {
                             error: new Error(`No game with user ${req.cookies.cookie}`),
                         });
                     }
-                } else res.send({ success: false, error: new Error('Invalid User') });
+                } else {
+                    res.send({ success: false, error: new Error('Invalid User') });
+                    Logger.info(`Could not verify user credentials (uid=${req.cookies.uid})`);
+                }
             })
             .catch(err => {
                 res.send({ success: false, error: err });
@@ -225,8 +236,14 @@ class GameRoutes {
                                 white: game.white,
                             }),
                         );
+                        Logger.info(
+                            `Game State Request Successful\nUID: ${req.cookies.uid}\nFEN: ${
+                                game.fen
+                            }\n${game.getMessages().length} messages`,
+                        );
                     } else {
                         res.send(new ErrorAPIResponse('Could not find game'));
+                        Logger.warn(`Could not find game with user: ${req.cookies.uid}`);
                     }
                 }
             })
