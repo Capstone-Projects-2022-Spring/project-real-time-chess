@@ -5,6 +5,7 @@ import UserDAO from '../dao/UserDAO';
 import GameCreatedAPIResponse from '../GameCreatedAPIResponse';
 import GameManager from '../GameManager';
 import GameMessagesAPIResponse from '../GameMessagesAPIResponse';
+import GameStateAPIResponse from '../GameStateAPIResponse';
 
 /**
  * Utility class for all the game routes
@@ -38,10 +39,9 @@ class GameRoutes {
      * @param res - The express response object
      */
     static joinGame(req: Request, res: Response) {
-        const uid = new ObjectId(req.cookies.uid);
         GameManager.verifyUserAccess(req.cookies.uid, req.cookies.auth)
             .then(user => {
-                const game = GameManager.findGameByUser(uid);
+                const game = GameManager.findGameByUser(new ObjectId(req.cookies.uid));
                 if (game) {
                     game.white = user;
                     game.addMessage({ message: `${user.name.first} joined the game.` });
@@ -132,6 +132,21 @@ class GameRoutes {
         } else {
             res.send(new ErrorAPIResponse('Could not find game'));
         }
+    }
+
+    static getGameState(req: Request, res: Response) {
+        GameManager.verifyUserAccess(req.cookies.uid, req.cookies.auth).then(user => {
+            if (user) {
+                const game = GameManager.findGameByUser(new ObjectId(req.cookies.uid));
+                if (game) {
+                    res.send(
+                        new GameStateAPIResponse(game.fen, game.gameKey, game.getMessages(), {}),
+                    );
+                } else {
+                    res.send(new ErrorAPIResponse('Could not find game'));
+                }
+            }
+        });
     }
 }
 

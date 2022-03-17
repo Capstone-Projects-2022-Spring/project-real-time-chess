@@ -13,3 +13,13 @@ declare interface IGameCreatedAPIResponse extends APIResponse {
 declare interface IGameMessagesAPIResponse extends APIResponse {
     messages: IGameMessage[];
 }
+
+declare interface IGameStateAPIResponse extends APIResponse {
+    fen: string;
+    messages: IGameMessage[];
+    gameKey: string[];
+    players: {
+        black?: ISanitizedUser;
+        white?: ISanitizedUser;
+    };
+}

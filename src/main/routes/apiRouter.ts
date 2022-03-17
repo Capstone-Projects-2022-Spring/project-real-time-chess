@@ -17,6 +17,7 @@ gameApiRouter.post('/create', GameRoutes.createGame);
 gameApiRouter.post('/join', GameRoutes.joinGame);
 gameApiRouter.post('/move', GameRoutes.movePiece);
 
+gameApiRouter.get('/', GameRoutes.getGameState);
 gameApiRouter.get('/fen', GameRoutes.getFEN);
 gameApiRouter.get('/messages', GameRoutes.getMessages);
 

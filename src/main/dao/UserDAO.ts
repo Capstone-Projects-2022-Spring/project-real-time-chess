@@ -142,6 +142,13 @@ class UserDAO extends BaseDAO<IUser> {
             Math.random().toString(36).substring(2, 15)
         );
     }
+
+    static sanitize(user: IUser): ISanitizedUser {
+        return {
+            username: user.username,
+            name: user.name,
+        };
+    }
 }
 
 export default UserDAO;
