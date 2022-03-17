@@ -12,6 +12,7 @@ class GameAccess {
                 .catch(err => reject(err));
         });
     }
+
     static async createGame(): Promise<IGameCreatedAPIResponse> {
         return new Promise((resolve, reject) => {
             axios
