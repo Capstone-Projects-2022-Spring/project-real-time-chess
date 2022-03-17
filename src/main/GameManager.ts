@@ -39,7 +39,11 @@ class GameManager {
      */
     public static findGameByKey(gameKey: string[]): ChessGame | null {
         Logger.debug(
-            `Finding game by key: ${gameKey}\nGames: ${JSON.stringify(GameManager.games, null, 4)}`,
+            `Finding game by key: ${gameKey}\nGames: ${JSON.stringify(
+                { ...GameManager.games, game: undefined },
+                null,
+                4,
+            )}`,
         );
         return GameManager.games.find(g => ArrayUtils.strictCompare(g.gameKey, gameKey)) ?? null;
     }

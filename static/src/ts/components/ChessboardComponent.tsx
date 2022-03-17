@@ -5,48 +5,16 @@ import Swal from 'sweetalert2';
 import GameAccess from '../access/GameAccess';
 
 class ChessboardComponent extends React.Component<
-    { orientation: 'b' | 'w' },
+    { orientation: 'b' | 'w'; fen?: string },
     {
         game: ChessInstance;
-        messages: IGameMessage[];
     }
 > {
-    private syncInterval?: number;
-
-    constructor(props: { orientation: 'b' | 'w' }) {
+    constructor(props: { orientation: 'b' | 'w'; fen: string }) {
         super(props);
         this.state = {
-            game: Chess(),
-            messages: [],
+            game: this.props.fen ? Chess(this.props.fen) : Chess(),
         };
-    }
-
-    syncBoard() {
-        GameAccess.getFEN()
-            .then(fen => {
-                this.setState({
-                    game: Chess(fen),
-                });
-                this.stopAutoSync();
-            })
-            .catch(() => {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Game Error',
-                    text: 'It seems like the server is not sending the chess board. The issue should resolve itself.',
-                });
-            });
-    }
-
-    beginAutoSync() {
-        this.syncInterval = window.setInterval(() => this.syncBoard(), 1000);
-    }
-
-    stopAutoSync() {
-        if (this.syncInterval) {
-            clearInterval(this.syncInterval);
-            this.syncInterval = undefined;
-        }
     }
 
     render() {
@@ -67,7 +35,6 @@ class ChessboardComponent extends React.Component<
                                             text: 'Invalid move',
                                         });
                                     } else {
-                                        this.beginAutoSync();
                                         this.forceUpdate();
                                     }
                                 })
