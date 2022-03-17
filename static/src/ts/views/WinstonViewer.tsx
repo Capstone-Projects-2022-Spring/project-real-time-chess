@@ -15,7 +15,7 @@ class WinstonViewer extends React.Component<NoProps, WinstonViewerState> {
         super(props);
         this.state = {
             logs: [],
-            filter: '',
+            filter: '@exclude "GET /logs"',
         };
     }
 
@@ -99,11 +99,7 @@ class WinstonViewer extends React.Component<NoProps, WinstonViewerState> {
     render() {
         const filters = this.parseFilters();
 
-        let logsToDisplay = this.state.logs;
-
-        if (filters.last !== 0) {
-            logsToDisplay.splice(0, logsToDisplay.length - filters.last);
-        }
+        let logsToDisplay = Array.from(this.state.logs);
 
         if (filters.includes.length > 0) {
             logsToDisplay = logsToDisplay.filter(log => {
@@ -132,11 +128,16 @@ class WinstonViewer extends React.Component<NoProps, WinstonViewerState> {
             });
         }
 
+        if (filters.last !== 0) {
+            logsToDisplay.splice(0, logsToDisplay.length - filters.last);
+        }
+
         return (
             <div style={{ padding: '1rem' }}>
                 <div style={{ position: 'sticky', top: 0, padding: '0.5rem' }}>
                     <TextFieldComponent
                         label="Filters"
+                        value={this.state.filter}
                         onChange={e => this.setState({ filter: e.target.value.trim() })}
                     />
                 </div>
@@ -216,6 +217,8 @@ class WinstonViewer extends React.Component<NoProps, WinstonViewerState> {
                         fontSize: '0.75rem',
                         padding: '0.25rem 0.5rem 0.25rem 0.5rem',
                         color: 'white',
+                        fontWeight: 'bold',
+                        marginBottom: '0.1rem',
                     }}
                 >
                     {level.toUpperCase()}

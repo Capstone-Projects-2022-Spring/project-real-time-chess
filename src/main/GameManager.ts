@@ -2,7 +2,9 @@ import { ObjectId } from 'mongodb';
 import ChessGame from './ChessGame';
 import UserDAO, { IUser } from './dao/UserDAO';
 import InvalidCredentialsError from './errors/InvalidCredentialsError';
+import Logger from './Logger';
 import SupportedEmojis from './SupportedEmojis';
+import ArrayUtils from './utils/ArrayUtils';
 
 /**
  * The manager for all chess games which are currently in progress.
@@ -36,7 +38,10 @@ class GameManager {
      * @returns The game object if it exists, otherwise null.
      */
     public static findGameByKey(gameKey: string[]): ChessGame | null {
-        return GameManager.games.find(g => g.gameKey === gameKey) ?? null;
+        Logger.debug(
+            `Finding game by key: ${gameKey}\nGames: ${JSON.stringify(GameManager.games, null, 4)}`,
+        );
+        return GameManager.games.find(g => ArrayUtils.strictCompare(g.gameKey, gameKey)) ?? null;
     }
 
     /**
@@ -53,7 +58,7 @@ class GameManager {
         return new Promise((resolve, reject) => {
             dao.authenticateKey(new ObjectId(uid), auth).then(allowed => {
                 if (allowed) {
-                    dao.findOne({ _id: uid }).then(user => {
+                    dao.findOne({ _id: new ObjectId(uid) }).then(user => {
                         if (user) resolve(user);
                         else reject(new InvalidCredentialsError());
                     });

@@ -7,6 +7,7 @@ import GameManager from '../GameManager';
 import GameMessagesAPIResponse from '../GameMessagesAPIResponse';
 import GameStateAPIResponse from '../GameStateAPIResponse';
 import Logger from '../Logger';
+import SupportedEmojis from '../SupportedEmojis';
 
 /**
  * Utility class for all the game routes
@@ -32,7 +33,11 @@ class GameRoutes {
                 const game = GameManager.createGame(user);
                 if (game) {
                     res.send(new GameCreatedAPIResponse(game.gameKey));
-                    Logger.info('New game created');
+                    Logger.info(
+                        `New game created\nUID: ${req.cookies.uid}\nGame Key: ${game.gameKey.map(
+                            name => SupportedEmojis.find(e => e.name === name)?.emoji,
+                        )}`,
+                    );
                 } else {
                     res.send(new ErrorAPIResponse('User not found.'));
                     Logger.warn(`User not found with uid: ${req.cookies.uid}`);
@@ -40,7 +45,9 @@ class GameRoutes {
             })
             .catch(err => {
                 res.send(new ErrorAPIResponse(err));
-                Logger.error(`Error thrown in GameManager.verifyUserAccess: ${err}`);
+                Logger.error(
+                    `Error thrown in GameManager.verifyUserAccess (UID=${req.cookies.uid}, AUTH=${req.cookies.auth})\n\n${err}`,
+                );
             });
     }
 
@@ -54,25 +61,42 @@ class GameRoutes {
         req: Request<
             Record<string, never>,
             IGameCreatedAPIResponse | IErrorAPIResponse,
-            Record<string, never>,
+            { gameKey: string[] },
             Record<string, never>
         >,
         res: Response<IGameCreatedAPIResponse | IErrorAPIResponse>,
     ) {
         GameManager.verifyUserAccess(req.cookies.uid, req.cookies.auth)
             .then(user => {
-                const game = GameManager.findGameByUser(new ObjectId(req.cookies.uid));
-                if (game) {
-                    game.white = user;
-                    game.addMessage({ message: `${user.name.first} joined the game.` });
-                    res.send(new GameCreatedAPIResponse(game.gameKey));
+                if (user) {
+                    const game = GameManager.findGameByKey(req.body.gameKey);
+                    if (game) {
+                        game.white = user;
+                        game.addMessage({ message: `${user.name.first} joined the game.` });
+                        res.send(new GameCreatedAPIResponse(game.gameKey));
+                        Logger.info(`User joined game\n${JSON.stringify({ ...game }, null, 4)}`);
+                    } else {
+                        res.send(new ErrorAPIResponse('Could not find game'));
+                        Logger.warn(
+                            `User (uid=${
+                                req.cookies.uid
+                            }) tried joining game, but none was found.\nGame Key: ${req.body.gameKey!.map(
+                                name => SupportedEmojis.find(e => e.name === name)?.emoji,
+                            )}`,
+                        );
+                    }
                 } else {
-                    res.send(new ErrorAPIResponse('Could not find game'));
+                    res.send(new ErrorAPIResponse('Invalid User'));
+                    Logger.warn(
+                        `User Not Found\nUID: ${req.cookies.uid}\nAUTH: ${req.cookies.auth}`,
+                    );
                 }
             })
             .catch(err => {
                 res.send(new ErrorAPIResponse('Unknown Database Error'));
-                Logger.error(`Error thrown in GameManager.verifyUserAccess: ${err}`);
+                Logger.error(
+                    `Error thrown in GameManager.verifyUserAccess (UID=${req.cookies.uid}, AUTH=${req.cookies.auth})\n\n${err}`,
+                );
             });
     }
 
@@ -113,7 +137,9 @@ class GameRoutes {
             })
             .catch(err => {
                 res.send({ success: false, error: err });
-                Logger.error(`Error thrown in GameManager.verifyUserAccess: ${err}`);
+                Logger.error(
+                    `Error thrown in GameManager.verifyUserAccess (UID=${req.cookies.uid}, AUTH=${req.cookies.auth})\n\n${err}`,
+                );
             });
     }
 
@@ -149,7 +175,9 @@ class GameRoutes {
             })
             .catch(err => {
                 res.send({ success: false, error: err });
-                Logger.error(`Error thrown in GameManager.verifyUserAccess: ${err}`);
+                Logger.error(
+                    `Error thrown in GameManager.verifyUserAccess (UID=${req.cookies.uid}, AUTH=${req.cookies.auth})\n\n${err}`,
+                );
             });
     }
 
@@ -204,7 +232,9 @@ class GameRoutes {
             })
             .catch(err => {
                 res.send(new ErrorAPIResponse(err));
-                Logger.error(`Error thrown in GameManager.verifyUserAccess: ${err}`);
+                Logger.error(
+                    `Error thrown in GameManager.verifyUserAccess (UID=${req.cookies.uid}, AUTH=${req.cookies.auth})\n\n${err}`,
+                );
             });
     }
 }
