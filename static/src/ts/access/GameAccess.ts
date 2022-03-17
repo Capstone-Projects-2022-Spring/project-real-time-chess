@@ -2,6 +2,16 @@ import axios from 'axios';
 import { Square } from 'chess.js';
 
 class GameAccess {
+    static getGameState(): Promise<IGameStateAPIResponse> {
+        return new Promise((resolve, reject) => {
+            axios
+                .get('/api/game')
+                .then(response => {
+                    resolve(response.data);
+                })
+                .catch(err => reject(err));
+        });
+    }
     static async createGame(): Promise<IGameCreatedAPIResponse> {
         return new Promise((resolve, reject) => {
             axios

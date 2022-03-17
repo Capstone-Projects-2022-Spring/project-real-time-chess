@@ -1,8 +1,24 @@
 import * as React from 'react';
+import GameAccess from '../access/GameAccess';
 import ChatComponent from '../components/ChatComponent';
 import ChessboardComponent from '../components/ChessboardComponent';
 
-class MultiplayerMatch extends React.Component<{ orientation: 'b' | 'w' }> {
+interface MultiplayerMatchProps {
+    orientation: 'b' | 'w';
+}
+
+interface MultiplayerMatchState {
+    messages: IGameMessage[];
+}
+
+class MultiplayerMatch extends React.Component<MultiplayerMatchProps, MultiplayerMatchState> {
+    constructor(props: MultiplayerMatchProps) {
+        super(props);
+        this.state = {
+            messages: [],
+        };
+    }
+
     render() {
         return (
             <div className="container">
@@ -18,12 +34,20 @@ class MultiplayerMatch extends React.Component<{ orientation: 'b' | 'w' }> {
                         <ChessboardComponent orientation={this.props.orientation} />
                     </div>
                     <div className="col-2">
-                        <ChatComponent />
+                        <ChatComponent messages={this.state.messages} />
                     </div>
                     <div className="col"></div>
                 </div>
             </div>
         );
+    }
+
+    syncGameState() {
+        GameAccess.getGameState().then(gameState => {
+            this.setState({
+                messages: gameState.messages,
+            });
+        });
     }
 }
 
