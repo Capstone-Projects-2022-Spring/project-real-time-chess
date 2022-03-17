@@ -2,8 +2,11 @@ import { BaseAPIResponse } from './APIResponse';
 
 class GameStateAPIResponse extends BaseAPIResponse implements IGameStateAPIResponse {
     public fen: string;
+
     public gameKey: string[];
+
     public messages: IGameMessage[];
+
     public players: { black?: ISanitizedUser; white?: ISanitizedUser };
 
     constructor(

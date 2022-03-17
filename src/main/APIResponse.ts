@@ -22,6 +22,7 @@ abstract class BaseAPIResponse implements APIResponse {
  */
 class ErrorAPIResponse implements IErrorAPIResponse {
     public success: false;
+
     public error: Error;
 
     /**

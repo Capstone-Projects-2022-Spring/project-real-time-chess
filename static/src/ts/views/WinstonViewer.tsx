@@ -1,18 +1,17 @@
 import axios from 'axios';
 import React from 'react';
 import TextFieldComponent from '../components/TextFieldComponent';
-
-interface WinstonViewerProps {}
+import { NoProps } from '../models/types';
 
 interface WinstonViewerState {
     logs: { level: string; message: string }[];
     filter: string;
 }
 
-class WinstonViewer extends React.Component<WinstonViewerProps, WinstonViewerState> {
+class WinstonViewer extends React.Component<NoProps, WinstonViewerState> {
     private logListenerInterval?: number;
 
-    constructor(props: WinstonViewerProps) {
+    constructor(props: NoProps) {
         super(props);
         this.state = {
             logs: [],
@@ -21,8 +20,14 @@ class WinstonViewer extends React.Component<WinstonViewerProps, WinstonViewerSta
     }
 
     parseFilters() {
+        const filters = {
+            includes: [] as string[],
+            excludes: [] as string[],
+            levels: [] as string[],
+            last: 0,
+        };
+
         function addFilter(tagname: string, value: string) {
-            console.log('Adding filter: ' + tagname + '=' + value);
             switch (tagname) {
                 case 'include':
                     filters.includes.push(value);
@@ -34,16 +39,11 @@ class WinstonViewer extends React.Component<WinstonViewerProps, WinstonViewerSta
                     filters.levels.push(value);
                     break;
                 case 'last':
-                    filters.last = parseInt(value);
+                    filters.last = parseInt(value, 10);
+                    break;
+                default:
             }
         }
-
-        const filters = {
-            includes: [] as string[],
-            excludes: [] as string[],
-            levels: [] as string[],
-            last: 0,
-        };
 
         let inTag = false;
         let inValue = false;
@@ -56,13 +56,11 @@ class WinstonViewer extends React.Component<WinstonViewerProps, WinstonViewerSta
             if (!inTag && !inValue) {
                 if (this.state.filter[i] === '@') {
                     inTag = true;
-                    continue;
                 }
             } else if (inTag) {
                 if (this.state.filter[i] === ' ') {
                     inTag = false;
                     inValue = true;
-                    continue;
                 } else {
                     tagname += this.state.filter[i];
                 }
@@ -74,24 +72,19 @@ class WinstonViewer extends React.Component<WinstonViewerProps, WinstonViewerSta
                         addFilter(tagname, value);
                         tagname = '';
                         value = '';
-                        continue;
                     } else {
                         value += this.state.filter[i];
                     }
+                } else if (this.state.filter[i] === '"' || this.state.filter[i] === "'") {
+                    inQuote = true;
+                    quoteType = this.state.filter[i]!;
+                } else if (this.state.filter[i] === ' ') {
+                    inValue = false;
+                    addFilter(tagname, value);
+                    tagname = '';
+                    value = '';
                 } else {
-                    if (this.state.filter[i] === '"' || this.state.filter[i] === "'") {
-                        inQuote = true;
-                        quoteType = this.state.filter[i]!;
-                        continue;
-                    } else if (this.state.filter[i] === ' ') {
-                        inValue = false;
-                        addFilter(tagname, value);
-                        tagname = '';
-                        value = '';
-                        continue;
-                    } else {
-                        value += this.state.filter[i];
-                    }
+                    value += this.state.filter[i];
                 }
             }
         }
@@ -106,8 +99,6 @@ class WinstonViewer extends React.Component<WinstonViewerProps, WinstonViewerSta
     render() {
         const filters = this.parseFilters();
 
-        console.log(filters);
-
         let logsToDisplay = this.state.logs;
 
         if (filters.last !== 0) {
@@ -116,9 +107,12 @@ class WinstonViewer extends React.Component<WinstonViewerProps, WinstonViewerSta
 
         if (filters.includes.length > 0) {
             logsToDisplay = logsToDisplay.filter(log => {
-                for (const include of filters.includes) {
-                    if (typeof log.message === 'string' && log.message.includes(include))
-                        return true;
+                if (
+                    filters.includes.find(
+                        include => typeof log.message === 'string' && log.message.includes(include),
+                    )
+                ) {
+                    return true;
                 }
                 return false;
             });
@@ -126,18 +120,14 @@ class WinstonViewer extends React.Component<WinstonViewerProps, WinstonViewerSta
 
         if (filters.excludes.length > 0) {
             logsToDisplay = logsToDisplay.filter(log => {
-                for (const exclude of filters.excludes) {
-                    if (log.message.includes(exclude)) return false;
-                }
+                if (filters.excludes.find(exclude => log.message.includes(exclude))) return false;
                 return true;
             });
         }
 
         if (filters.levels.length > 0) {
             logsToDisplay = logsToDisplay.filter(log => {
-                for (const level of filters.levels) {
-                    if (log.level === level) return true;
-                }
+                if (filters.levels.find(level => level === log.level)) return true;
                 return false;
             });
         }
@@ -183,14 +173,13 @@ class WinstonViewer extends React.Component<WinstonViewerProps, WinstonViewerSta
     }
 
     listenForLogs() {
-        if (this.logListenerInterval === undefined)
-            this.logListenerInterval = window.setInterval(() => {
-                this.updateLogs();
-            }, 5000);
+        if (this.logListenerInterval === undefined) {
+            this.logListenerInterval = window.setInterval(() => this.updateLogs(), 5000);
+        }
     }
 
     logItem(level: string, message: string, key: number) {
-        let levelColor = 'black';
+        let levelColor: string;
 
         switch (level) {
             case 'info':
@@ -205,6 +194,8 @@ class WinstonViewer extends React.Component<WinstonViewerProps, WinstonViewerSta
             case 'debug':
                 levelColor = 'gray';
                 break;
+            default:
+                levelColor = 'black';
         }
 
         return (
