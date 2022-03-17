@@ -17,8 +17,8 @@ interface CreateUserRequestBody {
 /**
  * The handler for the user registration route.
  *
- * @param req The Express request object.
- * @param res The Express response object.
+ * @param req - The Express request object.
+ * @param res - The Express response object.
  */
 function createUserRoute(
     req: express.Request<Record<string, never>, BaseAPIResponse, CreateUserRequestBody>,
@@ -37,8 +37,8 @@ function createUserRoute(
 /**
  * The handler for handling a login form request.
  *
- * @param req The Express request object
- * @param res The Express response object
+ * @param req - The Express request object
+ * @param res - The Express response object
  */
 function loginUserRoute(
     req: express.Request<
@@ -61,8 +61,8 @@ function loginUserRoute(
 /**
  * The handler for handling a certificate authentication request.
  *
- * @param req The Express request object.
- * @param res The Express response object.
+ * @param req - The Express request object.
+ * @param res - The Express response object.
  */
 function authenticateUserRoute(req: express.Request, res: express.Response<BaseAPIResponse>) {
     const dao = new UserDAO();
