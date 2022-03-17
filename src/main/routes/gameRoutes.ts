@@ -1,3 +1,4 @@
+import { Move, Square } from 'chess.js';
 import { Request, Response } from 'express';
 import { ObjectId } from 'mongodb';
 import { ErrorAPIResponse } from '../APIResponse';
@@ -17,7 +18,10 @@ class GameRoutes {
      * @param req - The express request object
      * @param res - The express response object
      */
-    static createGame(req: Request, res: Response) {
+    static createGame(
+        req: Request<{}, IGameCreatedAPIResponse | IErrorAPIResponse, {}, {}>,
+        res: Response<IGameCreatedAPIResponse | IErrorAPIResponse>,
+    ) {
         GameManager.verifyUserAccess(req.cookies.uid, req.cookies.auth)
             .then(user => {
                 const game = GameManager.createGame(user);
@@ -38,7 +42,10 @@ class GameRoutes {
      * @param req - The express request object
      * @param res - The express response object
      */
-    static joinGame(req: Request, res: Response) {
+    static joinGame(
+        req: Request<{}, IGameCreatedAPIResponse | IErrorAPIResponse, {}, {}>,
+        res: Response<IGameCreatedAPIResponse | IErrorAPIResponse>,
+    ) {
         GameManager.verifyUserAccess(req.cookies.uid, req.cookies.auth)
             .then(user => {
                 const game = GameManager.findGameByUser(new ObjectId(req.cookies.uid));
@@ -61,7 +68,15 @@ class GameRoutes {
      * @param req - The express request object
      * @param res - The express response object
      */
-    static movePiece(req: Request, res: Response) {
+    static movePiece(
+        req: Request<
+            {},
+            (APIResponse & { move: Move }) | IErrorAPIResponse,
+            { source: Square; target: Square },
+            {}
+        >,
+        res: Response<(APIResponse & { move: Move }) | IErrorAPIResponse>,
+    ) {
         const dao = new UserDAO();
         const uid = new ObjectId(req.cookies.uid);
         dao.authenticateKey(uid, req.cookies.auth)
@@ -96,7 +111,10 @@ class GameRoutes {
      * @param req - The express request object
      * @param res - The express response object
      */
-    static getFEN(req: Request, res: Response) {
+    static getFEN(
+        req: Request<{}, (APIResponse & { fen: string }) | IErrorAPIResponse, {}, {}>,
+        res: Response<(APIResponse & { fen: string }) | IErrorAPIResponse>,
+    ) {
         const dao = new UserDAO();
         const uid = new ObjectId(req.cookies.uid);
         dao.authenticateKey(uid, req.cookies.auth)
@@ -124,7 +142,10 @@ class GameRoutes {
      * @param req - The express request object.
      * @param res - The express response object.
      */
-    static getMessages(req: Request, res: Response) {
+    static getMessages(
+        req: Request<{}, IGameMessagesAPIResponse | IErrorAPIResponse, {}, {}>,
+        res: Response<IGameMessagesAPIResponse | IErrorAPIResponse>,
+    ) {
         const uid = new ObjectId(req.cookies.uid);
         const game = GameManager.findGameByUser(uid);
         if (game) {
@@ -134,7 +155,10 @@ class GameRoutes {
         }
     }
 
-    static getGameState(req: Request, res: Response) {
+    static getGameState(
+        req: Request<{}, IGameStateAPIResponse | IErrorAPIResponse, {}, {}>,
+        res: Response<IGameStateAPIResponse | IErrorAPIResponse>,
+    ) {
         GameManager.verifyUserAccess(req.cookies.uid, req.cookies.auth).then(user => {
             if (user) {
                 const game = GameManager.findGameByUser(new ObjectId(req.cookies.uid));

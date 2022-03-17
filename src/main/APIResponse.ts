@@ -20,16 +20,21 @@ abstract class BaseAPIResponse implements APIResponse {
 /**
  * The API response when an error occurs on the server.
  */
-class ErrorAPIResponse extends BaseAPIResponse {
+class ErrorAPIResponse implements IErrorAPIResponse {
+    public success: false;
+    public error: Error;
+
     /**
      * Creates an instance of ErrorAPIResponse.
+     *
      * @param error - The error that occurred.
      * If a string is provided instead of an error object, then
      * the string will be used to create an error object with
      * the string as the specified error message.
      */
     constructor(error: Error | string) {
-        super(false, typeof error === 'string' ? new Error(error) : error);
+        this.success = false;
+        this.error = error instanceof Error ? error : new Error(error);
     }
 }
 

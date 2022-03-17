@@ -6,6 +6,11 @@ declare interface APIResponse {
     error?: Error;
 }
 
+declare interface IErrorAPIResponse {
+    success: false;
+    error: Error;
+}
+
 declare interface IGameCreatedAPIResponse extends APIResponse {
     gameKey: string[];
 }
