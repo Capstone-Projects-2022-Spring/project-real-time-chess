@@ -1,6 +1,7 @@
-import { Chess, ChessInstance, Square } from 'chess.js';
+import { Chess, Square } from 'chess.js';
 import * as React from 'react';
 import { Chessboard } from 'react-chessboard';
+import { NoState } from '../models/types';
 
 class ChessboardComponent extends React.Component<
     {
@@ -8,9 +9,7 @@ class ChessboardComponent extends React.Component<
         fen?: string;
         onPieceDrop?: (source: Square, target: Square) => void;
     },
-    {
-        game: ChessInstance;
-    }
+    NoState
 > {
     constructor(props: {
         orientation: 'b' | 'w';
@@ -18,9 +17,6 @@ class ChessboardComponent extends React.Component<
         onPieceDrop?: (source: Square, target: Square) => void;
     }) {
         super(props);
-        this.state = {
-            game: Chess(this.props.fen),
-        };
     }
 
     render() {
@@ -44,7 +40,8 @@ class ChessboardComponent extends React.Component<
     }
 
     private tryMove(source: string, target: string): boolean {
-        const move = this.state.game.move(`${source}-${target}`, { sloppy: true });
+        const game = Chess(this.props.fen);
+        const move = game.move(`${source}-${target}`, { sloppy: true });
         return move !== null;
     }
 }
