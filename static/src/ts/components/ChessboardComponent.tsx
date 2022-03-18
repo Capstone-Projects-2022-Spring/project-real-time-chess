@@ -11,14 +11,6 @@ class ChessboardComponent extends React.Component<
     },
     NoState
 > {
-    constructor(props: {
-        orientation: 'b' | 'w';
-        fen: string;
-        onPieceDrop?: (source: Square, target: Square) => void;
-    }) {
-        super(props);
-    }
-
     render() {
         return (
             <div>

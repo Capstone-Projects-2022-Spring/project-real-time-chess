@@ -71,7 +71,6 @@ class MultiplayerMatch extends React.Component<MultiplayerMatchProps, Multiplaye
         });
 
         this.socket.on('move piece', (response: IGameStateAPIResponse) => {
-            console.log('Move piece response', response);
             if (!response.success) {
                 Swal.fire({
                     icon: 'error',
@@ -86,8 +85,6 @@ class MultiplayerMatch extends React.Component<MultiplayerMatchProps, Multiplaye
                     },
                     () => {
                         this.forceUpdate();
-                        console.log('Updated shit');
-                        console.log('FEN', this.state.fen);
                     },
                 );
             }
