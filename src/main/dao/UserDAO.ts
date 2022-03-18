@@ -90,17 +90,23 @@ class UserDAO extends BaseDAO<IUser> {
                     user = await this.findOne({ username: formData.user });
                 }
 
-                if (user.password === formData.password) {
-                    const key = this.generateAuthKey();
-
-                    this.updateOne({ _id: user._id }, { $push: { auths: key } });
-
-                    resolve({
-                        uid: user._id,
-                        key,
-                    });
+                if (!user) {
+                    reject(new InvalidCredentialsError());
                 } else {
-                    reject(new InvalidCredentialsError('Incoreect username, email, or password'));
+                    if (user.password === formData.password) {
+                        const key = this.generateAuthKey();
+
+                        this.updateOne({ _id: user._id }, { $push: { auths: key } });
+
+                        resolve({
+                            uid: user._id,
+                            key,
+                        });
+                    } else {
+                        reject(
+                            new InvalidCredentialsError('Incoreect username, email, or password'),
+                        );
+                    }
                 }
             });
         });
