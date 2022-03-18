@@ -51,8 +51,7 @@ class MultiplayerMatch extends React.Component<MultiplayerMatchProps, Multiplaye
                             }}
                         />
                     </div>
-                    <div className="col"></div>
-                    <div className="col-2">
+                    <div className="col-4">
                         <ChatComponent messages={this.state.messages} />
                     </div>
                 </div>

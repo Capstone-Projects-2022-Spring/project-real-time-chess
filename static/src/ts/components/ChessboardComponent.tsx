@@ -31,10 +31,16 @@ class ChessboardComponent extends React.Component<
         );
     }
 
-    private tryMove(source: string, target: string): boolean {
+    private tryMove(source: Square, target: Square): boolean {
         const game = Chess(this.props.fen);
-        const move = game.move(`${source}-${target}`, { sloppy: true });
-        return move !== null;
+
+        // Checks if piece at game is valid for the orientation
+        const piece = game.get(source);
+        if (piece !== null && piece.color === this.props.orientation) {
+            const move = game.move(`${source}-${target}`, { sloppy: true });
+            return move !== null;
+        }
+        return false;
     }
 }
 

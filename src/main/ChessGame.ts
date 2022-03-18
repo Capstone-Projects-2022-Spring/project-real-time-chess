@@ -1,6 +1,7 @@
 import { Chess, ChessInstance, Move, Square } from 'chess.js';
 import { Socket } from 'socket.io';
 import { IUser } from './dao/UserDAO';
+import GameStateAPIResponse from './GameStateAPIResponse';
 
 /**
  * A wrapper class for a ChessJS game to work with Real-time Chess.
@@ -60,6 +61,20 @@ class ChessGame {
      */
     public addMessage(message: IGameMessage) {
         this.messages.push(message);
+        this.blackSocket?.emit(
+            'game state',
+            new GameStateAPIResponse(this.game.fen(), this.gameKey, this.messages, {
+                black: this.black,
+                white: this.white,
+            }),
+        );
+        this.whiteSocket?.emit(
+            'game state',
+            new GameStateAPIResponse(this.game.fen(), this.gameKey, this.messages, {
+                black: this.black,
+                white: this.white,
+            }),
+        );
     }
 
     /**
