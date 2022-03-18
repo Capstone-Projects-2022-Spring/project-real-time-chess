@@ -73,24 +73,53 @@ class RTCServer {
             let uid: string;
             let game: ChessGame;
 
-            socket.on('authorize', (_uid: string | ObjectId, _auth: string) => {
-                Logger.info(`Authorizing user\nUID: ${_uid}`);
-                uid = _uid.toString();
-                game = GameManager.findGameByUser(uid)!;
-                if (game) {
-                    if (game.black && uid.toString() === game.black._id!.toString()) {
-                        game!.blackSocket = socket;
-                        Logger.info(`Authorized Socket Connection with:\nUID: ${uid}`);
-                    } else if (game.white && uid.toString() === game.white._id!.toString()) {
-                        game!.whiteSocket = socket;
-                        Logger.info(`Authorized Socket Connection with:\nUID: ${uid}`);
+            socket.on(
+                'authorize',
+                (
+                    _uid: string | ObjectId,
+                    _auth: string,
+                    callback?: (response: IGameStateAPIResponse) => void,
+                ) => {
+                    Logger.info(`Authorizing user\nUID: ${_uid}`);
+                    uid = _uid.toString();
+                    game = GameManager.findGameByUser(uid)!;
+                    if (game) {
+                        if (game.black && uid.toString() === game.black._id!.toString()) {
+                            game!.blackSocket = socket;
+                            Logger.info(`Authorized Socket Connection with:\nUID: ${uid}`);
+                            callback?.(
+                                new GameStateAPIResponse(
+                                    game.fen,
+                                    game.gameKey,
+                                    game.getMessages(),
+                                    {
+                                        black: game.black,
+                                        white: game.white,
+                                    },
+                                ),
+                            );
+                        } else if (game.white && uid.toString() === game.white._id!.toString()) {
+                            game!.whiteSocket = socket;
+                            Logger.info(`Authorized Socket Connection with:\nUID: ${uid}`);
+                            callback?.(
+                                new GameStateAPIResponse(
+                                    game.fen,
+                                    game.gameKey,
+                                    game.getMessages(),
+                                    {
+                                        black: game.black,
+                                        white: game.white,
+                                    },
+                                ),
+                            );
+                        } else {
+                            Logger.error(`No game found for user: ${uid}`);
+                        }
                     } else {
-                        Logger.error(`No game found for user: ${uid}`);
+                        Logger.warn(`No game found for specified user\nUID: ${uid}`);
                     }
-                } else {
-                    Logger.warn(`No game found for specified user\nUID: ${uid}`);
-                }
-            });
+                },
+            );
 
             socket.on('game state', () => {
                 socket.emit(

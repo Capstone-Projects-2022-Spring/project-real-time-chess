@@ -4,6 +4,7 @@ import Swal from 'sweetalert2';
 import ChatComponent from '../components/ChatComponent';
 import ChessboardComponent from '../components/ChessboardComponent';
 import CookieManager from '../CookieManager';
+import SupportedEmojis from '../SupportedEmojis';
 
 interface MultiplayerMatchProps {
     orientation: 'b' | 'w';
@@ -12,6 +13,7 @@ interface MultiplayerMatchProps {
 interface MultiplayerMatchState {
     messages: IGameMessage[];
     fen?: string;
+    gameKey: string;
 }
 
 class MultiplayerMatch extends React.Component<MultiplayerMatchProps, MultiplayerMatchState> {
@@ -22,6 +24,7 @@ class MultiplayerMatch extends React.Component<MultiplayerMatchProps, Multiplaye
         this.state = {
             messages: [],
             fen: undefined,
+            gameKey: '',
         };
     }
 
@@ -29,14 +32,17 @@ class MultiplayerMatch extends React.Component<MultiplayerMatchProps, Multiplaye
         return (
             <div className="container">
                 <div className="row">
+                    <div className="col"></div>
                     <div className="col">
                         <h1 style={{ textAlign: 'center' }}>Multiplayer Match</h1>
+                    </div>
+                    <div className="col" style={{ fontSize: '2rem' }}>
+                        Game Key: {this.state.gameKey}
                     </div>
                 </div>
 
                 <div className="row">
-                    <div className="col"></div>
-                    <div className="col-6">
+                    <div className="col-8">
                         <ChessboardComponent
                             orientation={this.props.orientation}
                             fen={this.state.fen}
@@ -45,10 +51,10 @@ class MultiplayerMatch extends React.Component<MultiplayerMatchProps, Multiplaye
                             }}
                         />
                     </div>
+                    <div className="col"></div>
                     <div className="col-2">
                         <ChatComponent messages={this.state.messages} />
                     </div>
-                    <div className="col"></div>
                 </div>
             </div>
         );
@@ -61,7 +67,20 @@ class MultiplayerMatch extends React.Component<MultiplayerMatchProps, Multiplaye
     bindSocket() {
         this.socket = io();
         this.socket.connect();
-        this.socket.emit('authorize', CookieManager.uid, CookieManager.auth);
+        this.socket.emit(
+            'authorize',
+            CookieManager.uid,
+            CookieManager.auth,
+            (gameState: IGameStateAPIResponse) => {
+                this.setState({
+                    gameKey: gameState.gameKey
+                        .map(eName => SupportedEmojis.find(e => e.name === eName)!.emoji)
+                        .join(''),
+                    fen: gameState.fen,
+                    messages: gameState.messages,
+                });
+            },
+        );
 
         this.socket.on('game state', (gameState: IGameStateAPIResponse) => {
             this.setState({
@@ -78,15 +97,13 @@ class MultiplayerMatch extends React.Component<MultiplayerMatchProps, Multiplaye
                     text: 'Invalid move',
                 });
             } else {
-                this.setState(
-                    {
-                        fen: response.fen,
-                        messages: response.messages,
-                    },
-                    () => {
-                        this.forceUpdate();
-                    },
-                );
+                this.setState({
+                    fen: response.fen,
+                    messages: response.messages,
+                    gameKey: response.gameKey
+                        .map(eName => SupportedEmojis.find(e => e.name === eName)?.emoji)
+                        .join(''),
+                });
             }
         });
     }

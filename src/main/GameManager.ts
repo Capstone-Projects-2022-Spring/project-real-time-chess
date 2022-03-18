@@ -41,13 +41,7 @@ class GameManager {
      * @returns The game object if it exists, otherwise null.
      */
     public static findGameByKey(gameKey: string[]): ChessGame | null {
-        Logger.debug(
-            `Finding game by key: ${gameKey}\nGames: ${JSON.stringify(
-                { ...GameManager.games, game: undefined },
-                null,
-                4,
-            )}`,
-        );
+        Logger.debug(`Finding game by key: ${gameKey}`);
         return GameManager.games.find(g => ArrayUtils.strictCompare(g.gameKey, gameKey)) ?? null;
     }
 
@@ -84,12 +78,19 @@ class GameManager {
      */
     public static createGame(user: IUser): ChessGame | null {
         const game = new ChessGame(GameManager.generateGameKey());
+        GameManager.endGame(user._id!.toString());
+
         game.black = user;
         GameManager.games.push(game);
         game.addMessage({
             message: `${user.name.first} created the game.`,
         });
         return game;
+    }
+
+    public static endGame(uid: string): void {
+        const game = GameManager.findGameByUser(uid);
+        if (game) GameManager.games.splice(GameManager.games.indexOf(game), 1);
     }
 
     /**
@@ -100,6 +101,7 @@ class GameManager {
      * @returns The chess game associated with the game key.
      */
     public static joinGame(user: IUser, gameKey: string[]): ChessGame | null {
+        GameManager.endGame(user._id!.toString());
         const game = GameManager.findGameByKey(gameKey);
         if (game) {
             game.white = user;
