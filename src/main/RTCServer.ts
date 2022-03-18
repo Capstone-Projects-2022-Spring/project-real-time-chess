@@ -1,17 +1,18 @@
 import bodyParser = require('body-parser');
 import cookieParser = require('cookie-parser');
 import express = require('express');
-import * as path from 'path';
-import DatabaseConnector from './dao/DatabaseConnector';
-import Logger from './Logger';
-import apiRouter from './routes/apiRouter';
+import { Square } from 'chess.js';
 import * as http from 'http';
-import { Server, Socket } from 'socket.io';
-import * as cookie from 'cookie';
 import { ObjectId } from 'mongodb';
+import * as path from 'path';
+import { Server, Socket } from 'socket.io';
 import { ErrorAPIResponse } from './APIResponse';
+import ChessGame from './ChessGame';
+import DatabaseConnector from './dao/DatabaseConnector';
 import GameManager from './GameManager';
 import GameStateAPIResponse from './GameStateAPIResponse';
+import Logger from './Logger';
+import apiRouter from './routes/apiRouter';
 
 /**
  * The RTCServer class is responsible for starting the server and handling
@@ -69,23 +70,36 @@ class RTCServer {
         });
 
         this.socketIO.on('connection', (socket: Socket) => {
-            let cookies: { [key: string]: string };
+            let uid: string;
+            let auth: string;
+            let game: ChessGame;
 
-            if (typeof socket.handshake.headers.cookie === 'string') {
-                cookies = cookie.parse(socket.handshake.headers.cookie);
-            } else {
-                cookies = {};
-            }
-
-            Logger.info(`Opened Socket Connection with:\nUID: ${cookies.uid}`);
+            socket.on('authorize', (_uid: string | ObjectId, _auth: string) => {
+                Logger.info(`Authorizing user\nUID: ${_uid}`);
+                uid = _uid.toString();
+                auth = _auth;
+                game = GameManager.findGameByUser(uid)!;
+                if (game) {
+                    if (game.black && uid.toString() === game.black._id!.toString()) {
+                        game!.blackSocket = socket;
+                        Logger.info(`Authorized Socket Connection with:\nUID: ${uid}`);
+                    } else if (game.white && uid.toString() === game.white._id!.toString()) {
+                        game!.whiteSocket = socket;
+                        Logger.info(`Authorized Socket Connection with:\nUID: ${uid}`);
+                    } else {
+                        Logger.error(`No game found for user: ${uid}`);
+                    }
+                } else {
+                    Logger.warn(`No game found for specified user\nUID: ${uid}`);
+                }
+            });
 
             socket.on('game state', () => {
-                GameManager.verifyUserAccess(cookies.uid!, cookies.auth!)
+                GameManager.verifyUserAccess(uid.toString(), auth!)
                     .then(user => {
                         if (user) {
-                            const game = GameManager.findGameByUser(new ObjectId(cookies.uid));
                             if (game) {
-                                socket.broadcast.emit(
+                                socket.emit(
                                     'game state',
                                     new GameStateAPIResponse(
                                         game.fen,
@@ -98,25 +112,71 @@ class RTCServer {
                                     ),
                                 );
                                 Logger.info(
-                                    `Game State Request Successful\nUID: ${cookies.uid}\nFEN: ${
+                                    `Game State Request Successful\nUID: ${uid}\nFEN: ${
                                         game.fen
                                     }\n${game.getMessages().length} messages`,
                                 );
                             } else {
-                                socket.broadcast.emit(
+                                socket.emit(
                                     'game state',
                                     new ErrorAPIResponse('Could not find game'),
                                 );
-                                Logger.warn(`Could not find game with user: ${cookies.uid}`);
+                                Logger.warn(`Could not find game with user: ${uid}`);
                             }
                         }
                     })
                     .catch(err => {
-                        socket.broadcast.emit('game state', new ErrorAPIResponse(err));
+                        socket.emit('game state', new ErrorAPIResponse(err));
                         Logger.error(
-                            `Error thrown in GameManager.verifyUserAccess (UID=${cookies.uid}, AUTH=${cookies.auth})\n\n${err}`,
+                            `Error thrown in GameManager.verifyUserAccess (UID=${uid}, AUTH=${auth})\n\n${err}`,
                         );
                     });
+            });
+
+            socket.on('move piece', (source: Square, target: Square) => {
+                const move = game.move(source, target);
+                if (move) {
+                    Logger.info(
+                        `User successfully made a move\nUID: ${uid}\nMove: ${JSON.stringify(
+                            move,
+                        )}\nFEN: ${game.fen}`,
+                    );
+
+                    game.addMessage({
+                        message: `${game.turn === 'b' ? 'White' : 'Black'} moved from ${
+                            move.from
+                        } to ${move.to}`,
+                    });
+
+                    game.blackSocket!.emit('move piece', {
+                        success: true,
+                        gameKey: game.gameKey,
+                        fen: game.fen,
+                        messages: game.getMessages(),
+                        players: {
+                            black: game.black,
+                            white: game.white,
+                        },
+                        move,
+                    });
+
+                    game.whiteSocket!.emit('move piece', {
+                        success: true,
+                        gameKey: game.gameKey,
+                        fen: game.fen,
+                        messages: game.getMessages(),
+                        players: {
+                            black: game.black,
+                            white: game.white,
+                        },
+                        move,
+                    });
+                } else {
+                    socket.broadcast.emit('move piece', new ErrorAPIResponse('Invalid move'));
+                    Logger.info(
+                        `User submitted an invalid move\nUID: ${uid}\nFrom: ${source}\nTo: ${target}\nFEN: ${game.fen}`,
+                    );
+                }
             });
         });
     }

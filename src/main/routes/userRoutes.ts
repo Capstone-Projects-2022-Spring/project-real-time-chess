@@ -52,7 +52,7 @@ class UserRoutes {
         const dao = new UserDAO();
         dao.authenticateLogin(req.body)
             .then(auth => {
-                res.cookie('uid', auth.uid);
+                res.cookie('uid', auth.uid.toString());
                 res.cookie('auth', auth.key);
                 res.send(new LoginAPIResponse(auth));
             })

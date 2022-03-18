@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { io, Socket } from 'socket.io-client';
+import Swal from 'sweetalert2';
 import ChatComponent from '../components/ChatComponent';
 import ChessboardComponent from '../components/ChessboardComponent';
+import CookieManager from '../CookieManager';
 
 interface MultiplayerMatchProps {
     orientation: 'b' | 'w';
@@ -13,13 +15,13 @@ interface MultiplayerMatchState {
 }
 
 class MultiplayerMatch extends React.Component<MultiplayerMatchProps, MultiplayerMatchState> {
-    socket: Socket;
+    socket?: Socket;
 
     constructor(props: MultiplayerMatchProps) {
         super(props);
-        this.socket = io();
         this.state = {
             messages: [],
+            fen: undefined,
         };
     }
 
@@ -38,6 +40,9 @@ class MultiplayerMatch extends React.Component<MultiplayerMatchProps, Multiplaye
                         <ChessboardComponent
                             orientation={this.props.orientation}
                             fen={this.state.fen}
+                            onPieceDrop={(source, target) => {
+                                this.socket?.emit('move piece', source, target);
+                            }}
                         />
                     </div>
                     <div className="col-2">
@@ -54,11 +59,35 @@ class MultiplayerMatch extends React.Component<MultiplayerMatchProps, Multiplaye
     }
 
     bindSocket() {
+        this.socket = io();
+        this.socket.connect();
+        this.socket.emit('authorize', CookieManager.uid, CookieManager.auth);
+
         this.socket.on('game state', (gameState: IGameStateAPIResponse) => {
             this.setState({
                 fen: gameState.fen,
                 messages: gameState.messages,
             });
+        });
+
+        this.socket.on('move piece', (response: IGameStateAPIResponse) => {
+            if (!response.success) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Invalid move',
+                });
+            } else {
+                this.setState(
+                    {
+                        fen: response.fen,
+                        messages: response.messages,
+                    },
+                    () => {
+                        this.forceUpdate();
+                    },
+                );
+            }
         });
     }
 }

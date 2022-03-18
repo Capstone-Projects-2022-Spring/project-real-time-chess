@@ -24,10 +24,13 @@ class GameManager {
      * @returns A ChessGame object if the user is in a game, if no
      * user exists, or no game exists with the specified user ID, then null is returned.
      */
-    public static findGameByUser(uid: ObjectId): ChessGame | null {
+    public static findGameByUser(uid: string | ObjectId): ChessGame | null {
         return (
-            GameManager.games.find(g => g.black?._id?.equals(uid) || g.white?._id?.equals(uid)) ??
-            null
+            GameManager.games.find(
+                g =>
+                    g.black?._id?.toString() === uid.toString() ||
+                    g.white?._id?.toString() === uid.toString(),
+            ) ?? null
         );
     }
 
