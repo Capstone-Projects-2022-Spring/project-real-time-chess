@@ -9,6 +9,7 @@ interface MultiplayerMatchProps {
 
 interface MultiplayerMatchState {
     messages: IGameMessage[];
+    fen?: string;
 }
 
 class MultiplayerMatch extends React.Component<MultiplayerMatchProps, MultiplayerMatchState> {
@@ -31,7 +32,10 @@ class MultiplayerMatch extends React.Component<MultiplayerMatchProps, Multiplaye
                 <div className="row">
                     <div className="col"></div>
                     <div className="col-6">
-                        <ChessboardComponent orientation={this.props.orientation} />
+                        <ChessboardComponent
+                            orientation={this.props.orientation}
+                            fen={this.state.fen}
+                        />
                     </div>
                     <div className="col-2">
                         <ChatComponent messages={this.state.messages} />
@@ -42,10 +46,16 @@ class MultiplayerMatch extends React.Component<MultiplayerMatchProps, Multiplaye
         );
     }
 
+    componentDidMount() {
+        this.syncGameState();
+        setInterval(() => this.syncGameState(), 5000);
+    }
+
     syncGameState() {
         GameAccess.getGameState().then(gameState => {
             this.setState({
                 messages: gameState.messages,
+                fen: gameState.fen,
             });
         });
     }
