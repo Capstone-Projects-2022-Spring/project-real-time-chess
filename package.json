@@ -38,6 +38,7 @@
         "axios": "^0.25.0",
         "body-parser": "^1.19.1",
         "chess.js": "^0.12.1",
+        "cookie": "^0.4.2",
         "cookie-parser": "^1.4.6",
         "eslint-config-airbnb-typescript": "^16.1.0",
         "express": "^4.17.2",
@@ -47,6 +48,7 @@
         "react-chessboard": "^1.2.2",
         "react-dom": "^17.0.2",
         "socket.io": "^4.4.1",
+        "socket.io-client": "^4.4.1",
         "sweetalert2": "^11.4.4",
         "winston": "^3.6.0"
     },
@@ -57,6 +59,7 @@
         "@types/chai": "^4.3.0",
         "@types/chess.js": "^0.11.2",
         "@types/chessboardjs": "^0.3.2",
+        "@types/cookie": "^0.4.1",
         "@types/cookie-parser": "^1.4.2",
         "@types/express": "^4.17.13",
         "@types/mocha": "^9.1.0",
