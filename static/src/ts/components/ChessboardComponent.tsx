@@ -35,9 +35,8 @@ class ChessboardComponent extends React.Component<
                         if (isValid) {
                             this.props.onPieceDrop?.(source, target);
                             return true;
-                        } else {
-                            return false;
                         }
+                            return false;
                     }}
                 />
             </div>

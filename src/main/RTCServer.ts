@@ -103,7 +103,6 @@ class RTCServer {
                     .then(user => {
                         if (user) {
                             if (game) {
-                                console.log('EMITTING GAME STATE EVENT TO CLIENT');
                                 socket.emit(
                                     'game state',
                                     new GameStateAPIResponse(
@@ -141,8 +140,7 @@ class RTCServer {
             socket.on('move piece', (source: Square, target: Square) => {
                 const move = game.move(source, target);
                 if (move) {
-                    console.log('EMITTING MOVE PIECE EVENT TO CLIENT');
-                    if (game.turn == 'b') {
+                    if (game.turn === 'b') {
                         game.blackSocket!.emit('move piece', {
                             success: true,
                             gameKey: game.gameKey,
@@ -174,7 +172,6 @@ class RTCServer {
                         )}\nFEN: ${game.fen}`,
                     );
                 } else {
-                    console.log('Move not valid');
                     socket.broadcast.emit('move piece', new ErrorAPIResponse('Invalid move'));
                     Logger.info(
                         `User submitted an invalid move\nUID: ${uid}\nFrom: ${source}\nTo: ${target}\nFEN: ${game.fen}`,

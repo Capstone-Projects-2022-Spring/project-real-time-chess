@@ -63,12 +63,7 @@ class MultiplayerMatch extends React.Component<MultiplayerMatchProps, Multiplaye
         this.socket.connect();
         this.socket.emit('authorize', CookieManager.uid, CookieManager.auth);
 
-        this.socket.on('connection-success', () => {
-            console.log('Successfully connected to server');
-        });
-
         this.socket.on('game state', (gameState: IGameStateAPIResponse) => {
-            console.log('updating game state');
             this.setState({
                 fen: gameState.fen,
                 messages: gameState.messages,
@@ -76,8 +71,6 @@ class MultiplayerMatch extends React.Component<MultiplayerMatchProps, Multiplaye
         });
 
         this.socket.on('move piece', (move: APIResponse & { move: Move }) => {
-            console.log('piece moved');
-            console.log(move);
             if (!move.success) {
                 Swal.fire({
                     icon: 'error',
@@ -86,8 +79,6 @@ class MultiplayerMatch extends React.Component<MultiplayerMatchProps, Multiplaye
                 });
             }
         });
-
-        console.log('Done binding sockets');
     }
 }
 
