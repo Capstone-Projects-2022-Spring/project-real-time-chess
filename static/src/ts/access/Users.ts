@@ -1,4 +1,5 @@
 import axios from 'axios';
+import CookieManager from '../CookieManager';
 import LoginModel from '../models/LoginModel';
 import SignUpModel from '../models/SignUpModel';
 
@@ -37,9 +38,6 @@ class Users {
             axios
                 .post('/api/user/login', form)
                 .then(response => {
-                    if (response.data.success) {
-                        localStorage.setItem('cert', JSON.stringify(response.data.auth));
-                    }
                     resolve(response.data.success);
                 })
                 .catch(err => reject(err));
@@ -53,7 +51,7 @@ class Users {
      * false otherwise.
      */
     static hasCert(): boolean {
-        return localStorage.getItem('cert') !== null;
+        return CookieManager.uid.trim().length !== 0 && CookieManager.auth.trim().length !== 0;
     }
 
     /**

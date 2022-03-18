@@ -1,16 +1,22 @@
-import { Chess, ChessInstance } from 'chess.js';
+import { Chess, ChessInstance, Square } from 'chess.js';
 import * as React from 'react';
 import { Chessboard } from 'react-chessboard';
-import Swal from 'sweetalert2';
-import GameAccess from '../access/GameAccess';
 
 class ChessboardComponent extends React.Component<
-    { orientation: 'b' | 'w'; fen?: string },
+    {
+        orientation: 'b' | 'w';
+        fen?: string;
+        onPieceDrop?: (source: Square, target: Square) => void;
+    },
     {
         game: ChessInstance;
     }
 > {
-    constructor(props: { orientation: 'b' | 'w'; fen: string }) {
+    constructor(props: {
+        orientation: 'b' | 'w';
+        fen: string;
+        onPieceDrop?: (source: Square, target: Square) => void;
+    }) {
         super(props);
         this.state = {
             game: this.props.fen ? Chess(this.props.fen) : Chess(),
@@ -25,34 +31,13 @@ class ChessboardComponent extends React.Component<
                     boardOrientation={this.props.orientation === 'b' ? 'black' : 'white'}
                     onPieceDrop={(source, target) => {
                         const isValid = this.tryMove(source, target);
+
                         if (isValid) {
-                            GameAccess.move(source, target)
-                                .then(response => {
-                                    if (!response.success) {
-                                        Swal.fire({
-                                            icon: 'error',
-                                            title: 'Error',
-                                            text: 'Invalid move',
-                                        });
-                                    } else {
-                                        this.forceUpdate();
-                                    }
-                                })
-                                .catch(err => {
-                                    Swal.fire({
-                                        icon: 'error',
-                                        title: 'Move Error',
-                                        text: err.message,
-                                    });
-                                });
+                            this.props.onPieceDrop?.(source, target);
                             return true;
+                        } else {
+                            return false;
                         }
-                        Swal.fire({
-                            icon: 'warning',
-                            title: 'Invalid move',
-                            text: 'Please try again',
-                        });
-                        return false;
                     }}
                 />
             </div>

@@ -1,4 +1,5 @@
 import { Chess, ChessInstance, Move, Square } from 'chess.js';
+import { Socket } from 'socket.io';
 import { IUser } from './dao/UserDAO';
 
 /**
@@ -19,6 +20,16 @@ class ChessGame {
      * The IUser object representing the white player.
      */
     public white?: IUser;
+
+    /**
+     * The web socket for the black player.
+     */
+    public blackSocket?: Socket;
+
+    /**
+     * The web socket for the white player.
+     */
+    public whiteSocket?: Socket;
 
     /**
      * The chess.js game instance
@@ -76,7 +87,19 @@ class ChessGame {
      * If an invalid move (source to target) is attempted, then `null` is returned.
      */
     move(source: Square, target: Square): Move | null {
-        return this.game.move(`${source}-${target}`, { sloppy: true });
+        let move;
+        if (this.game.turn() === 'b') {
+            move = this.game.move(`${source}-${target}`, { sloppy: true });
+            this.whiteSocket?.emit('move piece', move);
+        } else {
+            move = this.game.move(`${source}-${target}`, { sloppy: true });
+            this.blackSocket?.emit('move piece', move);
+        }
+        return move ?? null;
+    }
+
+    get turn(): 'w' | 'b' {
+        return this.game.turn();
     }
 }
 

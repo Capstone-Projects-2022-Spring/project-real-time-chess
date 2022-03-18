@@ -74,7 +74,7 @@ class GameRoutes {
                         game.white = user;
                         game.addMessage({ message: `${user.name.first} joined the game.` });
                         res.send(new GameCreatedAPIResponse(game.gameKey));
-                        Logger.info(`User joined game\n${JSON.stringify({ ...game }, null, 4)}`);
+                        Logger.info(`User (uid=${user._id}) joined game`);
                     } else {
                         res.send(new ErrorAPIResponse('Could not find game'));
                         Logger.warn(
