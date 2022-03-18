@@ -63,16 +63,16 @@ runPhase('DEPS', 'Installing NPM Dependencies', 'npm install', 'installation')
                     .catch(() => {
                         console.error('❌ Build failed in BUILD phase.');
                         console.warn(
-                            '⚠️ This is due to compilation errors in TS(X)/SCSS source files.',
+                            '⚠️  This is due to compilation errors in TS(X)/SCSS source files.',
                         );
                     });
             })
             .catch(() => {
                 console.error('❌ Build failed in LINT phase.');
-                console.warn('⚠️ Run `npm run lint` to see errors.');
+                console.warn('⚠️  Run `npm run lint` to see errors.');
             });
     })
     .catch(err => {
         console.error('❌ Build failed in DEPS phase.');
-        console.warn('⚠️ Run `npm install` to see errors.');
+        console.warn('⚠️  Run `npm install` to see errors.');
     });
