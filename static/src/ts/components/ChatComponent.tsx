@@ -1,18 +1,10 @@
 import * as React from 'react';
-import GameAccess from '../access/GameAccess';
-import { NoProps } from '../models/types';
+import { NoState } from '../models/types';
 
-export default class ChatComponent extends React.Component<NoProps, { messages: IGameMessage[] }> {
-    constructor(props: NoProps) {
-        super(props);
-        this.state = { messages: [] };
-    }
-
-    componentDidMount() {
-        this.syncMessages();
-        setInterval(() => this.syncMessages(), 1000);
-    }
-
+interface ChatComponentProps {
+    messages: IGameMessage[];
+}
+class ChatComponent extends React.Component<ChatComponentProps, NoState> {
     render() {
         return (
             <div
@@ -24,18 +16,10 @@ export default class ChatComponent extends React.Component<NoProps, { messages: 
                     padding: '1rem',
                 }}
             >
-                {...this.state.messages.map(message => <div>{message.message}</div>)}
+                {...this.props.messages.map(message => <div>{message.message}</div>)}
             </div>
         );
     }
-
-    syncMessages(): void {
-        GameAccess.getMessages()
-            .then(messages => {
-                this.setState({ messages });
-            })
-            .catch(() => {
-                this.setState({ messages: [{ message: 'Could not get messages' }] });
-            });
-    }
 }
+
+export default ChatComponent;

@@ -2,7 +2,8 @@
 
 1. [Required Development Tools](#required-development-tools)
 2. [Preferred Development Tools](#preferred-development-tools)
-3. [Build Instructions](#build-instructions)
+3. [NPM Scripts](#npm-scripts)
+4.
 
 ## Required Development Tools
 
@@ -22,52 +23,114 @@
 | **All** Coding    | Microsoft VS COde | Support for all standard extensions.        |
 | Managing Database | MongoDB Compass   | To view/edit MongoDB documents/collections. |
 
-## Build Instructions
+## UML Diagrams
 
-### Step 1: Run the setup file
+### Server Side
 
-**Command**
+![](README/server-uml.svg)
 
-```bash
-source setup.mac.sh
+### Client Side
+
+![](README/client-uml.svg)
+
+## NPM Scripts
+
+### Build
+
 ```
-
-This will:
-
-1. Install all NPM packages (locally) for this project
-2. Installs the SASS global binary
-3. Installs the webpack global binary
-4. Installs the `webpack-cli` globally
-
-### Step 2: Build The Server and SASS files
-
-**Command**
-
-```bash
 npm run build
 ```
 
-This will:
+> `npm run build` will compile all source code.
+>
+> -   Client Side
+>     -   TS/TSX – Webpack
+>     -   SCSS – SASS
+> -   Server Side
+>     -   TS – TSC
 
-1. Build the server TypeScript files
-2. Build the SASS files
+To build exclusively server-side or client-side code, use the following:
 
-### Step 3: Build and webpack the client scripts
+```
+npm run build:server
 
-**Command**
+# or
 
-```bash
+npm run build:client
+```
+
+To build exclusively SCSS files, use the following:
+
+```
+npm run build:scss
+```
+
+To build exclusively the TS/TSX front-end code (ReactJS), use the following:
+
+```
 webpack
 ```
 
-This will webpack all client-side TypeScript files and compress it.
+To Clean the workspace, use the following:
 
-### Step 4: Start the Server
+```
+npm run clean
+```
 
-**Command**
+To clean (rotate) server logs, use the following:
 
-```bash
+```
+npm run rotate-logs
+```
+
+### Start Server
+
+```
 npm run start
 ```
 
-This will start the NodeJS server located in `dist/index.js`.
+### Testing and Code Quality
+
+To run tests locally, use:
+
+```
+npm run test
+```
+
+If using a coverage reporter (compatible with NYC), use:
+
+```
+npm run coverage
+```
+
+When trying to Lint the project, use:
+
+```
+npm run lint
+```
+
+### Documentation
+
+To document the entire project:
+
+```
+npm run document
+```
+
+To document only the **server**:
+
+```
+npm run document:server
+```
+
+To document only the **client**:
+
+```
+npm run document:client
+```
+
+To generate a UML diagram of the project, use:
+
+```
+npm run gen-uml
+```

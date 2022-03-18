@@ -1,22 +1,16 @@
 import * as React from 'react';
-// import { Chessboard } from 'react-chessboard';
 import Swal from 'sweetalert2';
 import ButtonComponent from '../components/ButtonComponent';
 import FriendGameSetupComponent from '../components/FriendGameSetup';
-// import ChessboardComponent from '../components/ChessboardComponent';
-// import Popup from '../components/Popup';
 import { NoProps } from '../models/types';
 import UINavigator from '../models/UINavigator';
 import BoardScreen from './BoardScreen';
+import MultiplayerMatch from './MultiplayerMatch';
 
 /**
  * Gameplay options page which allows a user to choose which game mode they want to play.
- *
- * @export
- * @class GameplayOptions
- * @extends {React.Component<NoProps, NoState>}
  */
-export default class GameplayOptions extends React.Component<
+class GameplayOptions extends React.Component<
     NoProps,
     { hoverImage: string; hoverImageCaption: string }
 > {
@@ -103,6 +97,17 @@ export default class GameplayOptions extends React.Component<
                 </div>
 
                 <div className="row">
+                    <div className="col">
+                        <ButtonComponent
+                            label="Join Previous Game"
+                            onClick={() => {
+                                UINavigator.render(<MultiplayerMatch orientation={'b'} />);
+                            }}
+                        />
+                    </div>
+                </div>
+
+                <div className="row">
                     <div className="col-12 mt-4">
                         <div className="alert alert-primary" role="alert">
                             <div>
@@ -134,18 +139,14 @@ export default class GameplayOptions extends React.Component<
 
     /**
      * Displays a sweet alert modal with an index of how to play the game.
-     *
-     * @static
-     *
-     * @memberOf GameplayOptions
      */
     static displayHowToPlay(): void {
         /**
          * Generates a bootstrap list group item.
          *
-         * @param {string} text The text to include in the list item.
-         * @param {() => void} action The action to invoke when clicked.
-         * @returns {HTMLLIElement} The generated list item.
+         * @param text - The text to include in the list item.
+         * @param action - The action to invoke when clicked.
+         * @returns The generated list item.
          */
         function makeListItem(text: string, action: () => void) {
             const li = document.createElement('li');
@@ -160,8 +161,8 @@ export default class GameplayOptions extends React.Component<
         /**
          * Generates a bootstrap list group.
          *
-         * @param {...HTMLLIElement[]} items The list items to include in the list group.
-         * @returns {HTMLLIElement} The generated list group.
+         * @param items - The list items to include in the list group.
+         * @returns The generated list group.
          */
         function makeList(...items: HTMLLIElement[]) {
             const list = document.createElement('ul');
@@ -204,3 +205,5 @@ export default class GameplayOptions extends React.Component<
         });
     }
 }
+
+export default GameplayOptions;

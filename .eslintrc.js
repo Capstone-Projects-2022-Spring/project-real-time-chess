@@ -1,7 +1,7 @@
 module.exports = {
     root: true,
     parser: '@typescript-eslint/parser',
-    plugins: ['@typescript-eslint'],
+    plugins: ['@typescript-eslint', 'eslint-plugin-tsdoc'],
     extends: [
         'eslint:recommended',
         'plugin:@typescript-eslint/recommended',
@@ -29,9 +29,10 @@ module.exports = {
         'no-underscore-dangle': 'off',
         'object-curly-newline': 'off',
         '@typescript-eslint/brace-style': 'off',
+        'tsdoc/syntax': 'warn',
     },
     parserOptions: {
         project: ['./tsconfig.json', './static/src/ts/tsconfig.json'],
     },
-    ignorePatterns: ['*.js', 'dist/**/*', 'test/**/*'],
+    ignorePatterns: ['*.js', 'dist/**/*', 'src/test/**/*'],
 };

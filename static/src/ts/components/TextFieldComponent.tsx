@@ -1,7 +1,9 @@
 import InputField from './InputField';
 
-export default class TextFieldComponent extends InputField {
+class TextFieldComponent extends InputField {
     validate(): boolean {
         return true;
     }
 }
+
+export default TextFieldComponent;

@@ -4,3 +4,6 @@ static/public/css
 static/public/js
 server.log
 tsconfig.tsbuildinfo
+docs
+.nyc_output
+coverage
