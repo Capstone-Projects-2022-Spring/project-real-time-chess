@@ -74,10 +74,6 @@ class RTCServer {
             let auth: string;
             let game: ChessGame;
 
-            setTimeout(() => {
-                socket.emit('connection-success');
-            }, 4000);
-
             socket.on('authorize', (_uid: string | ObjectId, _auth: string) => {
                 Logger.info(`Authorizing user\nUID: ${_uid}`);
                 uid = _uid.toString();
@@ -140,37 +136,41 @@ class RTCServer {
             socket.on('move piece', (source: Square, target: Square) => {
                 const move = game.move(source, target);
                 if (move) {
-                    if (game.turn === 'b') {
-                        game.blackSocket!.emit('move piece', {
-                            success: true,
-                            gameKey: game.gameKey,
-                            fen: game.fen,
-                            messages: game.getMessages(),
-                            players: {
-                                black: game.black,
-                                white: game.white,
-                            },
-                            move,
-                        });
-                    } else {
-                        game.whiteSocket!.emit('move piece', {
-                            success: true,
-                            gameKey: game.gameKey,
-                            fen: game.fen,
-                            messages: game.getMessages(),
-                            players: {
-                                black: game.black,
-                                white: game.white,
-                            },
-                            move,
-                        });
-                    }
-
                     Logger.info(
                         `User successfully made a move\nUID: ${uid}\nMove: ${JSON.stringify(
                             move,
                         )}\nFEN: ${game.fen}`,
                     );
+
+                    game.addMessage({
+                        message: `${game.turn === 'b' ? 'White' : 'Black'} moved from ${
+                            move.from
+                        } to ${move.to}`,
+                    });
+
+                    game.blackSocket!.emit('move piece', {
+                        success: true,
+                        gameKey: game.gameKey,
+                        fen: game.fen,
+                        messages: game.getMessages(),
+                        players: {
+                            black: game.black,
+                            white: game.white,
+                        },
+                        move,
+                    });
+
+                    game.whiteSocket!.emit('move piece', {
+                        success: true,
+                        gameKey: game.gameKey,
+                        fen: game.fen,
+                        messages: game.getMessages(),
+                        players: {
+                            black: game.black,
+                            white: game.white,
+                        },
+                        move,
+                    });
                 } else {
                     socket.broadcast.emit('move piece', new ErrorAPIResponse('Invalid move'));
                     Logger.info(

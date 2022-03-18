@@ -19,7 +19,7 @@ class ChessboardComponent extends React.Component<
     }) {
         super(props);
         this.state = {
-            game: this.props.fen ? Chess(this.props.fen) : Chess(),
+            game: Chess(this.props.fen),
         };
     }
 
@@ -27,7 +27,7 @@ class ChessboardComponent extends React.Component<
         return (
             <div>
                 <Chessboard
-                    position={this.state.game.fen()}
+                    position={this.props.fen}
                     boardOrientation={this.props.orientation === 'b' ? 'black' : 'white'}
                     onPieceDrop={(source, target) => {
                         const isValid = this.tryMove(source, target);
@@ -36,7 +36,7 @@ class ChessboardComponent extends React.Component<
                             this.props.onPieceDrop?.(source, target);
                             return true;
                         }
-                            return false;
+                        return false;
                     }}
                 />
             </div>

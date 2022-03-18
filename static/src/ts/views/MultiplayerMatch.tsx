@@ -1,4 +1,3 @@
-import { Move } from 'chess.js';
 import * as React from 'react';
 import { io, Socket } from 'socket.io-client';
 import Swal from 'sweetalert2';
@@ -22,6 +21,7 @@ class MultiplayerMatch extends React.Component<MultiplayerMatchProps, Multiplaye
         super(props);
         this.state = {
             messages: [],
+            fen: undefined,
         };
     }
 
@@ -70,13 +70,26 @@ class MultiplayerMatch extends React.Component<MultiplayerMatchProps, Multiplaye
             });
         });
 
-        this.socket.on('move piece', (move: APIResponse & { move: Move }) => {
-            if (!move.success) {
+        this.socket.on('move piece', (response: IGameStateAPIResponse) => {
+            console.log('Move piece response', response);
+            if (!response.success) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
                     text: 'Invalid move',
                 });
+            } else {
+                this.setState(
+                    {
+                        fen: response.fen,
+                        messages: response.messages,
+                    },
+                    () => {
+                        this.forceUpdate();
+                        console.log('Updated shit');
+                        console.log('FEN', this.state.fen);
+                    },
+                );
             }
         });
     }

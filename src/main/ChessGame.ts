@@ -90,10 +90,8 @@ class ChessGame {
         let move;
         if (this.game.turn() === 'b') {
             move = this.game.move(`${source}-${target}`, { sloppy: true });
-            this.whiteSocket?.emit('move piece', move);
         } else {
             move = this.game.move(`${source}-${target}`, { sloppy: true });
-            this.blackSocket?.emit('move piece', move);
         }
         return move ?? null;
     }
