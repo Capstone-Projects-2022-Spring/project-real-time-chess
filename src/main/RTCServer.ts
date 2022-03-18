@@ -71,13 +71,11 @@ class RTCServer {
 
         this.socketIO.on('connection', (socket: Socket) => {
             let uid: string;
-            let auth: string;
             let game: ChessGame;
 
             socket.on('authorize', (_uid: string | ObjectId, _auth: string) => {
                 Logger.info(`Authorizing user\nUID: ${_uid}`);
                 uid = _uid.toString();
-                auth = _auth;
                 game = GameManager.findGameByUser(uid)!;
                 if (game) {
                     if (game.black && uid.toString() === game.black._id!.toString()) {
@@ -95,42 +93,18 @@ class RTCServer {
             });
 
             socket.on('game state', () => {
-                GameManager.verifyUserAccess(uid.toString(), auth!)
-                    .then(user => {
-                        if (user) {
-                            if (game) {
-                                socket.emit(
-                                    'game state',
-                                    new GameStateAPIResponse(
-                                        game.fen,
-                                        game.gameKey,
-                                        game.getMessages(),
-                                        {
-                                            black: game.black,
-                                            white: game.white,
-                                        },
-                                    ),
-                                );
-                                Logger.info(
-                                    `Game State Request Successful\nUID: ${uid}\nFEN: ${
-                                        game.fen
-                                    }\n${game.getMessages().length} messages`,
-                                );
-                            } else {
-                                socket.emit(
-                                    'game state',
-                                    new ErrorAPIResponse('Could not find game'),
-                                );
-                                Logger.warn(`Could not find game with user: ${uid}`);
-                            }
-                        }
-                    })
-                    .catch(err => {
-                        socket.emit('game state', new ErrorAPIResponse(err));
-                        Logger.error(
-                            `Error thrown in GameManager.verifyUserAccess (UID=${uid}, AUTH=${auth})\n\n${err}`,
-                        );
-                    });
+                socket.emit(
+                    'game state',
+                    new GameStateAPIResponse(game.fen, game.gameKey, game.getMessages(), {
+                        black: game.black,
+                        white: game.white,
+                    }),
+                );
+                Logger.info(
+                    `Game State Request Successful\nUID: ${uid}\nFEN: ${game.fen}\n${
+                        game.getMessages().length
+                    } messages`,
+                );
             });
 
             socket.on('move piece', (source: Square, target: Square) => {

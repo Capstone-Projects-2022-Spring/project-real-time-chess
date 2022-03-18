@@ -5,6 +5,7 @@ import FriendGameSetupComponent from '../components/FriendGameSetup';
 import { NoProps } from '../models/types';
 import UINavigator from '../models/UINavigator';
 import BoardScreen from './BoardScreen';
+import MultiplayerMatch from './MultiplayerMatch';
 
 /**
  * Gameplay options page which allows a user to choose which game mode they want to play.
@@ -92,6 +93,17 @@ class GameplayOptions extends React.Component<
                         }}
                     >
                         <ButtonComponent label="AI v AI" width="100%" onClick={() => undefined} />
+                    </div>
+                </div>
+
+                <div className="row">
+                    <div className="col">
+                        <ButtonComponent
+                            label="Join Previous Game"
+                            onClick={() => {
+                                UINavigator.render(<MultiplayerMatch orientation={'b'} />);
+                            }}
+                        />
                     </div>
                 </div>
 
