@@ -1,18 +1,7 @@
-import express = require('express');
 import { ObjectId } from 'mongodb';
-import { BaseAPIResponse, ErrorAPIResponse } from '../APIResponse';
+import { ErrorAPIResponse } from '../APIResponse';
 import UserDAO from '../dao/UserDAO';
 import LoginAPIResponse from '../LoginAPIResponse';
-
-/**
- * The interface for all user registration forms.
- */
-interface CreateUserRequestBody {
-    name: { first: string; last: string };
-    email: string;
-    username: string;
-    password: string;
-}
 
 class UserRoutes {
     /**
@@ -21,10 +10,7 @@ class UserRoutes {
      * @param req - The Express request object.
      * @param res - The Express response object.
      */
-    static createUserRoute(
-        req: express.Request<Record<string, never>, BaseAPIResponse, CreateUserRequestBody>,
-        res: express.Response<BaseAPIResponse>,
-    ) {
+    static createUserRoute(req: CreateUserRequest, res: CreateUserResponse) {
         const dao = new UserDAO();
         dao.createUser(req.body)
             .then(() =>
@@ -41,14 +27,7 @@ class UserRoutes {
      * @param req - The Express request object
      * @param res - The Express response object
      */
-    static loginUserRoute(
-        req: express.Request<
-            Record<string, never>,
-            LoginAPIResponse,
-            { user: string; password: string }
-        >,
-        res: express.Response<LoginAPIResponse | ErrorAPIResponse>,
-    ) {
+    static loginUserRoute(req: LoginUserRequest, res: LoginUserResponse) {
         const dao = new UserDAO();
         dao.authenticateLogin(req.body)
             .then(auth => {
@@ -65,7 +44,7 @@ class UserRoutes {
      * @param req - The Express request object.
      * @param res - The Express response object.
      */
-    static authenticateUserRoute(req: express.Request, res: express.Response<BaseAPIResponse>) {
+    static authenticateUserRoute(req: AuthenticateUserRequest, res: AuthenticateUserResponse) {
         const dao = new UserDAO();
         dao.authenticateKey(new ObjectId(req.cookies.uid), req.cookies.auth)
             .then(passed => {

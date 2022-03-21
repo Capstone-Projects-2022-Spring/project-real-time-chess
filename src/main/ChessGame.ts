@@ -1,5 +1,4 @@
 import { Chess, ChessInstance, Move, Square } from 'chess.js';
-import { Socket } from 'socket.io';
 import { IUser } from './dao/UserDAO';
 import GameStateAPIResponse from './GameStateAPIResponse';
 
@@ -25,12 +24,12 @@ class ChessGame {
     /**
      * The web socket for the black player.
      */
-    public blackSocket?: Socket;
+    public blackSocket?: ChessGameSocket;
 
     /**
      * The web socket for the white player.
      */
-    public whiteSocket?: Socket;
+    public whiteSocket?: ChessGameSocket;
 
     /**
      * The chess.js game instance

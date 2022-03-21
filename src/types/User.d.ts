@@ -1,7 +1,7 @@
 /**
  * The data belonging to a User in the database
  */
-interface IUser extends Document {
+declare interface IUser extends Document {
     _id: import('mongodb').ObjectId;
     name: {
         first: string;

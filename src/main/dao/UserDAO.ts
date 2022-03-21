@@ -39,19 +39,6 @@ interface IUser extends Document {
 }
 
 /**
- * Authorization information stored in a cookie on the client side.
- * This is used to verify if a user is logged in.
- *
- * `uid` is saved as `cookies.uid`
- *
- * `key` is saved as `cookies.auth`
- */
-interface AuthInfo {
-    uid: ObjectId;
-    key: string;
-}
-
-/**
  * Data Access Object for the User collection.
  */
 class UserDAO extends BaseDAO<IUser> {
@@ -90,7 +77,9 @@ class UserDAO extends BaseDAO<IUser> {
                     user = await this.findOne({ username: formData.user });
                 }
 
-                if (user.password === formData.password) {
+                if (!user) {
+                    reject(new InvalidCredentialsError());
+                } else if (user.password === formData.password) {
                     const key = this.generateAuthKey();
 
                     this.updateOne({ _id: user._id }, { $push: { auths: key } });
@@ -152,4 +141,4 @@ class UserDAO extends BaseDAO<IUser> {
 }
 
 export default UserDAO;
-export { IUser, AuthInfo, UserRegistrationFormData, UserLoginFormData };
+export { IUser, UserRegistrationFormData, UserLoginFormData };
