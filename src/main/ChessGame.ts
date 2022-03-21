@@ -1,5 +1,4 @@
 import { Chess, ChessInstance, Move, Square } from 'chess.js';
-import { Socket } from 'socket.io';
 import { IUser } from './dao/UserDAO';
 import GameStateAPIResponse from './GameStateAPIResponse';
 
