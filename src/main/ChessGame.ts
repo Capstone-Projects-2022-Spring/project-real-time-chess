@@ -25,12 +25,12 @@ class ChessGame {
     /**
      * The web socket for the black player.
      */
-    public blackSocket?: Socket;
+    public blackSocket?: ChessGameSocket;
 
     /**
      * The web socket for the white player.
      */
-    public whiteSocket?: Socket;
+    public whiteSocket?: ChessGameSocket;
 
     /**
      * The chess.js game instance

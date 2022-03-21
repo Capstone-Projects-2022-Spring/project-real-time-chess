@@ -20,7 +20,7 @@
         "uml:client": "tplant -A -i static/src/ts/index.tsx -o README/client-uml.svg",
         "lint": "eslint .",
         "fix": "eslint . --fix",
-        "document": "npm run document-server & npm run document-client",
+        "document": "npm run document:server & npm run document:client",
         "document:server": "typedoc --tsconfig ./tsconfig.json --entryPointStrategy expand ./src/main --out ./docs/server",
         "document:client": "typedoc --tsconfig ./static/src/ts/tsconfig.json --entryPointStrategy expand ./static/src/ts --out ./docs/client"
     },

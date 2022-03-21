@@ -1,5 +1,4 @@
 import { BaseAPIResponse } from './APIResponse';
-import { AuthInfo } from './dao/UserDAO';
 
 /**
  * The API response when a successful request is made to log a user in.
