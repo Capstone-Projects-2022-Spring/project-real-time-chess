@@ -110,6 +110,9 @@ class ChessGame {
         return move ?? null;
     }
 
+    /**
+     * The player the game is waiting on to play.
+     */
     get turn(): 'w' | 'b' {
         return this.game.turn();
     }

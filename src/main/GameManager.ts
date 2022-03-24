@@ -88,6 +88,11 @@ class GameManager {
         return game;
     }
 
+    /**
+     * Ends a game by removing it from the list of active games.
+     *
+     * @param uid - The user ID of either player in the chess game.
+     */
     public static endGame(uid: string): void {
         const game = GameManager.findGameByUser(uid);
         if (game) GameManager.games.splice(GameManager.games.indexOf(game), 1);

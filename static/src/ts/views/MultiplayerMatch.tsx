@@ -16,9 +16,20 @@ interface MultiplayerMatchState {
     gameKey: string;
 }
 
+/**
+ * The multiplayer match component. This displays the chessboard and chat components.
+ */
 class MultiplayerMatch extends React.Component<MultiplayerMatchProps, MultiplayerMatchState> {
+    /**
+     * The open socket between the client and the server.
+     */
     socket?: Socket;
 
+    /**
+     * Creates an instance of MultiplayerMatch.
+     * @param props - The props for the multiplayer match component.
+     * This only includes the board orientation ('b' for black, 'w' for white).
+     */
     constructor(props: MultiplayerMatchProps) {
         super(props);
         this.state = {
@@ -28,6 +39,9 @@ class MultiplayerMatch extends React.Component<MultiplayerMatchProps, Multiplaye
         };
     }
 
+    /**
+     * @returns The multiplayer match component.
+     */
     render() {
         return (
             <div className="container">
@@ -59,10 +73,16 @@ class MultiplayerMatch extends React.Component<MultiplayerMatchProps, Multiplaye
         );
     }
 
+    /**
+     * Binds the socket to this component when it mounts.
+     */
     componentDidMount() {
         this.bindSocket();
     }
 
+    /**
+     * Opens a new socket with the server and binds the socket to this component.
+     */
     bindSocket() {
         this.socket = io();
         this.socket.connect();

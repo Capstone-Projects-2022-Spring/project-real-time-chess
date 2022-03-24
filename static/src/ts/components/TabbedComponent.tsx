@@ -13,7 +13,17 @@ interface TabbedComponentState {
     activeTab: number;
 }
 
+/**
+ * The TabbedComponent is a component that allows you to have multiple tabs and provides
+ * a button group to switch between them.
+ */
 class TabbedComponent extends React.Component<TabbedComponentProps, TabbedComponentState> {
+    /**
+     * Creates an instance of TabbedComponent.
+     * @param props - Properties for the tabbed component. This includes
+     * the actual tabs to be displayed, the active tab (defaults to the 0th tab) and an
+     * optional className which is applied to the outermost div.
+     */
     constructor(props: TabbedComponentProps) {
         super(props);
         this.state = {
@@ -21,6 +31,9 @@ class TabbedComponent extends React.Component<TabbedComponentProps, TabbedCompon
         };
     }
 
+    /**
+     * @returns The react element for the TabbedComponent view.
+     */
     render() {
         return (
             <div style={{ textAlign: 'center' }} className={this.props.className}>

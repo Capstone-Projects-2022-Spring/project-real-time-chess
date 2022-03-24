@@ -8,9 +8,20 @@ interface WinstonViewerState {
     filter: string;
 }
 
+/**
+ * A react component to view all Winston server logs.
+ */
 class WinstonViewer extends React.Component<NoProps, WinstonViewerState> {
+    /**
+     * The interval pointer for the log listener. This is the interval which
+     * checks for more logs.
+     */
     private logListenerInterval?: number;
 
+    /**
+     * Creates an instance of WinstonViewer.
+     * @param props - The props for the winston viewer component.
+     */
     constructor(props: NoProps) {
         super(props);
         this.state = {
@@ -19,6 +30,13 @@ class WinstonViewer extends React.Component<NoProps, WinstonViewerState> {
         };
     }
 
+    /**
+     * Parses the search filter string and returns the filter object.
+     * The search filter allows for querying logs which include/exclude
+     * a string, the log level, and to only include the last N logs.
+     *
+     * @returns The search filter object.
+     */
     parseFilters() {
         const filters = {
             includes: [] as string[],
@@ -27,6 +45,12 @@ class WinstonViewer extends React.Component<NoProps, WinstonViewerState> {
             last: 0,
         };
 
+        /**
+         * Adds a filter to the filters object based on the tagname.
+         *
+         * @param tagname - The tagname of the filter.
+         * @param value - The value of the filter query.
+         */
         function addFilter(tagname: string, value: string) {
             switch (tagname) {
                 case 'include':
@@ -96,6 +120,11 @@ class WinstonViewer extends React.Component<NoProps, WinstonViewerState> {
         return filters;
     }
 
+    /**
+     * Renders the winston viewer component.
+     *
+     * @returns The react element for the winston viewer.
+     */
     render() {
         const filters = this.parseFilters();
 
@@ -146,15 +175,27 @@ class WinstonViewer extends React.Component<NoProps, WinstonViewerState> {
         );
     }
 
+    /**
+     * When the component is ready to be unmounted, then the log listener
+     * will be killed.
+     */
     componentWillUnmount() {
         if (this.logListenerInterval) clearInterval(this.logListenerInterval);
     }
 
+    /**
+     * When the component mounts, this function will update the logs
+     * and start the log listener.
+     */
     componentDidMount() {
         this.updateLogs();
         this.listenForLogs();
     }
 
+    /**
+     * Retrieves a new copy of the logs and then updates the state
+     * of the log viewer component.
+     */
     updateLogs() {
         axios.get('/logs').then(response => {
             let logs = response.data;
@@ -173,12 +214,23 @@ class WinstonViewer extends React.Component<NoProps, WinstonViewerState> {
         });
     }
 
+    /**
+     * Starts the log listener if not already started.
+     */
     listenForLogs() {
         if (this.logListenerInterval === undefined) {
             this.logListenerInterval = window.setInterval(() => this.updateLogs(), 5000);
         }
     }
 
+    /**
+     * The LogItem component for the log viewer.
+     *
+     * @param level - The log level.
+     * @param message - The message to render.
+     * @param key - The log key of the log item.
+     * @returns The log item component.
+     */
     logItem(level: string, message: string, key: number) {
         let levelColor: string;
 

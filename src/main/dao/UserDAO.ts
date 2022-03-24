@@ -132,6 +132,15 @@ class UserDAO extends BaseDAO<IUser> {
         );
     }
 
+    /**
+     * Sanitizes a user object such that all sensitive data is removed. Objects should only be
+     * shared with clients once they have been sanitized. Anything which a user should not be
+     * able to access will be removed by this function.
+     *
+     * @param user A raw user object from the database. This is the unsanitized object with private
+     * data such as authentication keys, passwords, etc.
+     * @returns The sanitized user object.
+     */
     static sanitize(user: IUser): ISanitizedUser {
         return {
             username: user.username,
