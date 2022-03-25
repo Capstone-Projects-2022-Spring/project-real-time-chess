@@ -19,6 +19,9 @@ class EmailFieldComponent extends TextFieldComponent {
         if (this.state.value.length === 0) return false;
         if (this.state.value.indexOf('@') < 0) return false;
 
+        let emailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        if (!this.state.value.match(emailFormat)) return false;
+
         return true;
     }
 }
