@@ -102,7 +102,7 @@ class SignUpTabComponent extends React.Component<SignUpTabProps, SignUpTabState>
                         <p>Password Requirements:</p>
                         <p>- Must be 8 or more characters</p>
                         <p>- Must contain a symbol (ex: !@#$)</p>
-                        <p>- At least one uppercase letter</p>         
+                        <p>- At least one uppercase letter</p>
                     </div>
                 </div>
 
