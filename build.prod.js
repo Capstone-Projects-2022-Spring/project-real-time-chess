@@ -41,40 +41,17 @@ console.log(`
 
 runPhase('DEPS', 'Installing NPM Dependencies', 'npm install', 'installation')
     .then(() => {
-        runPhase('LINT', 'Linting all TS(X) source files', 'npm run lint', 'lint')
+        Promise.all([
+            runPhase('BUILD', 'Building server-side TS project', 'npm run build:server', 'tsc'),
+            runPhase('BUILD', 'Building client-side TS project', 'webpack', 'webpack'),
+            runPhase('BUILD', 'Building SCSS files > CSS', 'npm run build:scss', 'sass'),
+        ])
             .then(() => {
-                Promise.all([
-                    runPhase(
-                        'BUILD',
-                        'Building server-side TS project',
-                        'npm run build:server',
-                        'tsc',
-                    ),
-                    runPhase('BUILD', 'Building client-side TS project', 'webpack', 'webpack'),
-                    runPhase('BUILD', 'Building SCSS files > CSS', 'npm run build:scss', 'sass'),
-                ])
-                    .then(() => {
-                        runPhase('TEST', 'Running server-side tests', 'npm run test', 'tests')
-                            .then(() => {
-                                console.log('✅ Build completed!');
-                            })
-                            .catch(() => {
-                                console.error('❌ Build failed in TEST phase.');
-                                console.warn(
-                                    '⚠️  This is due to issues with failing Mocha Unit Tests.',
-                                );
-                            });
-                    })
-                    .catch(() => {
-                        console.error('❌ Build failed in BUILD phase.');
-                        console.warn(
-                            '⚠️  This is due to compilation errors in TS(X)/SCSS source files.',
-                        );
-                    });
+                console.log('✅ Build completed!');
             })
             .catch(() => {
-                console.error('❌ Build failed in LINT phase.');
-                console.warn('⚠️  Run `npm run lint` to see errors.');
+                console.error('❌ Build failed in BUILD phase.');
+                console.warn('⚠️  This is due to compilation errors in TS(X)/SCSS source files.');
             });
     })
     .catch(err => {
