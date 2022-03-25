@@ -42,6 +42,10 @@ interface IUser extends Document {
  * Data Access Object for the User collection.
  */
 class UserDAO extends BaseDAO<IUser> {
+    /**
+     * Returns the collection name for the UserDAO. This is used by BaseDAO to correctly
+     * access the `"users"` collection.
+     */
     override get collectionName(): string {
         return 'users';
     }
@@ -137,8 +141,8 @@ class UserDAO extends BaseDAO<IUser> {
      * shared with clients once they have been sanitized. Anything which a user should not be
      * able to access will be removed by this function.
      *
-     * @param user A raw user object from the database. This is the unsanitized object with private
-     * data such as authentication keys, passwords, etc.
+     * @param user - A raw user object from the database. This is the unsanitized object with
+     * private data such as authentication keys, passwords, etc.
      * @returns The sanitized user object.
      */
     static sanitize(user: IUser): ISanitizedUser {

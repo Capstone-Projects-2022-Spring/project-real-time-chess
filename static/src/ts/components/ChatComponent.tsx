@@ -4,7 +4,15 @@ import { NoState } from '../models/types';
 interface ChatComponentProps {
     messages: IGameMessage[];
 }
+
+/**
+ * The chat component which appears during gameplay. This shows all the game messages,
+ * including the move history, and any messages sent between players.
+ */
 class ChatComponent extends React.Component<ChatComponentProps, NoState> {
+    /**
+     * @returns The chat component with the specified messages.
+     */
     render() {
         return (
             <div

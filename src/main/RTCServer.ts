@@ -45,6 +45,9 @@ class RTCServer {
         this.app.set('view engine', 'pug');
     }
 
+    /**
+     * Binds all the middleware for the Realtime Chess server.
+     */
     bindMiddleware() {
         this.app.use(express.static(path.resolve('./static/public')));
 
@@ -58,6 +61,9 @@ class RTCServer {
         });
     }
 
+    /**
+     * Binds all the routes for the Realtime Chess server.
+     */
     bindRoutes() {
         this.app.use('/api', apiRouter);
 

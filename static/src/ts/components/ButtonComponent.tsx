@@ -15,6 +15,9 @@ interface ButtonComponentProps {
  * A react button component which allows for simple text and click functionality.
  */
 class ButtonComponent extends React.Component<ButtonComponentProps, NoState> {
+    /**
+     * @returns A stylized button component which matches the RTC theme.
+     */
     render() {
         return (
             <button

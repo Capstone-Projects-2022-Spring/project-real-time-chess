@@ -3,6 +3,9 @@ import { ErrorAPIResponse } from '../APIResponse';
 import UserDAO from '../dao/UserDAO';
 import LoginAPIResponse from '../LoginAPIResponse';
 
+/**
+ * A static class which holds all the routes for the user API.
+ */
 class UserRoutes {
     /**
      * The handler for the user registration route.
