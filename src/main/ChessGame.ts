@@ -115,13 +115,13 @@ class ChessGame {
     move(source: Square, target: Square): Move | null {
         let move;
         const cooldown = this.cooldownMap.get(source);
-        if (this.game.turn() === 'b' && (cooldown === undefined || cooldown.ready())) {
+        if (/* this.game.turn() === 'b' && */ (cooldown === undefined || cooldown.ready())) {
             move = this.game.move(`${source}-${target}`, { sloppy: true });
             this.cooldownMap.delete(source);
             this.cooldownMap.set(target, new Cooldown(ChessGame.COOLDOWN_TIME));
-        } else {
+        } /* else {
             move = this.game.move(`${source}-${target}`, { sloppy: true });
-        }
+        } */
         return move ?? null;
     }
 
