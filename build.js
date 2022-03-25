@@ -54,11 +54,16 @@ runPhase('DEPS', 'Installing NPM Dependencies', 'npm install', 'installation')
                     runPhase('BUILD', 'Building SCSS files > CSS', 'npm run build:scss', 'sass'),
                 ])
                     .then(() => {
-                        runPhase('TEST', 'Running server-side tests', 'npm run test', 'tests').then(
-                            () => {
+                        runPhase('TEST', 'Running server-side tests', 'npm run test', 'tests')
+                            .then(() => {
                                 console.log('✅ Build completed!');
-                            },
-                        );
+                            })
+                            .catch(() => {
+                                console.error('❌ Build failed in TEST phase.');
+                                console.warn(
+                                    '⚠️  This is due to issues with failing Mocha Unit Tests.',
+                                );
+                            });
                     })
                     .catch(() => {
                         console.error('❌ Build failed in BUILD phase.');
