@@ -40,7 +40,11 @@ class Homepage extends React.Component<NoProps, NoState> {
                 <div className="row mt-4">
                     <div className="col"></div>
                     <div className="col-4 col-md-3 col-lg-1">
-                        <img src="/img/RTC-Logo.png" className="w-100" alt="RTC Logo" />
+                        <img
+                            src="/img/RTC-Logo.png"
+                            className="w-100 rtc-brand-logo"
+                            alt="RTC Logo"
+                        />
                     </div>
                     <div className="col"></div>
                 </div>

@@ -1,13 +1,18 @@
 @import 'Variables';
+@import 'Animations';
 
 button.button-component {
     background-image: $primary-gradient;
     border: none;
     padding: $border-width;
     box-sizing: border;
+    animation-name: HueRotation;
+    animation-duration: 10s;
+    animation-iteration-count: infinite;
 
     div {
-        background: white;
+        background: none;
+        color: white;
         height: 100%;
         width: 100%;
         padding: $standard-padding;
