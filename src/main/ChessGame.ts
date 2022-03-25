@@ -1,6 +1,7 @@
 import { Chess, ChessInstance, Move, Square } from 'chess.js';
 import { IUser } from './dao/UserDAO';
 import GameStateAPIResponse from './GameStateAPIResponse';
+import Cooldown from './Cooldown';
 
 /**
  * A wrapper class for a ChessJS game to work with Real-time Chess.
@@ -42,12 +43,23 @@ class ChessGame {
     private messages: IGameMessage[];
 
     /**
+     * An array of all active cooldown timers
+     */
+    public cooldownMap: Map<Square, Cooldown>;
+
+    /**
+     * Time before a recently moved piece may be moved again
+     */
+    public static readonly COOLDOWN_TIME = 5;
+
+    /**
      * Creates an instance of ChessGame.
      */
     constructor(gameKey: string[]) {
         this.game = new Chess();
         this.gameKey = gameKey;
         this.messages = [];
+        this.cooldownMap = new Map();
     }
 
     /**
@@ -102,11 +114,14 @@ class ChessGame {
      */
     move(source: Square, target: Square): Move | null {
         let move;
-        if (this.game.turn() === 'b') {
+        const cooldown = this.cooldownMap.get(source);
+        if (/* this.game.turn() === 'b' && */ (cooldown === undefined || cooldown.ready())) {
             move = this.game.move(`${source}-${target}`, { sloppy: true });
-        } else {
+            this.cooldownMap.delete(source);
+            this.cooldownMap.set(target, new Cooldown(ChessGame.COOLDOWN_TIME));
+        } /* else {
             move = this.game.move(`${source}-${target}`, { sloppy: true });
-        }
+        } */
         return move ?? null;
     }
 
