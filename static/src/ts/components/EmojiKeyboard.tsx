@@ -27,7 +27,16 @@ const gameKeyEmojis: EmojiSerializationRecord[] = [
     { emoji: '🤓', name: 'nerd-face' },
 ];
 
+/**
+ * This component provides an "input display" and a "keyboard" for the user to enter emojis.
+ * Once an emoji is clicked, it is added to the input display.
+ */
 class EmojiKeyboard extends React.Component<EmojiKeyboardProps, EmojiKeyboardState> {
+    /**
+     * Creates an instance of EmojiKeyboard.
+     * @param props - Accepts `onChange` as a property. This prop
+     * is fired when the user selects an emoji on the emoji keyboard.
+     */
     constructor(props: EmojiKeyboardProps) {
         super(props);
         this.state = {
@@ -35,6 +44,9 @@ class EmojiKeyboard extends React.Component<EmojiKeyboardProps, EmojiKeyboardSta
         };
     }
 
+    /**
+     * @returns The emoji keyboard react element.
+     */
     render() {
         return (
             <div className="emoji-keyboard">

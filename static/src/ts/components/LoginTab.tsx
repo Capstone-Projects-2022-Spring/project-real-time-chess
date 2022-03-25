@@ -17,7 +17,16 @@ interface LoginTabState {
     password: string;
 }
 
+/**
+ * The login tab component which appears in the Signup/Login TabbedComponent.
+ */
 class LoginTabComponent extends React.Component<LoginTabProps, LoginTabState> {
+    /**
+     * Creates an instance of LoginTabComponent.
+     *
+     * @param props - The user/password which should be prefilled
+     * into the form fields.
+     */
     constructor(props: LoginTabProps) {
         super(props);
         this.state = {
@@ -26,6 +35,11 @@ class LoginTabComponent extends React.Component<LoginTabProps, LoginTabState> {
         };
     }
 
+    /**
+     * Renders the login tab component.
+     *
+     * @returns The react element for the login tab view.
+     */
     render() {
         return (
             <div>

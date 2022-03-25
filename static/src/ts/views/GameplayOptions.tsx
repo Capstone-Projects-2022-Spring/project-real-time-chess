@@ -14,6 +14,10 @@ class GameplayOptions extends React.Component<
     NoProps,
     { hoverImage: string; hoverImageCaption: string }
 > {
+    /**
+     * Creates an instance of GameplayOptions.
+     * @param props - No Props.
+     */
     constructor(props: NoProps) {
         super(props);
         this.state = {
@@ -22,6 +26,9 @@ class GameplayOptions extends React.Component<
         };
     }
 
+    /**
+     * @returns The react element for the GameplayOptions view.
+     */
     render() {
         return (
             <div className="container">
@@ -173,7 +180,6 @@ class GameplayOptions extends React.Component<
 
         /**
          * Display game modes modal.
-         *
          */
         function displayGameModes(): void {
             Swal.fire({
