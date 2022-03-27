@@ -2,9 +2,11 @@ import * as React from 'react';
 import Swal from 'sweetalert2';
 import ButtonComponent from '../components/ButtonComponent';
 import FriendGameSetupComponent from '../components/FriendGameSetup';
+import CookieManager from '../CookieManager';
 import { NoProps } from '../models/types';
 import UINavigator from '../models/UINavigator';
 import BoardScreen from './BoardScreen';
+import Homepage from './Homepage';
 import MultiplayerMatch from './MultiplayerMatch';
 
 /**
@@ -111,6 +113,19 @@ class GameplayOptions extends React.Component<
                                 UINavigator.render(<MultiplayerMatch orientation={'b'} />);
                             }}
                         />
+                    </div>
+
+                    <div className="row">
+                        <div className="col">
+                            <ButtonComponent
+                                label="Logout"
+                                onClick={() => {
+                                    CookieManager.uid = '';
+                                    CookieManager.auth = '';
+                                    UINavigator.render(<Homepage />);
+                                }}
+                            />
+                        </div>
                     </div>
                 </div>
 
