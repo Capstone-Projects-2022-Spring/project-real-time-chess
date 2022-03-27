@@ -123,7 +123,7 @@ class GameplayOptions extends React.Component<
                         />
                     </div>
 
-                <div className="row">
+                 <div className="row">
                     <div className="col-12 mt-4">
                         <div className="alert alert-primary" role="alert">
                             <div>
@@ -139,16 +139,16 @@ class GameplayOptions extends React.Component<
                             </div>
                         </div>
                     </div>
-                </div>
+                 </div>
 
-                <div className="row">
+                 <div className="row">
                     <div className="col"></div>
                     <div className="col-12 col-md-6 col-lg-4 mt-2 text-center game-mode-hover-img-container light-shadow">
                         <img src={this.state.hoverImage} className="w-100" />
                         {this.state.hoverImageCaption}
                     </div>
                     <div className="col"></div>
-                </div>
+                 </div>
             </div>
         );
     }
