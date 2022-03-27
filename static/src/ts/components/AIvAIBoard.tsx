@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Chessboard } from 'react-chessboard';
-import { Chess } from 'chess.ts';
+import { Chess } from 'chess.js';
 import ButtonComponent from './ButtonComponent';
 const chess = new Chess()
 
@@ -30,7 +30,7 @@ export default class AIvAIBoard extends React.Component<
     }
 
     AIplay() {
-        if (!chess.gameOver()) {
+        if (!chess.game_over()) {
             const moves = chess.moves()
             const move: string = moves[Math.floor(Math.random() * moves.length)]!
             console.log(chess.move(move))
