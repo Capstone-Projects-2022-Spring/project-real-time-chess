@@ -95,7 +95,9 @@ class GameManager {
      */
     public static endGame(uid: string): void {
         const game = GameManager.findGameByUser(uid);
-        if (game) GameManager.games.splice(GameManager.games.indexOf(game), 1);
+        if (game) {
+            GameManager.games.splice(GameManager.games.indexOf(game), 1);
+        }
     }
 
     /**
