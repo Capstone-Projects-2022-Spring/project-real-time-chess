@@ -96,32 +96,36 @@ class ChessboardComponent extends React.Component<
      * @returns True if the move was valid, false otherwise.
      */
     private tryMove(source: Square, target: Square): boolean {
-        const game = Chess(this.props.fen);
+        // const game = Chess(this.props.fen);
+        // if (game.turn() !== this.props.orientation) {
+        //     game.load(this.forceTurnChange(this.props.orientation));
+        // }
 
-        if (game.turn() !== this.props.orientation) {
-            this.forceTurnChange(this.props.orientation);
-        }
-
-        // Checks if piece at game is valid for the orientation
-        const piece = game.get(source);
-        if (piece !== null && piece.color === this.props.orientation) {
-            const move = game.move(`${source}-${target}`, { sloppy: true });
-            return move !== null;
-        }
-        return false;
+        // // Checks if piece at game is valid for the orientation
+        // const piece = game.get(source);
+        // if (piece !== null && piece.color === this.props.orientation) {
+        //     const move = game.move(`${source}-${target}`, { sloppy: true });
+        //     return move !== null;
+        // }
+        // return false;
+        return true;
     }
 
     /**
      * Forces the board FEN to change the current turn to the specified turn.
      *
      * @param color - The color to change the turn to.
+     * @returns The new FEN string
      */
-    private forceTurnChange(color: 'w' | 'b') {
+    private forceTurnChange(color: 'w' | 'b'): string {
         if (this.props.fen !== undefined) {
             const tokens = this.props.fen.split(' ');
             tokens[1] = color;
-            this.props.onFENChange(tokens.join(' '));
+            const fen = tokens.join(' ');
+            this.props.onFENChange(fen);
+            return fen;
         }
+        return this.props.fen ?? '';
     }
 }
 
