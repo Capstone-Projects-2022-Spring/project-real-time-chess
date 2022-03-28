@@ -9,6 +9,7 @@ interface InputFieldProps {
     isValid?: boolean;
     type?: string;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onClick?: (e: React.MouseEvent<HTMLInputElement>) => void;
 }
 
 interface InputFieldState {
@@ -19,7 +20,24 @@ interface InputFieldState {
     type: string;
 }
 
+/**
+ * The base component for all input fields. This component is designed to be
+ * overriden with a custom validator which validates input as it is entered
+ * in realtime.
+ */
 abstract class InputField extends React.Component<InputFieldProps, InputFieldState> {
+    /**
+     * Creates an instance of InputField.
+     *
+     * @param props - The properties for the input field.
+     * `label` can be provided to provide a small label underneath the input field.
+     * `placeholder` is an optional property which can be used to have placeholder text within the
+     * input field.
+     * `value` is an optional field which prefills the input field with a value.
+     * `isValid` is optional, but should be used whenever a default value is provided.
+     * `type` is an optional field passed to the input element.
+     * `onChange` is the function which is called when the input field is updated.
+     */
     constructor(props: InputFieldProps) {
         super(props);
         this.state = {
@@ -31,6 +49,9 @@ abstract class InputField extends React.Component<InputFieldProps, InputFieldSta
         };
     }
 
+    /**
+     * @returns The input field base component.
+     */
     render() {
         return (
             <div className="input-field-component" data-valid={this.state.isValid}>
@@ -39,12 +60,20 @@ abstract class InputField extends React.Component<InputFieldProps, InputFieldSta
                     type={this.state.type}
                     placeholder={this.state.placeholder}
                     onChange={e => this.whenUpdated(e as React.ChangeEvent<HTMLInputElement>)}
+                    onClick={e => this.props.onClick?.(e as React.MouseEvent<HTMLInputElement>)}
                 />
                 <div>{this.state.label ?? ''}</div>
             </div>
         );
     }
 
+    /**
+     * Runs when the data in the input field is updated. This method checks if the value
+     * is valid for the component. After validation checks are complete, then the onChange
+     * property passed to this component is called.
+     *
+     * @param event - The React Input element change event.
+     */
     whenUpdated(event: React.ChangeEvent<HTMLInputElement>) {
         const { value } = event.currentTarget;
         this.setState({ value });

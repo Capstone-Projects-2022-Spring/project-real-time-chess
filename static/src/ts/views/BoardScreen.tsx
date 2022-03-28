@@ -11,7 +11,14 @@ interface BoardScreenState {
     username: string;
 }
 
+/**
+ * The board screen component.
+ */
 class BoardScreen extends React.Component<BoardScreenProps, BoardScreenState> {
+    /**
+     * Creates an instance of BoardScreen.
+     * @param props - No props.
+     */
     constructor(props: BoardScreenProps) {
         super(props);
         this.state = {
@@ -20,13 +27,16 @@ class BoardScreen extends React.Component<BoardScreenProps, BoardScreenState> {
         };
     }
 
+    /**
+     * @returns The react element for the BoardScreen view.
+     */
     render() {
         return (
             <div className="container">
                 <div className="row">
                     <div className="col">
                         <h1 style={{ textAlign: 'center' }}>Chessboard</h1>
-                        <ChessboardComponent orientation="w" />
+                        <ChessboardComponent orientation="w" onFENChange={() => undefined} />
                     </div>
                 </div>
             </div>

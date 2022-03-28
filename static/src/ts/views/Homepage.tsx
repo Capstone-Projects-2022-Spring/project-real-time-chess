@@ -4,9 +4,19 @@ import SignUpTabComponent from '../components/SignUpTab';
 import TabbedComponent from '../components/TabbedComponent';
 import { NoProps, NoState } from '../models/types';
 
+/**
+ * The homepage component which displays the login/signup forms.
+ */
 class Homepage extends React.Component<NoProps, NoState> {
+    /**
+     * The tabs belonging to the homepage (signup/login).
+     */
     private tabs: { label: string; element: JSX.Element }[];
 
+    /**
+     * Creates an instance of Homepage.
+     * @param props - NoProps.
+     */
     constructor(props: NoProps) {
         super(props);
         this.tabs = [
@@ -21,13 +31,20 @@ class Homepage extends React.Component<NoProps, NoState> {
         ];
     }
 
+    /**
+     * @returns The react element for the homepage component.
+     */
     render() {
         return (
             <div className="container">
                 <div className="row mt-4">
                     <div className="col"></div>
                     <div className="col-4 col-md-3 col-lg-1">
-                        <img src="/img/RTC-Logo.png" className="w-100" alt="RTC Logo" />
+                        <img
+                            src="/img/RTC-Logo.png"
+                            className="w-100 rtc-brand-logo"
+                            alt="RTC Logo"
+                        />
                     </div>
                     <div className="col"></div>
                 </div>

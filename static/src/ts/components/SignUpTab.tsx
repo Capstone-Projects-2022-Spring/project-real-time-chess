@@ -21,7 +21,16 @@ interface SignUpTabState {
     password: string;
 }
 
+/**
+ * The signup tab component which appears in the Signup/Login TabbedComponent.
+ */
 class SignUpTabComponent extends React.Component<SignUpTabProps, SignUpTabState> {
+    /**
+     * Creates an instance of SignUpTabComponent.
+     *
+     * @param props - The properties for the signup form.
+     * The parent component could pass optional values for the form fields.
+     */
     constructor(props: SignUpTabProps) {
         super(props);
         this.state = {
@@ -32,6 +41,11 @@ class SignUpTabComponent extends React.Component<SignUpTabProps, SignUpTabState>
         };
     }
 
+    /**
+     * Exports the form data from this signup component as a SignUpModel object.
+     *
+     * @returns The form data as a SignUpModel object.
+     */
     getFormData(): SignUpModel {
         return {
             name: {
@@ -43,6 +57,9 @@ class SignUpTabComponent extends React.Component<SignUpTabProps, SignUpTabState>
         };
     }
 
+    /**
+     * @returns The react element for the SignUpTab view.
+     */
     render() {
         return (
             <div>
@@ -81,6 +98,7 @@ class SignUpTabComponent extends React.Component<SignUpTabProps, SignUpTabState>
                         <PasswordFieldComponent
                             label="Password"
                             onChange={e => this.setState({ password: e.target.value })}
+                            onClick={() => this.displayPasswordRequirements()}
                         />
                     </div>
                 </div>
@@ -117,6 +135,30 @@ class SignUpTabComponent extends React.Component<SignUpTabProps, SignUpTabState>
                 </div>
             </div>
         );
+    }
+
+    /**
+     * Displays a toast notification with the password requirements.
+     */
+    private displayPasswordRequirements() {
+        Swal.fire({
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 5000,
+            timerProgressBar: true,
+            didOpen: toast => {
+                toast.addEventListener('mouseenter', Swal.stopTimer);
+                toast.addEventListener('mouseleave', Swal.resumeTimer);
+            },
+            icon: 'info',
+            toast: true,
+            html: `<strong>Password Requirements:</strong>
+            <ul>
+            <li>Must be 8 or more characters</li>
+            <li>Must contain a symbol (ex: !@#$)</li>
+            <li>At least one uppercase letter</li>
+            </ul>`,
+        });
     }
 }
 

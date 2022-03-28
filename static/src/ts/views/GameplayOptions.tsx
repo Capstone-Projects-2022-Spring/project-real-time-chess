@@ -1,11 +1,21 @@
+import { IonIcon } from '@ionic/react';
+import {
+    cloudOfflineOutline,
+    helpCircleOutline,
+    logOutOutline,
+    personOutline,
+} from 'ionicons/icons';
 import * as React from 'react';
-import Swal from 'sweetalert2';
 import ButtonComponent from '../components/ButtonComponent';
 import FriendGameSetupComponent from '../components/FriendGameSetup';
+import HowToPlaySwal from '../components/HowToPlaySwal';
+import CookieManager from '../CookieManager';
 import { NoProps } from '../models/types';
 import UINavigator from '../models/UINavigator';
 import BoardScreen from './BoardScreen';
+import Homepage from './Homepage';
 import MultiplayerMatch from './MultiplayerMatch';
+import Profile from './Profile';
 
 /**
  * Gameplay options page which allows a user to choose which game mode they want to play.
@@ -14,6 +24,10 @@ class GameplayOptions extends React.Component<
     NoProps,
     { hoverImage: string; hoverImageCaption: string }
 > {
+    /**
+     * Creates an instance of GameplayOptions.
+     * @param props - No Props.
+     */
     constructor(props: NoProps) {
         super(props);
         this.state = {
@@ -22,6 +36,9 @@ class GameplayOptions extends React.Component<
         };
     }
 
+    /**
+     * @returns The react element for the GameplayOptions view.
+     */
     render() {
         return (
             <div className="container">
@@ -31,7 +48,7 @@ class GameplayOptions extends React.Component<
                     </div>
                 </div>
 
-                <div className="row">
+                <div className="row mb-2">
                     <div
                         className="col"
                         onMouseOver={() => {
@@ -99,22 +116,73 @@ class GameplayOptions extends React.Component<
                 <div className="row">
                     <div className="col">
                         <ButtonComponent
-                            label="Join Previous Game"
                             onClick={() => {
                                 UINavigator.render(<MultiplayerMatch orientation={'b'} />);
                             }}
-                        />
+                            width="100%"
+                        >
+                            <IonIcon
+                                style={{ fontSize: '4rem', marginBottom: '0.5rem' }}
+                                icon={cloudOfflineOutline}
+                            />
+                            <span>Rejoin Game</span>
+                        </ButtonComponent>
+                    </div>
+
+                    <div className="col">
+                        <ButtonComponent
+                            onClick={() => {
+                                CookieManager.uid = '';
+                                CookieManager.auth = '';
+                                UINavigator.render(<Homepage />);
+                            }}
+                            width="100%"
+                        >
+                            <IonIcon
+                                style={{ fontSize: '4rem', marginBottom: '0.5rem' }}
+                                icon={logOutOutline}
+                            />
+                            <span>Logout</span>
+                        </ButtonComponent>
+                    </div>
+
+                    <div className="col">
+                        <ButtonComponent
+                            onClick={() => {
+                                UINavigator.render(<Profile username="dummy" />);
+                            }}
+                            width="100%"
+                        >
+                            <IonIcon
+                                style={{ fontSize: '4rem', marginBottom: '0.5rem' }}
+                                icon={personOutline}
+                            />
+                            <span>Profile</span>
+                        </ButtonComponent>
+                    </div>
+
+                    <div className="col">
+                        <ButtonComponent
+                            onClick={() => HowToPlaySwal.displayHowToPlay()}
+                            width="100%"
+                        >
+                            <IonIcon
+                                style={{ fontSize: '4rem', marginBottom: '0.5rem' }}
+                                icon={helpCircleOutline}
+                            />
+                            <span>How to Play</span>
+                        </ButtonComponent>
                     </div>
                 </div>
 
-                <div className="row">
+                {/* <div className="row">
                     <div className="col-12 mt-4">
                         <div className="alert alert-primary" role="alert">
                             <div>
                                 Click{' '}
                                 <a
                                     href="#"
-                                    onClick={() => GameplayOptions.displayHowToPlay()}
+                                    onClick={() => HowToPlaySwal.displayHowToPlay()}
                                     className="alert-link"
                                 >
                                     here
@@ -123,7 +191,7 @@ class GameplayOptions extends React.Component<
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> */}
 
                 <div className="row">
                     <div className="col"></div>
@@ -135,74 +203,6 @@ class GameplayOptions extends React.Component<
                 </div>
             </div>
         );
-    }
-
-    /**
-     * Displays a sweet alert modal with an index of how to play the game.
-     */
-    static displayHowToPlay(): void {
-        /**
-         * Generates a bootstrap list group item.
-         *
-         * @param text - The text to include in the list item.
-         * @param action - The action to invoke when clicked.
-         * @returns The generated list item.
-         */
-        function makeListItem(text: string, action: () => void) {
-            const li = document.createElement('li');
-            li.innerHTML = text;
-            li.onclick = () => {
-                action();
-            };
-            li.classList.add('list-group-item');
-            return li;
-        }
-
-        /**
-         * Generates a bootstrap list group.
-         *
-         * @param items - The list items to include in the list group.
-         * @returns The generated list group.
-         */
-        function makeList(...items: HTMLLIElement[]) {
-            const list = document.createElement('ul');
-            list.classList.add('list-group');
-            list.append(...items);
-            return list;
-        }
-
-        /**
-         * Display game modes modal.
-         *
-         */
-        function displayGameModes(): void {
-            Swal.fire({
-                title: 'Game Modes',
-                html: makeList(
-                    makeListItem(
-                        '<strong>You v AI</strong> - This is a singleplayer mode where you go up against artificial intelligence. You can adjust the difficulty of the AI to your liking.',
-                        () => undefined,
-                    ),
-                    makeListItem(
-                        '<strong>You v Friend</strong> - This is a multiplayer game where you can play against a friend.',
-                        () => undefined,
-                    ),
-                    makeListItem(
-                        '<strong>You v Random</strong> - This is a multiplayer game where you can play against a randomly matched opponent.',
-                        () => undefined,
-                    ),
-                    makeListItem(
-                        '<strong>AI v AI</strong> - This is a zero-player game mode where two AI bots play each other. You can assign the difficulty of each bot.',
-                        () => undefined,
-                    ),
-                ),
-            });
-        }
-
-        Swal.fire({
-            title: 'How to Play',
-            html: makeList(makeListItem('Game Modes', displayGameModes)),
-        });
     }
 }
 

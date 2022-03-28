@@ -1,4 +1,13 @@
+/**
+ * A utility class which provides client-side access to cookies.
+ */
 class CookieManager {
+    /**
+     * Gets a cookies.
+     *
+     * @param cname - The cookie name.
+     * @returns The value of the cookie.
+     */
     static getCookie(cname: string) {
         const name = `${cname}=`;
         const decodedCookie = decodeURIComponent(document.cookie);
@@ -15,6 +24,13 @@ class CookieManager {
         return '';
     }
 
+    /**
+     * Sets a cookie.
+     *
+     * @param cname - The cookie name.
+     * @param cvalue - The cookie's value.
+     * @param exdays - The number of days until the cookie expires.
+     */
     static setCookie(cname: string, cvalue: string, exdays?: number) {
         let expires = '';
         if (exdays) {
@@ -25,6 +41,9 @@ class CookieManager {
         document.cookie = `${cname}=${cvalue};${expires};path=/`;
     }
 
+    /**
+     * Gets the UID cookie.
+     */
     static get uid(): string {
         let id = CookieManager.getCookie('uid');
         if (id.indexOf('j:"') === 0 && id.lastIndexOf('"') === id.length - 1) {
@@ -33,14 +52,23 @@ class CookieManager {
         return id;
     }
 
+    /**
+     * Sets the UID cookie.
+     */
     static set uid(uid: string) {
         CookieManager.setCookie('uid', uid);
     }
 
+    /**
+     * Gets the auth cookie.
+     */
     static get auth(): string {
         return CookieManager.getCookie('auth');
     }
 
+    /**
+     * Sets the auth cookie.
+     */
     static set auth(auth: string) {
         CookieManager.setCookie('auth', auth);
     }

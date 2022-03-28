@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { io, Socket } from 'socket.io-client';
-import Swal from 'sweetalert2';
 import ChatComponent from '../components/ChatComponent';
 import ChessboardComponent from '../components/ChessboardComponent';
+import ToastNotification from '../components/ToastNotification';
 import CookieManager from '../CookieManager';
 import SupportedEmojis from '../SupportedEmojis';
 
@@ -16,9 +16,20 @@ interface MultiplayerMatchState {
     gameKey: string;
 }
 
+/**
+ * The multiplayer match component. This displays the chessboard and chat components.
+ */
 class MultiplayerMatch extends React.Component<MultiplayerMatchProps, MultiplayerMatchState> {
+    /**
+     * The open socket between the client and the server.
+     */
     socket?: Socket;
 
+    /**
+     * Creates an instance of MultiplayerMatch.
+     * @param props - The props for the multiplayer match component.
+     * This only includes the board orientation ('b' for black, 'w' for white).
+     */
     constructor(props: MultiplayerMatchProps) {
         super(props);
         this.state = {
@@ -28,6 +39,9 @@ class MultiplayerMatch extends React.Component<MultiplayerMatchProps, Multiplaye
         };
     }
 
+    /**
+     * @returns The multiplayer match component.
+     */
     render() {
         return (
             <div className="container">
@@ -42,16 +56,21 @@ class MultiplayerMatch extends React.Component<MultiplayerMatchProps, Multiplaye
                 </div>
 
                 <div className="row">
-                    <div className="col-8">
+                    <div className="col-12 col-md-6 text-center">
                         <ChessboardComponent
                             orientation={this.props.orientation}
                             fen={this.state.fen}
                             onPieceDrop={(source, target) => {
                                 this.socket?.emit('move piece', source, target);
                             }}
+                            onFENChange={fen =>
+                                this.setState({
+                                    fen,
+                                })
+                            }
                         />
                     </div>
-                    <div className="col-4">
+                    <div className="col-12 col-md-6">
                         <ChatComponent messages={this.state.messages} />
                     </div>
                 </div>
@@ -59,10 +78,16 @@ class MultiplayerMatch extends React.Component<MultiplayerMatchProps, Multiplaye
         );
     }
 
+    /**
+     * Binds the socket to this component when it mounts.
+     */
     componentDidMount() {
         this.bindSocket();
     }
 
+    /**
+     * Opens a new socket with the server and binds the socket to this component.
+     */
     bindSocket() {
         this.socket = io();
         this.socket.connect();
@@ -90,11 +115,7 @@ class MultiplayerMatch extends React.Component<MultiplayerMatchProps, Multiplaye
 
         this.socket.on('move piece', (response: IGameStateAPIResponse) => {
             if (!response.success) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Invalid move',
-                });
+                new ToastNotification('Invalid Move', 'You cannot make that move!', 'error').fire();
             } else {
                 this.setState({
                     fen: response.fen,

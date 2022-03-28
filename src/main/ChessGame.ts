@@ -1,5 +1,6 @@
 import { Chess, ChessInstance, Move, Square } from 'chess.js';
-import { Socket } from 'socket.io';
+import Cooldown from './Cooldown';
+import GameHistoryDAO from './dao/GameHistoryDAO';
 import { IUser } from './dao/UserDAO';
 import GameStateAPIResponse from './GameStateAPIResponse';
 
@@ -25,12 +26,12 @@ class ChessGame {
     /**
      * The web socket for the black player.
      */
-    public blackSocket?: Socket;
+    public blackSocket?: ChessGameSocket;
 
     /**
      * The web socket for the white player.
      */
-    public whiteSocket?: Socket;
+    public whiteSocket?: ChessGameSocket;
 
     /**
      * The chess.js game instance
@@ -43,12 +44,28 @@ class ChessGame {
     private messages: IGameMessage[];
 
     /**
+     * An array of all active cooldown timers
+     */
+    public cooldownMap: Record<Square, Cooldown>;
+
+    /**
+     * Time before a recently moved piece may be moved again
+     */
+    public static readonly COOLDOWN_TIME = 5;
+
+    /**
+     * A record of every single move made in the game.
+     */
+    private moveHistory: MoveRecord[] = [];
+
+    /**
      * Creates an instance of ChessGame.
      */
     constructor(gameKey: string[]) {
         this.game = new Chess();
         this.gameKey = gameKey;
         this.messages = [];
+        this.cooldownMap = {} as Record<Square, Cooldown>;
     }
 
     /**
@@ -94,6 +111,17 @@ class ChessGame {
     }
 
     /**
+     * Forces the turn (in the FEN string) to change to the specified color.
+     *
+     * @param color - The color to switch the turn to.
+     */
+    public forceTurnChange(color: 'w' | 'b') {
+        const tokens = this.game.fen().split(' ');
+        tokens[1] = color;
+        this.game.load(tokens.join(' '));
+    }
+
+    /**
      * Move a piece from a source square to a target square.
      *
      * @param source - The square which the piece is currently located.
@@ -103,16 +131,76 @@ class ChessGame {
      */
     move(source: Square, target: Square): Move | null {
         let move;
-        if (this.game.turn() === 'b') {
+        const cooldown = this.cooldownMap[source];
+
+        if (cooldown === undefined || cooldown.ready()) {
+            const movingColor = this.game.get(source)!.color;
+            if (this.game.turn() !== movingColor) this.forceTurnChange(movingColor);
             move = this.game.move(`${source}-${target}`, { sloppy: true });
-        } else {
-            move = this.game.move(`${source}-${target}`, { sloppy: true });
+            if (move !== null) {
+                delete this.cooldownMap[source];
+                this.cooldownMap[target] = new Cooldown(5);
+                this.moveHistory.push({
+                    fen: this.game.fen(),
+                    timestamp: Date.now(),
+                    move,
+                });
+                if (this.winner !== null) this.endGame();
+            }
         }
+
         return move ?? null;
     }
 
+    /**
+     * Ends the game and publishes the game to the database.
+     */
+    private endGame() {
+        const dao = new GameHistoryDAO();
+        dao.insertOne({
+            black: this.black?.id,
+            white: this.white?.id,
+            game_key: this.gameKey,
+            history: this.moveHistory,
+        });
+    }
+
+    /**
+     * The winner of the game if one exists
+     */
+    get winner(): 'w' | 'b' | null {
+        // First element of `kings` represents whether the white king exists
+        // Second element of `kings` represents whether th black king exists
+        const kings: [boolean, boolean] = [false, false];
+        this.game.board().forEach(boardRow => {
+            boardRow.forEach(piece => {
+                if (piece !== null && piece.type === 'k') {
+                    if (piece.color === 'w') {
+                        kings[0] = true;
+                    } else {
+                        kings[1] = true;
+                    }
+                }
+            });
+        });
+        if (kings[0] && kings[1]) return null;
+        if (kings[0]) return 'w';
+        if (kings[1]) return 'b';
+        return null;
+    }
+
+    /**
+     * The player the game is waiting on to play.
+     */
     get turn(): 'w' | 'b' {
         return this.game.turn();
+    }
+
+    /**
+     * The history of all moves made in the game.
+     */
+    get moves(): MoveRecord[] {
+        return this.moveHistory;
     }
 }
 

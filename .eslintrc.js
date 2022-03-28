@@ -30,6 +30,18 @@ module.exports = {
         'object-curly-newline': 'off',
         '@typescript-eslint/brace-style': 'off',
         'tsdoc/syntax': 'warn',
+        'require-jsdoc': [
+            'error',
+            {
+                require: {
+                    FunctionDeclaration: true,
+                    MethodDefinition: true,
+                    ClassDeclaration: true,
+                    ArrowFunctionExpression: false,
+                    FunctionExpression: true,
+                },
+            },
+        ],
     },
     parserOptions: {
         project: ['./tsconfig.json', './static/src/ts/tsconfig.json'],

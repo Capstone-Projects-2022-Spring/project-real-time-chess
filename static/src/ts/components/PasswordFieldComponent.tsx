@@ -1,14 +1,34 @@
 import InputFieldValidationError from '../errors/InputFieldValidationError';
 import InputField from './InputField';
 
+/**
+ * An InputField which is used to enter a password. The entered data is hidden.
+ */
 class PasswordFieldComponent extends InputField {
+    /**
+     * The characters allowed to be entered in the password input field.
+     */
     private static readonly allowedChars =
         "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!@#$%^&*()<>?;:'[]{}-=_+|";
 
+    /**
+     * Once the component is mounted, the input field is changed from regular text input
+     * to a password input element.
+     */
     componentDidMount() {
         this.setState({ type: 'password' });
     }
 
+    /**
+     * Validates entered password data. The parameters are as followed:
+     *
+     * Passwords must be between 8 to 60 characters, must contains at least one
+     * uppercase letter, lowercase letter, and symbol.
+     *
+     * If the entered password is less than 8 characters, then the password is
+     * potentially valid, but is strictly invalid if the password length exceeds
+     * 60 characters.
+     */
     override validate() {
         if (this.state.value.length < 8) return false;
         if (this.state.value.length > 60) {
@@ -44,6 +64,7 @@ class PasswordFieldComponent extends InputField {
         if (lowercase < 1) return false;
         if (uppercase < 1) return false;
         if (symbols < 1) return false;
+        if (uppercase < 1 || symbols < 1 || uppercase + lowercase + symbols < 8) return false;
         return true;
     }
 }

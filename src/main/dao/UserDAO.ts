@@ -36,25 +36,20 @@ interface IUser extends Document {
     username: string;
     password: string;
     auths: string[];
-}
-
-/**
- * Authorization information stored in a cookie on the client side.
- * This is used to verify if a user is logged in.
- *
- * `uid` is saved as `cookies.uid`
- *
- * `key` is saved as `cookies.auth`
- */
-interface AuthInfo {
-    uid: ObjectId;
-    key: string;
+    // win_loss: number;
+    // pieces_captured: number;
+    // total_games: number;
+    // rank: string;
 }
 
 /**
  * Data Access Object for the User collection.
  */
 class UserDAO extends BaseDAO<IUser> {
+    /**
+     * Returns the collection name for the UserDAO. This is used by BaseDAO to correctly
+     * access the `"users"` collection.
+     */
     override get collectionName(): string {
         return 'users';
     }
@@ -68,7 +63,7 @@ class UserDAO extends BaseDAO<IUser> {
      */
     async createUser(formData: UserRegistrationFormData): Promise<void> {
         return new Promise((resolve, reject) => {
-            const doc = { ...formData, auths: [] };
+            const doc = { ...formData, auths: [] as string[] };
             this.insertOne(doc)
                 .then(() => resolve())
                 .catch(err => reject(err));
@@ -90,7 +85,9 @@ class UserDAO extends BaseDAO<IUser> {
                     user = await this.findOne({ username: formData.user });
                 }
 
-                if (user.password === formData.password) {
+                if (!user) {
+                    reject(new InvalidCredentialsError());
+                } else if (user.password === formData.password) {
                     const key = this.generateAuthKey();
 
                     this.updateOne({ _id: user._id }, { $push: { auths: key } });
@@ -143,6 +140,15 @@ class UserDAO extends BaseDAO<IUser> {
         );
     }
 
+    /**
+     * Sanitizes a user object such that all sensitive data is removed. Objects should only be
+     * shared with clients once they have been sanitized. Anything which a user should not be
+     * able to access will be removed by this function.
+     *
+     * @param user - A raw user object from the database. This is the unsanitized object with
+     * private data such as authentication keys, passwords, etc.
+     * @returns The sanitized user object.
+     */
     static sanitize(user: IUser): ISanitizedUser {
         return {
             username: user.username,
@@ -152,4 +158,4 @@ class UserDAO extends BaseDAO<IUser> {
 }
 
 export default UserDAO;
-export { IUser, AuthInfo, UserRegistrationFormData, UserLoginFormData };
+export { IUser, UserRegistrationFormData, UserLoginFormData };
