@@ -8,6 +8,7 @@ import UINavigator from '../models/UINavigator';
 import BoardScreen from './BoardScreen';
 import Homepage from './Homepage';
 import MultiplayerMatch from './MultiplayerMatch';
+import Profile from './Profile';
 
 /**
  * Gameplay options page which allows a user to choose which game mode they want to play.
@@ -128,8 +129,16 @@ class GameplayOptions extends React.Component<
                         </div>
                     </div>
                 </div>
+                    <div className="col">
+                        <ButtonComponent
+                            label="Profile"
+                            onClick={() => {
+                                UINavigator.render(<Profile username="dummy"/>);
+                            }}
+                        />
+                    </div>
 
-                <div className="row">
+                 <div className="row">
                     <div className="col-12 mt-4">
                         <div className="alert alert-primary" role="alert">
                             <div>
@@ -145,16 +154,16 @@ class GameplayOptions extends React.Component<
                             </div>
                         </div>
                     </div>
-                </div>
+                 </div>
 
-                <div className="row">
+                 <div className="row">
                     <div className="col"></div>
                     <div className="col-12 col-md-6 col-lg-4 mt-2 text-center game-mode-hover-img-container light-shadow">
                         <img src={this.state.hoverImage} className="w-100" />
                         {this.state.hoverImageCaption}
                     </div>
                     <div className="col"></div>
-                </div>
+                 </div>
             </div>
         );
     }
