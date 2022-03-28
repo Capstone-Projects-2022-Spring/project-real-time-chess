@@ -10,7 +10,7 @@ interface ReplaysState {
     info: string;
 }
 
-/*
+/**
 * The replays screen
 */
 class Replays extends React.Component<ReplaysProps, ReplaysState, { info: string }> {
@@ -25,6 +25,7 @@ class Replays extends React.Component<ReplaysProps, ReplaysState, { info: string
          info: '',
         };
     }
+
      /**
      * @returns The react element for the Replays view.
      */
@@ -86,4 +87,3 @@ class Replays extends React.Component<ReplaysProps, ReplaysState, { info: string
 
 export default Replays;
 export { ReplaysProps, ReplaysState };
-

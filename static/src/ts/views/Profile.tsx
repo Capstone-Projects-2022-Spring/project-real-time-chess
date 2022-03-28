@@ -71,7 +71,7 @@ class Profile extends React.Component<ProfileProps, ProfileState, { info: string
                                /* this.setState({
 
                                     info: 'past game info',
-                                });*/
+                                }); */
                             }}
                         />
                     </div>
