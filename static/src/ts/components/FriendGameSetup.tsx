@@ -7,6 +7,7 @@ import SupportedEmojis from '../SupportedEmojis';
 import MultiplayerMatch from '../views/MultiplayerMatch';
 import ButtonComponent from './ButtonComponent';
 import EmojiKeyboard from './EmojiKeyboard';
+import CooldownSelectorComponent from './CooldownSelectorComponent';
 
 /**
  * The page for setting up a multiplayer game with a friend. This gives the user
@@ -85,6 +86,7 @@ class FriendGameSetupComponent extends React.Component<NoProps, { gameKey: strin
                         />
                     </div>
                 </div>
+                <CooldownSelectorComponent/>
             </div>
         );
     }
