@@ -36,10 +36,10 @@ interface IUser extends Document {
     username: string;
     password: string;
     auths: string[];
-    win_loss: number;
-    pieces_captured: number;
-    total_games: number;
-    rank: string;
+    // win_loss: number;
+    // pieces_captured: number;
+    // total_games: number;
+    // rank: string;
 }
 
 /**
@@ -63,7 +63,7 @@ class UserDAO extends BaseDAO<IUser> {
      */
     async createUser(formData: UserRegistrationFormData): Promise<void> {
         return new Promise((resolve, reject) => {
-            const doc = { ...formData, auths: [] };
+            const doc = { ...formData, auths: [] as string[] };
             this.insertOne(doc)
                 .then(() => resolve())
                 .catch(err => reject(err));

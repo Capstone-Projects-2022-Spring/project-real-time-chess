@@ -9,7 +9,7 @@
         "build": "node build.js",
         "build:prod": "node build.prod.js",
         "build:server": "tsc",
-        "build:client": "npm run build:sass ; webpack",
+        "build:client": "npm run build:scss ; webpack",
         "build:scss": "sass static/src/scss:static/public/css",
         "start": "NODE_OPTIONS=--enable-source-maps node dist/main/index.js",
         "clean": "rm -r dist docs node_modules static/public/css static/public/js tsconfig.tsbuildinfo",

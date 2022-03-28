@@ -56,7 +56,7 @@ class MultiplayerMatch extends React.Component<MultiplayerMatchProps, Multiplaye
                 </div>
 
                 <div className="row">
-                    <div className="col-8">
+                    <div className="col-12 col-md-6 text-center">
                         <ChessboardComponent
                             orientation={this.props.orientation}
                             fen={this.state.fen}
@@ -65,7 +65,7 @@ class MultiplayerMatch extends React.Component<MultiplayerMatchProps, Multiplaye
                             }}
                         />
                     </div>
-                    <div className="col-4">
+                    <div className="col-12 col-md-6">
                         <ChatComponent messages={this.state.messages} />
                     </div>
                 </div>
