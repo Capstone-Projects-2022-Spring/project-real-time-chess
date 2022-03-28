@@ -1,13 +1,8 @@
 import { Chess, ChessInstance, Move, Square } from 'chess.js';
 import Cooldown from './Cooldown';
+import GameHistoryDAO from './dao/GameHistoryDAO';
 import { IUser } from './dao/UserDAO';
 import GameStateAPIResponse from './GameStateAPIResponse';
-
-interface MoveRecord {
-    fen: string;
-    timestamp: number;
-    move: Move;
-}
 
 /**
  * A wrapper class for a ChessJS game to work with Real-time Chess.
@@ -116,6 +111,17 @@ class ChessGame {
     }
 
     /**
+     * Forces the turn (in the FEN string) to change to the specified color.
+     *
+     * @param color - The color to switch the turn to.
+     */
+    public forceTurnChange(color: 'w' | 'b') {
+        const tokens = this.game.fen().split(' ');
+        tokens[1] = color;
+        this.game.load(tokens.join(' '));
+    }
+
+    /**
      * Move a piece from a source square to a target square.
      *
      * @param source - The square which the piece is currently located.
@@ -126,7 +132,10 @@ class ChessGame {
     move(source: Square, target: Square): Move | null {
         let move;
         const cooldown = this.cooldownMap.get(source);
+
         if (cooldown === undefined || cooldown.ready()) {
+            const movingColor = this.game.get(source)!.color;
+            if (this.game.turn() !== movingColor) this.forceTurnChange(movingColor);
             move = this.game.move(`${source}-${target}`, { sloppy: true });
             if (move !== null) {
                 this.cooldownMap.delete(source);
@@ -136,10 +145,24 @@ class ChessGame {
                     timestamp: Date.now(),
                     move,
                 });
+                if (this.winner !== null) this.endGame();
             }
         }
 
         return move ?? null;
+    }
+
+    /**
+     * Ends the game and publishes the game to the database.
+     */
+    private endGame() {
+        const dao = new GameHistoryDAO();
+        dao.insertOne({
+            black: this.black?.id,
+            white: this.white?.id,
+            game_key: this.gameKey,
+            history: this.moveHistory,
+        });
     }
 
     /**
