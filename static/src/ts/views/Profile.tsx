@@ -1,6 +1,5 @@
 import * as React from 'react';
 import ButtonComponent from '../components/ButtonComponent';
-//import UINavigator from '../models/UINavigator';
 
 interface ProfileProps {
     username: string;
@@ -14,7 +13,7 @@ interface ProfileState {
 /**
  * The profile screen component.
  */
-class Profile extends React.Component<ProfileProps, ProfileState, {info: string}> {
+class Profile extends React.Component<ProfileProps, ProfileState, { info: string }> {
     /**
      * Creates an instance of Profile.
      * @param props - No props.
@@ -41,43 +40,46 @@ class Profile extends React.Component<ProfileProps, ProfileState, {info: string}
                 <div className="row">
                     <div className="col">
                         <ButtonComponent
-                        label="User Info"
-                        width="100%"
-                        onClick={() => {
-                            this.setState({
-                            info:
-                                'name, email, rank',
-                        }); }}
+                            label="User Info"
+                            width="100%"
+                            onClick={() => {
+                                this.setState({
+                                    info: 'name, email, rank',
+                                });
+                            }}
                         />
                     </div>
                     <div className="col">
                         <ButtonComponent
-                        label="User Stats"
-                        width="100%"
-                        onClick={() => { this.setState({
-                            info:
-                                'wins, loses, draws',
-                        });}}
+                            label="User Stats"
+                            width="100%"
+                            onClick={() => {
+                                this.setState({
+                                    info: 'wins, loses, draws',
+                                });
+                            }}
                         />
                     </div>
                     <div className="col">
                         <ButtonComponent
-                        label="View Past Games"
-                        width="100%"
-                        onClick={() => {this.setState({
-                            info:
-                                'past game info',
-                        }); }}
+                            label="View Past Games"
+                            width="100%"
+                            onClick={() => {
+                                this.setState({
+                                    info: 'past game info',
+                                });
+                            }}
                         />
                     </div>
                     <div className="col">
                         <ButtonComponent
-                        label="Log Out"
-                        width="100%"
-                        onClick={() => {this.setState({
-                            info:
-                                'log out',
-                        }); }}
+                            label="Log Out"
+                            width="100%"
+                            onClick={() => {
+                                this.setState({
+                                    info: 'log out',
+                                });
+                            }}
                         />
                     </div>
                 </div>
@@ -88,8 +90,7 @@ class Profile extends React.Component<ProfileProps, ProfileState, {info: string}
                         {this.state.info}
                     </div>
                     <div className="col"></div>
-                 </div>
-
+                </div>
             </div>
         );
     }
