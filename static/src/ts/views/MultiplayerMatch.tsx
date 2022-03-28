@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { io, Socket } from 'socket.io-client';
-import Swal from 'sweetalert2';
 import ChatComponent from '../components/ChatComponent';
 import ChessboardComponent from '../components/ChessboardComponent';
+import ToastNotification from '../components/ToastNotification';
 import CookieManager from '../CookieManager';
 import SupportedEmojis from '../SupportedEmojis';
 
@@ -115,11 +115,7 @@ class MultiplayerMatch extends React.Component<MultiplayerMatchProps, Multiplaye
 
         this.socket.on('move piece', (response: IGameStateAPIResponse) => {
             if (!response.success) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Invalid move',
-                });
+                new ToastNotification('Invalid Move', 'You cannot make that move!', 'error').fire();
             } else {
                 this.setState({
                     fen: response.fen,

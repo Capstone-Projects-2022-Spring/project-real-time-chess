@@ -1,6 +1,7 @@
 import { Chess, Square } from 'chess.js';
 import * as React from 'react';
 import { Chessboard } from 'react-chessboard';
+import ToastNotification from './ToastNotification';
 
 interface ChessboardComponentProps {
     orientation: 'b' | 'w';
@@ -73,6 +74,13 @@ class ChessboardComponent extends React.Component<
 
                             return true;
                         }
+
+                        new ToastNotification(
+                            'Invalid Move',
+                            `You cannot make that move! Current turn: ${this.props.fen}`,
+                            'error',
+                        ).fire();
+
                         return false;
                     }}
                 />
