@@ -63,6 +63,11 @@ class MultiplayerMatch extends React.Component<MultiplayerMatchProps, Multiplaye
                             onPieceDrop={(source, target) => {
                                 this.socket?.emit('move piece', source, target);
                             }}
+                            onFENChange={fen =>
+                                this.setState({
+                                    fen,
+                                })
+                            }
                         />
                     </div>
                     <div className="col-12 col-md-6">

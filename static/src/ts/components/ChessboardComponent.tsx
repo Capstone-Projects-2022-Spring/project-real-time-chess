@@ -6,6 +6,7 @@ interface ChessboardComponentProps {
     orientation: 'b' | 'w';
     fen?: string;
     onPieceDrop?: (source: Square, target: Square) => void;
+    onFENChange: (fen: string) => void;
 }
 
 interface ChessboardComponentState {
@@ -67,7 +68,6 @@ class ChessboardComponent extends React.Component<
                     boardOrientation={this.props.orientation === 'b' ? 'black' : 'white'}
                     onPieceDrop={(source, target) => {
                         const isValid = this.tryMove(source, target);
-
                         if (isValid) {
                             this.props.onPieceDrop?.(source, target);
 
@@ -90,6 +90,10 @@ class ChessboardComponent extends React.Component<
     private tryMove(source: Square, target: Square): boolean {
         const game = Chess(this.props.fen);
 
+        if (game.turn() !== this.props.orientation) {
+            this.forceTurnChange(this.props.orientation);
+        }
+
         // Checks if piece at game is valid for the orientation
         const piece = game.get(source);
         if (piece !== null && piece.color === this.props.orientation) {
@@ -97,6 +101,19 @@ class ChessboardComponent extends React.Component<
             return move !== null;
         }
         return false;
+    }
+
+    /**
+     * Forces the board FEN to change the current turn to the specified turn.
+     *
+     * @param color - The color to change the turn to.
+     */
+    private forceTurnChange(color: 'w' | 'b') {
+        if (this.props.fen !== undefined) {
+            const tokens = this.props.fen.split(' ');
+            tokens[1] = color;
+            this.props.onFENChange(tokens.join(' '));
+        }
     }
 }
 
