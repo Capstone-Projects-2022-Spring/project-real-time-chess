@@ -64,6 +64,7 @@ class PasswordFieldComponent extends InputField {
         if (lowercase < 1) return false;
         if (uppercase < 1) return false;
         if (symbols < 1) return false;
+        if (uppercase < 1 || symbols < 1 || uppercase + lowercase + symbols < 8) return false;
         return true;
     }
 }

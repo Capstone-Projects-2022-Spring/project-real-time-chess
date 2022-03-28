@@ -1,3 +1,5 @@
+const { exit } = require('process');
+
 const exec = require('child_process').exec;
 const checks = {};
 
@@ -54,25 +56,34 @@ runPhase('DEPS', 'Installing NPM Dependencies', 'npm install', 'installation')
                     runPhase('BUILD', 'Building SCSS files > CSS', 'npm run build:scss', 'sass'),
                 ])
                     .then(() => {
-                        runPhase('TEST', 'Running server-side tests', 'npm run test', 'tests').then(
-                            () => {
+                        runPhase('TEST', 'Running server-side tests', 'npm run test', 'tests')
+                            .then(() => {
                                 console.log('✅ Build completed!');
-                            },
-                        );
+                            })
+                            .catch(() => {
+                                console.error('❌ Build failed in TEST phase.');
+                                console.warn(
+                                    '⚠️  This is due to issues with failing Mocha Unit Tests.',
+                                );
+                                exit(1);
+                            });
                     })
                     .catch(() => {
                         console.error('❌ Build failed in BUILD phase.');
                         console.warn(
                             '⚠️  This is due to compilation errors in TS(X)/SCSS source files.',
                         );
+                        exit(1);
                     });
             })
             .catch(() => {
                 console.error('❌ Build failed in LINT phase.');
                 console.warn('⚠️  Run `npm run lint` to see errors.');
+                exit(1);
             });
     })
     .catch(err => {
         console.error('❌ Build failed in DEPS phase.');
         console.warn('⚠️  Run `npm install` to see errors.');
+        exit(1);
     });
