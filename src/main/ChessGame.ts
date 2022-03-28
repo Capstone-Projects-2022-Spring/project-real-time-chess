@@ -1,7 +1,13 @@
 import { Chess, ChessInstance, Move, Square } from 'chess.js';
+import Cooldown from './Cooldown';
 import { IUser } from './dao/UserDAO';
 import GameStateAPIResponse from './GameStateAPIResponse';
-import Cooldown from './Cooldown';
+
+interface MoveRecord {
+    fen: string;
+    timestamp: number;
+    move: Move;
+}
 
 /**
  * A wrapper class for a ChessJS game to work with Real-time Chess.
@@ -51,6 +57,11 @@ class ChessGame {
      * Time before a recently moved piece may be moved again
      */
     public static readonly COOLDOWN_TIME = 5;
+
+    /**
+     * A record of every single move made in the game.
+     */
+    private moveHistory: MoveRecord[] = [];
 
     /**
      * Creates an instance of ChessGame.
@@ -115,14 +126,44 @@ class ChessGame {
     move(source: Square, target: Square): Move | null {
         let move;
         const cooldown = this.cooldownMap.get(source);
-        if (/* this.game.turn() === 'b' && */ (cooldown === undefined || cooldown.ready())) {
+        if (cooldown === undefined || cooldown.ready()) {
             move = this.game.move(`${source}-${target}`, { sloppy: true });
-            this.cooldownMap.delete(source);
-            this.cooldownMap.set(target, new Cooldown(ChessGame.COOLDOWN_TIME));
-        } /* else {
-            move = this.game.move(`${source}-${target}`, { sloppy: true });
-        } */
+            if (move !== null) {
+                this.cooldownMap.delete(source);
+                this.cooldownMap.set(target, new Cooldown(ChessGame.COOLDOWN_TIME));
+                this.moveHistory.push({
+                    fen: this.game.fen(),
+                    timestamp: Date.now(),
+                    move,
+                });
+            }
+        }
+
         return move ?? null;
+    }
+
+    /**
+     * The winner of the game if one exists
+     */
+    get winner(): 'w' | 'b' | null {
+        // First element of `kings` represents whether the white king exists
+        // Second element of `kings` represents whether th black king exists
+        const kings: [boolean, boolean] = [false, false];
+        this.game.board().forEach(boardRow => {
+            boardRow.forEach(piece => {
+                if (piece !== null && piece.type === 'k') {
+                    if (piece.color === 'w') {
+                        kings[0] = true;
+                    } else {
+                        kings[1] = true;
+                    }
+                }
+            });
+        });
+        if (kings[0] && kings[1]) return null;
+        if (kings[0]) return 'w';
+        if (kings[1]) return 'b';
+        return null;
     }
 
     /**
@@ -130,6 +171,13 @@ class ChessGame {
      */
     get turn(): 'w' | 'b' {
         return this.game.turn();
+    }
+
+    /**
+     * The history of all moves made in the game.
+     */
+    get moves(): MoveRecord[] {
+        return this.moveHistory;
     }
 }
 
