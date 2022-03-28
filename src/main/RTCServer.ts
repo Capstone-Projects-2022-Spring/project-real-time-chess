@@ -6,7 +6,7 @@ import * as http from 'http';
 import { ObjectId } from 'mongodb';
 import * as path from 'path';
 import { Server, Socket } from 'socket.io';
-import { ErrorAPIResponse } from './APIResponse';
+import GameSocketHandler from 'src/GameSocketHandler';
 import ChessGame from './ChessGame';
 import DatabaseConnector from './dao/DatabaseConnector';
 import GameManager from './GameManager';
@@ -127,66 +127,11 @@ class RTCServer {
                 },
             );
 
-            socket.on('game state', () => {
-                socket.emit(
-                    'game state',
-                    new GameStateAPIResponse(game.fen, game.gameKey, game.getMessages(), {
-                        black: game.black,
-                        white: game.white,
-                    }),
-                );
-                Logger.info(
-                    `Game State Request Successful\nUID: ${uid}\nFEN: ${game.fen}\n${
-                        game.getMessages().length
-                    } messages`,
-                );
-            });
+            socket.on('game state', () => GameSocketHandler.onGameStateRequest(socket, game, uid));
 
-            socket.on('move piece', (source: Square, target: Square) => {
-                const move = game.move(source, target);
-                if (move) {
-                    Logger.info(
-                        `User successfully made a move\nUID: ${uid}\nMove: ${JSON.stringify(
-                            move,
-                        )}\nFEN: ${game.fen}`,
-                    );
-
-                    game.addMessage({
-                        message: `${game.turn === 'b' ? 'White' : 'Black'} moved from ${
-                            move.from
-                        } to ${move.to}`,
-                    });
-
-                    game.blackSocket!.emit('move piece', {
-                        success: true,
-                        gameKey: game.gameKey,
-                        fen: game.fen,
-                        messages: game.getMessages(),
-                        players: {
-                            black: game.black,
-                            white: game.white,
-                        },
-                        move,
-                    });
-
-                    game.whiteSocket!.emit('move piece', {
-                        success: true,
-                        gameKey: game.gameKey,
-                        fen: game.fen,
-                        messages: game.getMessages(),
-                        players: {
-                            black: game.black,
-                            white: game.white,
-                        },
-                        move,
-                    });
-                } else {
-                    socket.broadcast.emit('move piece', new ErrorAPIResponse('Invalid move'));
-                    Logger.info(
-                        `User submitted an invalid move\nUID: ${uid}\nFrom: ${source}\nTo: ${target}\nFEN: ${game.fen}`,
-                    );
-                }
-            });
+            socket.on('move piece', (source: Square, target: Square) =>
+                GameSocketHandler.onMovePieceRequest(socket, game, uid, source, target),
+            );
         });
     }
 
