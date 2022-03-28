@@ -1,4 +1,4 @@
-import { Chess, Square } from 'chess.js';
+import { Square } from 'chess.js';
 import * as React from 'react';
 import { Chessboard } from 'react-chessboard';
 import ToastNotification from './ToastNotification';
@@ -108,6 +108,7 @@ class ChessboardComponent extends React.Component<
         //     return move !== null;
         // }
         // return false;
+        if (source && target) return true;
         return true;
     }
 
@@ -117,16 +118,16 @@ class ChessboardComponent extends React.Component<
      * @param color - The color to change the turn to.
      * @returns The new FEN string
      */
-    private forceTurnChange(color: 'w' | 'b'): string {
-        if (this.props.fen !== undefined) {
-            const tokens = this.props.fen.split(' ');
-            tokens[1] = color;
-            const fen = tokens.join(' ');
-            this.props.onFENChange(fen);
-            return fen;
-        }
-        return this.props.fen ?? '';
-    }
+    // private forceTurnChange(color: 'w' | 'b'): string {
+    //     if (this.props.fen !== undefined) {
+    //         const tokens = this.props.fen.split(' ');
+    //         tokens[1] = color;
+    //         const fen = tokens.join(' ');
+    //         this.props.onFENChange(fen);
+    //         return fen;
+    //     }
+    //     return this.props.fen ?? '';
+    // }
 }
 
 export default ChessboardComponent;
