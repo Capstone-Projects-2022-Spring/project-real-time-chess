@@ -1,5 +1,7 @@
 import * as React from 'react';
 import ButtonComponent from '../components/ButtonComponent';
+import Replays from './Replays';
+import UINavigator from '../models/UINavigator';
 
 interface ProfileProps {
     username: string;
@@ -65,9 +67,11 @@ class Profile extends React.Component<ProfileProps, ProfileState, { info: string
                             label="View Past Games"
                             width="100%"
                             onClick={() => {
-                                this.setState({
+                                UINavigator.render(<Replays username="dummy" />);
+                               /* this.setState({
+
                                     info: 'past game info',
-                                });
+                                });*/
                             }}
                         />
                     </div>

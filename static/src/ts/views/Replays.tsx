@@ -15,7 +15,7 @@ interface ReplaysState {
 */
 class Replays extends React.Component<ReplaysProps, ReplaysState, { info: string }> {
  /**
-     * Creates an instance of Profile.
+     * Creates an instance of Replays.
      * @param props - No props.
      */
     constructor(props: ReplaysProps) {
@@ -26,7 +26,7 @@ class Replays extends React.Component<ReplaysProps, ReplaysState, { info: string
         };
     }
      /**
-     * @returns The react element for the Profile view.
+     * @returns The react element for the Replays view.
      */
       render() {
         return (
