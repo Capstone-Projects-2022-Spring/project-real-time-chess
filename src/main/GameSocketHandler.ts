@@ -85,7 +85,7 @@ class GameSocketHandler {
                 move,
             });
         } else {
-            socket.broadcast.emit('move piece', new ErrorAPIResponse('Invalid move'));
+            socket.emit('move piece', new ErrorAPIResponse('Invalid move'));
             Logger.info(
                 `User submitted an invalid move\nUID: ${uid}\nFrom: ${source}\nTo: ${target}\nFEN: ${game.fen}`,
             );

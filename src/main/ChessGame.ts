@@ -46,7 +46,7 @@ class ChessGame {
     /**
      * An array of all active cooldown timers
      */
-    public cooldownMap: Map<Square, Cooldown>;
+    public cooldownMap: Record<Square, Cooldown>;
 
     /**
      * Time before a recently moved piece may be moved again
@@ -65,7 +65,7 @@ class ChessGame {
         this.game = new Chess();
         this.gameKey = gameKey;
         this.messages = [];
-        this.cooldownMap = new Map();
+        this.cooldownMap = {} as Record<Square, Cooldown>;
     }
 
     /**
@@ -131,15 +131,15 @@ class ChessGame {
      */
     move(source: Square, target: Square): Move | null {
         let move;
-        const cooldown = this.cooldownMap.get(source);
+        const cooldown = this.cooldownMap[source];
 
         if (cooldown === undefined || cooldown.ready()) {
             const movingColor = this.game.get(source)!.color;
             if (this.game.turn() !== movingColor) this.forceTurnChange(movingColor);
             move = this.game.move(`${source}-${target}`, { sloppy: true });
             if (move !== null) {
-                this.cooldownMap.delete(source);
-                this.cooldownMap.set(target, new Cooldown(ChessGame.COOLDOWN_TIME));
+                delete this.cooldownMap[source];
+                this.cooldownMap[target] = new Cooldown(5);
                 this.moveHistory.push({
                     fen: this.game.fen(),
                     timestamp: Date.now(),
