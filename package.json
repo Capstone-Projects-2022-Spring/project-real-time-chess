@@ -47,6 +47,7 @@
         "express": "^4.17.2",
         "ionicons": "^6.0.1",
         "mongodb": "^4.4.0",
+        "npx": "^10.2.2",
         "pug": "^3.0.2",
         "react": "^17.0.2",
         "react-chessboard": "^1.2.2",
