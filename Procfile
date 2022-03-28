@@ -1,1 +1,1 @@
-web: NODE_ENV=development npm install; npm run build; npm run start
+web: NODE_ENV=development npm install; npm run build:server & npm run build:client; npm run start
