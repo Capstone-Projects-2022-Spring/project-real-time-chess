@@ -1,38 +1,61 @@
 import * as React from 'react';
-import {NoProps} from '../models/types';
+import { NoProps } from '../models/types';
 import ButtonComponent from './ButtonComponent';
 
-var one = "1";
-var three = "3";
-var five = "5";
+const one = '1';
+const three = '3';
+const five = '5';
 
-interface CooldownSelectorState{
+/**
+ * An interface for cooldown string.
+ */
+interface CooldownSelectorState {
     cooldown: string;
 }
 
-class CooldownSelectorComponent extends React.Component<NoProps, CooldownSelectorState>{
+/**
+ * CooldownSelectorComponent Class
+ * This class has the option of three different cooldown times (in seconds).
+ */
+class CooldownSelectorComponent extends React.Component<NoProps, CooldownSelectorState> {
+    /**
+     * Constructor for CooldownSelectorComponent
+     */
     constructor(props: NoProps) {
         super(props);
-        this.state = {cooldown: ''};
+        this.state = { cooldown: '' };
         this.handleClickOne = this.handleClickOne.bind(this);
         this.handleClickThree = this.handleClickThree.bind(this);
         this.handleClickFive = this.handleClickFive.bind(this);
     }
 
-    handleClickOne(){
-        this.setState({cooldown: one});
+    /**
+     * Sets the cooldown state to one.
+     */
+    handleClickOne() {
+        this.setState({ cooldown: one });
     }
 
-    handleClickThree(){
-        this.setState({cooldown: three});
+    /**
+     * Sets the cooldown state to three.
+     */
+    handleClickThree() {
+        this.setState({ cooldown: three });
     }
 
-    handleClickFive(){
-        this.setState({cooldown: five});
+    /**
+     * Select the cooldown state to five.
+     */
+    handleClickFive() {
+        this.setState({ cooldown: five });
     }
 
-    render(){
-        return(
+    /**
+     * Method to render component.
+     * @returns Buttons rendered to screen for cooldowntime.
+     */
+    render() {
+        return (
             <div className='container'>
                 <div className='container'>
                     <strong>Select the cooldown time</strong>
@@ -40,15 +63,15 @@ class CooldownSelectorComponent extends React.Component<NoProps, CooldownSelecto
                 <div className='container'>
                 <ButtonComponent
                     label="1s"
-                    onClick={this.handleClickOne}
+                    onClick={ this.handleClickOne }
                 />
                 <ButtonComponent
                     label="3s"
-                    onClick={this.handleClickThree}
+                    onClick={ this.handleClickThree }
                 />
                 <ButtonComponent
                     label="5s"
-                    onClick={this.handleClickFive}
+                    onClick={ this.handleClickFive }
                 />
                 </div>
             </div>
@@ -57,4 +80,4 @@ class CooldownSelectorComponent extends React.Component<NoProps, CooldownSelecto
 }
 
 export default CooldownSelectorComponent;
-export {CooldownSelectorState};
+export { CooldownSelectorState };
