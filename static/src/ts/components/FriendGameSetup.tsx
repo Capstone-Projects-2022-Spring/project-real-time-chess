@@ -7,6 +7,7 @@ import SupportedEmojis from '../SupportedEmojis';
 import MultiplayerMatch from '../views/MultiplayerMatch';
 import ButtonComponent from './ButtonComponent';
 import EmojiKeyboard from './EmojiKeyboard';
+import CooldownSelectorComponent from './CooldownSelectorComponent';
 
 class FriendGameSetupComponent extends React.Component<NoProps, { gameKey: string[] }> {
     constructor(props: NoProps) {
@@ -70,6 +71,7 @@ class FriendGameSetupComponent extends React.Component<NoProps, { gameKey: strin
                         />
                     </div>
                 </div>
+                <CooldownSelectorComponent/>
             </div>
         );
     }
