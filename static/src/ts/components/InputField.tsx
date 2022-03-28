@@ -9,6 +9,7 @@ interface InputFieldProps {
     isValid?: boolean;
     type?: string;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onClick?: (e: React.MouseEvent<HTMLInputElement>) => void;
 }
 
 interface InputFieldState {
@@ -59,6 +60,7 @@ abstract class InputField extends React.Component<InputFieldProps, InputFieldSta
                     type={this.state.type}
                     placeholder={this.state.placeholder}
                     onChange={e => this.whenUpdated(e as React.ChangeEvent<HTMLInputElement>)}
+                    onClick={e => this.props.onClick?.(e as React.MouseEvent<HTMLInputElement>)}
                 />
                 <div>{this.state.label ?? ''}</div>
             </div>

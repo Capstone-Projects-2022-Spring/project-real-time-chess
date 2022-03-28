@@ -1,7 +1,5 @@
 /**
- * A helper object for tracking the cooldown for a chess piece. This class
- * should be used within each `ChessPiece` instance to assign a cooldown to
- * the piece.
+ * A helper object for tracking the cooldown for a chess piece.
  */
 export default class Cooldown implements CooldownInterface {
     /**

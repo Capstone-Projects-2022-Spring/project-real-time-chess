@@ -98,11 +98,8 @@ class SignUpTabComponent extends React.Component<SignUpTabProps, SignUpTabState>
                         <PasswordFieldComponent
                             label="Password"
                             onChange={e => this.setState({ password: e.target.value })}
+                            onClick={() => this.displayPasswordRequirements()}
                         />
-                        <p>Password Requirements:</p>
-                        <p>- Must be 8 or more characters</p>
-                        <p>- Must contain a symbol (ex: !@#$)</p>
-                        <p>- At least one uppercase letter</p>
                     </div>
                 </div>
 
@@ -138,6 +135,30 @@ class SignUpTabComponent extends React.Component<SignUpTabProps, SignUpTabState>
                 </div>
             </div>
         );
+    }
+
+    /**
+     * Displays a toast notification with the password requirements.
+     */
+    private displayPasswordRequirements() {
+        Swal.fire({
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 5000,
+            timerProgressBar: true,
+            didOpen: toast => {
+                toast.addEventListener('mouseenter', Swal.stopTimer);
+                toast.addEventListener('mouseleave', Swal.resumeTimer);
+            },
+            icon: 'info',
+            toast: true,
+            html: `<strong>Password Requirements:</strong>
+            <ul>
+            <li>Must be 8 or more characters</li>
+            <li>Must contain a symbol (ex: !@#$)</li>
+            <li>At least one uppercase letter</li>
+            </ul>`,
+        });
     }
 }
 
