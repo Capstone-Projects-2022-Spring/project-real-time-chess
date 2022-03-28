@@ -18,6 +18,10 @@ button.button-component {
         padding: $standard-padding;
         box-sizing: border;
         transition: $default-transition-time background, $default-transition-time color;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
 
     div:hover {

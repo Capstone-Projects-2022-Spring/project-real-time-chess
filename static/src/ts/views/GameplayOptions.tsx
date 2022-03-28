@@ -1,3 +1,10 @@
+import { IonIcon } from '@ionic/react';
+import {
+    cloudOfflineOutline,
+    helpCircleOutline,
+    logOutOutline,
+    personOutline,
+} from 'ionicons/icons';
 import * as React from 'react';
 import ButtonComponent from '../components/ButtonComponent';
 import FriendGameSetupComponent from '../components/FriendGameSetup';
@@ -109,36 +116,66 @@ class GameplayOptions extends React.Component<
                 <div className="row">
                     <div className="col">
                         <ButtonComponent
-                            label="Join Previous Game"
                             onClick={() => {
                                 UINavigator.render(<MultiplayerMatch orientation={'b'} />);
                             }}
-                        />
+                            width="100%"
+                        >
+                            <IonIcon
+                                style={{ fontSize: '4rem', marginBottom: '0.5rem' }}
+                                icon={cloudOfflineOutline}
+                            />
+                            <span>Rejoin Game</span>
+                        </ButtonComponent>
                     </div>
 
-                    <div className="row">
-                        <div className="col">
-                            <ButtonComponent
-                                label="Logout"
-                                onClick={() => {
-                                    CookieManager.uid = '';
-                                    CookieManager.auth = '';
-                                    UINavigator.render(<Homepage />);
-                                }}
-                            />
-                        </div>
-                    </div>
-                </div>
                     <div className="col">
                         <ButtonComponent
-                            label="Profile"
                             onClick={() => {
-                                UINavigator.render(<Profile username="dummy"/>);
+                                CookieManager.uid = '';
+                                CookieManager.auth = '';
+                                UINavigator.render(<Homepage />);
                             }}
-                        />
+                            width="100%"
+                        >
+                            <IonIcon
+                                style={{ fontSize: '4rem', marginBottom: '0.5rem' }}
+                                icon={logOutOutline}
+                            />
+                            <span>Logout</span>
+                        </ButtonComponent>
                     </div>
 
-                 <div className="row">
+                    <div className="col">
+                        <ButtonComponent
+                            onClick={() => {
+                                UINavigator.render(<Profile username="dummy" />);
+                            }}
+                            width="100%"
+                        >
+                            <IonIcon
+                                style={{ fontSize: '4rem', marginBottom: '0.5rem' }}
+                                icon={personOutline}
+                            />
+                            <span>Profile</span>
+                        </ButtonComponent>
+                    </div>
+
+                    <div className="col">
+                        <ButtonComponent
+                            onClick={() => HowToPlaySwal.displayHowToPlay()}
+                            width="100%"
+                        >
+                            <IonIcon
+                                style={{ fontSize: '4rem', marginBottom: '0.5rem' }}
+                                icon={helpCircleOutline}
+                            />
+                            <span>How to Play</span>
+                        </ButtonComponent>
+                    </div>
+                </div>
+
+                {/* <div className="row">
                     <div className="col-12 mt-4">
                         <div className="alert alert-primary" role="alert">
                             <div>
@@ -154,16 +191,16 @@ class GameplayOptions extends React.Component<
                             </div>
                         </div>
                     </div>
-                 </div>
+                </div> */}
 
-                 <div className="row">
+                <div className="row">
                     <div className="col"></div>
                     <div className="col-12 col-md-6 col-lg-4 mt-2 text-center game-mode-hover-img-container light-shadow">
                         <img src={this.state.hoverImage} className="w-100" />
                         {this.state.hoverImageCaption}
                     </div>
                     <div className="col"></div>
-                 </div>
+                </div>
             </div>
         );
     }
