@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ChessboardComponent from '../components/ChessboardComponent';
+// import ChessboardComponent from '../components/ChessboardComponent';
 
 interface BoardScreenProps {
     mode: string;
@@ -36,7 +36,6 @@ class BoardScreen extends React.Component<BoardScreenProps, BoardScreenState> {
                 <div className="row">
                     <div className="col">
                         <h1 style={{ textAlign: 'center' }}>Chessboard</h1>
-                        <ChessboardComponent orientation="w" />
                     </div>
                 </div>
             </div>

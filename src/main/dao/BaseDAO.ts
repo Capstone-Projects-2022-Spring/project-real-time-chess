@@ -57,6 +57,22 @@ abstract class BaseDAO<Schema extends Mongo.Document> {
         });
     }
 
+    // /**
+    //  * Adds empty statistics to a single document
+    //  * in the collection specified by this.CollectionName.
+    //  *
+    //  * @param filter - The filter use to find the document.
+    //  * @param add - The record which includes the fields to add and their new value.
+    //  * @returns The promise resolves when the update is successful.
+    //  */
+    // public async addFields(filter: Mongo.Filter<Schema>, add: Partial<Schema>): Promise<void>{
+    //     return new Promise((resolve, reject) => {
+    //         this.collection!.addFields(filter, add)
+    //         .then(()=> resolve())
+    //         .catch(err => reject(err));
+    //     });
+    // }
+
     /**
      * Gets the Mongo Collection object for the collection specified by this.collectionName.
      */

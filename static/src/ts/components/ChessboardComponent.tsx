@@ -11,9 +11,6 @@ class ChessboardComponent extends React.Component<
         orientation: 'b' | 'w';
         fen?: string;
         onPieceDrop?: (source: Square, target: Square) => void;
-        end_status: boolean;
-        //are users associated with b or w?
-        winner: string | null;
     },
     NoState
 > {
@@ -30,17 +27,6 @@ class ChessboardComponent extends React.Component<
                         const isValid = this.tryMove(source, target);
 
                         if (isValid) {
-                            this.props.onPieceDrop?.(source, target);
-                            if (this.isGameOver()){
-                                if(!this.isCheckmate()){
-                                    console.log('draw');
-                                } else {
-                                    if (this.whosTurn() === 'b')
-                                    //need to attribute winning color to winning user
-                                        console.log('b');
-                                    else console.log('w');
-                                }
-                            }
                             return true;
                         }
                         return false;
@@ -67,26 +53,6 @@ class ChessboardComponent extends React.Component<
             return move !== null;
         }
         return false;
-    }
-
-    /*
-     * Checks if the game is over via checkmate, stalemate, draw, 
-     * threefold repetition, or insufficient material.
-     * @returns True if the game is over, false otherwise.
-     */
-    private isGameOver(): boolean {
-        const game = Chess(this.props.fen);
-        return game.game_over();
-    }
-
-    private isCheckmate(): boolean{
-        const game = Chess(this.props.fen);
-        return game.in_checkmate();
-    }
-
-    private whosTurn(): string{
-        const game = Chess(this.props.fen);
-        return game.turn();
     }
 }
 

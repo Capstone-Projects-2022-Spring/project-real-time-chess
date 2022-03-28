@@ -1,6 +1,6 @@
 import * as React from 'react';
 import ButtonComponent from '../components/ButtonComponent';
-//import UINavigator from '../models/UINavigator';
+// import UINavigator from '../models/UINavigator';
 
 interface ProfileProps {
     username: string;
@@ -14,7 +14,7 @@ interface ProfileState {
 /**
  * The profile screen component.
  */
-class Profile extends React.Component<ProfileProps, ProfileState, {info: string}> {
+class Profile extends React.Component<ProfileProps, ProfileState, { info: string }> {
     /**
      * Creates an instance of Profile.
      * @param props - No props.
@@ -46,7 +46,8 @@ class Profile extends React.Component<ProfileProps, ProfileState, {info: string}
                         onClick={() => {
                             this.setState({
                             info:
-                                'name, email, rank',
+                                'Username: , Email: ',
+
                         }); }}
                         />
                     </div>
@@ -57,14 +58,15 @@ class Profile extends React.Component<ProfileProps, ProfileState, {info: string}
                         onClick={() => { this.setState({
                             info:
                                 'wins, loses, draws',
-                        });}}
+                        });
+                    }}
                         />
                     </div>
                     <div className="col">
                         <ButtonComponent
                         label="View Past Games"
                         width="100%"
-                        onClick={() => {this.setState({
+                        onClick={() => { this.setState({
                             info:
                                 'past game info',
                         }); }}
@@ -74,7 +76,7 @@ class Profile extends React.Component<ProfileProps, ProfileState, {info: string}
                         <ButtonComponent
                         label="Log Out"
                         width="100%"
-                        onClick={() => {this.setState({
+                        onClick={() => { this.setState({
                             info:
                                 'log out',
                         }); }}

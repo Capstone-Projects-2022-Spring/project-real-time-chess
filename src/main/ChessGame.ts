@@ -84,6 +84,24 @@ class ChessGame {
     }
 
     /**
+     * @returns The IUser associated with Black.
+     */
+    public get Black(): IUser | null {
+        if (this.black) {
+            return this.black;
+        } return null;
+    }
+
+    /**
+     * @returns The IUser associated with White.
+     */
+    public get White(): IUser | null {
+        if (this.white) {
+            return this.white;
+        } return null;
+    }
+
+    /**
      * Retrieves the Forsyth-Edwards Notation (FEN) string for the current game.
      * This used the chess.js library to generate the FEN string. For the purpose
      * of this product, the FEN strings are ONLY handled by ChessJS and not RTC.
@@ -108,6 +126,23 @@ class ChessGame {
             move = this.game.move(`${source}-${target}`, { sloppy: true });
         }
         return move ?? null;
+    }
+
+    /**
+     * Checks if the game is over via checkmate, stalemate, draw,
+     * threefold repetition, or insufficient material.
+     * @returns True if the game is over, false otherwise.
+     */
+    isGameOver(): boolean {
+        return this.game.game_over();
+    }
+
+    /**
+     * Checks if the player to move has been checkmated.
+     * @returns True if checkmated, false otherwise.
+     */
+    isCheckmate(): boolean {
+        return this.game.in_checkmate();
     }
 
     /**

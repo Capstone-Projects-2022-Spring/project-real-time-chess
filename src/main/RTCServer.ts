@@ -92,6 +92,10 @@ class RTCServer {
                     if (game) {
                         if (game.black && uid.toString() === game.black._id!.toString()) {
                             game!.blackSocket = socket;
+                            const blackUser = game.Black;
+                            if (blackUser) {
+                                Logger.info(`User Email: ${blackUser.email}`);
+                            }
                             Logger.info(`Authorized Socket Connection with:\nUID: ${uid}`);
                             callback?.(
                                 new GameStateAPIResponse(
@@ -106,6 +110,10 @@ class RTCServer {
                             );
                         } else if (game.white && uid.toString() === game.white._id!.toString()) {
                             game!.whiteSocket = socket;
+                            const whiteUser = game.White;
+                            if (whiteUser) {
+                                Logger.info(`User Email: ${whiteUser.email}`);
+                            }
                             Logger.info(`Authorized Socket Connection with:\nUID: ${uid}`);
                             callback?.(
                                 new GameStateAPIResponse(
@@ -145,12 +153,20 @@ class RTCServer {
             socket.on('move piece', (source: Square, target: Square) => {
                 const move = game.move(source, target);
                 if (move) {
+                    // if (game.isGameOver()) {
+                    //     Logger.info('Game is over.\n');
+                    //     if (game.isCheckmate()) {
+                    //         if (game.turn === 'b') {
+                    //             socket.broadcast.emit('Win', new ErrorAPIResponse('White won!'));
+                    //         } else socket.broadcast.emit('Win', new ErrorAPIResponse('Black won!'));
+                    //     }
+                    //     else socket.broadcast.emit('Draw', new ErrorAPIResponse('It\'s a draw!'));
+                    // }
                     Logger.info(
                         `User successfully made a move\nUID: ${uid}\nMove: ${JSON.stringify(
                             move,
                         )}\nFEN: ${game.fen}`,
                     );
-
                     game.addMessage({
                         message: `${game.turn === 'b' ? 'White' : 'Black'} moved from ${
                             move.from

@@ -13,6 +13,10 @@ interface UserRegistrationFormData {
     username: string;
     password: string;
     email: string;
+    win_loss: number;
+    pieces_captured: number;
+    total_games: number;
+    rank: number;
 }
 
 /**
@@ -35,11 +39,11 @@ interface IUser extends Document {
     email: string;
     username: string;
     password: string;
-    auths: string[];
     win_loss: number;
     pieces_captured: number;
     total_games: number;
-    rank: string;
+    rank: number;
+    auths: string[];
 }
 
 /**
