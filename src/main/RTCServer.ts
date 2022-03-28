@@ -6,7 +6,7 @@ import * as http from 'http';
 import { ObjectId } from 'mongodb';
 import * as path from 'path';
 import { Server, Socket } from 'socket.io';
-import GameSocketHandler from 'src/GameSocketHandler';
+import GameSocketHandler from 'src/main/GameSocketHandler';
 import ChessGame from './ChessGame';
 import DatabaseConnector from './dao/DatabaseConnector';
 import GameManager from './GameManager';

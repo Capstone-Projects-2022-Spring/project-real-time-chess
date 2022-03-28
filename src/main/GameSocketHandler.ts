@@ -1,9 +1,9 @@
 import { Square } from 'chess.js';
 import { Socket } from 'socket.io';
-import { ErrorAPIResponse } from './main/APIResponse';
-import ChessGame from './main/ChessGame';
-import GameStateAPIResponse from './main/GameStateAPIResponse';
-import Logger from './main/Logger';
+import { ErrorAPIResponse } from './APIResponse';
+import ChessGame from './ChessGame';
+import GameStateAPIResponse from './GameStateAPIResponse';
+import Logger from './Logger';
 
 /**
  * Contains static handlers for the game sockets in RTCServer
