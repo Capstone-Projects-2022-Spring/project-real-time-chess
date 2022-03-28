@@ -11,16 +11,17 @@ button.button-component {
     animation-iteration-count: infinite;
 
     div {
-        background: none;
+        background-color: none;
         color: white;
         height: 100%;
         width: 100%;
         padding: $standard-padding;
         box-sizing: border;
-        transition: 0.1s background;
+        transition: $default-transition-time background, $default-transition-time color;
     }
 
     div:hover {
-        background: none;
+        background-color: white;
+        color: black;
     }
 }
