@@ -61,32 +61,37 @@ class GameSocketHandler {
                 }`,
             });
 
-            game.blackSocket!.emit('move piece', {
-                success: true,
-                gameKey: game.gameKey,
-                fen: game.fen,
-                messages: game.getMessages(),
-                players: {
-                    black: game.black,
-                    white: game.white,
-                },
-                move,
-            });
+            if (game.blackSocket) {
+                game.blackSocket!.emit('move piece', {
+                    success: true,
+                    gameKey: game.gameKey,
+                    fen: game.fen,
+                    messages: game.getMessages(),
+                    players: {
+                        black: game.black,
+                        white: game.white,
+                    },
+                    move,
+                });
+            }
 
-            game.whiteSocket!.emit('move piece', {
-                success: true,
-                gameKey: game.gameKey,
-                fen: game.fen,
-                messages: game.getMessages(),
-                players: {
-                    black: game.black,
-                    white: game.white,
-                },
-                move,
-            });
+            if (game.whiteSocket) {
+                game.whiteSocket!.emit('move piece', {
+                    success: true,
+                    gameKey: game.gameKey,
+                    fen: game.fen,
+                    messages: game.getMessages(),
+                    players: {
+                        black: game.black,
+                        white: game.white,
+                    },
+                    move,
+                });
+              
             if (game.winner === 'b') {
                 socket.emit('blackWin');
             } else socket.emit('whiteWin');
+            
         } else {
             socket.emit('move piece', new ErrorAPIResponse('Invalid move'));
             Logger.info(

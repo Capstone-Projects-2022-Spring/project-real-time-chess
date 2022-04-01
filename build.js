@@ -41,7 +41,7 @@ console.log(`
 ============================
 `);
 
-runPhase('DEPS', 'Installing NPM Dependencies', 'npm install', 'installation')
+runPhase('DEPS', 'Installing NPM Dependencies', 'NODE_ENV=development npm install', 'installation')
     .then(() => {
         runPhase('LINT', 'Linting all TS(X) source files', 'npm run lint', 'lint')
             .then(() => {
