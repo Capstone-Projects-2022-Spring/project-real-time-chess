@@ -43,3 +43,16 @@
     background-image: $danger-gradient;
     animation: none;
 }
+
+// TODO: Componentize slider (range) inputs
+
+input[type='range'] {
+    appearance: none;
+    -webkit-appearance: none;
+    outline: none;
+    background-image: $primary-gradient;
+    border-radius: 1rem;
+    animation-name: HueRotation;
+    animation-duration: 10s;
+    animation-iteration-count: infinite;
+}
