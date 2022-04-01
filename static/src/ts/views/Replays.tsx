@@ -1,77 +1,62 @@
 import * as React from 'react';
 import ButtonComponent from '../components/ButtonComponent';
-import Replays from './Replays';
-import UINavigator from '../models/UINavigator';
 
-interface ProfileProps {
+interface ReplaysProps{
     username: string;
 }
 
-interface ProfileState {
+interface ReplaysState {
     username: string;
     info: string;
 }
 
 /**
- * The profile screen component.
- */
-class Profile extends React.Component<ProfileProps, ProfileState, { info: string }> {
-    /**
-     * Creates an instance of Profile.
+* The replays screen
+*/
+class Replays extends React.Component<ReplaysProps, ReplaysState, { info: string }> {
+ /**
+     * Creates an instance of Replays.
      * @param props - No props.
      */
-    constructor(props: ProfileProps) {
+    constructor(props: ReplaysProps) {
         super(props);
         this.state = {
-            username: props.username,
-            info: '',
+         username: props.username,
+         info: '',
         };
     }
 
-    /**
-     * @returns The react element for the Profile view.
+     /**
+     * @returns The react element for the Replays view.
      */
-    render() {
+      render() {
         return (
             <div className="container">
                 <div className="row">
                     <div className="col">
-                        <h1 style={{ textAlign: 'center' }}>Profile</h1>
+                        <h1 style={{ textAlign: 'center' }}>Replays</h1>
                     </div>
                 </div>
                 <div className="row">
                     <div className="col">
                         <ButtonComponent
-                            label="User Info"
+                            label="View Latest Game"
                             width="100%"
                             onClick={() => {
                                 this.setState({
-                                    info: 'name, email, rank',
+                                    info: 'latest game here',
                                 });
                             }}
                         />
                     </div>
                     <div className="col">
                         <ButtonComponent
-                            label="User Stats"
+                            label="View All Past Games"
                             width="100%"
                             onClick={() => {
                                 this.setState({
-                                    info: 'wins, loses, draws',
+                                    info: 'List of past games',
                                 });
-                            }}
-                        />
-                    </div>
-                    <div className="col">
-                        <ButtonComponent
-                            label="View Past Games"
-                            width="100%"
-                            onClick={() => {
-                                UINavigator.render(<Replays username="dummy" />);
-                               /* this.setState({
-
-                                    info: 'past game info',
-                                }); */
                             }}
                         />
                     </div>
@@ -100,5 +85,5 @@ class Profile extends React.Component<ProfileProps, ProfileState, { info: string
     }
 }
 
-export default Profile;
-export { ProfileProps, ProfileState };
+export default Replays;
+export { ReplaysProps, ReplaysState };
