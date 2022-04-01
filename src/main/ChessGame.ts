@@ -158,8 +158,8 @@ class ChessGame {
     private endGame() {
         const dao = new GameHistoryDAO();
         dao.insertOne({
-            black: this.black?.id,
-            white: this.white?.id,
+            black: this.black!._id!,
+            white: this.white!._id!,
             game_key: this.gameKey,
             history: this.moveHistory,
         });
