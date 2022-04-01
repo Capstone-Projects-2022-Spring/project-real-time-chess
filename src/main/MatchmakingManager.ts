@@ -1,4 +1,3 @@
-import EventEmitter from 'events';
 import { MatchmakingQueue } from './MatchmakingQueue';
 
 /**
@@ -21,19 +20,15 @@ export default class MatchmakingManager {
     private lowSkillQueue: MatchmakingQueue;
 
     /**
-     * event emitter for listening to queues
-     */
-    private eventEmitter: EventEmitter;
-
-    /**
      * instantiates a matchmaking manager and sets it to listen for queue events
      */
     constructor() {
         this.highSkillQueue = new MatchmakingQueue();
         this.averageSkillQueue = new MatchmakingQueue();
         this.lowSkillQueue = new MatchmakingQueue();
-        this.eventEmitter = new EventEmitter();
-        this.listen();
+        this.listen(this.highSkillQueue);
+        this.listen(this.averageSkillQueue);
+        this.listen(this.lowSkillQueue);
     }
 
     /**
@@ -58,13 +53,13 @@ export default class MatchmakingManager {
     /**
      * begin listening for matchmaking queue events
      */
-    private listen(): void {
-        this.eventEmitter.on('push', queue => {
+    private listen(queue: MatchmakingQueue): void {
+        queue.event.on('push', () => {
             if (queue.length() >= 2) {
                 // pop 2 players and create a game
             }
         });
-        this.eventEmitter.on('maxtime', queue => {
+        queue.event.on('maxtime', queue => {
             this.averageSkillQueue.push(queue.shift());
         });
     }

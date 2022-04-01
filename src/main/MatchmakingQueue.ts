@@ -17,12 +17,12 @@ class MatchmakingQueue {
     /**
      * time since last player was popped off of the queue
      */
-    private timeSinceLastMatch;
+    private timeSinceLastMatch: number;
 
     /**
      * event emitter for broadcasting matchmaking queue events
      */
-    private eventEmitter;
+    public event: EventEmitter;
 
     /**
      * max queue time, lets manager know if queue needs to be switched
@@ -35,7 +35,7 @@ class MatchmakingQueue {
     constructor() {
         this.queue = [];
         this.timeSinceLastMatch = 0;
-        this.eventEmitter = new EventEmitter();
+        this.event = new EventEmitter();
     }
 
     /**
@@ -60,7 +60,7 @@ class MatchmakingQueue {
      */
     public push(item: QueueMember): void {
         this.queue.push(item);
-        this.eventEmitter.emit('push', this);
+        this.event.emit('push');
     }
 
     /**
@@ -85,7 +85,7 @@ class MatchmakingQueue {
         setInterval(() => {
             this.timeSinceLastMatch += 1;
             if (this.timeSinceLastMatch >= MatchmakingQueue.MAX_QUEUE_TIME) {
-                this.eventEmitter.emit('maxtime', this);
+                this.event.emit('maxtime');
                 this.timeSinceLastMatch = 0;
             }
         }, 1000);
