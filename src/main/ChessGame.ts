@@ -197,6 +197,20 @@ class ChessGame {
     }
 
     /**
+     * @returns Whether the player to move is in checkmate.
+     */
+    get checkMate(): boolean {
+        return this.game.in_checkmate();
+    }
+
+    /**
+     * @returns Whether or not the game is over.
+     */
+    get gameOver(): boolean {
+        return this.game.game_over();
+    }
+
+    /**
      * The history of all moves made in the game.
      */
     get moves(): MoveRecord[] {
