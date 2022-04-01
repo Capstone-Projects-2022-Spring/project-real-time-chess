@@ -2,6 +2,7 @@ import { Square } from 'chess.js';
 import { Socket } from 'socket.io';
 import { ErrorAPIResponse } from './APIResponse';
 import ChessGame from './ChessGame';
+import UserDAO from './dao/UserDAO';
 import GameStateAPIResponse from './GameStateAPIResponse';
 import Logger from './Logger';
 
@@ -88,9 +89,27 @@ class GameSocketHandler {
                     move,
                 });
 
-                if (game.winner === 'b') {
-                    socket.emit('blackWin');
-                } else socket.emit('whiteWin');
+                const { winner } = game;
+                if (winner !== null) {
+                    Logger.debug(`A winner was found: ${winner}`);
+                    Logger.debug(
+                        `White: ${JSON.stringify(game.white)}\nBlack: ${JSON.stringify(
+                            game.black,
+                        )}`,
+                    );
+                    const dao = new UserDAO();
+                    if (winner === 'b') {
+                        game.whiteSocket!.emit('blackWin');
+                        game.blackSocket!.emit('blackWin');
+                        dao.recordWin(game.black!._id!);
+                        dao.recordLoss(game.white!._id!);
+                    } else if (winner === 'w') {
+                        game.whiteSocket!.emit('whiteWin');
+                        game.blackSocket!.emit('whiteWin');
+                        dao.recordWin(game.white!._id!);
+                        dao.recordLoss(game.black!._id!);
+                    }
+                }
             } else {
                 socket.emit('move piece', new ErrorAPIResponse('Invalid move'));
                 Logger.info(
