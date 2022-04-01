@@ -1,34 +1,34 @@
 import { MatchmakingQueue } from './MatchmakingQueue';
+import GameManager from './GameManager';
 
 /**
  * class for managing matchmaking queues
+ * use instance() to get singleton instance
  */
 export default class MatchmakingManager {
+    private static singleton: MatchmakingManager;
     /**
      * for players with win loss ratios above 1.2
      */
-    private highSkillQueue: MatchmakingQueue;
-
-    /**
-     * for players with win loss ratios between 0.8 and 1.2
-     */
-    private averageSkillQueue: MatchmakingQueue;
-
-    /**
-     * for players with win loss ratios below 0.8
-     */
-    private lowSkillQueue: MatchmakingQueue;
+    private matchmakingQueue: MatchmakingQueue;
 
     /**
      * instantiates a matchmaking manager and sets it to listen for queue events
+     * use instance() to return singleton instance
      */
-    constructor() {
-        this.highSkillQueue = new MatchmakingQueue();
-        this.averageSkillQueue = new MatchmakingQueue();
-        this.lowSkillQueue = new MatchmakingQueue();
-        this.listen(this.highSkillQueue);
-        this.listen(this.averageSkillQueue);
-        this.listen(this.lowSkillQueue);
+    private constructor() {
+        this.matchmakingQueue = new MatchmakingQueue();
+        this.listen(this.matchmakingQueue);
+    }
+
+    /**
+     * @returns a singleton instance of MatchmakingManager
+     */
+    public static instance(): MatchmakingManager {
+        if (MatchmakingManager.singleton === undefined || MatchmakingManager.singleton === null) {
+            MatchmakingManager.singleton = new MatchmakingManager();
+        } 
+            return MatchmakingManager.singleton;
     }
 
     /**
@@ -36,18 +36,7 @@ export default class MatchmakingManager {
      * @param user - user requesting matchmaking
      */
     public enqueue(user: IUser): void {
-        const skr = user.wins / user.losses;
-        const player = {
-            playerId: user._id,
-            skillRating: skr,
-        };
-        if (skr < 0.8) {
-            this.lowSkillQueue.push(player);
-        } else if (skr > 1.2) {
-            this.highSkillQueue.push(player);
-        } else {
-            this.averageSkillQueue.push(player);
-        }
+        this.matchmakingQueue.push(user);
     }
 
     /**
@@ -56,11 +45,11 @@ export default class MatchmakingManager {
     private listen(queue: MatchmakingQueue): void {
         queue.event.on('push', () => {
             if (queue.length() >= 2) {
-                // pop 2 players and create a game
+                const player1 = this.matchmakingQueue.shift();
+                const game = GameManager.createGame(player1);
+                const player2 = this.matchmakingQueue.shift();
+                GameManager.joinGame(player2, game!.gameKey);
             }
-        });
-        queue.event.on('maxtime', queue => {
-            this.averageSkillQueue.push(queue.shift());
         });
     }
 }

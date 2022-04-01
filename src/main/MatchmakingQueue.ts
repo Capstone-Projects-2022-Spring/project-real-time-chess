@@ -1,10 +1,5 @@
 import EventEmitter from 'events';
 
-interface QueueMember {
-    playerId: import('mongodb').ObjectId;
-    skillRating: number;
-}
-
 /**
  * A queue for the MatchmakingManager to pull players from
  */
@@ -12,12 +7,7 @@ class MatchmakingQueue {
     /**
      * internal array for queue
      */
-    private queue: QueueMember[];
-
-    /**
-     * time since last player was popped off of the queue
-     */
-    private timeSinceLastMatch: number;
+    private queue: IUser[];
 
     /**
      * event emitter for broadcasting matchmaking queue events
@@ -25,16 +15,10 @@ class MatchmakingQueue {
     public event: EventEmitter;
 
     /**
-     * max queue time, lets manager know if queue needs to be switched
-     */
-    private static readonly MAX_QUEUE_TIME = 60;
-
-    /**
      * creates instance of matchmaking queue
      */
     constructor() {
         this.queue = [];
-        this.timeSinceLastMatch = 0;
         this.event = new EventEmitter();
     }
 
@@ -42,15 +26,15 @@ class MatchmakingQueue {
      * A wrapper for the internal array's shift() method
      * @returns the first member of the queue and removes it
      */
-    public shift(): () => QueueMember | undefined {
-        this.setTimer();
-        return this.queue.shift;
+    public shift(): IUser {
+        const ret = this.queue.shift();
+        return ret!;
     }
 
     /**
      * @returns the first element of the internal array without removing it
      */
-    public peek(): QueueMember | undefined {
+    public peek(): IUser {
         return this.queue[0];
     }
 
@@ -58,7 +42,7 @@ class MatchmakingQueue {
      * A wrapper for the internal array's push() method
      * @param item - the QueueMember to add to the queue
      */
-    public push(item: QueueMember): void {
+    public push(item: IUser): void {
         this.queue.push(item);
         this.event.emit('push');
     }
@@ -76,27 +60,6 @@ class MatchmakingQueue {
     public length(): number {
         return this.queue.length;
     }
-
-    /**
-     * Increments time since last match
-     */
-    private setTimer() {
-        this.timeSinceLastMatch = 0;
-        setInterval(() => {
-            this.timeSinceLastMatch += 1;
-            if (this.timeSinceLastMatch >= MatchmakingQueue.MAX_QUEUE_TIME) {
-                this.event.emit('maxtime');
-                this.timeSinceLastMatch = 0;
-            }
-        }, 1000);
-    }
-
-    /**
-     * @returns time since last match
-     */
-    get time() {
-        return this.timeSinceLastMatch;
-    }
 }
 
-export { MatchmakingQueue, QueueMember };
+export { MatchmakingQueue };
