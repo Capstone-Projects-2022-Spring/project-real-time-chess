@@ -1,4 +1,4 @@
-import { MatchmakingQueue } from './MatchmakingQueue';
+import MatchmakingQueue from './MatchmakingQueue';
 import GameManager from './GameManager';
 
 /**
@@ -6,9 +6,13 @@ import GameManager from './GameManager';
  * use instance() to get singleton instance
  */
 export default class MatchmakingManager {
-    private static singleton: MatchmakingManager;
     /**
-     * for players with win loss ratios above 1.2
+     * singleton instance of MatchmakingManager
+     */
+    private static singleton: MatchmakingManager;
+
+    /**
+     * the queue for players looking for matches
      */
     private matchmakingQueue: MatchmakingQueue;
 
@@ -27,7 +31,7 @@ export default class MatchmakingManager {
     public static instance(): MatchmakingManager {
         if (MatchmakingManager.singleton === undefined || MatchmakingManager.singleton === null) {
             MatchmakingManager.singleton = new MatchmakingManager();
-        } 
+        }
             return MatchmakingManager.singleton;
     }
 

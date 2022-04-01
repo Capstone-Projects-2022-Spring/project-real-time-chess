@@ -3,7 +3,7 @@ import EventEmitter from 'events';
 /**
  * A queue for the MatchmakingManager to pull players from
  */
-class MatchmakingQueue {
+export default class MatchmakingQueue {
     /**
      * internal array for queue
      */
@@ -27,15 +27,14 @@ class MatchmakingQueue {
      * @returns the first member of the queue and removes it
      */
     public shift(): IUser {
-        const ret = this.queue.shift();
-        return ret!;
+        return this.queue.shift()!;
     }
 
     /**
      * @returns the first element of the internal array without removing it
      */
     public peek(): IUser {
-        return this.queue[0];
+        return this.queue[0]!;
     }
 
     /**
@@ -61,5 +60,3 @@ class MatchmakingQueue {
         return this.queue.length;
     }
 }
-
-export { MatchmakingQueue };
