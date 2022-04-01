@@ -99,13 +99,13 @@ class GameSocketHandler {
                     );
                     const dao = new UserDAO();
                     if (winner === 'b') {
-                        game.whiteSocket!.emit('blackWin');
-                        game.blackSocket!.emit('blackWin');
+                        game.whiteSocket!.emit('blackWin', game.blackName);
+                        game.blackSocket!.emit('blackWin', game.blackName);
                         dao.recordWin(game.black!._id!);
                         dao.recordLoss(game.white!._id!);
                     } else if (winner === 'w') {
-                        game.whiteSocket!.emit('whiteWin');
-                        game.blackSocket!.emit('whiteWin');
+                        game.whiteSocket!.emit('whiteWin', game.whiteName);
+                        game.blackSocket!.emit('whiteWin', game.whiteName);
                         dao.recordWin(game.white!._id!);
                         dao.recordLoss(game.black!._id!);
                     }
