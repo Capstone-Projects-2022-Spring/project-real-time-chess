@@ -84,6 +84,9 @@ class GameSocketHandler {
                 },
                 move,
             });
+            if (game.winner === 'b') {
+                socket.emit('blackWin');
+            } else socket.emit('whiteWin');
         } else {
             socket.emit('move piece', new ErrorAPIResponse('Invalid move'));
             Logger.info(
