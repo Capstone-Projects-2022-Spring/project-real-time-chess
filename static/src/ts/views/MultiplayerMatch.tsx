@@ -1,4 +1,3 @@
-import { gameController } from 'ionicons/icons';
 import * as React from 'react';
 import { io, Socket } from 'socket.io-client';
 import ChatComponent from '../components/ChatComponent';
