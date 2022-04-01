@@ -1,3 +1,4 @@
+import { gameController } from 'ionicons/icons';
 import * as React from 'react';
 import { io, Socket } from 'socket.io-client';
 import ChatComponent from '../components/ChatComponent';
@@ -113,12 +114,12 @@ class MultiplayerMatch extends React.Component<MultiplayerMatchProps, Multiplaye
             });
         });
 
-        this.socket.on('blackWin', () => {
-            new ToastNotification('Winner!', 'Black is the winner!', 'success').fire();
+        this.socket.on('blackWin', (name) => {
+            new ToastNotification('Winner!', `${name} is the winner!`, 'success').fire();
         });
 
-        this.socket.on('whiteWin', () => {
-            new ToastNotification('Winner!', 'White is the winner!', 'success').fire();
+        this.socket.on('whiteWin', (name) => {
+            new ToastNotification('Winner!', `${name} is the winner!`, 'success').fire();
         });
 
         this.socket.on('move piece', (response: IGameStateAPIResponse) => {
