@@ -111,6 +111,20 @@ class ChessGame {
     }
 
     /**
+     * Retrieves the first name of the black player.
+     */
+    public get blackName(): string | undefined {
+        return this.black?.name.first;
+    }
+
+    /**
+     * Retrieves the first name of the white player.
+     */
+    public get whiteName(): string | undefined {
+        return this.white?.name.first;
+    }
+
+    /**
      * Forces the turn (in the FEN string) to change to the specified color.
      *
      * @param color - The color to switch the turn to.
