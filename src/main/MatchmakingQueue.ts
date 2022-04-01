@@ -13,18 +13,22 @@ class MatchmakingQueue {
      * internal array for queue
      */
     private queue: QueueMember[];
+
     /**
      * time since last player was popped off of the queue
      */
     private timeSinceLastMatch;
+
     /**
      * event emitter for broadcasting matchmaking queue events
      */
     private eventEmitter;
+
     /**
      * max queue time, lets manager know if queue needs to be switched
      */
     private static readonly MAX_QUEUE_TIME = 60;
+
     /**
      * creates instance of matchmaking queue
      */
@@ -46,13 +50,13 @@ class MatchmakingQueue {
     /**
      * @returns the first element of the internal array without removing it
      */
-    public peek(): QueueMember {
+    public peek(): QueueMember | undefined {
         return this.queue[0];
     }
 
     /**
      * A wrapper for the internal array's push() method
-     * @param item the QueueMember to add to the queue
+     * @param item - the QueueMember to add to the queue
      */
     public push(item: QueueMember): void {
         this.queue.push(item);
@@ -80,7 +84,7 @@ class MatchmakingQueue {
         this.timeSinceLastMatch = 0;
         setInterval(() => {
             this.timeSinceLastMatch += 1;
-            if (this.timeSinceLastMatch >= 60) {
+            if (this.timeSinceLastMatch >= MatchmakingQueue.MAX_QUEUE_TIME) {
                 this.eventEmitter.emit('maxtime', this);
                 this.timeSinceLastMatch = 0;
             }
