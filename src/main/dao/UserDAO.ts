@@ -39,10 +39,6 @@ interface IUser extends Document {
     auths: string[];
     wins?: number;
     losses?: number;
-    // win_loss: number;
-    // pieces_captured: number;
-    // total_games: number;
-    // rank: string;
 }
 
 /**
