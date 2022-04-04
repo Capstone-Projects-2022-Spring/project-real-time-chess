@@ -1,5 +1,6 @@
 import { ObjectId, Document } from 'mongodb';
 import InvalidCredentialsError from '../errors/InvalidCredentialsError';
+import Logger from '../Logger';
 import BaseDAO from './BaseDAO';
 
 /**
@@ -36,6 +37,8 @@ interface IUser extends Document {
     username: string;
     password: string;
     auths: string[];
+    wins?: number;
+    losses?: number;
     // win_loss: number;
     // pieces_captured: number;
     // total_games: number;
@@ -125,6 +128,45 @@ class UserDAO extends BaseDAO<IUser> {
                     }
                 })
                 .catch(err => reject(err));
+        });
+    }
+
+    /**
+     * Records a win for a user.
+     *
+     * @param uid - The user's id.
+     * @returns A promise which resolves when the win is recorded in the database.
+     */
+    recordWin(uid: ObjectId): Promise<void> {
+        return new Promise((resolve, reject) => {
+            this.findOne({ _id: uid }).then(user => {
+                Logger.debug(`Trying to find user with id: ${uid} (${typeof uid})\nUser: ${user}`);
+                let wins: number;
+                if (user.wins === undefined) wins = 1;
+                else wins = user.wins + 1;
+                this.updateOne({ _id: uid }, { $set: { wins } })
+                    .then(() => resolve())
+                    .catch(err => reject(err));
+            });
+        });
+    }
+
+    /**
+     * Records a loss for a user.
+     *
+     * @param uid - The user's id.
+     * @returns A promise which resolves when the loss is recorded in the database.
+     */
+    recordLoss(uid: ObjectId): Promise<void> {
+        return new Promise((resolve, reject) => {
+            this.findOne({ _id: uid }).then(user => {
+                let losses: number;
+                if (user.losses === undefined) losses = 1;
+                else losses = user.losses + 1;
+                this.updateOne({ _id: uid }, { $set: { losses } })
+                    .then(() => resolve())
+                    .catch(err => reject(err));
+            });
         });
     }
 

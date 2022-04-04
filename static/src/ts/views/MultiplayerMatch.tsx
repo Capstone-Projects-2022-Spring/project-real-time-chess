@@ -113,6 +113,14 @@ class MultiplayerMatch extends React.Component<MultiplayerMatchProps, Multiplaye
             });
         });
 
+        this.socket.on('blackWin', (name) => {
+            new ToastNotification('Winner!', `${name} is the winner!`, 'success').fire();
+        });
+
+        this.socket.on('whiteWin', (name) => {
+            new ToastNotification('Winner!', `${name} is the winner!`, 'success').fire();
+        });
+
         this.socket.on('move piece', (response: IGameStateAPIResponse) => {
             if (!response.success) {
                 new ToastNotification('Invalid Move', 'You cannot make that move!', 'error').fire();

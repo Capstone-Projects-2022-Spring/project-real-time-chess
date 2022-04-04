@@ -111,6 +111,20 @@ class ChessGame {
     }
 
     /**
+     * Retrieves the first name of the black player.
+     */
+    public get blackName(): string | undefined {
+        return this.black?.name.first;
+    }
+
+    /**
+     * Retrieves the first name of the white player.
+     */
+    public get whiteName(): string | undefined {
+        return this.white?.name.first;
+    }
+
+    /**
      * Forces the turn (in the FEN string) to change to the specified color.
      *
      * @param color - The color to switch the turn to.
@@ -158,8 +172,8 @@ class ChessGame {
     private endGame() {
         const dao = new GameHistoryDAO();
         dao.insertOne({
-            black: this.black?.id,
-            white: this.white?.id,
+            black: this.black!._id!,
+            white: this.white!._id!,
             game_key: this.gameKey,
             history: this.moveHistory,
         });
@@ -194,6 +208,20 @@ class ChessGame {
      */
     get turn(): 'w' | 'b' {
         return this.game.turn();
+    }
+
+    /**
+     * @returns Whether the player to move is in checkmate.
+     */
+    get checkMate(): boolean {
+        return this.game.in_checkmate();
+    }
+
+    /**
+     * @returns Whether or not the game is over.
+     */
+    get gameOver(): boolean {
+        return this.game.game_over();
     }
 
     /**
