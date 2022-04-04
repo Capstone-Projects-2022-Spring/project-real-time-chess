@@ -1,16 +1,11 @@
 import * as React from 'react';
 import { NoProps } from '../models/types';
-import ButtonComponent from './ButtonComponent';
-
-const one = '1';
-const three = '3';
-const five = '5';
 
 /**
  * An interface for cooldown string.
  */
 interface CooldownSelectorState {
-    cooldown: string;
+    value: number;
 }
 
 /**
@@ -23,31 +18,7 @@ class CooldownSelectorComponent extends React.Component<NoProps, CooldownSelecto
      */
     constructor(props: NoProps) {
         super(props);
-        this.state = { cooldown: '' };
-        this.handleClickOne = this.handleClickOne.bind(this);
-        this.handleClickThree = this.handleClickThree.bind(this);
-        this.handleClickFive = this.handleClickFive.bind(this);
-    }
-
-    /**
-     * Sets the cooldown state to one.
-     */
-    handleClickOne() {
-        this.setState({ cooldown: one });
-    }
-
-    /**
-     * Sets the cooldown state to three.
-     */
-    handleClickThree() {
-        this.setState({ cooldown: three });
-    }
-
-    /**
-     * Select the cooldown state to five.
-     */
-    handleClickFive() {
-        this.setState({ cooldown: five });
+        this.state = { value: 5 };
     }
 
     /**
@@ -56,24 +27,18 @@ class CooldownSelectorComponent extends React.Component<NoProps, CooldownSelecto
      */
     render() {
         return (
-            <div className='container'>
-                <div className='container'>
-                    <strong>Select the cooldown time</strong>
+            <div style={{ background: 'white', borderRadius: '2rem', padding: '0.5rem' }}>
+                <div style={{ fontSize: '0.75rem', fontWeight: 'bold', color: 'gray' }}>
+                    Cooldown Time:&nbsp;
                 </div>
-                <div className='container'>
-                <ButtonComponent
-                    label="1s"
-                    onClick={ this.handleClickOne }
+                <input
+                    type="range"
+                    min="1"
+                    max="10"
+                    value={this.state.value}
+                    onChange={e => this.setState({ value: +e.target.value })}
                 />
-                <ButtonComponent
-                    label="3s"
-                    onClick={ this.handleClickThree }
-                />
-                <ButtonComponent
-                    label="5s"
-                    onClick={ this.handleClickFive }
-                />
-                </div>
+                <span style={{ paddingLeft: '1rem' }}>{this.state.value}s</span>
             </div>
         );
     }

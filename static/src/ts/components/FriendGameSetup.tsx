@@ -42,6 +42,7 @@ class FriendGameSetupComponent extends React.Component<NoProps, { gameKey: strin
                             Create a game. Then you will be given a game code. Send the game code to
                             your friend so they can join the game.
                         </p>
+                        <CooldownSelectorComponent />
                         <ButtonComponent
                             label="Create Game"
                             onClick={() => FriendGameSetupComponent.createGame()}
@@ -86,7 +87,6 @@ class FriendGameSetupComponent extends React.Component<NoProps, { gameKey: strin
                         />
                     </div>
                 </div>
-                <CooldownSelectorComponent/>
             </div>
         );
     }
