@@ -29,6 +29,20 @@ class GameAccess {
                 .catch(err => reject(err));
         });
     }
+
+    /**
+     * Retrieves a list of all games that the user has played in the past.
+     *
+     * @returns A promise which resolves with a list
+     */
+    static async getHistory(): Promise<GameHistory[]> {
+        return new Promise((resolve, reject) => {
+            axios
+                .get('/api/game/history')
+                .then(response => resolve(response.data))
+                .catch(err => reject(err));
+        });
+    }
 }
 
 export default GameAccess;
