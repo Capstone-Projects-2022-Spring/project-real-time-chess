@@ -2,6 +2,8 @@ import { ObjectId, Document } from 'mongodb';
 import InvalidCredentialsError from '../errors/InvalidCredentialsError';
 import Logger from '../Logger';
 import BaseDAO from './BaseDAO';
+import { resolve } from 'path';
+import { rejections } from 'winston';
 
 /**
  * The required information for the signup form.
@@ -67,6 +69,15 @@ class UserDAO extends BaseDAO<IUser> {
                 .then(() => resolve())
                 .catch(err => reject(err));
         });
+    }
+
+    /**
+     * @returns a promise for an IUser object with the given id
+     * @param userId - id of user in database to retrieve
+     */
+    async retrieveUser(userId: ObjectId): Promise<IUser> {
+        const user = await this.findOne({ _id: userId._id });
+        return user;
     }
 
     /**

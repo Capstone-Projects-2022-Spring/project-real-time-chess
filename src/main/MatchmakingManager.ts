@@ -1,5 +1,6 @@
 import MatchmakingQueue from './MatchmakingQueue';
 import GameManager from './GameManager';
+import UserDAO from './dao/UserDAO';
 
 /**
  * class for managing matchmaking queues
@@ -37,10 +38,12 @@ export default class MatchmakingManager {
 
     /**
      * places the player in a queue based on their win loss ratio
-     * @param user - user requesting matchmaking
+     * @param userId - id of user requesting matchmaking
      */
-    public enqueue(user: IUser): void {
-        this.matchmakingQueue.push(user);
+    async enqueue(userId: string): Promise<void> {
+        const dao = new UserDAO();
+        const user = await dao.retrieveUser(userId);
+        this.matchmakingQueue.push(user);;
     }
 
     /**
