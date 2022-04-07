@@ -70,6 +70,15 @@ class UserDAO extends BaseDAO<IUser> {
     }
 
     /**
+     * @returns a promise for an IUser object with the given id
+     * @param userId - id of user in database to retrieve
+     */
+    async retrieveUser(userId: string): Promise<IUser> {
+        const user = await this.findOne({ _id: userId });
+        return user;
+    }
+
+    /**
      * Authenticates a user using login form data.
      *
      * @param formData - The user-provided username/email and password combination.
