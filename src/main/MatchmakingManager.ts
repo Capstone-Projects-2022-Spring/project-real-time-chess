@@ -43,7 +43,7 @@ export default class MatchmakingManager {
     async enqueue(userId: string): Promise<void> {
         const dao = new UserDAO();
         const user = await dao.retrieveUser(userId);
-        this.matchmakingQueue.push(user);;
+        this.matchmakingQueue.push(user);
     }
 
     /**
