@@ -12,6 +12,7 @@ apiRouter.use('/game', gameApiRouter);
 userApiRouter.post('/create', UserRoutes.createUserRoute);
 userApiRouter.post('/login', UserRoutes.loginUserRoute);
 userApiRouter.get('/authenticate', UserRoutes.authenticateUserRoute);
+userApiRouter.get('/info', UserRoutes.getUserRoute);
 
 gameApiRouter.post('/create', GameRoutes.createGame);
 gameApiRouter.post('/join', GameRoutes.joinGame);
