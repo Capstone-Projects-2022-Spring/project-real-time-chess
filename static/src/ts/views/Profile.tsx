@@ -5,11 +5,15 @@ import UINavigator from '../models/UINavigator';
 import Users from '../access/Users';
 
 interface ProfileProps {
-    username: string;
+    email: string;
 }
 
 interface ProfileState {
-    username: string;
+    userFirst: string;
+    userLast: string;
+    email: string;
+    wins: number;
+    losses: number;
     info: string;
 }
 
@@ -24,9 +28,40 @@ class Profile extends React.Component<ProfileProps, ProfileState, { info: string
     constructor(props: ProfileProps) {
         super(props);
         this.state = {
-            username: props.username,
+            userFirst: '',
+            userLast: '',
+            email: '',
             info: '',
+            wins: 0,
+            losses: 0,
         };
+    }
+
+    /**
+     * Gets the user information from the users collection database.
+     */
+    componentDidMount() {
+        Users.getInfo()
+            .then(user => {
+                if (user) {
+                    this.setState({
+                        userFirst: user.name.first,
+                        userLast: user.name.last,
+                        email: user.email,
+                        wins: user.wins,
+                        losses: user.losses,
+                    });
+                } else {
+                    this.setState({
+                        info: 'not found',
+                    });
+                }
+            })
+            .catch(() => {
+                this.setState({
+                    info: 'promise did not resolve',
+                });
+            });
     }
 
     /**
@@ -46,38 +81,24 @@ class Profile extends React.Component<ProfileProps, ProfileState, { info: string
                             label="User Info"
                             width="100%"
                             onClick={() => {
-                                Users.getInfo()
-                                    .then(user => {
-                                        if (user) {
-                                            this.setState({
-                                                username: `${user.name.first} ${user.name.last}`,
-                                                info: 'worked',
-                                            });
-                                        } else {
-                                            this.setState({
-                                                info: 'not found',
-                                            });
-                                        }
-                                    })
-                                    .catch(() => {
-                                        this.setState({
-                                            info: 'promise did not resolve',
-                                        });
-                                    });
+                                <div className="row">
+                                    <div className="col">
+                                        <h2 style={{ textAlign: 'left' }}>
+                                            First Name: {this.state.userFirst}
+                                        </h2>
+                                        <h2 style={{ textAlign: 'left' }}>
+                                            Last Name: {this.state.userLast}
+                                        </h2>
+                                        <h2 style={{ textAlign: 'left' }}>
+                                            Email: {this.state.email}
+                                        </h2>
+                                    </div>
+                                </div>;
                             }}
                         />
                     </div>
                     <div className="col">
-                        <ButtonComponent
-                            label="User Stats"
-                            width="100%"
-                            onClick={() => {
-                                this.setState({
-                                    username: 'dummy',
-                                    info: 'wins, loses, draws',
-                                });
-                            }}
-                        />
+                        <ButtonComponent label="User Stats" width="100%" onClick={() => {}} />
                     </div>
                     <div className="col">
                         <ButtonComponent

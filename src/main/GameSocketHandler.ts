@@ -21,8 +21,8 @@ class GameSocketHandler {
         socket.emit(
             'game state',
             new GameStateAPIResponse(game.fen, game.gameKey, game.getMessages(), {
-                black: game.black,
-                white: game.white,
+                black: UserDAO.sanitize(game.black!),
+                white: UserDAO.sanitize(game.white!),
             }),
         );
         Logger.info(
