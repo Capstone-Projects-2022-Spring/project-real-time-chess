@@ -121,6 +121,7 @@ class RTCServer {
                         } else {
                             Logger.error(`No game found for user: ${uid}`);
                         }
+                        game.listen();
                     } else {
                         Logger.warn(`No game found for specified user\nUID: ${uid}`);
                     }

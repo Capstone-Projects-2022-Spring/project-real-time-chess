@@ -120,6 +120,8 @@ class MultiplayerMatch extends React.Component<MultiplayerMatchProps, Multiplaye
             },
         );
 
+        this.socket.emit('game connection');
+
         this.socket.on('game state', (gameState: IGameStateAPIResponse) => {
             this.setState({
                 fen: gameState.fen,
@@ -127,11 +129,11 @@ class MultiplayerMatch extends React.Component<MultiplayerMatchProps, Multiplaye
             });
         });
 
-        this.socket.on('blackWin', (name) => {
+        this.socket.on('blackWin', name => {
             new ToastNotification('Winner!', `${name} is the winner!`, 'success').fire();
         });
 
-        this.socket.on('whiteWin', (name) => {
+        this.socket.on('whiteWin', name => {
             new ToastNotification('Winner!', `${name} is the winner!`, 'success').fire();
         });
 
