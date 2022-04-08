@@ -1,7 +1,7 @@
 import * as React from 'react';
 import ButtonComponent from '../components/ButtonComponent';
 import ChessboardComponent from '../components/ChessboardComponent';
-//import { ObjectId } from 'mongodb';
+// import { ObjectId } from 'mongodb';
 
 interface ReplayGameProps{
     username: string;
@@ -13,17 +13,13 @@ interface ReplayGameState {
     info: string;
     fen?: string
     gamekey: string
-   /* black: ObjectId;
-    white: ObjectId;
-    history: MoveRecord[]
-    */
 }
 
 /**
-* The replay game screen
-*/
+ * THe replay game screen
+ */
 class ReplayGame extends React.Component<ReplayGameProps, ReplayGameState, { info: string }> {
- /**
+    /**
      * Creates an instance of Replays.
      * @param props - No props.
      */
@@ -34,8 +30,8 @@ class ReplayGame extends React.Component<ReplayGameProps, ReplayGameState, { inf
          info: '',
          fen: undefined,
          gamekey: '',
-         /*black
-         white: 
+         /* black
+         white:
          history:
          */
         };
@@ -56,7 +52,7 @@ class ReplayGame extends React.Component<ReplayGameProps, ReplayGameState, { inf
                         <ChessboardComponent
                             orientation={this.props.orientation}
                             fen={this.state.fen}
-                            /*onPieceDrop={(source, target) => {
+                            /* onPieceDrop={(source, target) => {
                                 this.socket?.emit('move piece', source, target);
                             }}
                             */

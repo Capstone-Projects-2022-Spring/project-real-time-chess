@@ -1,12 +1,10 @@
 import * as React from 'react';
 import ButtonComponent from '../components/ButtonComponent';
 
-interface ReplaysProps{
-   // username: string;
-}
+type ReplaysProps = Record<string, never>;
 
 interface ReplaysState {
-    //username: string;
+    // username: string;
     info: string;
 }
 
