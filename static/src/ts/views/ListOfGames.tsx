@@ -1,59 +1,52 @@
 import * as React from 'react';
-import ButtonComponent from '../components/ButtonComponent'
+import ButtonComponent from '../components/ButtonComponent';
 import UINavigator from '../models/UINavigator';
 import ReplayGame from './ReplayGame';
 
-
 interface ListOfGamesProps{
-    games: String[]
+    games: string[]
     labele: string
-    
+
 }
 
-interface ListOfGamesState{
-    
-}
-
-class ListOfGames extends React.Component<ListOfGamesProps,ListOfGamesState>{
+/**
+ * List of games
+ */
+class ListOfGames extends React.Component<ListOfGamesProps, Record<string, never>> {
     /**
-     * Creates an instance of the Lsit of the users past games.
-     * @param props - No props.
-     */
-    constructor(props: ListOfGamesProps){
-        super(props);
-        this.state = {
-            labele: ""
-        };
-    }
-     /**
      * @returns The react element for the ListOfGames view.
      */
-    render(){
-        return(
+    render() {
+        return (
             <div className="container">
                 <div className = "row">
                     <div className = "col">
-                        <h1 style={{textAlign: 'center'}}></h1>
+                        <h1 style={{ textAlign: 'center' }}></h1>
                     </div>
                 </div>
                 <div className='row'>
-                    {this.props.games.map(this.makeButton,this)}
+                    {this.props.games.map(this.makeButton, this)}
                 </div>
             </div>
-        )
+        );
     }
-    makeButton(){
-        return(
+
+    /**
+     * Make a button
+     * @returns A button component
+     */
+    makeButton() {
+        return (
             <ButtonComponent
                 label = "Here is button"
                 width = "100%"
-                onClick={()=> {
+                onClick={() => {
                     UINavigator.render(<ReplayGame username={''} orientation={'b'} />);
                 }}
             />
-                
-        )
+
+        );
     }
 }
 export default ListOfGames;
-export { ListOfGamesProps, ListOfGamesState };
+export { ListOfGamesProps };
