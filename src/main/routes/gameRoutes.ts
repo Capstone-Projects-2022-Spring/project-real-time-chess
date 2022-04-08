@@ -1,4 +1,5 @@
 import { ErrorAPIResponse } from '../APIResponse';
+import GameHistoryDAO from '../dao/GameHistoryDAO';
 import GameCreatedAPIResponse from '../GameCreatedAPIResponse';
 import GameManager from '../GameManager';
 import Logger from '../Logger';
@@ -77,6 +78,19 @@ class GameRoutes {
                     `Error thrown in GameManager.verifyUserAccess (UID=${req.cookies.uid}, AUTH=${req.cookies.auth})\n\n${err}`,
                 );
             });
+    }
+
+    /**
+     * Retrieves a list of games that belong to a specified user
+     *
+     * @param req - The express request object
+     * @param res - The express response object
+     */
+    static getHistory(req: GameHistoryAPIRequest, res: GameHistoryAPIResponse) {
+        const dao = new GameHistoryDAO();
+        dao.getAllGames(req.cookies.uid)
+            .then(games => res.send(games))
+            .catch(() => res.send(undefined));
     }
 }
 

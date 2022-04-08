@@ -200,6 +200,7 @@ class UserDAO extends BaseDAO<IUser> {
         return {
             username: user.username,
             name: user.name,
+            email: user.email,
         };
     }
 }
