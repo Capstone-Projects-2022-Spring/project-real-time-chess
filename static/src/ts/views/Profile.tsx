@@ -79,7 +79,7 @@ class Profile extends React.Component<ProfileProps, ProfileState, { info: string
                             label="View Past Games"
                             width="100%"
                             onClick={() => {
-                                UINavigator.render(<Replays username="dummy" />);
+                                UINavigator.render(<Replays/>);
                                /* this.setState({
 
                                     info: 'past game info',

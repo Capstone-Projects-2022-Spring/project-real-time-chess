@@ -4,12 +4,10 @@ import ButtonComponent from '../components/ButtonComponent';
 import UINavigator from '../models/UINavigator';
 import GameplayOptions from './GameplayOptions';
 
-interface ReplaysProps{
-    username: string;
-}
+type ReplaysProps = Record<string, never>;
 
 interface ReplaysState {
-    username: string;
+    // username: string;
     info: string;
 }
 
@@ -24,7 +22,7 @@ class Replays extends React.Component<ReplaysProps, ReplaysState, { info: string
     constructor(props: ReplaysProps) {
         super(props);
         this.state = {
-         username: props.username,
+        // username: props.username,
          info: '',
         };
     }
