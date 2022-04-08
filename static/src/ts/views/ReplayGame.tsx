@@ -1,28 +1,43 @@
 import * as React from 'react';
 import ButtonComponent from '../components/ButtonComponent';
+import ChessboardComponent from '../components/ChessboardComponent';
+import { ObjectId } from 'mongodb';
 
-interface ReplaysProps{
-   // username: string;
+interface ReplayGameProps{
+    username: string;
+    orientation: 'b' | 'w';
 }
 
-interface ReplaysState {
-    //username: string;
+interface ReplayGameState {
+    username: string;
     info: string;
+    fen?: string
+    gamekey: string
+   /* black: ObjectId;
+    white: ObjectId;
+    history: MoveRecord[]
+    */
 }
 
 /**
-* The replays screen
+* The replay game screen
 */
-class Replays extends React.Component<ReplaysProps, ReplaysState, { info: string }> {
+class ReplayGame extends React.Component<ReplayGameProps, ReplayGameState, { info: string }> {
  /**
      * Creates an instance of Replays.
      * @param props - No props.
      */
-    constructor(props: ReplaysProps) {
+    constructor(props: ReplayGameProps) {
         super(props);
         this.state = {
-        // username: props.username,
+         username: props.username,
          info: '',
+         fen: undefined,
+         gamekey: '',
+         /*black
+         white: 
+         history:
+         */
         };
     }
 
@@ -34,31 +49,24 @@ class Replays extends React.Component<ReplaysProps, ReplaysState, { info: string
             <div className="container">
                 <div className="row">
                     <div className="col">
-                        <h1 style={{ textAlign: 'center' }}>Replays</h1>
+                        <h1 style={{ textAlign: 'center' }}>Your latest game</h1>
                     </div>
-                </div>
-                <div className="row">
-                    <div className="col">
-                        <ButtonComponent
-                            label="View Latest Game"
-                            width="100%"
-                            onClick={() => {
-                                this.setState({
-                                    info: 'latest game here',
-                                });
+                    <div className="row">
+                    <div className="col-12 col-md-6 text-center">
+                        <ChessboardComponent
+                            orientation={this.props.orientation}
+                            fen={this.state.fen}
+                            /*onPieceDrop={(source, target) => {
+                                this.socket?.emit('move piece', source, target);
                             }}
+                            */
+                            onFENChange={fen =>
+                                this.setState({
+                                    fen,
+                                })
+                            }
                         />
                     </div>
-                    <div className="col">
-                        <ButtonComponent
-                            label="View All Past Games"
-                            width="100%"
-                            onClick={() => {
-                                this.setState({
-                                    info: 'List of past games',
-                                });
-                            }}
-                        />
                     </div>
                     <div className="col">
                         <ButtonComponent
@@ -85,5 +93,5 @@ class Replays extends React.Component<ReplaysProps, ReplaysState, { info: string
     }
 }
 
-export default Replays;
-export { ReplaysProps, ReplaysState };
+export default ReplayGame;
+export { ReplayGameProps, ReplayGameState };
