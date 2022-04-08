@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Swal from 'sweetalert2';
+import { IonIcon } from '@ionic/react';
 import GameAccess from '../access/GameAccess';
 import { NoProps } from '../models/types';
 import UINavigator from '../models/UINavigator';
@@ -9,7 +10,6 @@ import ButtonComponent from './ButtonComponent';
 import EmojiKeyboard from './EmojiKeyboard';
 import CooldownSelectorComponent from './CooldownSelectorComponent';
 import GameplayOptions from '../views/GameplayOptions';
-import { IonIcon } from '@ionic/react';
 
 /**
  * The page for setting up a multiplayer game with a friend. This gives the user

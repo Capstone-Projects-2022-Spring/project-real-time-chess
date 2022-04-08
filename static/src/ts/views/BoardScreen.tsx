@@ -1,11 +1,11 @@
-//import { IonIcon } from '@ionic/react';
+// import { IonIcon } from '@ionic/react';
 import { IonIcon } from '@ionic/react';
 import * as React from 'react';
 import ButtonComponent from '../components/ButtonComponent';
 import ChessboardComponent from '../components/ChessboardComponent';
 import UINavigator from '../models/UINavigator';
 import GameplayOptions from './GameplayOptions';
-//import UINavigator from '../models/UINavigator';
+// import UINavigator from '../models/UINavigator';
 
 interface BoardScreenProps {
     mode: string;

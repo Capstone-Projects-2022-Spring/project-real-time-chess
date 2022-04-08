@@ -1,9 +1,9 @@
 import * as React from 'react';
+import { IonIcon } from '@ionic/react';
 import ButtonComponent from '../components/ButtonComponent';
 import Replays from './Replays';
 import UINavigator from '../models/UINavigator';
 import GameplayOptions from './GameplayOptions';
-import { IonIcon } from '@ionic/react';
 
 interface ProfileProps {
     username: string;
