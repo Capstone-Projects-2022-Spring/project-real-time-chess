@@ -8,6 +8,7 @@ import {
 import * as React from 'react';
 import ButtonComponent from '../components/ButtonComponent';
 import FriendGameSetupComponent from '../components/FriendGameSetup';
+import MatchmakingLobbyComponent from '../components/MatchmakingLobby';
 import HowToPlaySwal from '../components/HowToPlaySwal';
 import CookieManager from '../CookieManager';
 import { NoProps } from '../models/types';
@@ -96,7 +97,7 @@ class GameplayOptions extends React.Component<
                         <ButtonComponent
                             label="You v Random"
                             width="100%"
-                            onClick={() => undefined}
+                            onClick={() => UINavigator.render(<MatchmakingLobbyComponent />)}
                         />
                     </div>
                     <div
