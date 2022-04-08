@@ -52,7 +52,7 @@ class ToastNotification {
                 toast.addEventListener('mouseenter', Swal.stopTimer);
                 toast.addEventListener('mouseleave', Swal.resumeTimer);
             },
-        });
+        }).catch(err => document.write(`Error: ${err.message}`));
     }
 }
 

@@ -1,15 +1,15 @@
+import { IonIcon } from '@ionic/react';
 import * as React from 'react';
 import Swal from 'sweetalert2';
-import { IonIcon } from '@ionic/react';
 import GameAccess from '../access/GameAccess';
 import { NoProps } from '../models/types';
 import UINavigator from '../models/UINavigator';
 import SupportedEmojis from '../SupportedEmojis';
+import GameplayOptions from '../views/GameplayOptions';
 import MultiplayerMatch from '../views/MultiplayerMatch';
 import ButtonComponent from './ButtonComponent';
-import EmojiKeyboard from './EmojiKeyboard';
 import CooldownSelectorComponent from './CooldownSelectorComponent';
-import GameplayOptions from '../views/GameplayOptions';
+import EmojiKeyboard from './EmojiKeyboard';
 
 /**
  * The page for setting up a multiplayer game with a friend. This gives the user
@@ -42,12 +42,10 @@ class FriendGameSetupComponent extends React.Component<NoProps, { gameKey: strin
                         <h2>Create Game</h2>
                         <ButtonComponent
                             onClick={() => {
-                                UINavigator.render(<GameplayOptions/>);
+                                UINavigator.render(<GameplayOptions />);
                             }}
                         >
-                            <IonIcon
-                                style={{ textAlign: 'center' }}
-                            />
+                            <IonIcon style={{ textAlign: 'center' }} />
                             <span>Home</span>
                         </ButtonComponent>
                         <p>
@@ -85,6 +83,8 @@ class FriendGameSetupComponent extends React.Component<NoProps, { gameKey: strin
                                                 icon: 'error',
                                                 title: 'Error',
                                                 text: response.error!.message,
+                                            }).catch(err => {
+                                                document.write(`Error: ${err.message}`);
                                             });
                                         }
                                     })
@@ -93,6 +93,8 @@ class FriendGameSetupComponent extends React.Component<NoProps, { gameKey: strin
                                             icon: 'error',
                                             title: 'Error',
                                             text: err.message,
+                                        }).catch(swalError => {
+                                            document.write(`Error: ${swalError.message}`);
                                         });
                                     });
                             }}
@@ -119,19 +121,19 @@ class FriendGameSetupComponent extends React.Component<NoProps, { gameKey: strin
                         didClose: () => {
                             UINavigator.render(<MultiplayerMatch orientation="b" />);
                         },
-                    });
+                    }).catch(err => document.write(`Error: ${err.message}`));
                 } else {
                     Swal.fire({
                         title: 'Error',
                         text: response.error!.message,
-                    });
+                    }).catch(err => document.write(`Error: ${err.message}`));
                 }
             })
             .catch(error => {
                 Swal.fire({
                     title: 'Error',
                     text: error.message,
-                });
+                }).catch(err => document.write(`Error: ${err.message}`));
             });
     }
 

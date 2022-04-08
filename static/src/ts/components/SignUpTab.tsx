@@ -115,19 +115,25 @@ class SignUpTabComponent extends React.Component<SignUpTabProps, SignUpTabState>
                                             Swal.fire({
                                                 title: 'Signup Successful',
                                                 text: `${this.state.fname}, good news. You're signed up!`,
-                                            });
+                                            }).catch(err =>
+                                                document.write(`Error: ${err.message}`),
+                                            );
                                         } else {
                                             Swal.fire({
                                                 title: 'Signup Failed',
                                                 text: 'We do not know why',
-                                            });
+                                            }).catch(err =>
+                                                document.write(`Error: ${err.message}`),
+                                            );
                                         }
                                     })
                                     .catch(err => {
                                         Swal.fire({
                                             title: 'Signup Failed',
                                             text: `Reason: ${err.message}`,
-                                        });
+                                        }).catch(swalError =>
+                                            document.write(`Error: ${swalError.message}`),
+                                        );
                                     });
                             }}
                         />
@@ -158,7 +164,7 @@ class SignUpTabComponent extends React.Component<SignUpTabProps, SignUpTabState>
             <li>Must contain a symbol (ex: !@#$)</li>
             <li>At least one uppercase letter</li>
             </ul>`,
-        });
+        }).catch(err => document.write(`Error: ${err.message}`));
     }
 }
 
