@@ -55,12 +55,10 @@ class MultiplayerMatch extends React.Component<MultiplayerMatchProps, Multiplaye
                         <h1 style={{ textAlign: 'center' }}>Multiplayer Match</h1>
                         <ButtonComponent
                             onClick={() => {
-                                UINavigator.render(<GameplayOptions/>);
+                                UINavigator.render(<GameplayOptions />);
                             }}
                         >
-                            <IonIcon
-                                style={{ textAlign: 'center' }}
-                            />
+                            <IonIcon style={{ textAlign: 'center' }} />
                             <span>Home</span>
                         </ButtonComponent>
                     </div>
@@ -86,6 +84,18 @@ class MultiplayerMatch extends React.Component<MultiplayerMatchProps, Multiplaye
                     </div>
                     <div className="col-12 col-md-6">
                         <ChatComponent messages={this.state.messages} />
+                    </div>
+                </div>
+
+                <div className="row">
+                    <div className="col">
+                        <ButtonComponent
+                            onClick={() => {
+                                this.socket?.emit('move ai');
+                            }}
+                        >
+                            AI Move
+                        </ButtonComponent>
                     </div>
                 </div>
             </div>
@@ -127,11 +137,11 @@ class MultiplayerMatch extends React.Component<MultiplayerMatchProps, Multiplaye
             });
         });
 
-        this.socket.on('blackWin', (name) => {
+        this.socket.on('blackWin', name => {
             new ToastNotification('Winner!', `${name} is the winner!`, 'success').fire();
         });
 
-        this.socket.on('whiteWin', (name) => {
+        this.socket.on('whiteWin', name => {
             new ToastNotification('Winner!', `${name} is the winner!`, 'success').fire();
         });
 
