@@ -86,7 +86,7 @@ class Users {
     static getInfo(): Promise<ISanitizedUser> {
         return new Promise((resolve, reject) => {
             axios.get('/api/user/info').then(response => {
-                if (response.data.success) resolve(response.data.user);
+                if (response.data) resolve(response.data);
                 else reject(response.data.error);
             });
         });

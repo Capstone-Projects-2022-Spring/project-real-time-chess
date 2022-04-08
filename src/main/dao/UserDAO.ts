@@ -74,7 +74,7 @@ class UserDAO extends BaseDAO<IUser> {
      * @param userId - id of user in database to retrieve
      */
     async retrieveUser(userId: string): Promise<IUser> {
-        const user = await this.findOne({ _id: userId });
+        const user = await this.findOne({ _id: new ObjectId(userId) });
         return user;
     }
 
