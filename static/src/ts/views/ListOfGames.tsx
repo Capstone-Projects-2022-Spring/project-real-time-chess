@@ -3,6 +3,7 @@ import ButtonComponent from '../components/ButtonComponent'
 import UINavigator from '../models/UINavigator';
 import ReplayGame from './ReplayGame';
 
+
 interface ListOfGamesProps{
     games: String[]
     labele: string
@@ -36,7 +37,7 @@ class ListOfGames extends React.Component<ListOfGamesProps,ListOfGamesState>{
                     </div>
                 </div>
                 <div className='row'>
-
+                    {this.props.games.map(this.makeButton,this)}
                 </div>
             </div>
         )
