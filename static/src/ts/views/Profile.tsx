@@ -2,6 +2,7 @@ import * as React from 'react';
 import ButtonComponent from '../components/ButtonComponent';
 import Replays from './Replays';
 import UINavigator from '../models/UINavigator';
+import Users from '../access/Users';
 
 interface ProfileProps {
     username: string;
@@ -45,9 +46,24 @@ class Profile extends React.Component<ProfileProps, ProfileState, { info: string
                             label="User Info"
                             width="100%"
                             onClick={() => {
-                                this.setState({
-                                    info: 'name, email, rank',
-                                });
+                                Users.getInfo()
+                                    .then(user => {
+                                        if (user) {
+                                            this.setState({
+                                                username: `${user.name.first} ${user.name.last}`,
+                                                info: 'worked',
+                                            });
+                                        } else {
+                                            this.setState({
+                                                info: 'not found',
+                                            });
+                                        }
+                                    })
+                                    .catch(() => {
+                                        this.setState({
+                                            info: 'promise did not resolve',
+                                        });
+                                    });
                             }}
                         />
                     </div>
@@ -57,6 +73,7 @@ class Profile extends React.Component<ProfileProps, ProfileState, { info: string
                             width="100%"
                             onClick={() => {
                                 this.setState({
+                                    username: 'dummy',
                                     info: 'wins, loses, draws',
                                 });
                             }}
@@ -68,21 +85,6 @@ class Profile extends React.Component<ProfileProps, ProfileState, { info: string
                             width="100%"
                             onClick={() => {
                                 UINavigator.render(<Replays username="dummy" />);
-                               /* this.setState({
-
-                                    info: 'past game info',
-                                }); */
-                            }}
-                        />
-                    </div>
-                    <div className="col">
-                        <ButtonComponent
-                            label="Log Out"
-                            width="100%"
-                            onClick={() => {
-                                this.setState({
-                                    info: 'log out',
-                                });
                             }}
                         />
                     </div>
