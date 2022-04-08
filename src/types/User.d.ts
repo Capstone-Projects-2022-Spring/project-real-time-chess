@@ -11,6 +11,8 @@ declare interface IUser extends Document {
     username: string;
     password: string;
     auths: string[];
+    wins: number;
+    losses: number;
 }
 
 declare interface ISanitizedUser {
@@ -19,4 +21,5 @@ declare interface ISanitizedUser {
         last: string;
     };
     username: string;
+    email: string;
 }

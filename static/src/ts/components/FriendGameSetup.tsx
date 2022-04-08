@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Swal from 'sweetalert2';
+import { IonIcon } from '@ionic/react';
 import GameAccess from '../access/GameAccess';
 import { NoProps } from '../models/types';
 import UINavigator from '../models/UINavigator';
@@ -8,6 +9,7 @@ import MultiplayerMatch from '../views/MultiplayerMatch';
 import ButtonComponent from './ButtonComponent';
 import EmojiKeyboard from './EmojiKeyboard';
 import CooldownSelectorComponent from './CooldownSelectorComponent';
+import GameplayOptions from '../views/GameplayOptions';
 
 /**
  * The page for setting up a multiplayer game with a friend. This gives the user
@@ -38,10 +40,21 @@ class FriendGameSetupComponent extends React.Component<NoProps, { gameKey: strin
                 <div className="row">
                     <div className="col-12 col-md-6">
                         <h2>Create Game</h2>
+                        <ButtonComponent
+                            onClick={() => {
+                                UINavigator.render(<GameplayOptions/>);
+                            }}
+                        >
+                            <IonIcon
+                                style={{ textAlign: 'center' }}
+                            />
+                            <span>Home</span>
+                        </ButtonComponent>
                         <p>
                             Create a game. Then you will be given a game code. Send the game code to
                             your friend so they can join the game.
                         </p>
+                        <CooldownSelectorComponent />
                         <ButtonComponent
                             label="Create Game"
                             onClick={() => FriendGameSetupComponent.createGame()}
@@ -86,7 +99,6 @@ class FriendGameSetupComponent extends React.Component<NoProps, { gameKey: strin
                         />
                     </div>
                 </div>
-                <CooldownSelectorComponent/>
             </div>
         );
     }

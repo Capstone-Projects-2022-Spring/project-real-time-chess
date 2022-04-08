@@ -1,7 +1,9 @@
 import * as React from 'react';
+import { IonIcon } from '@ionic/react';
 import ButtonComponent from '../components/ButtonComponent';
 import Replays from './Replays';
 import UINavigator from '../models/UINavigator';
+import GameplayOptions from './GameplayOptions';
 
 interface ProfileProps {
     username: string;
@@ -37,6 +39,16 @@ class Profile extends React.Component<ProfileProps, ProfileState, { info: string
                 <div className="row">
                     <div className="col">
                         <h1 style={{ textAlign: 'center' }}>Profile</h1>
+                        <ButtonComponent
+                            onClick={() => {
+                                UINavigator.render(<GameplayOptions/>);
+                            }}
+                        >
+                            <IonIcon
+                                style={{ textAlign: 'center' }}
+                            />
+                            <span>Home</span>
+                        </ButtonComponent>
                     </div>
                 </div>
                 <div className="row">
@@ -67,7 +79,7 @@ class Profile extends React.Component<ProfileProps, ProfileState, { info: string
                             label="View Past Games"
                             width="100%"
                             onClick={() => {
-                                UINavigator.render(<Replays username="dummy" />);
+                                UINavigator.render(<Replays/>);
                                /* this.setState({
 
                                     info: 'past game info',
