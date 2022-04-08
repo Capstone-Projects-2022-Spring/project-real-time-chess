@@ -21,7 +21,7 @@ interface ReplayGameState {
 class ReplayGame extends React.Component<ReplayGameProps, ReplayGameState, { info: string }> {
     /**
      * Creates an instance of Replays.
-     * @param props - No props.
+     * @param props - props for this component
      */
     constructor(props: ReplayGameProps) {
         super(props);
@@ -76,7 +76,6 @@ class ReplayGame extends React.Component<ReplayGameProps, ReplayGameState, { inf
                         />
                     </div>
                 </div>
-
                 <div className="row">
                     <div className="col"></div>
                     <div className="col-12 col-md-6 col-lg-4 mt-2 text-center game-mode-hover-img-container light-shadow">
