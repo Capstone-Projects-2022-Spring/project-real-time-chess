@@ -1,4 +1,4 @@
-import EventEmitter from 'events';
+import { EventEmitter } from 'events';
 import { IUser } from './dao/UserDAO';
 
 /**
@@ -42,9 +42,10 @@ export default class MatchmakingQueue {
      * A wrapper for the internal array's push() method
      * @param item - the QueueMember to add to the queue
      */
-    public push(item: IUser): void {
-        this.queue.push(item);
+    public push(item: IUser): number {
+        const position = this.queue.push(item);
         this.event.emit('push');
+        return position;
     }
 
     /**
