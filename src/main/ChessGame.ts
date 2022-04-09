@@ -212,9 +212,11 @@ class ChessGame {
             if (this.readyCount === 2) {
                 this.blackSocket?.emit('start', 'b');
                 this.whiteSocket?.emit('start', 'w');
-     }
-          
-     * Uses Joe's API to fetch the next best move in the current game.
+            }
+        });
+    }
+
+    /* Uses Joe's API to fetch the next best move in the current game.
      * This uses artificial intelligence to determine the best move.
      *
      * @returns The best move in the current game. In the case where
