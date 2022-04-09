@@ -104,6 +104,7 @@ class RTCServer {
                                     },
                                 ),
                             );
+                            game.listenBlack();
                         } else if (game.white && uid.toString() === game.white._id!.toString()) {
                             game!.whiteSocket = socket;
                             Logger.info(`Authorized Socket Connection with:\nUID: ${uid}`);
@@ -118,6 +119,7 @@ class RTCServer {
                                     },
                                 ),
                             );
+                            game.listenWhite();
                         } else {
                             Logger.error(`No game found for user: ${uid}`);
                         }
