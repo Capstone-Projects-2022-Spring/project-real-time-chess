@@ -56,6 +56,19 @@ class UserRoutes {
             })
             .catch(error => res.send(new ErrorAPIResponse(error)));
     }
+
+    /**
+     * The handler for getting a user's information.
+     *
+     * @param req - The express request object
+     * @param res - The express response object
+     */
+    static getUserRoute(req: GetUserRequest, res: GetUserResponse) {
+        const dao = new UserDAO();
+        dao.retrieveUser(req.cookies.uid)
+            .then(user => res.send(UserDAO.sanitize(user)))
+            .catch(err => res.send(new ErrorAPIResponse(err)));
+    }
 }
 
 export default UserRoutes;

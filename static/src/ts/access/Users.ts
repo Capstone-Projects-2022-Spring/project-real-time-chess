@@ -76,6 +76,21 @@ class Users {
             }
         });
     }
+
+    /**
+     * Gets the publicly available information for the user that
+     * is currently logged in.
+     *
+     * @returns The sanitized user data (if they are logged in).
+     */
+    static getInfo(): Promise<ISanitizedUser> {
+        return new Promise((resolve, reject) => {
+            axios.get('/api/user/info').then(response => {
+                if (response.data.success) resolve(response.data.user);
+                else reject(response.data.error);
+            });
+        });
+    }
 }
 
 export default Users;

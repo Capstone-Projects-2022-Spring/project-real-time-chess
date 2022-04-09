@@ -21,4 +21,5 @@ declare interface ISanitizedUser {
         last: string;
     };
     username: string;
+    email: string;
 }

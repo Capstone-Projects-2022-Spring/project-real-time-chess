@@ -1,5 +1,11 @@
+// import { IonIcon } from '@ionic/react';
+import { IonIcon } from '@ionic/react';
 import * as React from 'react';
+import ButtonComponent from '../components/ButtonComponent';
 import ChessboardComponent from '../components/ChessboardComponent';
+import UINavigator from '../models/UINavigator';
+import GameplayOptions from './GameplayOptions';
+// import UINavigator from '../models/UINavigator';
 
 interface BoardScreenProps {
     mode: string;
@@ -36,6 +42,16 @@ class BoardScreen extends React.Component<BoardScreenProps, BoardScreenState> {
                 <div className="row">
                     <div className="col">
                         <h1 style={{ textAlign: 'center' }}>Chessboard</h1>
+                        <ButtonComponent
+                            onClick={() => {
+                                UINavigator.render(<GameplayOptions/>);
+                            }}
+                        >
+                            <IonIcon
+                                style={{ textAlign: 'center' }}
+                            />
+                            <span>Home</span>
+                        </ButtonComponent>
                         <ChessboardComponent orientation="w" onFENChange={() => undefined} />
                     </div>
                 </div>

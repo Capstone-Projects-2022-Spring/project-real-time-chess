@@ -134,6 +134,8 @@ class RTCServer {
             socket.on('move piece', (source: Square, target: Square) =>
                 GameSocketHandler.onMovePieceRequest(socket, game, uid, source, target),
             );
+
+            socket.on('move ai', () => GameSocketHandler.onAIMoveRequest(socket, game, uid));
         });
     }
 
