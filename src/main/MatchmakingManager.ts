@@ -24,7 +24,6 @@ export default class MatchmakingManager {
      */
     private constructor() {
         this.matchmakingQueue = new MatchmakingQueue();
-        // this.listen(this.matchmakingQueue);
     }
 
     /**
@@ -40,6 +39,7 @@ export default class MatchmakingManager {
     /**
      * places the player in a queue based on their win loss ratio
      * @param userId - id of user requesting matchmaking
+     * @param socket - socket for communication with the client
      */
     async enqueue(userId: string): Promise<number> {
         const dao = new UserDAO();
