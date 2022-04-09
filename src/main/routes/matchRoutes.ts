@@ -2,13 +2,15 @@ import { ErrorAPIResponse } from '../APIResponse';
 import Logger from '../Logger';
 import MatchmakingManager from '../MatchmakingManager';
 import MatchQueueAPIResponse from '../MatchQueueAPIResponse';
+import GameManager from '../GameManager';
+import MatchQueryAPIResponse from '../MatchQueryAPIResponse';
 
 /**
  * Utility class for matchmaking routes
  */
 class MatchRoutes {
     /**
-     *
+     * Attempts to add client to the matchmaking queue
      * @param req - The express request object
      * @param res - The express reponse object
      */
@@ -34,6 +36,25 @@ class MatchRoutes {
                 );
             })
             .finally(() => matchmakingManager.tryMatch());
+    }
+
+    /**
+     * Checks whether a game has been created for the player waiting in matchmaking
+     * @param req - The express request object
+     * @param res - The express reponse object
+     */
+    static query(req: MatchQueryRequest, res: MatchQueryResponse) {
+        const game = GameManager.findGameByUser(req.body.uid);
+        if (game) {
+            res.send(new MatchQueryAPIResponse());
+            Logger.debug(`Game found for user (${req.body.uid}).`);
+        } else {
+            res.send(
+                new ErrorAPIResponse(
+                    `Could not find game for user (${req.body.uid}). Matchmaking will continue.`,
+                ),
+            );
+        }
     }
 }
 

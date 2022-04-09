@@ -20,5 +20,6 @@ gameApiRouter.post('/create', GameRoutes.createGame);
 gameApiRouter.post('/join', GameRoutes.joinGame);
 
 matchApiRouter.post('/queue', MatchRoutes.queue);
+matchApiRouter.post('/query', MatchRoutes.query);
 
 export default apiRouter;

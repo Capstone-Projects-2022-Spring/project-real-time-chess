@@ -34,6 +34,11 @@ class ChessGame {
     public whiteSocket?: ChessGameSocket;
 
     /**
+     * Number of players from matchmaking ready to play
+     */
+    private readyCount = 0;
+
+    /**
      * The chess.js game instance
      */
     private game: ChessInstance;
@@ -175,6 +180,38 @@ class ChessGame {
             white: this.white!._id!,
             game_key: this.gameKey,
             history: this.moveHistory,
+        });
+    }
+
+    /**
+     * for matchmaking communication with the client controlling the black pieces
+     */
+    public listenBlack() {
+        this.blackSocket?.emit('count', this.readyCount);
+        this.blackSocket!.once('ready', () => {
+            this.readyCount++;
+            this.blackSocket?.emit('count', this.readyCount);
+            this.whiteSocket?.emit('count', this.readyCount);
+            if (this.readyCount === 2) {
+                this.blackSocket?.emit('start', 'b');
+                this.whiteSocket?.emit('start', 'w');
+            }
+        });
+    }
+
+    /**
+     * for matchmaking communication with the client controlling the white pieces
+     */
+    public listenWhite() {
+        this.whiteSocket?.emit('count', this.readyCount);
+        this.whiteSocket!.once('ready', () => {
+            this.readyCount++;
+            this.whiteSocket!.emit('count', this.readyCount);
+            this.blackSocket?.emit('count', this.readyCount);
+            if (this.readyCount === 2) {
+                this.blackSocket?.emit('start', 'b');
+                this.whiteSocket?.emit('start', 'w');
+            }
         });
     }
 
