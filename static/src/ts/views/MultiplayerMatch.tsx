@@ -106,8 +106,6 @@ class MultiplayerMatch extends React.Component<MultiplayerMatchProps, Multiplaye
             },
         );
 
-        this.socket.emit('game connection');
-
         this.socket.on('game state', (gameState: IGameStateAPIResponse) => {
             this.setState({
                 fen: gameState.fen,

@@ -4,7 +4,7 @@ import { IUser } from './dao/UserDAO';
 /**
  * A queue for the MatchmakingManager to pull players from
  */
-export default class MatchmakingQueue {
+class MatchmakingQueue {
     /**
      * internal array for queue
      */
@@ -62,3 +62,5 @@ export default class MatchmakingQueue {
         return this.queue.length;
     }
 }
+
+export default MatchmakingQueue;

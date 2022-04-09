@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Socket, io } from 'socket.io-client';
 import { NoProps } from '../models/types';
 import MatchAccess from '../access/MatchAccess';
 import CookieManager from '../CookieManager';
@@ -12,6 +13,10 @@ import CookieManager from '../CookieManager';
  * and displays their status in the matchmaking queue
  */
 class MatchmakingLobbyComponent extends React.Component<NoProps, { status: string }> {
+    socket?: Socket;
+
+    matchFound: boolean;
+
     /**
      * Creates and instance of the MatchmakingLobbyComponent
      * @param props - No props used
@@ -19,6 +24,7 @@ class MatchmakingLobbyComponent extends React.Component<NoProps, { status: strin
     constructor(props: NoProps) {
         super(props);
         this.state = { status: '' };
+        this.matchFound = false;
     }
 
     /**
@@ -45,9 +51,36 @@ class MatchmakingLobbyComponent extends React.Component<NoProps, { status: strin
      * Requests entrance into the matchmaking queue
      */
     componentDidMount() {
+        this.bindSocket();
         MatchAccess.queue(CookieManager.uid);
+        let timer = 0;
         this.setState({
-            status: 'Searching for game...',
+            status: 'Searching for game... 0:00',
+        });
+        const timeout = setInterval(() => {
+            timer += 1;
+            if (this.matchFound) {
+                clearInterval(timeout);
+            }
+            this.setState({
+                status: `Searching for game... ${Math.floor(timer / 60)}:${String(
+                    timer % 60,
+                ).padStart(2, '0')}`,
+            });
+        }, 1000);
+    }
+
+    /**
+     * Connect to server via socket.io
+     */
+    private bindSocket() {
+        this.socket = io();
+        this.socket.connect();
+        this.socket.on('match found', () => {
+            this.matchFound = true;
+            this.setState({
+                status: 'Game found!',
+            });
         });
     }
 }

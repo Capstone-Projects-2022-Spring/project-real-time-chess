@@ -3,7 +3,6 @@ import Cooldown from './Cooldown';
 import GameHistoryDAO from './dao/GameHistoryDAO';
 import { IUser } from './dao/UserDAO';
 import GameStateAPIResponse from './GameStateAPIResponse';
-import Logger from './Logger';
 
 /**
  * A wrapper class for a ChessJS game to work with Real-time Chess.
@@ -176,18 +175,6 @@ class ChessGame {
             white: this.white!._id!,
             game_key: this.gameKey,
             history: this.moveHistory,
-        });
-    }
-
-    /**
-     * register socket listeners
-     */
-    public listen() {
-        this.blackSocket?.on('game connection', () => {
-            Logger.debug('Black connected to game.');
-        });
-        this.whiteSocket?.on('game connection', () => {
-            Logger.debug('White connected to game');
         });
     }
 
