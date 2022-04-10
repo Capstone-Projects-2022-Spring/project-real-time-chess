@@ -1,7 +1,9 @@
-import MatchmakingQueue from './MatchmakingQueue';
+import { Socket } from 'socket.io';
+import MatchmakingQueue, { UserSocketPair } from './MatchmakingQueue';
 import GameManager from './GameManager';
 import UserDAO from './dao/UserDAO';
 import Logger from './Logger';
+import ReadyUp from './ReadyUp';
 
 /**
  * class for managing matchmaking queues
@@ -19,11 +21,24 @@ export default class MatchmakingManager {
     private matchmakingQueue: MatchmakingQueue;
 
     /**
+     * list of all ready up objects
+     * ready up objects are created when a match is made
+     */
+    private readyUpList: ReadyUp[];
+
+    /**
+     * the next id to give out to a new ready up object
+     */
+    private nextId: number;
+
+    /**
      * instantiates a matchmaking manager and sets it to listen for queue events
      * use instance() to return singleton instance
      */
     private constructor() {
         this.matchmakingQueue = new MatchmakingQueue();
+        this.readyUpList = [];
+        this.nextId = 0;
     }
 
     /**
@@ -41,12 +56,12 @@ export default class MatchmakingManager {
      * @param userId - id of user requesting matchmaking
      * @param socket - socket for communication with the client
      */
-    async enqueue(userId: string): Promise<number> {
+    async enqueue(userId: string, socket: Socket): Promise<number> {
         const dao = new UserDAO();
         return new Promise<number>((resolve, reject) => {
             dao.retrieveUser(userId)
                 .then(user => {
-                    resolve(this.matchmakingQueue.push(user));
+                    resolve(this.matchmakingQueue.push(new UserSocketPair(user, socket)));
                 })
                 .catch(() => {
                     reject();
@@ -55,30 +70,25 @@ export default class MatchmakingManager {
     }
 
     /**
-     * begin listening for matchmaking queue events
-     */
-    // private listen(queue: MatchmakingQueue): void {
-    //     queue.event.on('push', () => {
-    //         if (queue.length() >= 2) {
-    //             const player1 = this.matchmakingQueue.shift();
-    //             const game = GameManager.createGame(player1);
-    //             const player2 = this.matchmakingQueue.shift();
-    //             GameManager.joinGame(player2, game!.gameKey);
-    //         }
-    //     });
-    // }
-
-    /**
      * Attempts to pull 2 players off of the queue to create a game
      */
     public tryMatch() {
         if (this.matchmakingQueue.length() >= 2) {
             const player1 = this.matchmakingQueue.shift();
-            Logger.debug(`Attempting to create a game with Player 1: (${player1._id})`);
-            const game = GameManager.createGame(player1);
+            Logger.debug(`Attempting to create a game with Player 1: (${player1.user._id})`);
+            const game = GameManager.createGame(player1.user);
             const player2 = this.matchmakingQueue.shift();
-            Logger.debug(`Attempting to join game with Player 2: (${player2._id})`);
-            GameManager.joinGame(player2, game!.gameKey);
+            Logger.debug(`Attempting to join game with Player 2: (${player2.user._id})`);
+            GameManager.joinGame(player2.user, game!.gameKey);
+
+            player1.socket.emit('match found', 'b');
+            player2.socket.emit('match found', 'w');
+
+            const readyUp = new ReadyUp(this.readyUpList.length, player1.socket, player2.socket);
+            this.readyUpList.push(new ReadyUp(this.nextId++, player1.socket, player2.socket));
+            readyUp.event.on('remove', (id: number) => {
+                this.readyUpList.splice(this.readyUpList.findIndex(el => el.id === id));
+            });
         }
     }
 }

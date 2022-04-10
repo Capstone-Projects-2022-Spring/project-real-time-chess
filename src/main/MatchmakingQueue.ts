@@ -1,5 +1,26 @@
 import { EventEmitter } from 'events';
+import { Socket } from 'socket.io';
 import { IUser } from './dao/UserDAO';
+
+/**
+ * Object to go on the matchmaking queue
+ * Keeps track of the client and a socket to communicate with them
+ */
+class UserSocketPair {
+    public user: IUser;
+
+    public socket: Socket;
+
+    /**
+     * Creates a new UserSocketPair
+     * @param user - the user associated with the client
+     * @param socket - the socket associated with the client
+     */
+    constructor(user: IUser, socket: Socket) {
+        this.user = user;
+        this.socket = socket;
+    }
+}
 
 /**
  * A queue for the MatchmakingManager to pull players from
@@ -8,7 +29,7 @@ class MatchmakingQueue {
     /**
      * internal array for queue
      */
-    private queue: IUser[];
+    private queue: UserSocketPair[];
 
     /**
      * event emitter for broadcasting matchmaking queue events
@@ -27,14 +48,14 @@ class MatchmakingQueue {
      * A wrapper for the internal array's shift() method
      * @returns the first member of the queue and removes it
      */
-    public shift(): IUser {
+    public shift(): UserSocketPair {
         return this.queue.shift()!;
     }
 
     /**
      * @returns the first element of the internal array without removing it
      */
-    public peek(): IUser {
+    public peek(): UserSocketPair {
         return this.queue[0]!;
     }
 
@@ -42,7 +63,7 @@ class MatchmakingQueue {
      * A wrapper for the internal array's push() method
      * @param item - the QueueMember to add to the queue
      */
-    public push(item: IUser): number {
+    public push(item: UserSocketPair): number {
         const position = this.queue.push(item);
         this.event.emit('push');
         return position;
@@ -64,3 +85,4 @@ class MatchmakingQueue {
 }
 
 export default MatchmakingQueue;
+export { UserSocketPair };

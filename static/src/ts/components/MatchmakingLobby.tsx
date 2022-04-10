@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Socket, io } from 'socket.io-client';
 import { NoProps } from '../models/types';
-import MatchAccess from '../access/MatchAccess';
 import CookieManager from '../CookieManager';
 import ButtonComponent from './ButtonComponent';
 import UINavigator from '../models/UINavigator';
@@ -9,6 +8,7 @@ import MultiplayerMatch from '../views/MultiplayerMatch';
 
 interface MatchmakingLobbyState {
     status: string;
+    count: number;
 }
 
 /**
@@ -22,8 +22,6 @@ class MatchmakingLobbyComponent extends React.Component<NoProps, MatchmakingLobb
 
     searchTimeout?: NodeJS.Timeout;
 
-    readyCount = 0;
-
     team?: 'b' | 'w';
 
     /**
@@ -32,7 +30,7 @@ class MatchmakingLobbyComponent extends React.Component<NoProps, MatchmakingLobb
      */
     constructor(props: NoProps) {
         super(props);
-        this.state = { status: '' };
+        this.state = { status: '', count: 0 };
     }
 
     /**
@@ -74,34 +72,7 @@ class MatchmakingLobbyComponent extends React.Component<NoProps, MatchmakingLobb
      * Requests entrance into the matchmaking queue
      */
     componentDidMount() {
-        MatchAccess.queue(CookieManager.uid);
-        let timer = 0;
-        this.setState({
-            status: 'Searching for game... 0:00',
-        });
-        this.timeout = setInterval(() => {
-            timer += 1;
-            this.setState({
-                status: `Searching for game... ${Math.floor(timer / 60)}:${String(
-                    timer % 60,
-                ).padStart(2, '0')}`,
-            });
-        }, 1000);
-        this.searchTimeout = setInterval(() => {
-            MatchAccess.query(CookieManager.uid).then(response => {
-                if (response.success) {
-                    clearInterval(this.timeout!);
-                    clearInterval(this.searchTimeout!);
-                    const hiddenButton = document.getElementById('hiddenButton');
-                    hiddenButton!.style.visibility = 'visible';
-                    this.setState({
-                        status: `Match found!
-                        Ready Count: ${this.readyCount}/2`,
-                    });
-                    this.bindSocket();
-                }
-            });
-        }, 5000);
+        this.bindSocket();
     }
 
     /**
@@ -110,16 +81,47 @@ class MatchmakingLobbyComponent extends React.Component<NoProps, MatchmakingLobb
     bindSocket() {
         this.socket = io();
         this.socket.connect();
-        this.socket.emit('authorize', CookieManager.uid, CookieManager.auth);
-        this.socket.on('count', (count: number) => {
-            this.readyCount++;
+        this.socket.emit('queue', CookieManager.uid);
+        this.socket.on('queue success', (position: number) => {
+            let timer = 0;
             this.setState({
-                status: `Match found!
-                Ready Count: ${count}/2`,
+                status: `Searching for game... 0:00
+                Position in queue... ${position}`,
+            });
+            this.timeout = setInterval(() => {
+                timer += 1;
+                this.setState({
+                    status: `Searching for game... ${Math.floor(timer / 60)}:${String(
+                        timer % 60,
+                    ).padStart(2, '0')}
+                    Position in queue... ${position}`,
+                });
+            }, 1000);
+        });
+        this.socket.on('queue failed', () => {
+            this.setState({
+                status: 'Failed to join queue :(',
             });
         });
-        this.socket.on('start', (color: 'b' | 'w') => {
-            UINavigator.render(<MultiplayerMatch orientation={color} />);
+
+        this.socket.on('ready clicked', (serverCount: number) => {
+            this.setState({
+                status: `Match found! Ready Count: ${this.state.count}/2`,
+                count: serverCount,
+            });
+        });
+
+        this.socket.on('match found', (orientation: 'b' | 'w') => {
+            clearInterval(this.timeout!);
+            const hiddenButton = document.getElementById('hiddenButton');
+            hiddenButton!.style.visibility = 'visible';
+            this.setState({
+                status: `Match found! Ready Count: ${this.state.count}/2`,
+            });
+            this.team = orientation;
+        });
+        this.socket.on('start', () => {
+            UINavigator.render(<MultiplayerMatch orientation={this.team!} />);
         });
     }
 }
