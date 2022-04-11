@@ -13,6 +13,7 @@ import GameManager from './GameManager';
 import GameStateAPIResponse from './GameStateAPIResponse';
 import Logger from './Logger';
 import apiRouter from './routes/apiRouter';
+import UserDAO from './dao/UserDAO';
 import MatchmakingManager from './MatchmakingManager';
 
 /**
@@ -113,8 +114,8 @@ class RTCServer {
                                     game.gameKey,
                                     game.getMessages(),
                                     {
-                                        black: game.black,
-                                        white: game.white,
+                                        black: UserDAO.sanitize(game.black!),
+                                        white: UserDAO.sanitize(game.white!),
                                     },
                                 ),
                             );
@@ -127,8 +128,8 @@ class RTCServer {
                                     game.gameKey,
                                     game.getMessages(),
                                     {
-                                        black: game.black,
-                                        white: game.white,
+                                        black: UserDAO.sanitize(game.black!),
+                                        white: UserDAO.sanitize(game.white!),
                                     },
                                 ),
                             );

@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Chess, ChessInstance, Move, Square } from 'chess.js';
 import Cooldown from './Cooldown';
 import GameHistoryDAO from './dao/GameHistoryDAO';
-import { IUser } from './dao/UserDAO';
+import UserDAO, { IUser } from './dao/UserDAO';
 import GameStateAPIResponse from './GameStateAPIResponse';
 
 /**
@@ -82,15 +82,15 @@ class ChessGame {
         this.blackSocket?.emit(
             'game state',
             new GameStateAPIResponse(this.game.fen(), this.gameKey, this.messages, {
-                black: this.black,
-                white: this.white,
+                black: UserDAO.sanitize(this.black!),
+                white: UserDAO.sanitize(this.white!),
             }),
         );
         this.whiteSocket?.emit(
             'game state',
             new GameStateAPIResponse(this.game.fen(), this.gameKey, this.messages, {
-                black: this.black,
-                white: this.white,
+                black: UserDAO.sanitize(this.black!),
+                white: UserDAO.sanitize(this.white!),
             }),
         );
     }

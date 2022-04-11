@@ -208,6 +208,8 @@ class UserDAO extends BaseDAO<IUser> {
             username: user.username,
             name: user.name,
             email: user.email,
+            wins: user.wins ?? 0,
+            losses: user.losses ?? 0,
         };
     }
 }
