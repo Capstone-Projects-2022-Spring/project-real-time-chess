@@ -74,8 +74,15 @@ class UserDAO extends BaseDAO<IUser> {
      * @param userId - id of user in database to retrieve
      */
     async retrieveUser(userId: string): Promise<IUser> {
-        const user = await this.findOne({ _id: userId });
-        return user;
+        return new Promise((resolve, reject) => {
+            this.findOne({ _id: new ObjectId(userId) })
+                .then(user => {
+                    resolve(user);
+                })
+                .catch(() => {
+                    reject();
+                });
+        });
     }
 
     /**
@@ -225,6 +232,8 @@ class UserDAO extends BaseDAO<IUser> {
             username: user.username,
             name: user.name,
             email: user.email,
+            wins: user.wins ?? 0,
+            losses: user.losses ?? 0,
         };
     }
 }

@@ -1,6 +1,7 @@
 import { ObjectId } from 'mongodb';
 import { ErrorAPIResponse } from '../APIResponse';
 import UserDAO from '../dao/UserDAO';
+import Logger from '../Logger';
 import LoginAPIResponse from '../LoginAPIResponse';
 
 /**
@@ -66,7 +67,10 @@ class UserRoutes {
     static getUserRoute(req: GetUserRequest, res: GetUserResponse) {
         const dao = new UserDAO();
         dao.retrieveUser(req.cookies.uid)
-            .then(user => res.send(UserDAO.sanitize(user)))
+            .then(user => {
+                Logger.debug(`Found user: ${JSON.stringify(user, null, 4)}`);
+                res.send(UserDAO.sanitize(user));
+            })
             .catch(err => res.send(new ErrorAPIResponse(err)));
     }
 }

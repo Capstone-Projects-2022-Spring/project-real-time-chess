@@ -22,4 +22,6 @@ declare interface ISanitizedUser {
     };
     username: string;
     email: string;
+    wins: number;
+    losses: number;
 }

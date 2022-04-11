@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Chess, ChessInstance, Move, Square } from 'chess.js';
 import Cooldown from './Cooldown';
 import GameHistoryDAO from './dao/GameHistoryDAO';
-import { IUser } from './dao/UserDAO';
+import UserDAO, { IUser } from './dao/UserDAO';
 import GameStateAPIResponse from './GameStateAPIResponse';
 import Logger from './Logger';
 
@@ -83,15 +83,15 @@ class ChessGame {
         this.blackSocket?.emit(
             'game state',
             new GameStateAPIResponse(this.game.fen(), this.gameKey, this.messages, {
-                black: this.black,
-                white: this.white,
+                black: UserDAO.sanitize(this.black!),
+                white: UserDAO.sanitize(this.white!),
             }),
         );
         this.whiteSocket?.emit(
             'game state',
             new GameStateAPIResponse(this.game.fen(), this.gameKey, this.messages, {
-                black: this.black,
-                white: this.white,
+                black: UserDAO.sanitize(this.black!),
+                white: UserDAO.sanitize(this.white!),
             }),
         );
     }
@@ -148,7 +148,6 @@ class ChessGame {
     move(source: Square, target: Square): Move | null {
         let move;
         const cooldown = this.cooldownMap[source];
-
         if (cooldown === undefined || cooldown.ready()) {
             const movingColor = this.game.get(source)!.color;
             if (this.game.turn() !== movingColor) this.forceTurnChange(movingColor);
