@@ -1,12 +1,9 @@
-// import { IonIcon } from '@ionic/react';
-import { IonIcon } from '@ionic/react';
 import * as React from 'react';
 import ButtonComponent from '../components/ButtonComponent';
-import ChessboardComponent from '../components/ChessboardComponent';
 import { Chessboard } from 'react-chessboard';
+import { Chess } from 'chess.js';
 import UINavigator from '../models/UINavigator';
 import GameplayOptions from './GameplayOptions';
-// import UINavigator from '../models/UINavigator';
 
 interface BoardScreenProps {
     mode: string;
@@ -35,17 +32,17 @@ class BoardScreen extends React.Component<BoardScreenProps, BoardScreenState> {
     }
 
     AIplay() {
+        const chess = new Chess();
         if (!chess.game_over()) {
             const moves = chess.moves()
             const move: string = moves[Math.floor(Math.random() * moves.length)]!
             console.log(chess.move(move))
             console.log(chess.fen())
             this.setState({
-                position: chess.fen()
+                position: chess.fen();
             })
         }
     }
-}
 
     /**
      * @returns The react element for the BoardScreen view.
@@ -56,24 +53,16 @@ class BoardScreen extends React.Component<BoardScreenProps, BoardScreenState> {
                 <div className="row">
                     <div className="col">
                         <h1 style={{ textAlign: 'center' }}>Chessboard</h1>
-                        <ButtonComponent
+                        <ButtonComponent label='Home'
                             onClick={() => {
                                 UINavigator.render(<GameplayOptions/>);
                             }}
-                        >
-                            <IonIcon
-                                style={{ textAlign: 'center' }}
-                            />
-                            <span>Home</span>
-                        </ButtonComponent>
-                        <ChessboardComponent 
-                            orientation="w" 
-                            onFENChange={() => undefined} 
+                        />
+                        <Chessboard
                             arePiecesDraggable={false}
                             animationDuration={200}/>
                         <ButtonComponent label='Make A Move' onClick={()=>{
-                            if (this.state.mode === 'AIvAI')
-                                this.AIplay()
+                            this.AIplay();
                         }}/>
                     </div>
                 </div>
