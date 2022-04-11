@@ -12,25 +12,25 @@ interface ReplaysState {
 }
 
 /**
-* The replays screen
-*/
+ * The replays screen
+ */
 class Replays extends React.Component<ReplaysProps, ReplaysState, { info: string }> {
- /**
+    /**
      * Creates an instance of Replays.
      * @param props - No props.
      */
     constructor(props: ReplaysProps) {
         super(props);
         this.state = {
-        // username: props.username,
-         info: '',
+            // username: props.username,
+            info: '',
         };
     }
 
-     /**
+    /**
      * @returns The react element for the Replays view.
      */
-      render() {
+    render() {
         return (
             <div className="container">
                 <div className="row">
@@ -38,12 +38,10 @@ class Replays extends React.Component<ReplaysProps, ReplaysState, { info: string
                         <h1 style={{ textAlign: 'center' }}>Replays</h1>
                         <ButtonComponent
                             onClick={() => {
-                                UINavigator.render(<GameplayOptions/>);
+                                UINavigator.render(<GameplayOptions />);
                             }}
                         >
-                            <IonIcon
-                                style={{ textAlign: 'center' }}
-                            />
+                            <IonIcon style={{ textAlign: 'center' }} />
                             <span>Home</span>
                         </ButtonComponent>
                     </div>
@@ -71,19 +69,7 @@ class Replays extends React.Component<ReplaysProps, ReplaysState, { info: string
                             }}
                         />
                     </div>
-                    <div className="col">
-                        <ButtonComponent
-                            label="Log Out"
-                            width="100%"
-                            onClick={() => {
-                                this.setState({
-                                    info: 'log out',
-                                });
-                            }}
-                        />
-                    </div>
                 </div>
-
                 <div className="row">
                     <div className="col"></div>
                     <div className="col-12 col-md-6 col-lg-4 mt-2 text-center game-mode-hover-img-container light-shadow">
