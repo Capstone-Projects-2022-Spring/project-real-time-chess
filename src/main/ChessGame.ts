@@ -147,7 +147,6 @@ class ChessGame {
     move(source: Square, target: Square): Move | null {
         let move;
         const cooldown = this.cooldownMap[source];
-
         if (cooldown === undefined || cooldown.ready()) {
             const movingColor = this.game.get(source)!.color;
             if (this.game.turn() !== movingColor) this.forceTurnChange(movingColor);

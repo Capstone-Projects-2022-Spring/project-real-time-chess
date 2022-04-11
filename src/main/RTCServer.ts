@@ -13,6 +13,7 @@ import GameManager from './GameManager';
 import GameStateAPIResponse from './GameStateAPIResponse';
 import Logger from './Logger';
 import apiRouter from './routes/apiRouter';
+import MatchmakingManager from './MatchmakingManager';
 
 /**
  * The RTCServer class is responsible for starting the server and handling
@@ -76,6 +77,19 @@ class RTCServer {
         });
 
         this.socketIO.on('connection', (socket: Socket) => {
+            socket.on('queue', (uid: string) => {
+                const matchmakingManager = MatchmakingManager.instance();
+                matchmakingManager
+                    .enqueue(uid, socket)
+                    .then(position => {
+                        socket.emit('queue success', position);
+                    })
+                    .catch(() => {
+                        socket.emit('queue failed');
+                    })
+                    .finally(() => matchmakingManager.tryMatch());
+            });
+
             let uid: string;
             let game: ChessGame;
 
