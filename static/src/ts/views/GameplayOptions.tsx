@@ -64,7 +64,7 @@ class GameplayOptions extends React.Component<
                             label="You v AI"
                             width="100%"
                             onClick={() => {
-                                UINavigator.render(<BoardScreen mode={'AI'} username={''} />);
+                                UINavigator.render(<Profile email="" />);
                             }}
                         />
                     </div>
@@ -113,7 +113,7 @@ class GameplayOptions extends React.Component<
                         <ButtonComponent
                             label="AI v AI"
                             width="100%"
-                            onClick={() => UINavigator.render(<BoardScreen />)}
+                            onClick={() => UINavigator.render(<BoardScreen position="start" />)}
                         />
                     </div>
                 </div>

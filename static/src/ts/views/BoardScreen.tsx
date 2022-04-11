@@ -5,7 +5,9 @@ import ButtonComponent from '../components/ButtonComponent';
 import UINavigator from '../models/UINavigator';
 import GameplayOptions from './GameplayOptions';
 
-interface BoardScreenProps {}
+interface BoardScreenProps {
+    position: string;
+}
 
 interface BoardScreenState {
     position: string;
