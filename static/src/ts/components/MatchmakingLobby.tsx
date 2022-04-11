@@ -116,6 +116,8 @@ class MatchmakingLobbyComponent extends React.Component<NoProps, MatchmakingLobb
                 didClose: () => {
                     this.bindSocket();
                 },
+            }).catch(e => {
+                document.write(`Error: ${e.message}\nConnection Lost: Player Disconnected`);
             });
         });
 
