@@ -101,12 +101,10 @@ class Profile extends React.Component<ProfileProps, ProfileState, { info: string
                         <h1 style={{ textAlign: 'center' }}>Profile</h1>
                         <ButtonComponent
                             onClick={() => {
-                                UINavigator.render(<GameplayOptions/>);
+                                UINavigator.render(<GameplayOptions />);
                             }}
                         >
-                            <IonIcon
-                                style={{ textAlign: 'center' }}
-                            />
+                            <IonIcon style={{ textAlign: 'center' }} />
                             <span>Home</span>
                         </ButtonComponent>
                     </div>
@@ -140,31 +138,29 @@ class Profile extends React.Component<ProfileProps, ProfileState, { info: string
                             label="View Past Games"
                             width="100%"
                             onClick={() => {
-                                UINavigator.render(<Replays/>);
-                               /* this.setState({
+                                UINavigator.render(<Replays />);
+                                /* this.setState({
 
                                     info: 'past game info',
                                 }); */
                             }}
                         />
                     </div>
-                    <body>
-                        <div id="userInfo" style={{ display: 'show' }}>
-                            First Name: <span id="firstName"></span>
-                        </div>
-                        <div id="userInfo" style={{ display: 'show' }}>
-                            Last Name: <span id="lastName"></span>
-                        </div>
-                        <div id="userInfo" style={{ display: 'show' }}>
-                            Email: <span id="email"></span>
-                        </div>
-                        <div className="userStats" style={{ display: 'show' }}>
-                            Wins: <span id="wins"></span>
-                        </div>
-                        <div className="userStats" style={{ display: 'show' }}>
-                            Losses: <span id="losses"></span>
-                        </div>
-                    </body>
+                    <div id="userInfo" style={{ display: 'show' }}>
+                        First Name: <span id="firstName"></span>
+                    </div>
+                    <div id="userInfo" style={{ display: 'show' }}>
+                        Last Name: <span id="lastName"></span>
+                    </div>
+                    <div id="userInfo" style={{ display: 'show' }}>
+                        Email: <span id="email"></span>
+                    </div>
+                    <div className="userStats" style={{ display: 'show' }}>
+                        Wins: <span id="wins"></span>
+                    </div>
+                    <div className="userStats" style={{ display: 'show' }}>
+                        Losses: <span id="losses"></span>
+                    </div>
                 </div>
             </div>
         );
