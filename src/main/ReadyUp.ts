@@ -51,6 +51,15 @@ class ReadyUp {
             this.increment();
             this.tryReady();
         });
+
+        blackSocket.once('disconnect', () => {
+            whiteSocket.emit('requeue');
+            this.event.emit('remove', this.id);
+        });
+        whiteSocket.once('disconnect', () => {
+            blackSocket.emit('requeue');
+            this.event.emit('remove', this.id);
+        });
     }
 
     /**
@@ -69,6 +78,8 @@ class ReadyUp {
         if (this.count >= 2) {
             this.blackSocket.emit('start');
             this.whiteSocket.emit('start');
+            this.blackSocket.removeAllListeners();
+            this.whiteSocket.removeAllListeners();
             this.event.emit('remove', this.id);
         }
     }

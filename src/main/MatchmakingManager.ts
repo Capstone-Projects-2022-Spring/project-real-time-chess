@@ -89,8 +89,8 @@ export default class MatchmakingManager {
             player1.socket.emit('match found', 'b');
             player2.socket.emit('match found', 'w');
 
-            const readyUp = new ReadyUp(this.readyUpList.length, player1.socket, player2.socket);
-            this.readyUpList.push(new ReadyUp(this.nextId++, player1.socket, player2.socket));
+            const readyUp = new ReadyUp(this.nextId, player1.socket, player2.socket);
+            this.readyUpList.push(readyUp);
             readyUp.event.on('remove', (id: number) => {
                 this.readyUpList.splice(
                     this.readyUpList.findIndex(el => el.id === id),

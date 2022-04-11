@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Socket, io } from 'socket.io-client';
+import Swal from 'sweetalert2';
 import { NoProps } from '../models/types';
 import CookieManager from '../CookieManager';
 import ButtonComponent from './ButtonComponent';
@@ -8,7 +9,6 @@ import MultiplayerMatch from '../views/MultiplayerMatch';
 
 interface MatchmakingLobbyState {
     status: string;
-    count: number;
 }
 
 /**
@@ -30,7 +30,7 @@ class MatchmakingLobbyComponent extends React.Component<NoProps, MatchmakingLobb
      */
     constructor(props: NoProps) {
         super(props);
-        this.state = { status: '', count: 0 };
+        this.state = { status: '' };
     }
 
     /**
@@ -82,6 +82,7 @@ class MatchmakingLobbyComponent extends React.Component<NoProps, MatchmakingLobb
         this.socket = io();
         this.socket.connect();
         this.socket.emit('queue', CookieManager.uid);
+
         this.socket.on('queue success', (position: number) => {
             let timer = 0;
             this.setState({
@@ -98,16 +99,29 @@ class MatchmakingLobbyComponent extends React.Component<NoProps, MatchmakingLobb
                 });
             }, 1000);
         });
+
         this.socket.on('queue failed', () => {
             this.setState({
                 status: 'Failed to join queue :(',
             });
         });
 
+        this.socket.on('requeue', () => {
+            clearInterval(this.timeout!);
+            const hiddenButton = document.getElementById('hiddenButton');
+            hiddenButton!.style.visibility = 'hidden';
+            Swal.fire({
+                title: 'Connection Lost',
+                text: 'Player disconnected.',
+                didClose: () => {
+                    this.bindSocket();
+                },
+            });
+        });
+
         this.socket.on('ready clicked', (serverCount: number) => {
             this.setState({
-                status: `Match found! Ready Count: ${this.state.count}/2`,
-                count: serverCount,
+                status: `Match found! Ready Count: ${serverCount}/2`,
             });
         });
 
@@ -116,7 +130,7 @@ class MatchmakingLobbyComponent extends React.Component<NoProps, MatchmakingLobb
             const hiddenButton = document.getElementById('hiddenButton');
             hiddenButton!.style.visibility = 'visible';
             this.setState({
-                status: `Match found! Ready Count: ${this.state.count}/2`,
+                status: 'Match found! Ready Count: 0/2',
             });
             this.team = orientation;
         });
