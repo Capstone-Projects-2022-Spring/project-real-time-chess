@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c2b50d86-457d-47c7-b5a7-6c8551fa7e3a" name="Changes" comment="&quot;Push for checking&quot;" />
+    <list default="true" id="c2b50d86-457d-47c7-b5a7-6c8551fa7e3a" name="Changes" comment="&quot;Push for checking&quot;">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/routes/gameRoutes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/routes/gameRoutes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/src/ts/views/ReplayGame.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/static/src/ts/views/ReplayGame.tsx" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -61,7 +65,7 @@
       <workItem from="1648421544143" duration="2363000" />
       <workItem from="1648425098832" duration="433000" />
       <workItem from="1648431372930" duration="8482000" />
-      <workItem from="1649706077563" duration="1329000" />
+      <workItem from="1649706077563" duration="2140000" />
     </task>
     <task id="LOCAL-00001" summary="&quot;Push for checking&quot;">
       <created>1647234252787</created>

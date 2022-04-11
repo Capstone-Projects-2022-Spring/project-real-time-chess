@@ -2,6 +2,10 @@ import * as React from 'react';
 import ButtonComponent from '../components/ButtonComponent';
 import ChessboardComponent from '../components/ChessboardComponent';
 // import { ObjectId } from 'mongodb';
+// @ts-ignore
+import gameRoutes from '../../../../../project-real-time-chess/src/main/routes/gameRoutes';
+
+//gameRoutes.getHistory()
 
 interface ReplayGameProps{
     username: string;

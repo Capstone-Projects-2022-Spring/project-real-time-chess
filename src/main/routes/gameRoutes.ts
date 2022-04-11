@@ -45,7 +45,7 @@ class GameRoutes {
      * @param req - The express request object
      * @param res - The express response object
      */
-    static joinGame(req: JoinGameRequest, res: JoinGameResponse) {
+    static joinGame(req: JoinnGameRequest, res: JoinGameResponse) {
         GameManager.verifyUserAccess(req.cookies.uid, req.cookies.auth)
             .then(user => {
                 if (user) {
