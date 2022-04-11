@@ -110,7 +110,11 @@ class GameplayOptions extends React.Component<
                             });
                         }}
                     >
-                        <ButtonComponent label="AI v AI" width="100%" onClick={() => undefined} />
+                        <ButtonComponent
+                            label="AI v AI"
+                            width="100%"
+                            onClick={() => UINavigator.render(<BoardScreen />)}
+                        />
                     </div>
                 </div>
 
@@ -175,25 +179,6 @@ class GameplayOptions extends React.Component<
                         </ButtonComponent>
                     </div>
                 </div>
-
-                {/* <div className="row">
-                    <div className="col-12 mt-4">
-                        <div className="alert alert-primary" role="alert">
-                            <div>
-                                Click{' '}
-                                <a
-                                    href="#"
-                                    onClick={() => HowToPlaySwal.displayHowToPlay()}
-                                    className="alert-link"
-                                >
-                                    here
-                                </a>{' '}
-                                to learn how to play.
-                            </div>
-                        </div>
-                    </div>
-                </div> */}
-
                 <div className="row">
                     <div className="col"></div>
                     <div className="col-12 col-md-6 col-lg-4 mt-2 text-center game-mode-hover-img-container light-shadow">

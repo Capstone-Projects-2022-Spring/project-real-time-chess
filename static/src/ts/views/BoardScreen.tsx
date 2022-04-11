@@ -1,18 +1,14 @@
 import * as React from 'react';
-import ButtonComponent from '../components/ButtonComponent';
 import { Chessboard } from 'react-chessboard';
 import { Chess } from 'chess.js';
+import ButtonComponent from '../components/ButtonComponent';
 import UINavigator from '../models/UINavigator';
 import GameplayOptions from './GameplayOptions';
 
-interface BoardScreenProps {
-    mode: string;
-    username: string;
-}
+interface BoardScreenProps {}
 
 interface BoardScreenState {
-    mode: string;
-    username: string;
+    position: string;
 }
 
 /**
@@ -26,21 +22,20 @@ class BoardScreen extends React.Component<BoardScreenProps, BoardScreenState> {
     constructor(props: BoardScreenProps) {
         super(props);
         this.state = {
-            mode: props.mode,
-            username: props.username,
+            position: 'start',
         };
     }
 
+    /** Method to play two easy AI against each other. Makes dummy moves. */
     AIplay() {
         const chess = new Chess();
         if (!chess.game_over()) {
-            const moves = chess.moves()
-            const move: string = moves[Math.floor(Math.random() * moves.length)]!
-            console.log(chess.move(move))
-            console.log(chess.fen())
+            const moves = chess.moves();
+            const move: string = moves[Math.floor(Math.random() * moves.length)]!;
+            chess.move(move);
             this.setState({
-                position: chess.fen();
-            })
+                position: chess.fen(),
+            });
         }
     }
 
@@ -53,17 +48,19 @@ class BoardScreen extends React.Component<BoardScreenProps, BoardScreenState> {
                 <div className="row">
                     <div className="col">
                         <h1 style={{ textAlign: 'center' }}>Chessboard</h1>
-                        <ButtonComponent label='Home'
+                        <ButtonComponent
+                            label="Home"
                             onClick={() => {
-                                UINavigator.render(<GameplayOptions/>);
+                                UINavigator.render(<GameplayOptions />);
                             }}
                         />
-                        <Chessboard
-                            arePiecesDraggable={false}
-                            animationDuration={200}/>
-                        <ButtonComponent label='Make A Move' onClick={()=>{
-                            this.AIplay();
-                        }}/>
+                        <Chessboard arePiecesDraggable={false} animationDuration={200} />
+                        <ButtonComponent
+                            label="Make A Move"
+                            onClick={() => {
+                                this.AIplay();
+                            }}
+                        />
                     </div>
                 </div>
             </div>
