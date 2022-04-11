@@ -65,7 +65,12 @@ export default class MatchmakingManager {
                 })
                 .catch(() => {
                     reject();
-                });
+                })
+                .finally(() =>
+                    socket.on('disconnect', () => {
+                        this.matchmakingQueue.removeById(userId);
+                    }),
+                );
         });
     }
 
@@ -87,7 +92,10 @@ export default class MatchmakingManager {
             const readyUp = new ReadyUp(this.readyUpList.length, player1.socket, player2.socket);
             this.readyUpList.push(new ReadyUp(this.nextId++, player1.socket, player2.socket));
             readyUp.event.on('remove', (id: number) => {
-                this.readyUpList.splice(this.readyUpList.findIndex(el => el.id === id));
+                this.readyUpList.splice(
+                    this.readyUpList.findIndex(el => el.id === id),
+                    1,
+                );
             });
         }
     }

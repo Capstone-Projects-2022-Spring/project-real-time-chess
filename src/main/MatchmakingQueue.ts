@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb';
 import { EventEmitter } from 'events';
 import { Socket } from 'socket.io';
 import { IUser } from './dao/UserDAO';
@@ -67,6 +68,17 @@ class MatchmakingQueue {
         const position = this.queue.push(item);
         this.event.emit('push');
         return position;
+    }
+
+    /**
+     * Removes a UserSocketPair from the queue with the given id
+     * @param uid - user id of UserSocketPair to remove from the queue
+     */
+    public removeById(uid: string) {
+        this.queue.splice(
+            this.queue.findIndex(item => item.user._id === new ObjectId(uid)),
+            1,
+        );
     }
 
     /**
