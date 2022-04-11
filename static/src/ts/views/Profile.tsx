@@ -64,22 +64,28 @@ class Profile extends React.Component<ProfileProps, ProfileState, { info: string
             });
     }
 
-    /** Method to display userInfo, updates values according to stored parameters. */
-    userInfo(userFirst: string, userLast: string, userEmail: string) {
+    /** Method to display or hide userInfo, updates values according to stored parameters. */
+    userInfoToggle(userFirst: string, userLast: string, userEmail: string, displayStatus: string) {
         const firstName = document.getElementById('firstName');
         firstName!.innerHTML = userFirst;
+        firstName!.style.display = displayStatus;
         const lastName = document.getElementById('lastName');
         lastName!.innerHTML = userLast;
+        lastName!.style.display = displayStatus;
         const email = document.getElementById('email');
         email!.innerHTML = userEmail;
+        email!.style.display = displayStatus;
     }
 
-    /** Method to display user wins/losses, updates values according to stored parameters. */
-    userStats(userWins: number, userLosses: number) {
+    /** Method to display or hide user wins/losses,
+     * updates values according to stored parameters. */
+    userStatsToggle(userWins: number, userLosses: number, displayStatus: string) {
         const wins = document.getElementById('wins');
         wins!.innerHTML = userWins.toString();
+        wins!.style.display = displayStatus;
         const losses = document.getElementById('losses');
         losses!.innerHTML = userLosses.toString();
+        losses!.style.display = displayStatus;
     }
 
     /**
@@ -99,10 +105,11 @@ class Profile extends React.Component<ProfileProps, ProfileState, { info: string
                             label="User Info"
                             width="100%"
                             onClick={() => {
-                                this.userInfo(
+                                this.userInfoToggle(
                                     this.state.userFirst,
                                     this.state.userLast,
                                     this.state.email,
+                                    'show',
                                 );
                             }}
                         />
@@ -112,7 +119,7 @@ class Profile extends React.Component<ProfileProps, ProfileState, { info: string
                             label="User Stats"
                             width="100%"
                             onClick={() => {
-                                this.userStats(this.state.wins, this.state.losses);
+                                this.userStatsToggle(this.state.wins, this.state.losses, 'show');
                             }}
                         />
                     </div>
@@ -126,19 +133,19 @@ class Profile extends React.Component<ProfileProps, ProfileState, { info: string
                         />
                     </div>
                     <body>
-                        <div className="userInfo" style={{ display: 'block' }}>
+                        <div id="userInfo" style={{ display: 'show' }}>
                             First Name: <span id="firstName"></span>
                         </div>
-                        <div className="userInfo" style={{ display: 'block' }}>
+                        <div id="userInfo" style={{ display: 'show' }}>
                             Last Name: <span id="lastName"></span>
                         </div>
-                        <div className="userInfo" style={{ display: 'block' }}>
+                        <div id="userInfo" style={{ display: 'show' }}>
                             Email: <span id="email"></span>
                         </div>
-                        <div className="userStats" style={{ display: 'block' }}>
+                        <div className="userStats" style={{ display: 'show' }}>
                             Wins: <span id="wins"></span>
                         </div>
-                        <div className="userStats" style={{ display: 'block' }}>
+                        <div className="userStats" style={{ display: 'show' }}>
                             Losses: <span id="losses"></span>
                         </div>
                     </body>
