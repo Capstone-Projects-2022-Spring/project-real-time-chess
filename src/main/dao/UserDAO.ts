@@ -94,27 +94,39 @@ class UserDAO extends BaseDAO<IUser> {
      */
     async authenticateLogin(formData: UserLoginFormData): Promise<AuthInfo> {
         return new Promise((resolve, reject) => {
-            this.findOne({ email: formData.user }).then(async userFromEmail => {
-                let user = userFromEmail;
-                if (!user) {
-                    user = await this.findOne({ username: formData.user });
-                }
+            this.findOne({ email: formData.user })
+                .then(async userFromEmail => {
+                    let user = userFromEmail;
+                    if (!user) {
+                        user = await this.findOne({ username: formData.user });
+                    }
 
-                if (!user) {
-                    reject(new InvalidCredentialsError());
-                } else if (user.password === formData.password) {
-                    const key = this.generateAuthKey();
+                    if (!user) {
+                        reject(new InvalidCredentialsError());
+                    } else if (user.password === formData.password) {
+                        const key = this.generateAuthKey();
 
-                    this.updateOne({ _id: user._id }, { $push: { auths: key } });
-
-                    resolve({
-                        uid: user._id,
-                        key,
-                    });
-                } else {
-                    reject(new InvalidCredentialsError('Incoreect username, email, or password'));
-                }
-            });
+                        this.updateOne({ _id: user._id }, { $push: { auths: key } })
+                            .then(() =>
+                                resolve({
+                                    uid: user._id,
+                                    key,
+                                }),
+                            )
+                            .catch(err => {
+                                Logger.error(err);
+                                reject(err);
+                            });
+                    } else {
+                        reject(
+                            new InvalidCredentialsError('Incoreect username, email, or password'),
+                        );
+                    }
+                })
+                .catch(err => {
+                    Logger.error(err);
+                    reject(err);
+                });
         });
     }
 
@@ -151,15 +163,22 @@ class UserDAO extends BaseDAO<IUser> {
      */
     recordWin(uid: ObjectId): Promise<void> {
         return new Promise((resolve, reject) => {
-            this.findOne({ _id: uid }).then(user => {
-                Logger.debug(`Trying to find user with id: ${uid} (${typeof uid})\nUser: ${user}`);
-                let wins: number;
-                if (user.wins === undefined) wins = 1;
-                else wins = user.wins + 1;
-                this.updateOne({ _id: uid }, { $set: { wins } })
-                    .then(() => resolve())
-                    .catch(err => reject(err));
-            });
+            this.findOne({ _id: uid })
+                .then(user => {
+                    Logger.debug(
+                        `Trying to find user with id: ${uid} (${typeof uid})\nUser: ${user}`,
+                    );
+                    let wins: number;
+                    if (user.wins === undefined) wins = 1;
+                    else wins = user.wins + 1;
+                    this.updateOne({ _id: uid }, { $set: { wins } })
+                        .then(() => resolve())
+                        .catch(err => reject(err));
+                })
+                .catch(err => {
+                    Logger.error(err);
+                    reject(err);
+                });
         });
     }
 
@@ -171,14 +190,19 @@ class UserDAO extends BaseDAO<IUser> {
      */
     recordLoss(uid: ObjectId): Promise<void> {
         return new Promise((resolve, reject) => {
-            this.findOne({ _id: uid }).then(user => {
-                let losses: number;
-                if (user.losses === undefined) losses = 1;
-                else losses = user.losses + 1;
-                this.updateOne({ _id: uid }, { $set: { losses } })
-                    .then(() => resolve())
-                    .catch(err => reject(err));
-            });
+            this.findOne({ _id: uid })
+                .then(user => {
+                    let losses: number;
+                    if (user.losses === undefined) losses = 1;
+                    else losses = user.losses + 1;
+                    this.updateOne({ _id: uid }, { $set: { losses } })
+                        .then(() => resolve())
+                        .catch(err => reject(err));
+                })
+                .catch(err => {
+                    Logger.error(err);
+                    reject(err);
+                });
         });
     }
 
