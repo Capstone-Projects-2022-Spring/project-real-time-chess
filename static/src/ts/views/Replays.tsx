@@ -1,12 +1,13 @@
+import { IonIcon } from '@ionic/react';
 import * as React from 'react';
 import ButtonComponent from '../components/ButtonComponent';
+import UINavigator from '../models/UINavigator';
+import GameplayOptions from './GameplayOptions';
 
-interface ReplaysProps{
-    username: string;
-}
+type ReplaysProps = Record<string, never>;
 
 interface ReplaysState {
-    username: string;
+    // username: string;
     info: string;
 }
 
@@ -21,7 +22,7 @@ class Replays extends React.Component<ReplaysProps, ReplaysState, { info: string
     constructor(props: ReplaysProps) {
         super(props);
         this.state = {
-         username: props.username,
+        // username: props.username,
          info: '',
         };
     }
@@ -35,6 +36,16 @@ class Replays extends React.Component<ReplaysProps, ReplaysState, { info: string
                 <div className="row">
                     <div className="col">
                         <h1 style={{ textAlign: 'center' }}>Replays</h1>
+                        <ButtonComponent
+                            onClick={() => {
+                                UINavigator.render(<GameplayOptions/>);
+                            }}
+                        >
+                            <IonIcon
+                                style={{ textAlign: 'center' }}
+                            />
+                            <span>Home</span>
+                        </ButtonComponent>
                     </div>
                 </div>
                 <div className="row">

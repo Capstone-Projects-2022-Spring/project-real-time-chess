@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { Chess, ChessInstance, Move, Square } from 'chess.js';
 import Cooldown from './Cooldown';
 import GameHistoryDAO from './dao/GameHistoryDAO';
@@ -146,7 +147,6 @@ class ChessGame {
     move(source: Square, target: Square): Move | null {
         let move;
         const cooldown = this.cooldownMap[source];
-
         if (cooldown === undefined || cooldown.ready()) {
             const movingColor = this.game.get(source)!.color;
             if (this.game.turn() !== movingColor) this.forceTurnChange(movingColor);
@@ -176,6 +176,35 @@ class ChessGame {
             white: this.white!._id!,
             game_key: this.gameKey,
             history: this.moveHistory,
+        });
+    }
+
+    /**
+     * Uses Joe's API to fetch the next best move in the current game.
+     * This uses artificial intelligence to determine the best move.
+     *
+     * @returns The best move in the current game. In the case where
+     * there is no best move, null is returned.
+     */
+    public async doAIMove(): Promise<Move | null> {
+        return new Promise((resolve, reject) => {
+            const moves = this.moveHistory
+                .map(moveRecord => `${moveRecord.move.from}${moveRecord.move.to}`)
+                .join('');
+            const url = `http://chess-api.herokuapp.com/next_best/${moves}`;
+            axios
+                .get(url)
+                .then(response => {
+                    const move: { bestNext: string } = response.data;
+                    if (move.bestNext.length === 4) {
+                        const from = move.bestNext.substring(0, 2) as Square;
+                        const to = move.bestNext.substring(2, 4) as Square;
+                        resolve(this.move(from, to));
+                    } else {
+                        reject(new Error('The Chess AI API did not respond with any valid move'));
+                    }
+                })
+                .catch(err => reject(err));
         });
     }
 
