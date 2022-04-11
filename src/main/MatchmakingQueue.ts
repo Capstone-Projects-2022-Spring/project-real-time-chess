@@ -1,7 +1,6 @@
 import { ObjectId } from 'mongodb';
 import { EventEmitter } from 'events';
 import { Socket } from 'socket.io';
-import { IUser } from './dao/UserDAO';
 
 /**
  * Object to go on the matchmaking queue

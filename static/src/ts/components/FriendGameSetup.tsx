@@ -110,9 +110,9 @@ class FriendGameSetupComponent extends React.Component<NoProps, { gameKey: strin
      */
     static createGame() {
         GameAccess.createGame()
-            .then(response => {
+            .then(async response => {
                 if (response.success) {
-                    Swal.fire({
+                    await Swal.fire({
                         title: 'Game Created',
                         html: `Share this game code with your friend:
                         <div style="font-size: 2.5rem">
@@ -121,12 +121,12 @@ class FriendGameSetupComponent extends React.Component<NoProps, { gameKey: strin
                         didClose: () => {
                             UINavigator.render(<MultiplayerMatch orientation="b" />);
                         },
-                    }).catch(err => document.write(`Error: ${err.message}`));
+                    });
                 } else {
-                    Swal.fire({
+                    await Swal.fire({
                         title: 'Error',
                         text: response.error!.message,
-                    }).catch(err => document.write(`Error: ${err.message}`));
+                    });
                 }
             })
             .catch(error => {

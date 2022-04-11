@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongodb';
 import ChessGame from './ChessGame';
-import UserDAO, { IUser } from './dao/UserDAO';
+import UserDAO from './dao/UserDAO';
 import InvalidCredentialsError from './errors/InvalidCredentialsError';
 import Logger from './Logger';
 import SupportedEmojis from './SupportedEmojis';

@@ -1,4 +1,5 @@
 import { BaseAPIResponse } from './APIResponse';
+import UserDAO from './dao/UserDAO';
 
 /**
  * An API response constructor for when the game state is requested or updated.
@@ -27,24 +28,16 @@ class GameStateAPIResponse extends BaseAPIResponse implements IGameStateAPIRespo
 
     /**
      * Creates an instance of GameStateAPIResponse.
-     * @param fen - The games FEN strings.
-     * @param gameKey - The game key (list of emoji names).
-     * @param messages - The list of messages belonging to the game.
-     * @param players - The players belonging to the game (black and white).
+     * @param game - The game to extract the state data from
      */
-    constructor(
-        fen: string,
-        gameKey: string[],
-        messages: IGameMessage[],
-        players: { black?: ISanitizedUser; white?: ISanitizedUser },
-    ) {
+    constructor(game: IChessGame) {
         super(true);
-        this.fen = fen;
-        this.gameKey = gameKey;
-        this.messages = messages;
+        this.fen = game.fen;
+        this.gameKey = game.gameKey;
+        this.messages = game.messages;
         this.players = {
-            black: players.black,
-            white: players.white,
+            black: game.black ? UserDAO.sanitize(game.black) : undefined,
+            white: game.white ? UserDAO.sanitize(game.white) : undefined,
         };
     }
 }

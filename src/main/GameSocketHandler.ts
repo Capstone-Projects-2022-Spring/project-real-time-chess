@@ -18,13 +18,7 @@ class GameSocketHandler {
      * @param uid - The user who invoked the event
      */
     static onGameStateRequest(socket: Socket, game: ChessGame, uid: string) {
-        socket.emit(
-            'game state',
-            new GameStateAPIResponse(game.fen, game.gameKey, game.getMessages(), {
-                black: UserDAO.sanitize(game.black!),
-                white: UserDAO.sanitize(game.white!),
-            }),
-        );
+        socket.emit('game state', new GameStateAPIResponse(game));
         Logger.info(
             `Game State Request Successful\nUID: ${uid}\nFEN: ${game.fen}\n${
                 game.getMessages().length
@@ -62,53 +56,23 @@ class GameSocketHandler {
                 }`,
             });
 
-            if (game.blackSocket) {
-                game.blackSocket!.emit('move piece', {
-                    success: true,
-                    gameKey: game.gameKey,
-                    fen: game.fen,
-                    messages: game.getMessages(),
-                    players: {
-                        black: game.black,
-                        white: game.white,
-                    },
-                    move,
-                });
-            }
+            game.emitToPlayers('move piece', new GameStateAPIResponse(game));
 
-            if (game.whiteSocket) {
-                game.whiteSocket!.emit('move piece', {
-                    success: true,
-                    gameKey: game.gameKey,
-                    fen: game.fen,
-                    messages: game.getMessages(),
-                    players: {
-                        black: game.black,
-                        white: game.white,
-                    },
-                    move,
-                });
-
-                const { winner } = game;
-                if (winner !== null) {
-                    Logger.debug(`A winner was found: ${winner}`);
-                    Logger.debug(
-                        `White: ${JSON.stringify(game.white)}\nBlack: ${JSON.stringify(
-                            game.black,
-                        )}`,
-                    );
-                    const dao = new UserDAO();
-                    if (winner === 'b') {
-                        game.whiteSocket!.emit('blackWin', game.blackName);
-                        game.blackSocket!.emit('blackWin', game.blackName);
-                        dao.recordWin(game.black!._id!).catch(err => Logger.error(err));
-                        dao.recordLoss(game.white!._id!).catch(err => Logger.error(err));
-                    } else if (winner === 'w') {
-                        game.whiteSocket!.emit('whiteWin', game.whiteName);
-                        game.blackSocket!.emit('whiteWin', game.whiteName);
-                        dao.recordWin(game.white!._id!).catch(err => Logger.error(err));
-                        dao.recordLoss(game.black!._id!).catch(err => Logger.error(err));
-                    }
+            const { winner } = game;
+            if (winner !== null) {
+                Logger.debug(`A winner was found: ${winner}`);
+                Logger.debug(
+                    `White: ${JSON.stringify(game.white)}\nBlack: ${JSON.stringify(game.black)}`,
+                );
+                const dao = new UserDAO();
+                if (winner === 'b') {
+                    game.emitToPlayers('blackWin', game.blackName);
+                    dao.recordWin(game.black!._id!).catch(err => Logger.error(err));
+                    dao.recordLoss(game.white!._id!).catch(err => Logger.error(err));
+                } else if (winner === 'w') {
+                    game.emitToPlayers('whiteWin', game.whiteName);
+                    dao.recordWin(game.white!._id!).catch(err => Logger.error(err));
+                    dao.recordLoss(game.black!._id!).catch(err => Logger.error(err));
                 }
             } else {
                 socket.emit('move piece', new ErrorAPIResponse('Invalid move'));
@@ -149,60 +113,30 @@ class GameSocketHandler {
 
                     game.addMessage({ message: `AI moved from ${move.from} to ${move.to}` });
 
-                    if (game.blackSocket) {
-                        game.blackSocket!.emit('move piece', {
-                            success: true,
-                            gameKey: game.gameKey,
-                            fen: game.fen,
-                            messages: game.getMessages(),
-                            players: {
-                                black: game.black,
-                                white: game.white,
-                            },
-                            move,
-                        });
-                    }
+                    game.emitToPlayers('move piece', new GameStateAPIResponse(game));
 
-                    if (game.whiteSocket) {
-                        game.whiteSocket!.emit('move piece', {
-                            success: true,
-                            gameKey: game.gameKey,
-                            fen: game.fen,
-                            messages: game.getMessages(),
-                            players: {
-                                black: game.black,
-                                white: game.white,
-                            },
-                            move,
-                        });
-
-                        const { winner } = game;
-                        if (winner !== null) {
-                            Logger.debug(`A winner was found: ${winner}`);
-                            Logger.debug(
-                                `White: ${JSON.stringify(game.white)}\nBlack: ${JSON.stringify(
-                                    game.black,
-                                )}`,
-                            );
-                            const dao = new UserDAO();
-                            if (winner === 'b') {
-                                game.whiteSocket!.emit('blackWin', game.blackName);
-                                game.blackSocket!.emit('blackWin', game.blackName);
-                                dao.recordWin(game.black!._id!).catch(err => Logger.error(err));
-                                dao.recordLoss(game.white!._id!).catch(err => Logger.error(err));
-                            } else if (winner === 'w') {
-                                game.whiteSocket!.emit('whiteWin', game.whiteName);
-                                game.blackSocket!.emit('whiteWin', game.whiteName);
-                                dao.recordWin(game.white!._id!).catch(err => Logger.error(err));
-                                dao.recordLoss(game.black!._id!).catch(err => Logger.error(err));
-                            }
-                        }
-                    } else {
-                        socket.emit('move piece', new ErrorAPIResponse('Invalid move'));
-                        Logger.info(
-                            `User submitted an invalid move\nUID: ${uid}\nFrom: ${move.from}\nTo: ${move.to}\nFEN: ${game.fen}`,
+                    const { winner } = game;
+                    if (winner !== null) {
+                        Logger.debug(`A winner was found: ${winner}`);
+                        Logger.debug(
+                            `White: ${JSON.stringify(game.white)}\nBlack: ${JSON.stringify(
+                                game.black,
+                            )}`,
                         );
+                        const dao = new UserDAO();
+                        if (winner === 'b') {
+                            game.emitToPlayers('blackWin', game.blackName);
+                            dao.recordWin(game.black!._id!).catch(err => Logger.error(err));
+                            dao.recordLoss(game.white!._id!).catch(err => Logger.error(err));
+                        } else if (winner === 'w') {
+                            game.emitToPlayers('whiteWin', game.whiteName);
+                            dao.recordWin(game.white!._id!).catch(err => Logger.error(err));
+                            dao.recordLoss(game.black!._id!).catch(err => Logger.error(err));
+                        }
                     }
+                } else {
+                    socket.emit('move piece', new ErrorAPIResponse('Invalid move'));
+                    Logger.info('AI attempted to make an invalid move');
                 }
             })
             .catch(err => {
