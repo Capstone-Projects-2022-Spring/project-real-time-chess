@@ -67,26 +67,21 @@ class Profile extends React.Component<ProfileProps, ProfileState, { info: string
     }
 
     /** Method to display or hide userInfo, updates values according to stored parameters. */
-    userInfoToggle(userFirst: string, userLast: string, userEmail: string, displayStatus: string) {
+    userInfoToggle(displayStatus: string) {
         const firstName = document.getElementById('firstName');
-        firstName!.innerHTML = userFirst;
         firstName!.style.display = displayStatus;
         const lastName = document.getElementById('lastName');
-        lastName!.innerHTML = userLast;
         lastName!.style.display = displayStatus;
         const email = document.getElementById('email');
-        email!.innerHTML = userEmail;
         email!.style.display = displayStatus;
     }
 
     /** Method to display or hide user wins/losses,
      * updates values according to stored parameters. */
-    userStatsToggle(userWins: number, userLosses: number, displayStatus: string) {
+    userStatsToggle(displayStatus: string) {
         const wins = document.getElementById('wins');
-        wins!.innerHTML = userWins.toString();
         wins!.style.display = displayStatus;
         const losses = document.getElementById('losses');
-        losses!.innerHTML = userLosses.toString();
         losses!.style.display = displayStatus;
     }
 
@@ -115,12 +110,8 @@ class Profile extends React.Component<ProfileProps, ProfileState, { info: string
                             label="User Info"
                             width="100%"
                             onClick={() => {
-                                this.userInfoToggle(
-                                    this.state.userFirst,
-                                    this.state.userLast,
-                                    this.state.email,
-                                    'show',
-                                );
+                                this.userStatsToggle('none');
+                                this.userInfoToggle('block');
                             }}
                         />
                     </div>
@@ -129,7 +120,8 @@ class Profile extends React.Component<ProfileProps, ProfileState, { info: string
                             label="User Stats"
                             width="100%"
                             onClick={() => {
-                                this.userStatsToggle(this.state.wins, this.state.losses, 'show');
+                                this.userInfoToggle('none');
+                                this.userStatsToggle('block');
                             }}
                         />
                     </div>
@@ -146,20 +138,20 @@ class Profile extends React.Component<ProfileProps, ProfileState, { info: string
                             }}
                         />
                     </div>
-                    <div id="userInfo" style={{ display: 'show' }}>
-                        First Name: <span id="firstName"></span>
+                    <div id="firstName" style={{ display: 'none' }}>
+                        First Name: {this.state.userFirst}
                     </div>
-                    <div id="userInfo" style={{ display: 'show' }}>
-                        Last Name: <span id="lastName"></span>
+                    <div id="lastName" style={{ display: 'none' }}>
+                        Last Name: {this.state.userLast}
                     </div>
-                    <div id="userInfo" style={{ display: 'show' }}>
-                        Email: <span id="email"></span>
+                    <div id="email" style={{ display: 'none' }}>
+                        Email: {this.state.email}
                     </div>
-                    <div className="userStats" style={{ display: 'show' }}>
-                        Wins: <span id="wins"></span>
+                    <div className="wins" style={{ display: 'none' }}>
+                        Wins: {this.state.wins}
                     </div>
-                    <div className="userStats" style={{ display: 'show' }}>
-                        Losses: <span id="losses"></span>
+                    <div className="losses" style={{ display: 'none' }}>
+                        Losses: {this.state.losses}
                     </div>
                 </div>
             </div>
