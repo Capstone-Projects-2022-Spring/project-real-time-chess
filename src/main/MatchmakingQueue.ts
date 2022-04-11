@@ -1,14 +1,36 @@
-import EventEmitter from 'events';
+import { ObjectId } from 'mongodb';
+import { EventEmitter } from 'events';
+import { Socket } from 'socket.io';
 import { IUser } from './dao/UserDAO';
+
+/**
+ * Object to go on the matchmaking queue
+ * Keeps track of the client and a socket to communicate with them
+ */
+class UserSocketPair {
+    public user: IUser;
+
+    public socket: Socket;
+
+    /**
+     * Creates a new UserSocketPair
+     * @param user - the user associated with the client
+     * @param socket - the socket associated with the client
+     */
+    constructor(user: IUser, socket: Socket) {
+        this.user = user;
+        this.socket = socket;
+    }
+}
 
 /**
  * A queue for the MatchmakingManager to pull players from
  */
-export default class MatchmakingQueue {
+class MatchmakingQueue {
     /**
      * internal array for queue
      */
-    private queue: IUser[];
+    private queue: UserSocketPair[];
 
     /**
      * event emitter for broadcasting matchmaking queue events
@@ -27,14 +49,14 @@ export default class MatchmakingQueue {
      * A wrapper for the internal array's shift() method
      * @returns the first member of the queue and removes it
      */
-    public shift(): IUser {
+    public shift(): UserSocketPair {
         return this.queue.shift()!;
     }
 
     /**
      * @returns the first element of the internal array without removing it
      */
-    public peek(): IUser {
+    public peek(): UserSocketPair {
         return this.queue[0]!;
     }
 
@@ -42,9 +64,21 @@ export default class MatchmakingQueue {
      * A wrapper for the internal array's push() method
      * @param item - the QueueMember to add to the queue
      */
-    public push(item: IUser): void {
-        this.queue.push(item);
+    public push(item: UserSocketPair): number {
+        const position = this.queue.push(item);
         this.event.emit('push');
+        return position;
+    }
+
+    /**
+     * Removes a UserSocketPair from the queue with the given id
+     * @param uid - user id of UserSocketPair to remove from the queue
+     */
+    public removeById(uid: string) {
+        this.queue.splice(
+            this.queue.findIndex(item => item.user._id === new ObjectId(uid)),
+            1,
+        );
     }
 
     /**
@@ -61,3 +95,6 @@ export default class MatchmakingQueue {
         return this.queue.length;
     }
 }
+
+export default MatchmakingQueue;
+export { UserSocketPair };

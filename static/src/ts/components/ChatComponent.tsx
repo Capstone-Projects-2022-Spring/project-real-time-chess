@@ -22,6 +22,7 @@ class ChatComponent extends React.Component<ChatComponentProps, NoState> {
                     background: 'rgb(240, 240, 240)',
                     borderRadius: '1rem',
                     padding: '1rem',
+                    overflowY: 'scroll',
                 }}
             >
                 {...this.props.messages.map(message => <div>{message.message}</div>)}
