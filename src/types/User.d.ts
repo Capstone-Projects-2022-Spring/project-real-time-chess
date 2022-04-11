@@ -1,7 +1,7 @@
 /**
  * The data belonging to a User in the database
  */
-declare interface IUser extends Document {
+declare interface IUser {
     _id: import('mongodb').ObjectId;
     name: {
         first: string;
@@ -14,6 +14,8 @@ declare interface IUser extends Document {
     wins: number;
     losses: number;
 }
+
+declare type IUserDocument = IUser & import('mongodb').Document;
 
 declare interface ISanitizedUser {
     name: {

@@ -2,14 +2,13 @@ import axios from 'axios';
 import { Chess, ChessInstance, Move, Square } from 'chess.js';
 import Cooldown from './Cooldown';
 import GameHistoryDAO from './dao/GameHistoryDAO';
-import UserDAO, { IUser } from './dao/UserDAO';
 import GameStateAPIResponse from './GameStateAPIResponse';
 import Logger from './Logger';
 
 /**
  * A wrapper class for a ChessJS game to work with Real-time Chess.
  */
-class ChessGame {
+class ChessGame implements IChessGame {
     /**
      * The game key used for both players to identify the game before it starts.
      */
@@ -28,12 +27,12 @@ class ChessGame {
     /**
      * The web socket for the black player.
      */
-    public blackSocket?: ChessGameSocket;
+    private blackSocket?: ChessGameSocket;
 
     /**
      * The web socket for the white player.
      */
-    public whiteSocket?: ChessGameSocket;
+    private whiteSocket?: ChessGameSocket;
 
     /**
      * The chess.js game instance
@@ -43,7 +42,7 @@ class ChessGame {
     /**
      * A list of all the game messages.
      */
-    private messages: IGameMessage[];
+    public messages: IGameMessage[];
 
     /**
      * An array of all active cooldown timers
@@ -80,20 +79,8 @@ class ChessGame {
      */
     public addMessage(message: IGameMessage) {
         this.messages.push(message);
-        this.blackSocket?.emit(
-            'game state',
-            new GameStateAPIResponse(this.game.fen(), this.gameKey, this.messages, {
-                black: UserDAO.sanitize(this.black!),
-                white: UserDAO.sanitize(this.white!),
-            }),
-        );
-        this.whiteSocket?.emit(
-            'game state',
-            new GameStateAPIResponse(this.game.fen(), this.gameKey, this.messages, {
-                black: UserDAO.sanitize(this.black!),
-                white: UserDAO.sanitize(this.white!),
-            }),
-        );
+        this.blackSocket?.emit('game state', new GameStateAPIResponse(this));
+        this.whiteSocket?.emit('game state', new GameStateAPIResponse(this));
     }
 
     /**
@@ -207,6 +194,27 @@ class ChessGame {
                 })
                 .catch(err => reject(err));
         });
+    }
+
+    /**
+     * Binds sockets to the chess game
+     *
+     * @param sockets - The sockets to bind for either the black or white player.
+     */
+    bindSocket(sockets: { black?: ChessGameSocket; white?: ChessGameSocket }) {
+        if (sockets.black) this.blackSocket = sockets.black;
+        if (sockets.white) this.whiteSocket = sockets.white;
+    }
+
+    /**
+     * Emits an event to both players.
+     *
+     * @param ev - The event to emit.
+     * @param args - The arguments to pass to the event.
+     */
+    emitToPlayers(ev: string, ...args: unknown[]) {
+        this.blackSocket?.emit(ev, ...args);
+        this.whiteSocket?.emit(ev, ...args);
     }
 
     /**

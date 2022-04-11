@@ -6,15 +6,14 @@ import * as http from 'http';
 import { ObjectId } from 'mongodb';
 import * as path from 'path';
 import { Server, Socket } from 'socket.io';
-import GameSocketHandler from './GameSocketHandler';
 import ChessGame from './ChessGame';
 import DatabaseConnector from './dao/DatabaseConnector';
 import GameManager from './GameManager';
+import GameSocketHandler from './GameSocketHandler';
 import GameStateAPIResponse from './GameStateAPIResponse';
 import Logger from './Logger';
-import apiRouter from './routes/apiRouter';
-import UserDAO from './dao/UserDAO';
 import MatchmakingManager from './MatchmakingManager';
+import apiRouter from './routes/apiRouter';
 
 /**
  * The RTCServer class is responsible for starting the server and handling
@@ -106,33 +105,17 @@ class RTCServer {
                     game = GameManager.findGameByUser(uid)!;
                     if (game) {
                         if (game.black && uid.toString() === game.black._id!.toString()) {
-                            game!.blackSocket = socket;
+                            game.bindSocket({
+                                black: socket,
+                            });
                             Logger.info(`Authorized Socket Connection with:\nUID: ${uid}`);
-                            callback?.(
-                                new GameStateAPIResponse(
-                                    game.fen,
-                                    game.gameKey,
-                                    game.getMessages(),
-                                    {
-                                        black: UserDAO.sanitize(game.black!),
-                                        white: UserDAO.sanitize(game.white!),
-                                    },
-                                ),
-                            );
+                            callback?.(new GameStateAPIResponse(game));
                         } else if (game.white && uid.toString() === game.white._id!.toString()) {
-                            game!.whiteSocket = socket;
+                            game.bindSocket({
+                                white: socket,
+                            });
                             Logger.info(`Authorized Socket Connection with:\nUID: ${uid}`);
-                            callback?.(
-                                new GameStateAPIResponse(
-                                    game.fen,
-                                    game.gameKey,
-                                    game.getMessages(),
-                                    {
-                                        black: UserDAO.sanitize(game.black!),
-                                        white: UserDAO.sanitize(game.white!),
-                                    },
-                                ),
-                            );
+                            callback?.(new GameStateAPIResponse(game));
                         } else {
                             Logger.error(`No game found for user: ${uid}`);
                         }

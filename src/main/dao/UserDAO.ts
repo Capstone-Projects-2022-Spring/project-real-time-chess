@@ -1,4 +1,4 @@
-import { ObjectId, Document } from 'mongodb';
+import { ObjectId } from 'mongodb';
 import InvalidCredentialsError from '../errors/InvalidCredentialsError';
 import Logger from '../Logger';
 import BaseDAO from './BaseDAO';
@@ -25,26 +25,9 @@ interface UserLoginFormData {
 }
 
 /**
- * The data belonging to a User in the database
- */
-interface IUser extends Document {
-    _id?: ObjectId;
-    name: {
-        first: string;
-        last: string;
-    };
-    email: string;
-    username: string;
-    password: string;
-    auths: string[];
-    wins?: number;
-    losses?: number;
-}
-
-/**
  * Data Access Object for the User collection.
  */
-class UserDAO extends BaseDAO<IUser> {
+class UserDAO extends BaseDAO<IUserDocument> {
     /**
      * Returns the collection name for the UserDAO. This is used by BaseDAO to correctly
      * access the `"users"` collection.
@@ -63,7 +46,7 @@ class UserDAO extends BaseDAO<IUser> {
     async createUser(formData: UserRegistrationFormData): Promise<void> {
         return new Promise((resolve, reject) => {
             const doc = { ...formData, auths: [] as string[] };
-            this.insertOne(doc)
+            this.insertOne({ _id: new ObjectId(), ...doc, wins: 0, losses: 0 })
                 .then(() => resolve())
                 .catch(err => reject(err));
         });
@@ -239,4 +222,4 @@ class UserDAO extends BaseDAO<IUser> {
 }
 
 export default UserDAO;
-export { IUser, UserRegistrationFormData, UserLoginFormData };
+export { UserRegistrationFormData, UserLoginFormData };
