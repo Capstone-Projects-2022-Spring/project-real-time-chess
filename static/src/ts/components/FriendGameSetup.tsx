@@ -1,4 +1,3 @@
-import { IonIcon } from '@ionic/react';
 import * as React from 'react';
 import Swal from 'sweetalert2';
 import GameAccess from '../access/GameAccess';
@@ -40,14 +39,15 @@ class FriendGameSetupComponent extends React.Component<NoProps, { gameKey: strin
                 <div className="row">
                     <div className="col-12 col-md-6">
                         <h2>Create Game</h2>
-                        <ButtonComponent
-                            onClick={() => {
-                                UINavigator.render(<GameplayOptions />);
-                            }}
-                        >
-                            <IonIcon style={{ textAlign: 'center' }} />
-                            <span>Home</span>
-                        </ButtonComponent>
+                        <div className="col" style={{ paddingBottom: '10px' }}>
+                            <ButtonComponent
+                                label="Home"
+                                width="200px"
+                                onClick={() => {
+                                    UINavigator.render(<GameplayOptions />);
+                                }}
+                            />
+                        </div>
                         <p>
                             Create a game. Then you will be given a game code. Send the game code to
                             your friend so they can join the game.
