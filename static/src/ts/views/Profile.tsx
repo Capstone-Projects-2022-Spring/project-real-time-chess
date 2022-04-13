@@ -55,34 +55,15 @@ class Profile extends React.Component<ProfileProps, ProfileState, { info: string
                     });
                 } else {
                     this.setState({
-                        info: 'not found',
+                        userFirst: 'else',
                     });
                 }
             })
             .catch(() => {
                 this.setState({
-                    info: 'promise did not resolve',
+                    userFirst: 'promise did not resolve',
                 });
             });
-    }
-
-    /** Method to display or hide userInfo, updates values according to stored parameters. */
-    userInfoToggle(displayStatus: string) {
-        const firstName = document.getElementById('firstName');
-        firstName!.style.display = displayStatus;
-        const lastName = document.getElementById('lastName');
-        lastName!.style.display = displayStatus;
-        const email = document.getElementById('email');
-        email!.style.display = displayStatus;
-    }
-
-    /** Method to display or hide user wins/losses,
-     * updates values according to stored parameters. */
-    userStatsToggle(displayStatus: string) {
-        const wins = document.getElementById('wins');
-        wins!.style.display = displayStatus;
-        const losses = document.getElementById('losses');
-        losses!.style.display = displayStatus;
     }
 
     /**
@@ -131,31 +112,46 @@ class Profile extends React.Component<ProfileProps, ProfileState, { info: string
                             width="100%"
                             onClick={() => {
                                 UINavigator.render(<Replays />);
-                                /* this.setState({
-
-                                    info: 'past game info',
-                                }); */
                             }}
                         />
                     </div>
-                    <div id="firstName" style={{ display: 'none' }}>
+                    <div id="firstName" style={{ display: 'block' }}>
                         First Name: {this.state.userFirst}
                     </div>
-                    <div id="lastName" style={{ display: 'none' }}>
+                    <div id="lastName" style={{ display: 'block' }}>
                         Last Name: {this.state.userLast}
                     </div>
-                    <div id="email" style={{ display: 'none' }}>
+                    <div id="email" style={{ display: 'block' }}>
                         Email: {this.state.email}
                     </div>
-                    <div className="wins" style={{ display: 'none' }}>
+                    <div className="wins" style={{ display: 'block' }}>
                         Wins: {this.state.wins}
                     </div>
-                    <div className="losses" style={{ display: 'none' }}>
+                    <div className="losses" style={{ display: 'block' }}>
                         Losses: {this.state.losses}
                     </div>
                 </div>
             </div>
         );
+    }
+
+    /** Method to display or hide userInfo, updates values according to stored parameters. */
+    userInfoToggle(displayStatus: string) {
+        const firstName = document.getElementById('firstName');
+        firstName!.style.display = displayStatus;
+        const lastName = document.getElementById('lastName');
+        lastName!.style.display = displayStatus;
+        const email = document.getElementById('email');
+        email!.style.display = displayStatus;
+    }
+
+    /** Method to display or hide user wins/losses,
+     * updates values according to stored parameters. */
+    userStatsToggle(displayStatus: string) {
+        const wins = document.getElementById('wins');
+        wins!.style.display = displayStatus;
+        const losses = document.getElementById('losses');
+        losses!.style.display = displayStatus;
     }
 }
 
