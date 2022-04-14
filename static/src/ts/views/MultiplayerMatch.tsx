@@ -1,4 +1,3 @@
-import { IonIcon } from '@ionic/react';
 import * as React from 'react';
 import { io, Socket } from 'socket.io-client';
 import ButtonComponent from '../components/ButtonComponent';
@@ -51,16 +50,15 @@ class MultiplayerMatch extends React.Component<MultiplayerMatchProps, Multiplaye
             <div className="container">
                 <div className="row">
                     <div className="col"></div>
-                    <div className="col">
-                        <h1 style={{ textAlign: 'center' }}>Multiplayer Match</h1>
+                    <h1 style={{ textAlign: 'center' }}>Multiplayer Match</h1>
+                    <div className="col" style={{ paddingBottom: '10px' }}>
                         <ButtonComponent
+                            label="Home"
+                            width="100%"
                             onClick={() => {
                                 UINavigator.render(<GameplayOptions />);
                             }}
-                        >
-                            <IonIcon style={{ textAlign: 'center' }} />
-                            <span>Home</span>
-                        </ButtonComponent>
+                        />
                     </div>
                     <div className="col" style={{ fontSize: '2rem' }}>
                         Game Key: {this.state.gameKey}

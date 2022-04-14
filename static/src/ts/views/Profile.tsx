@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { IonIcon } from '@ionic/react';
 import ButtonComponent from '../components/ButtonComponent';
 import Replays from './Replays';
 import UINavigator from '../models/UINavigator';
@@ -55,39 +54,15 @@ class Profile extends React.Component<ProfileProps, ProfileState, { info: string
                     });
                 } else {
                     this.setState({
-                        info: 'not found',
+                        userFirst: 'else',
                     });
                 }
             })
             .catch(() => {
                 this.setState({
-                    info: 'promise did not resolve',
+                    userFirst: 'promise did not resolve',
                 });
             });
-    }
-
-    /** Method to display or hide userInfo, updates values according to stored parameters. */
-    userInfoToggle(userFirst: string, userLast: string, userEmail: string, displayStatus: string) {
-        const firstName = document.getElementById('firstName');
-        firstName!.innerHTML = userFirst;
-        firstName!.style.display = displayStatus;
-        const lastName = document.getElementById('lastName');
-        lastName!.innerHTML = userLast;
-        lastName!.style.display = displayStatus;
-        const email = document.getElementById('email');
-        email!.innerHTML = userEmail;
-        email!.style.display = displayStatus;
-    }
-
-    /** Method to display or hide user wins/losses,
-     * updates values according to stored parameters. */
-    userStatsToggle(userWins: number, userLosses: number, displayStatus: string) {
-        const wins = document.getElementById('wins');
-        wins!.innerHTML = userWins.toString();
-        wins!.style.display = displayStatus;
-        const losses = document.getElementById('losses');
-        losses!.innerHTML = userLosses.toString();
-        losses!.style.display = displayStatus;
     }
 
     /**
@@ -97,18 +72,24 @@ class Profile extends React.Component<ProfileProps, ProfileState, { info: string
         return (
             <div className="container">
                 <div className="row">
-                    <div className="col">
-                        <h1 style={{ textAlign: 'center' }}>Profile</h1>
+                    <h1 style={{ textAlign: 'center' }}>Profile</h1>
+                    <div className="col" style={{ paddingBottom: '10px' }}>
                         <ButtonComponent
+                            label="Home"
+                            width="100%"
                             onClick={() => {
-                                UINavigator.render(<GameplayOptions/>);
+                                UINavigator.render(<GameplayOptions />);
                             }}
-                        >
-                            <IonIcon
-                                style={{ textAlign: 'center' }}
-                            />
-                            <span>Home</span>
-                        </ButtonComponent>
+                        />
+                    </div>
+                    <div className="col" style={{ paddingBottom: '10px' }}>
+                        <ButtonComponent
+                            label="Back"
+                            width="100%"
+                            onClick={() => {
+                                UINavigator.render(<GameplayOptions />);
+                            }}
+                        />
                     </div>
                 </div>
                 <div className="row">
@@ -117,12 +98,8 @@ class Profile extends React.Component<ProfileProps, ProfileState, { info: string
                             label="User Info"
                             width="100%"
                             onClick={() => {
-                                this.userInfoToggle(
-                                    this.state.userFirst,
-                                    this.state.userLast,
-                                    this.state.email,
-                                    'show',
-                                );
+                                this.userStatsToggle('collapse');
+                                this.userInfoToggle('visible');
                             }}
                         />
                     </div>
@@ -131,7 +108,8 @@ class Profile extends React.Component<ProfileProps, ProfileState, { info: string
                             label="User Stats"
                             width="100%"
                             onClick={() => {
-                                this.userStatsToggle(this.state.wins, this.state.losses, 'show');
+                                this.userInfoToggle('collapse');
+                                this.userStatsToggle('visible');
                             }}
                         />
                     </div>
@@ -140,34 +118,56 @@ class Profile extends React.Component<ProfileProps, ProfileState, { info: string
                             label="View Past Games"
                             width="100%"
                             onClick={() => {
-                                UINavigator.render(<Replays/>);
-                               /* this.setState({
-
-                                    info: 'past game info',
-                                }); */
+                                UINavigator.render(<Replays />);
                             }}
                         />
                     </div>
-                    <body>
-                        <div id="userInfo" style={{ display: 'show' }}>
-                            First Name: <span id="firstName"></span>
-                        </div>
-                        <div id="userInfo" style={{ display: 'show' }}>
-                            Last Name: <span id="lastName"></span>
-                        </div>
-                        <div id="userInfo" style={{ display: 'show' }}>
-                            Email: <span id="email"></span>
-                        </div>
-                        <div className="userStats" style={{ display: 'show' }}>
-                            Wins: <span id="wins"></span>
-                        </div>
-                        <div className="userStats" style={{ display: 'show' }}>
-                            Losses: <span id="losses"></span>
-                        </div>
-                    </body>
+                    <div className="row">
+                        <table style={{ width: '50%' }}>
+                            <tr id="firstName" style={{ visibility: 'collapse' }}>
+                                <td style={{ fontSize: '28px' }}>First Name:</td>
+                                <td style={{ fontSize: '20px' }}>{this.state.userFirst}</td>
+                            </tr>
+                            <tr id="lastName" style={{ visibility: 'collapse' }}>
+                                <td style={{ fontSize: '28px' }}>Last Name:</td>
+                                <td style={{ fontSize: '20px' }}>{this.state.userLast}</td>
+                            </tr>
+                            <tr id="email" style={{ visibility: 'collapse' }}>
+                                <td style={{ fontSize: '28px' }}>Email:</td>
+                                <td style={{ fontSize: '20px' }}>{this.state.email}</td>
+                            </tr>
+                            <tr id="wins" style={{ visibility: 'collapse' }}>
+                                <td style={{ fontSize: '28px' }}>Wins:</td>
+                                <td style={{ fontSize: '20px' }}>{this.state.wins}</td>
+                            </tr>
+                            <tr id="losses" style={{ visibility: 'collapse' }}>
+                                <td style={{ fontSize: '28px' }}>Losses:</td>
+                                <td style={{ fontSize: '20px' }}>{this.state.losses}</td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </div>
         );
+    }
+
+    /** Method to display or hide userInfo, updates values according to stored parameters. */
+    userInfoToggle(displayStatus: string) {
+        const firstName = document.getElementById('firstName');
+        firstName!.style.visibility = displayStatus;
+        const lastName = document.getElementById('lastName');
+        lastName!.style.visibility = displayStatus;
+        const email = document.getElementById('email');
+        email!.style.visibility = displayStatus;
+    }
+
+    /** Method to display or hide user wins/losses,
+     * updates values according to stored parameters. */
+    userStatsToggle(displayStatus: string) {
+        const wins = document.getElementById('wins');
+        wins!.style.visibility = displayStatus;
+        const losses = document.getElementById('losses');
+        losses!.style.visibility = displayStatus;
     }
 }
 

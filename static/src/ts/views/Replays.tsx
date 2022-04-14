@@ -1,8 +1,8 @@
-import { IonIcon } from '@ionic/react';
 import * as React from 'react';
 import ButtonComponent from '../components/ButtonComponent';
 import UINavigator from '../models/UINavigator';
 import GameplayOptions from './GameplayOptions';
+import Profile from './Profile';
 
 type ReplaysProps = Record<string, never>;
 
@@ -34,16 +34,24 @@ class Replays extends React.Component<ReplaysProps, ReplaysState, { info: string
         return (
             <div className="container">
                 <div className="row">
+                    <h1 style={{ textAlign: 'center' }}>Replays</h1>
                     <div className="col">
-                        <h1 style={{ textAlign: 'center' }}>Replays</h1>
                         <ButtonComponent
+                            label="Home"
+                            width="100%"
                             onClick={() => {
                                 UINavigator.render(<GameplayOptions />);
                             }}
-                        >
-                            <IonIcon style={{ textAlign: 'center' }} />
-                            <span>Home</span>
-                        </ButtonComponent>
+                        />
+                    </div>
+                    <div className="col" style={{ paddingBottom: '10px' }}>
+                        <ButtonComponent
+                            label="Back"
+                            width="100%"
+                            onClick={() => {
+                                UINavigator.render(<Profile email="" />);
+                            }}
+                        />
                     </div>
                 </div>
                 <div className="row">

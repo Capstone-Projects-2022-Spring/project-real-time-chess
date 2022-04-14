@@ -93,8 +93,7 @@ class Users {
             axios
                 .get('/api/user/info')
                 .then(response => {
-                    if (response.data.success) resolve(response.data.user);
-                    else reject(response.data.error);
+                    resolve(response.data);
                 })
                 .catch(err => {
                     reject(err);
