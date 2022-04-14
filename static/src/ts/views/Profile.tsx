@@ -15,6 +15,7 @@ interface ProfileState {
     email: string;
     wins: number;
     losses: number;
+    totalGames: number;
     info: string;
 }
 
@@ -35,6 +36,7 @@ class Profile extends React.Component<ProfileProps, ProfileState, { info: string
             info: '',
             wins: 0,
             losses: 0,
+            totalGames: 0,
         };
     }
 
@@ -51,6 +53,7 @@ class Profile extends React.Component<ProfileProps, ProfileState, { info: string
                         email: user.email,
                         wins: user.wins,
                         losses: user.losses,
+                        totalGames: user.wins + user.losses,
                     });
                 } else {
                     this.setState({
@@ -144,6 +147,10 @@ class Profile extends React.Component<ProfileProps, ProfileState, { info: string
                                 <td style={{ fontSize: '28px' }}>Losses:</td>
                                 <td style={{ fontSize: '20px' }}>{this.state.losses}</td>
                             </tr>
+                            <tr id="total" style={{ visibility: 'collapse' }}>
+                                <td style={{ fontSize: '28px' }}>Total Games:</td>
+                                <td style={{ fontSize: '20px' }}>{this.state.totalGames}</td>
+                            </tr>
                         </table>
                     </div>
                 </div>
@@ -168,6 +175,8 @@ class Profile extends React.Component<ProfileProps, ProfileState, { info: string
         wins!.style.visibility = displayStatus;
         const losses = document.getElementById('losses');
         losses!.style.visibility = displayStatus;
+        const total = document.getElementById('total');
+        total!.style.visibility = displayStatus;
     }
 }
 
