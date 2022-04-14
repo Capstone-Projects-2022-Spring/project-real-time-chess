@@ -6,12 +6,13 @@ import * as http from 'http';
 import { ObjectId } from 'mongodb';
 import * as path from 'path';
 import { Server, Socket } from 'socket.io';
-import GameSocketHandler from './GameSocketHandler';
 import ChessGame from './ChessGame';
 import DatabaseConnector from './dao/DatabaseConnector';
 import GameManager from './GameManager';
+import GameSocketHandler from './GameSocketHandler';
 import GameStateAPIResponse from './GameStateAPIResponse';
 import Logger from './Logger';
+import MatchmakingManager from './MatchmakingManager';
 import apiRouter from './routes/apiRouter';
 
 /**
@@ -76,6 +77,19 @@ class RTCServer {
         });
 
         this.socketIO.on('connection', (socket: Socket) => {
+            socket.on('queue', (uid: string) => {
+                const matchmakingManager = MatchmakingManager.instance();
+                matchmakingManager
+                    .enqueue(uid, socket)
+                    .then(position => {
+                        socket.emit('queue success', position);
+                    })
+                    .catch(() => {
+                        socket.emit('queue failed');
+                    })
+                    .finally(() => matchmakingManager.tryMatch());
+            });
+
             let uid: string;
             let game: ChessGame;
 
@@ -91,33 +105,17 @@ class RTCServer {
                     game = GameManager.findGameByUser(uid)!;
                     if (game) {
                         if (game.black && uid.toString() === game.black._id!.toString()) {
-                            game!.blackSocket = socket;
+                            game.bindSocket({
+                                black: socket,
+                            });
                             Logger.info(`Authorized Socket Connection with:\nUID: ${uid}`);
-                            callback?.(
-                                new GameStateAPIResponse(
-                                    game.fen,
-                                    game.gameKey,
-                                    game.getMessages(),
-                                    {
-                                        black: game.black,
-                                        white: game.white,
-                                    },
-                                ),
-                            );
+                            callback?.(new GameStateAPIResponse(game));
                         } else if (game.white && uid.toString() === game.white._id!.toString()) {
-                            game!.whiteSocket = socket;
+                            game.bindSocket({
+                                white: socket,
+                            });
                             Logger.info(`Authorized Socket Connection with:\nUID: ${uid}`);
-                            callback?.(
-                                new GameStateAPIResponse(
-                                    game.fen,
-                                    game.gameKey,
-                                    game.getMessages(),
-                                    {
-                                        black: game.black,
-                                        white: game.white,
-                                    },
-                                ),
-                            );
+                            callback?.(new GameStateAPIResponse(game));
                         } else {
                             Logger.error(`No game found for user: ${uid}`);
                         }
@@ -132,6 +130,8 @@ class RTCServer {
             socket.on('move piece', (source: Square, target: Square) =>
                 GameSocketHandler.onMovePieceRequest(socket, game, uid, source, target),
             );
+
+            socket.on('move ai', () => GameSocketHandler.onAIMoveRequest(socket, game, uid));
         });
     }
 

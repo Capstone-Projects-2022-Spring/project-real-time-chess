@@ -42,6 +42,7 @@ module.exports = {
                 },
             },
         ],
+        '@typescript-eslint/no-floating-promises': 'error',
     },
     parserOptions: {
         project: ['./tsconfig.json', './static/src/ts/tsconfig.json'],

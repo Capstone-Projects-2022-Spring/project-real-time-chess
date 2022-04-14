@@ -50,7 +50,9 @@ class DatabaseConnector {
      * Closes the database connection.
      */
     static close() {
-        if (DatabaseConnector.client) DatabaseConnector.client.close();
+        if (DatabaseConnector.client) {
+            DatabaseConnector.client.close().catch(err => Logger.error(err));
+        }
     }
 
     /**

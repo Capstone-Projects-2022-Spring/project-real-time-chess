@@ -84,14 +84,16 @@ class LoginTabComponent extends React.Component<LoginTabProps, LoginTabState> {
                                             Swal.fire({
                                                 title: 'Login Failed',
                                                 text: 'Incorrect username or password',
-                                            });
+                                            }).catch(err =>
+                                                document.write(`Error: ${err.message}`),
+                                            );
                                         }
                                     })
                                     .catch(error => {
                                         Swal.fire({
                                             title: 'Login Failed',
                                             text: error.message,
-                                        });
+                                        }).catch(err => document.write(`Error: ${err.message}`));
                                     });
                             }}
                         />

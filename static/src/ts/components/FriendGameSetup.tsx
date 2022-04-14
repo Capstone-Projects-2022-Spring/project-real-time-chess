@@ -4,10 +4,11 @@ import GameAccess from '../access/GameAccess';
 import { NoProps } from '../models/types';
 import UINavigator from '../models/UINavigator';
 import SupportedEmojis from '../SupportedEmojis';
+import GameplayOptions from '../views/GameplayOptions';
 import MultiplayerMatch from '../views/MultiplayerMatch';
 import ButtonComponent from './ButtonComponent';
-import EmojiKeyboard from './EmojiKeyboard';
 import CooldownSelectorComponent from './CooldownSelectorComponent';
+import EmojiKeyboard from './EmojiKeyboard';
 
 /**
  * The page for setting up a multiplayer game with a friend. This gives the user
@@ -38,10 +39,20 @@ class FriendGameSetupComponent extends React.Component<NoProps, { gameKey: strin
                 <div className="row">
                     <div className="col-12 col-md-6">
                         <h2>Create Game</h2>
+                        <div className="col" style={{ paddingBottom: '10px' }}>
+                            <ButtonComponent
+                                label="Home"
+                                width="200px"
+                                onClick={() => {
+                                    UINavigator.render(<GameplayOptions />);
+                                }}
+                            />
+                        </div>
                         <p>
                             Create a game. Then you will be given a game code. Send the game code to
                             your friend so they can join the game.
                         </p>
+                        <CooldownSelectorComponent />
                         <ButtonComponent
                             label="Create Game"
                             onClick={() => FriendGameSetupComponent.createGame()}
@@ -72,21 +83,24 @@ class FriendGameSetupComponent extends React.Component<NoProps, { gameKey: strin
                                                 icon: 'error',
                                                 title: 'Error',
                                                 text: response.error!.message,
+                                            }).catch(err => {
+                                                document.write(`Error: ${err.message}`);
                                             });
                                         }
                                     })
-                                    .catch(err => {
+                                    .catch(() => {
                                         Swal.fire({
                                             icon: 'error',
                                             title: 'Error',
-                                            text: err.message,
+                                            text: "Couldn't find game with that game code.",
+                                        }).catch(swalError => {
+                                            document.write(`Error: ${swalError.message}`);
                                         });
                                     });
                             }}
                         />
                     </div>
                 </div>
-                <CooldownSelectorComponent/>
             </div>
         );
     }
@@ -96,9 +110,9 @@ class FriendGameSetupComponent extends React.Component<NoProps, { gameKey: strin
      */
     static createGame() {
         GameAccess.createGame()
-            .then(response => {
+            .then(async response => {
                 if (response.success) {
-                    Swal.fire({
+                    await Swal.fire({
                         title: 'Game Created',
                         html: `Share this game code with your friend:
                         <div style="font-size: 2.5rem">
@@ -109,7 +123,7 @@ class FriendGameSetupComponent extends React.Component<NoProps, { gameKey: strin
                         },
                     });
                 } else {
-                    Swal.fire({
+                    await Swal.fire({
                         title: 'Error',
                         text: response.error!.message,
                     });
@@ -119,7 +133,7 @@ class FriendGameSetupComponent extends React.Component<NoProps, { gameKey: strin
                 Swal.fire({
                     title: 'Error',
                     text: error.message,
-                });
+                }).catch(err => document.write(`Error: ${err.message}`));
             });
     }
 

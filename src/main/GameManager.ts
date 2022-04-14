@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongodb';
 import ChessGame from './ChessGame';
-import UserDAO, { IUser } from './dao/UserDAO';
+import UserDAO from './dao/UserDAO';
 import InvalidCredentialsError from './errors/InvalidCredentialsError';
 import Logger from './Logger';
 import SupportedEmojis from './SupportedEmojis';
@@ -57,16 +57,26 @@ class GameManager {
     public static async verifyUserAccess(uid: string, auth: string): Promise<IUser> {
         const dao = new UserDAO();
         return new Promise((resolve, reject) => {
-            dao.authenticateKey(new ObjectId(uid), auth).then(allowed => {
-                if (allowed) {
-                    dao.findOne({ _id: new ObjectId(uid) }).then(user => {
-                        if (user) resolve(user);
-                        else reject(new InvalidCredentialsError());
-                    });
-                } else {
-                    reject(new InvalidCredentialsError());
-                }
-            });
+            dao.authenticateKey(new ObjectId(uid), auth)
+                .then(allowed => {
+                    if (allowed) {
+                        dao.findOne({ _id: new ObjectId(uid) })
+                            .then(user => {
+                                if (user) resolve(user);
+                                else reject(new InvalidCredentialsError());
+                            })
+                            .catch(err => {
+                                Logger.error(err);
+                                reject(err);
+                            });
+                    } else {
+                        reject(new InvalidCredentialsError());
+                    }
+                })
+                .catch(err => {
+                    Logger.error(err);
+                    reject(err);
+                });
         });
     }
 

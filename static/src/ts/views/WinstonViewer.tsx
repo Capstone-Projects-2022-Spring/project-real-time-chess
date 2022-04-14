@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React from 'react';
+import * as React from 'react';
 import TextFieldComponent from '../components/TextFieldComponent';
 import { NoProps } from '../models/types';
 
@@ -197,21 +197,26 @@ class WinstonViewer extends React.Component<NoProps, WinstonViewerState> {
      * of the log viewer component.
      */
     updateLogs() {
-        axios.get('/logs').then(response => {
-            let logs = response.data;
-            logs = `[${logs
-                .split('\n')
-                .filter((o: string) => {
-                    try {
-                        JSON.parse(o);
-                        return true;
-                    } catch (e) {
-                        return false;
-                    }
-                })
-                .join(', ')}]`;
-            this.setState({ logs: JSON.parse(logs) });
-        });
+        axios
+            .get('/logs')
+            .then(response => {
+                let logs = response.data;
+                logs = `[${logs
+                    .split('\n')
+                    .filter((o: string) => {
+                        try {
+                            JSON.parse(o);
+                            return true;
+                        } catch (e) {
+                            return false;
+                        }
+                    })
+                    .join(', ')}]`;
+                this.setState({ logs: JSON.parse(logs) });
+            })
+            .catch(err => {
+                document.write(`Error retrieving logs: ${err.message}`);
+            });
     }
 
     /**

@@ -1,10 +1,13 @@
 import * as React from 'react';
 import { io, Socket } from 'socket.io-client';
+import ButtonComponent from '../components/ButtonComponent';
 import ChatComponent from '../components/ChatComponent';
 import ChessboardComponent from '../components/ChessboardComponent';
 import ToastNotification from '../components/ToastNotification';
 import CookieManager from '../CookieManager';
+import UINavigator from '../models/UINavigator';
 import SupportedEmojis from '../SupportedEmojis';
+import GameplayOptions from './GameplayOptions';
 
 interface MultiplayerMatchProps {
     orientation: 'b' | 'w';
@@ -47,8 +50,15 @@ class MultiplayerMatch extends React.Component<MultiplayerMatchProps, Multiplaye
             <div className="container">
                 <div className="row">
                     <div className="col"></div>
-                    <div className="col">
-                        <h1 style={{ textAlign: 'center' }}>Multiplayer Match</h1>
+                    <h1 style={{ textAlign: 'center' }}>Multiplayer Match</h1>
+                    <div className="col" style={{ paddingBottom: '10px' }}>
+                        <ButtonComponent
+                            label="Home"
+                            width="100%"
+                            onClick={() => {
+                                UINavigator.render(<GameplayOptions />);
+                            }}
+                        />
                     </div>
                     <div className="col" style={{ fontSize: '2rem' }}>
                         Game Key: {this.state.gameKey}
@@ -56,8 +66,9 @@ class MultiplayerMatch extends React.Component<MultiplayerMatchProps, Multiplaye
                 </div>
 
                 <div className="row">
-                    <div className="col-12 col-md-6 text-center">
+                    <div id="boardContainer" className="col-12 col-md-6 text-center">
                         <ChessboardComponent
+                        parentContainerId="boardContainer"
                             orientation={this.props.orientation}
                             fen={this.state.fen}
                             onPieceDrop={(source, target) => {
@@ -72,6 +83,18 @@ class MultiplayerMatch extends React.Component<MultiplayerMatchProps, Multiplaye
                     </div>
                     <div className="col-12 col-md-6">
                         <ChatComponent messages={this.state.messages} />
+                    </div>
+                </div>
+
+                <div className="row">
+                    <div className="col">
+                        <ButtonComponent
+                            onClick={() => {
+                                this.socket?.emit('move ai');
+                            }}
+                        >
+                            AI Move
+                        </ButtonComponent>
                     </div>
                 </div>
             </div>
@@ -111,6 +134,14 @@ class MultiplayerMatch extends React.Component<MultiplayerMatchProps, Multiplaye
                 fen: gameState.fen,
                 messages: gameState.messages,
             });
+        });
+
+        this.socket.on('blackWin', name => {
+            new ToastNotification('Winner!', `${name} is the winner!`, 'success').fire();
+        });
+
+        this.socket.on('whiteWin', name => {
+            new ToastNotification('Winner!', `${name} is the winner!`, 'success').fire();
         });
 
         this.socket.on('move piece', (response: IGameStateAPIResponse) => {

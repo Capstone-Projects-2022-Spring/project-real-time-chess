@@ -64,16 +64,40 @@ class Users {
     static authenticateCertificate(): Promise<boolean> {
         return new Promise((resolve, reject) => {
             if (Users.hasCert()) {
-                axios.get('/api/user/authenticate').then(response => {
-                    if (response.data.success) {
-                        resolve(true);
-                    } else {
-                        reject(response.data.error);
-                    }
-                });
+                axios
+                    .get('/api/user/authenticate')
+                    .then(response => {
+                        if (response.data.success) {
+                            resolve(true);
+                        } else {
+                            reject(response.data.error);
+                        }
+                    })
+                    .catch(err => {
+                        reject(err);
+                    });
             } else {
                 reject(new Error('Invalid authentication certificate'));
             }
+        });
+    }
+
+    /**
+     * Gets the publicly available information for the user that
+     * is currently logged in.
+     *
+     * @returns The sanitized user data (if they are logged in).
+     */
+    static getInfo(): Promise<ISanitizedUser> {
+        return new Promise((resolve, reject) => {
+            axios
+                .get('/api/user/info')
+                .then(response => {
+                    resolve(response.data);
+                })
+                .catch(err => {
+                    reject(err);
+                });
         });
     }
 }

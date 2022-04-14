@@ -28,3 +28,7 @@ declare interface IGameStateAPIResponse extends APIResponse {
         white?: ISanitizedUser;
     };
 }
+
+declare interface IMatchCreatedAPIResponse extends APIResponse {
+    queuePosition: number;
+}

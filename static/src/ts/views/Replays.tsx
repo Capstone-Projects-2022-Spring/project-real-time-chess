@@ -1,40 +1,57 @@
 import * as React from 'react';
 import ButtonComponent from '../components/ButtonComponent';
+import UINavigator from '../models/UINavigator';
+import GameplayOptions from './GameplayOptions';
+import Profile from './Profile';
 
-interface ReplaysProps{
-    username: string;
-}
+type ReplaysProps = Record<string, never>;
 
 interface ReplaysState {
-    username: string;
+    // username: string;
     info: string;
 }
 
 /**
-* The replays screen
-*/
+ * The replays screen
+ */
 class Replays extends React.Component<ReplaysProps, ReplaysState, { info: string }> {
- /**
+    /**
      * Creates an instance of Replays.
      * @param props - No props.
      */
     constructor(props: ReplaysProps) {
         super(props);
         this.state = {
-         username: props.username,
-         info: '',
+            // username: props.username,
+            info: '',
         };
     }
 
-     /**
+    /**
      * @returns The react element for the Replays view.
      */
-      render() {
+    render() {
         return (
             <div className="container">
                 <div className="row">
+                    <h1 style={{ textAlign: 'center' }}>Replays</h1>
                     <div className="col">
-                        <h1 style={{ textAlign: 'center' }}>Replays</h1>
+                        <ButtonComponent
+                            label="Home"
+                            width="100%"
+                            onClick={() => {
+                                UINavigator.render(<GameplayOptions />);
+                            }}
+                        />
+                    </div>
+                    <div className="col" style={{ paddingBottom: '10px' }}>
+                        <ButtonComponent
+                            label="Back"
+                            width="100%"
+                            onClick={() => {
+                                UINavigator.render(<Profile email="" />);
+                            }}
+                        />
                     </div>
                 </div>
                 <div className="row">
@@ -60,19 +77,7 @@ class Replays extends React.Component<ReplaysProps, ReplaysState, { info: string
                             }}
                         />
                     </div>
-                    <div className="col">
-                        <ButtonComponent
-                            label="Log Out"
-                            width="100%"
-                            onClick={() => {
-                                this.setState({
-                                    info: 'log out',
-                                });
-                            }}
-                        />
-                    </div>
                 </div>
-
                 <div className="row">
                     <div className="col"></div>
                     <div className="col-12 col-md-6 col-lg-4 mt-2 text-center game-mode-hover-img-container light-shadow">

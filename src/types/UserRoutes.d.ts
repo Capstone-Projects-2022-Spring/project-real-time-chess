@@ -46,3 +46,9 @@ declare interface LoginAPIResponseBody {
 declare type AuthenticateUserRequest = import('express').Request;
 
 declare type AuthenticateUserResponse = import('express').Response<APIResponse>;
+
+declare type GetUserRequest = import('express').Request;
+
+declare type GetUserResponse = import('express').Response<
+    ISanitizedUser | { success: false; error: Error }
+>;

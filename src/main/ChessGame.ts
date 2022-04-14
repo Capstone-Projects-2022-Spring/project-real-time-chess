@@ -1,13 +1,14 @@
+import axios from 'axios';
 import { Chess, ChessInstance, Move, Square } from 'chess.js';
 import Cooldown from './Cooldown';
 import GameHistoryDAO from './dao/GameHistoryDAO';
-import { IUser } from './dao/UserDAO';
 import GameStateAPIResponse from './GameStateAPIResponse';
+import Logger from './Logger';
 
 /**
  * A wrapper class for a ChessJS game to work with Real-time Chess.
  */
-class ChessGame {
+class ChessGame implements IChessGame {
     /**
      * The game key used for both players to identify the game before it starts.
      */
@@ -26,12 +27,12 @@ class ChessGame {
     /**
      * The web socket for the black player.
      */
-    public blackSocket?: ChessGameSocket;
+    private blackSocket?: ChessGameSocket;
 
     /**
      * The web socket for the white player.
      */
-    public whiteSocket?: ChessGameSocket;
+    private whiteSocket?: ChessGameSocket;
 
     /**
      * The chess.js game instance
@@ -41,7 +42,7 @@ class ChessGame {
     /**
      * A list of all the game messages.
      */
-    private messages: IGameMessage[];
+    public messages: IGameMessage[];
 
     /**
      * An array of all active cooldown timers
@@ -78,20 +79,8 @@ class ChessGame {
      */
     public addMessage(message: IGameMessage) {
         this.messages.push(message);
-        this.blackSocket?.emit(
-            'game state',
-            new GameStateAPIResponse(this.game.fen(), this.gameKey, this.messages, {
-                black: this.black,
-                white: this.white,
-            }),
-        );
-        this.whiteSocket?.emit(
-            'game state',
-            new GameStateAPIResponse(this.game.fen(), this.gameKey, this.messages, {
-                black: this.black,
-                white: this.white,
-            }),
-        );
+        this.blackSocket?.emit('game state', new GameStateAPIResponse(this));
+        this.whiteSocket?.emit('game state', new GameStateAPIResponse(this));
     }
 
     /**
@@ -108,6 +97,20 @@ class ChessGame {
      */
     public get fen(): string {
         return this.game.fen();
+    }
+
+    /**
+     * Retrieves the first name of the black player.
+     */
+    public get blackName(): string | undefined {
+        return this.black?.name.first;
+    }
+
+    /**
+     * Retrieves the first name of the white player.
+     */
+    public get whiteName(): string | undefined {
+        return this.white?.name.first;
     }
 
     /**
@@ -132,7 +135,6 @@ class ChessGame {
     move(source: Square, target: Square): Move | null {
         let move;
         const cooldown = this.cooldownMap[source];
-
         if (cooldown === undefined || cooldown.ready()) {
             const movingColor = this.game.get(source)!.color;
             if (this.game.turn() !== movingColor) this.forceTurnChange(movingColor);
@@ -158,11 +160,61 @@ class ChessGame {
     private endGame() {
         const dao = new GameHistoryDAO();
         dao.insertOne({
-            black: this.black?.id,
-            white: this.white?.id,
+            black: this.black!._id!,
+            white: this.white!._id!,
             game_key: this.gameKey,
             history: this.moveHistory,
+        }).catch(err => Logger.error(err));
+    }
+
+    /**
+     * Uses Joe's API to fetch the next best move in the current game.
+     * This uses artificial intelligence to determine the best move.
+     *
+     * @returns The best move in the current game. In the case where
+     * there is no best move, null is returned.
+     */
+    public async doAIMove(): Promise<Move | null> {
+        return new Promise((resolve, reject) => {
+            const moves = this.moveHistory
+                .map(moveRecord => `${moveRecord.move.from}${moveRecord.move.to}`)
+                .join('');
+            const url = `http://chess-api.herokuapp.com/next_best/${moves}`;
+            axios
+                .get(url)
+                .then(response => {
+                    const move: { bestNext: string } = response.data;
+                    if (move.bestNext.length === 4) {
+                        const from = move.bestNext.substring(0, 2) as Square;
+                        const to = move.bestNext.substring(2, 4) as Square;
+                        resolve(this.move(from, to));
+                    } else {
+                        reject(new Error('The Chess AI API did not respond with any valid move'));
+                    }
+                })
+                .catch(err => reject(err));
         });
+    }
+
+    /**
+     * Binds sockets to the chess game
+     *
+     * @param sockets - The sockets to bind for either the black or white player.
+     */
+    bindSocket(sockets: { black?: ChessGameSocket; white?: ChessGameSocket }) {
+        if (sockets.black) this.blackSocket = sockets.black;
+        if (sockets.white) this.whiteSocket = sockets.white;
+    }
+
+    /**
+     * Emits an event to both players.
+     *
+     * @param ev - The event to emit.
+     * @param args - The arguments to pass to the event.
+     */
+    emitToPlayers(ev: string, ...args: unknown[]) {
+        this.blackSocket?.emit(ev, ...args);
+        this.whiteSocket?.emit(ev, ...args);
     }
 
     /**
@@ -194,6 +246,20 @@ class ChessGame {
      */
     get turn(): 'w' | 'b' {
         return this.game.turn();
+    }
+
+    /**
+     * @returns Whether the player to move is in checkmate.
+     */
+    get checkMate(): boolean {
+        return this.game.in_checkmate();
+    }
+
+    /**
+     * @returns Whether or not the game is over.
+     */
+    get gameOver(): boolean {
+        return this.game.game_over();
     }
 
     /**

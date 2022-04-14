@@ -63,13 +63,13 @@ class HowToPlaySwal {
                         () => undefined,
                     ),
                 ),
-            });
+            }).catch(err => document.write(`Error: ${err.message}`));
         }
 
         Swal.fire({
             title: 'How to Play',
             html: makeList(makeListItem('Game Modes', displayGameModes)),
-        });
+        }).catch(err => document.write(`Error: ${err.message}`));
     }
 }
 

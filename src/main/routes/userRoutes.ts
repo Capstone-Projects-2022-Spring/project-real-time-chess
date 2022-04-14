@@ -1,6 +1,7 @@
 import { ObjectId } from 'mongodb';
 import { ErrorAPIResponse } from '../APIResponse';
 import UserDAO from '../dao/UserDAO';
+import Logger from '../Logger';
 import LoginAPIResponse from '../LoginAPIResponse';
 
 /**
@@ -55,6 +56,22 @@ class UserRoutes {
                 else res.send(new ErrorAPIResponse(new Error('Invalid certificate')));
             })
             .catch(error => res.send(new ErrorAPIResponse(error)));
+    }
+
+    /**
+     * The handler for getting a user's information.
+     *
+     * @param req - The express request object
+     * @param res - The express response object
+     */
+    static getUserRoute(req: GetUserRequest, res: GetUserResponse) {
+        const dao = new UserDAO();
+        dao.retrieveUser(req.cookies.uid)
+            .then(user => {
+                Logger.debug(`Found user: ${JSON.stringify(user, null, 4)}`);
+                res.send(UserDAO.sanitize(user));
+            })
+            .catch(err => res.send(new ErrorAPIResponse(err)));
     }
 }
 

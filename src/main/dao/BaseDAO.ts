@@ -42,6 +42,21 @@ abstract class BaseDAO<Schema extends Mongo.Document> {
     }
 
     /**
+     * Finds all documents in the collection specified by this.collectionName.
+     *
+     * @param filter - The filter query to use.
+     * @returns A list of documents matching the filter query.
+     */
+    public async findMany(filter: Mongo.Filter<Schema>): Promise<Mongo.WithId<Schema>[]> {
+        return new Promise((resolve, reject) => {
+            this.collection!.find(filter)
+                .toArray()
+                .then(docs => resolve(docs as Mongo.WithId<Schema>[]))
+                .catch(err => reject(err));
+        });
+    }
+
+    /**
      * Updates a single document in the collection specified by this.collectionName.
      *
      * @param filter - The filter use to find the document.

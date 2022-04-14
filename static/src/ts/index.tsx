@@ -19,7 +19,7 @@ if (Users.hasCert()) {
                 icon: 'error',
                 title: 'Account Error',
                 text: 'It seems like you are not logged in. Please try logging in again',
-            });
+            }).catch(err => document.write(`Error: ${err.message}`));
         });
 }
 

@@ -1,3 +1,5 @@
+import { IonIcon } from '@ionic/react';
+import { backspace } from 'ionicons/icons';
 import * as React from 'react';
 
 interface EmojiKeyboardState {
@@ -76,6 +78,23 @@ class EmojiKeyboard extends React.Component<EmojiKeyboardProps, EmojiKeyboardSta
                             {emojiRecord.emoji}
                         </div>
                     ))}
+                    <div
+                        className="emoji-keyboard-button"
+                        onClick={() => {
+                            this.setState(
+                                {
+                                    value: this.state.value.splice(0, this.state.value.length - 1),
+                                },
+                                () => {
+                                    if (this.props.onChange) {
+                                        this.props.onChange(this.state.value);
+                                    }
+                                },
+                            );
+                        }}
+                    >
+                        <IonIcon icon={backspace} />
+                    </div>
                 </div>
             </div>
         );
