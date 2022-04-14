@@ -18,7 +18,7 @@ class GameRoutes {
     static createGame(req: CreateGameRequest, res: CreateGameResponse) {
         GameManager.verifyUserAccess(req.cookies.uid, req.cookies.auth)
             .then(user => {
-                const game = GameManager.createGame(user);
+                const game = GameManager.createGame(user, req.body.cooldown);
                 if (game) {
                     res.send(new GameCreatedAPIResponse(game.gameKey));
                     Logger.info(

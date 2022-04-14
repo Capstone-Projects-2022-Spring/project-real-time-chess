@@ -4,7 +4,7 @@
 declare type CreateGameRequest = import('express').Request<
     EmptyRecord,
     IGameCreatedAPIResponse | IErrorAPIResponse,
-    EmptyRecord,
+    { cooldown: number },
     EmptyRecord
 >;
 

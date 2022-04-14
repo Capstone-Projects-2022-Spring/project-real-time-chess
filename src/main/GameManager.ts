@@ -86,8 +86,8 @@ class GameManager {
      * @param user - The user who is creating the game.
      * @returns The game that is created
      */
-    public static createGame(user: IUser): ChessGame | null {
-        const game = new ChessGame(GameManager.generateGameKey());
+    public static createGame(user: IUser, cooldown: number): ChessGame | null {
+        const game = new ChessGame(GameManager.generateGameKey(), cooldown);
         GameManager.endGame(user._id!.toString());
 
         game.black = user;

@@ -81,7 +81,7 @@ export default class MatchmakingManager {
         if (this.matchmakingQueue.length() >= 2) {
             const player1 = this.matchmakingQueue.shift();
             Logger.debug(`Attempting to create a game with Player 1: (${player1.user._id})`);
-            const game = GameManager.createGame(player1.user);
+            const game = GameManager.createGame(player1.user, 5);
             const player2 = this.matchmakingQueue.shift();
             Logger.debug(`Attempting to join game with Player 2: (${player2.user._id})`);
             GameManager.joinGame(player2.user, game!.gameKey);

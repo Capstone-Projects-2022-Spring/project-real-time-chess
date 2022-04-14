@@ -7,10 +7,10 @@ class GameAccess {
     /**
      * Creates a new game and responsds with a GameCreatedAPIResponse object.
      */
-    static async createGame(): Promise<IGameCreatedAPIResponse> {
+    static async createGame(cooldown: number): Promise<IGameCreatedAPIResponse> {
         return new Promise((resolve, reject) => {
             axios
-                .post('/api/game/create')
+                .post('/api/game/create', { cooldown })
                 .then(response => resolve(response.data))
                 .catch(err => reject(err));
         });

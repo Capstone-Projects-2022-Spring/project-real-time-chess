@@ -5,7 +5,7 @@ import GameManager from 'src/main/GameManager';
 let game: ChessGame;
 
 beforeEach(() => {
-    game = new ChessGame(GameManager.generateGameKey());
+    game = new ChessGame(GameManager.generateGameKey(), 5);
 });
 
 describe('ChessGame', () => {

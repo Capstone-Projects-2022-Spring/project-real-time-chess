@@ -17,7 +17,10 @@ import EmojiKeyboard from './EmojiKeyboard';
  * Their friend will then be able to join the game by entering the emoji code on this same
  * View.
  */
-class FriendGameSetupComponent extends React.Component<NoProps, { gameKey: string[] }> {
+class FriendGameSetupComponent extends React.Component<
+    NoProps,
+    { gameKey: string[]; cooldown: number }
+> {
     /**
      * Creates an instance of FriendGameSetupComponent.
      * @param props - No props are accepted.
@@ -26,6 +29,7 @@ class FriendGameSetupComponent extends React.Component<NoProps, { gameKey: strin
         super(props);
         this.state = {
             gameKey: [],
+            cooldown: 5,
         };
     }
 
@@ -52,10 +56,14 @@ class FriendGameSetupComponent extends React.Component<NoProps, { gameKey: strin
                             Create a game. Then you will be given a game code. Send the game code to
                             your friend so they can join the game.
                         </p>
-                        <CooldownSelectorComponent />
+                        <CooldownSelectorComponent
+                            onChange={e => {
+                                this.setState({ cooldown: +e.target.value });
+                            }}
+                        />
                         <ButtonComponent
                             label="Create Game"
-                            onClick={() => FriendGameSetupComponent.createGame()}
+                            onClick={() => FriendGameSetupComponent.createGame(this.state.cooldown)}
                         />
                     </div>
 
@@ -108,8 +116,8 @@ class FriendGameSetupComponent extends React.Component<NoProps, { gameKey: strin
     /**
      * Submits a request to create a new game.
      */
-    static createGame() {
-        GameAccess.createGame()
+    static createGame(cooldown: number) {
+        GameAccess.createGame(cooldown)
             .then(async response => {
                 if (response.success) {
                     await Swal.fire({

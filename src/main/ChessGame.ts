@@ -54,6 +54,8 @@ class ChessGame implements IChessGame {
      */
     public static readonly COOLDOWN_TIME = 5;
 
+    public cooldownTime;
+
     /**
      * A record of every single move made in the game.
      */
@@ -62,11 +64,13 @@ class ChessGame implements IChessGame {
     /**
      * Creates an instance of ChessGame.
      */
-    constructor(gameKey: string[]) {
+    constructor(gameKey: string[], cooldown: number) {
         this.game = new Chess();
         this.gameKey = gameKey;
         this.messages = [];
+        this.cooldownTime = cooldown;
         this.cooldownMap = {} as Record<Square, Cooldown>;
+        Logger.debug(`Cooldown for game successfully set to: ${this.cooldownTime}`);
     }
 
     /**
@@ -141,7 +145,7 @@ class ChessGame implements IChessGame {
             move = this.game.move(`${source}-${target}`, { sloppy: true });
             if (move !== null) {
                 delete this.cooldownMap[source];
-                this.cooldownMap[target] = new Cooldown(5);
+                this.cooldownMap[target] = new Cooldown(this.cooldownTime);
                 this.moveHistory.push({
                     fen: this.game.fen(),
                     timestamp: Date.now(),
