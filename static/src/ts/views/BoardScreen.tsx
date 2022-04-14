@@ -40,19 +40,21 @@ class BoardScreen extends React.Component<BoardScreenProps, BoardScreenState> {
         return (
             <div className="container">
                 <div className="row">
-                    <div className="col">
+                    <div id="boardContainer" className="col">
                         <h1 style={{ textAlign: 'center' }}>Chessboard</h1>
                         <ButtonComponent
                             onClick={() => {
-                                UINavigator.render(<GameplayOptions/>);
+                                UINavigator.render(<GameplayOptions />);
                             }}
                         >
-                            <IonIcon
-                                style={{ textAlign: 'center' }}
-                            />
+                            <IonIcon style={{ textAlign: 'center' }} />
                             <span>Home</span>
                         </ButtonComponent>
-                        <ChessboardComponent orientation="w" onFENChange={() => undefined} />
+                        <ChessboardComponent
+                            parentContainerId="boardContainer"
+                            orientation="w"
+                            onFENChange={() => undefined}
+                        />
                     </div>
                 </div>
             </div>
