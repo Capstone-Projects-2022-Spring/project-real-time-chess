@@ -66,8 +66,9 @@ class MultiplayerMatch extends React.Component<MultiplayerMatchProps, Multiplaye
                 </div>
 
                 <div className="row">
-                    <div className="col-12 col-md-6 text-center">
+                    <div id="boardContainer" className="col-12 col-md-6 text-center">
                         <ChessboardComponent
+                        parentContainerId="boardContainer"
                             orientation={this.props.orientation}
                             fen={this.state.fen}
                             onPieceDrop={(source, target) => {

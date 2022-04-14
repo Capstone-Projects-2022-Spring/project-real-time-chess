@@ -88,11 +88,11 @@ class FriendGameSetupComponent extends React.Component<NoProps, { gameKey: strin
                                             });
                                         }
                                     })
-                                    .catch(err => {
+                                    .catch(() => {
                                         Swal.fire({
                                             icon: 'error',
                                             title: 'Error',
-                                            text: err.message,
+                                            text: "Couldn't find game with that game code.",
                                         }).catch(swalError => {
                                             document.write(`Error: ${swalError.message}`);
                                         });

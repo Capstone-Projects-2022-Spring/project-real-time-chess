@@ -3,7 +3,7 @@ import ButtonComponent from '../components/ButtonComponent';
 import ChessboardComponent from '../components/ChessboardComponent';
 // import { ObjectId } from 'mongodb';
 
-interface ReplayGameProps{
+interface ReplayGameProps {
     username: string;
     orientation: 'b' | 'w';
 }
@@ -11,8 +11,8 @@ interface ReplayGameProps{
 interface ReplayGameState {
     username: string;
     info: string;
-    fen?: string
-    gamekey: string
+    fen?: string;
+    gamekey: string;
 }
 
 /**
@@ -26,21 +26,21 @@ class ReplayGame extends React.Component<ReplayGameProps, ReplayGameState, { inf
     constructor(props: ReplayGameProps) {
         super(props);
         this.state = {
-         username: props.username,
-         info: '',
-         fen: undefined,
-         gamekey: '',
-         /* black
+            username: props.username,
+            info: '',
+            fen: undefined,
+            gamekey: '',
+            /* black
          white:
          history:
          */
         };
     }
 
-     /**
+    /**
      * @returns The react element for the Replays view.
      */
-      render() {
+    render() {
         return (
             <div className="container">
                 <div className="row">
@@ -48,21 +48,22 @@ class ReplayGame extends React.Component<ReplayGameProps, ReplayGameState, { inf
                         <h1 style={{ textAlign: 'center' }}>Your latest game</h1>
                     </div>
                     <div className="row">
-                    <div className="col-12 col-md-6 text-center">
-                        <ChessboardComponent
-                            orientation={this.props.orientation}
-                            fen={this.state.fen}
-                            /* onPieceDrop={(source, target) => {
+                        <div id="boardContainer" className="col-12 col-md-6 text-center">
+                            <ChessboardComponent
+                                parentContainerId="boardContainer"
+                                orientation={this.props.orientation}
+                                fen={this.state.fen}
+                                /* onPieceDrop={(source, target) => {
                                 this.socket?.emit('move piece', source, target);
                             }}
                             */
-                            onFENChange={fen =>
-                                this.setState({
-                                    fen,
-                                })
-                            }
-                        />
-                    </div>
+                                onFENChange={fen =>
+                                    this.setState({
+                                        fen,
+                                    })
+                                }
+                            />
+                        </div>
                     </div>
                     <div className="col">
                         <ButtonComponent

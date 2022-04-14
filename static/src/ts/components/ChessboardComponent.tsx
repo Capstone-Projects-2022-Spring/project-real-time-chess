@@ -4,6 +4,7 @@ import { Chessboard } from 'react-chessboard';
 import ToastNotification from './ToastNotification';
 
 interface ChessboardComponentProps {
+    parentContainerId: string;
     orientation: 'b' | 'w';
     fen?: string;
     onPieceDrop?: (source: Square, target: Square) => void;
@@ -46,15 +47,8 @@ class ChessboardComponent extends React.Component<
      * the width of the window.
      */
     updateBoardWidth() {
-        const windowWidth = window.innerWidth;
-
-        if (windowWidth < 600) {
-            this.setState({ width: windowWidth - 100 });
-        } else if (windowWidth < 1000) {
-            this.setState({ width: windowWidth / 2 - 100 });
-        } else {
-            this.setState({ width: windowWidth / 2 - 100 });
-        }
+        const container = document.getElementById(this.props.parentContainerId);
+        this.setState({ width: container!.offsetWidth! - 10 });
     }
 
     /**
