@@ -36,7 +36,7 @@ class Profile extends React.Component<ProfileProps, ProfileState, { info: string
             info: '',
             wins: 0,
             losses: 0,
-            totalGames: 0
+            totalGames: 0,
         };
     }
 
