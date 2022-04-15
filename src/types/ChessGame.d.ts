@@ -17,3 +17,13 @@ interface MoveRequest {
     target: import('chess.js').Square;
     color: 'w' | 'b';
 }
+
+interface AutoPilotState {
+    enabled: boolean;
+    job?: NodeJS.Timer;
+}
+
+interface AutoPilotGameState {
+    black: AutoPilotState;
+    white: AutoPilotState;
+}

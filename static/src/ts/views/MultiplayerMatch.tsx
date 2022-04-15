@@ -97,6 +97,16 @@ class MultiplayerMatch extends React.Component<MultiplayerMatchProps, Multiplaye
                             AI Move
                         </ButtonComponent>
                     </div>
+
+                    <div className="col">
+                        <ButtonComponent
+                            onClick={() => {
+                                this.socket?.emit('autopilot', 'enable');
+                            }}
+                        >
+                            Enable Autopilot
+                        </ButtonComponent>
+                    </div>
                 </div>
             </div>
         );

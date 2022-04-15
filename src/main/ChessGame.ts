@@ -9,64 +9,33 @@ import Logger from './Logger';
  * A wrapper class for a ChessJS game to work with Real-time Chess.
  */
 class ChessGame implements IChessGame {
-    /**
-     * The game key used for both players to identify the game before it starts.
-     */
     public gameKey: string[];
 
-    /**
-     * The IUser object representing the black player.
-     */
     public black?: IUser;
 
-    /**
-     * The IUser object representing the white player.
-     */
     public white?: IUser;
 
-    /**
-     * The web socket for the black player.
-     */
     private blackSocket?: ChessGameSocket;
 
-    /**
-     * The web socket for the white player.
-     */
     private whiteSocket?: ChessGameSocket;
 
-    /**
-     * The chess.js game instance
-     */
     private game: ChessInstance;
 
-    /**
-     * A list of all the game messages.
-     */
     public messages: IGameMessage[];
 
-    /**
-     * An array of all active cooldown timers
-     */
     public cooldownMap: Record<Square, Cooldown>;
 
-    /**
-     * Time before a recently moved piece may be moved again
-     */
     public static readonly COOLDOWN_TIME = 5;
 
-    /**
-     * A record of every single move made in the game.
-     */
     private moveHistory: MoveRecord[] = [];
 
-    /**
-     * The queue which holds moves
-     */
     private moveQueue: MoveRequest[] = [];
 
     private moveJob: NodeJS.Timer;
 
     private moveJobLock: boolean;
+
+    private autopilot: AutoPilotGameState;
 
     /**
      * Creates an instance of ChessGame.
@@ -87,6 +56,14 @@ class ChessGame implements IChessGame {
                 this.moveJobLock = false;
             }
         }, 500);
+        this.autopilot = {
+            black: {
+                enabled: false,
+            },
+            white: {
+                enabled: false,
+            },
+        };
     }
 
     /**
@@ -168,9 +145,11 @@ class ChessGame implements IChessGame {
         let move;
         const cooldown = this.cooldownMap[source];
         if (cooldown === undefined || cooldown.ready()) {
-            const movingColor = this.game.get(source)!.color;
-            if (this.game.turn() !== movingColor) this.forceTurnChange(movingColor);
+            this.forceTurnChange(color);
+            console.log(this.turn);
             move = this.game.move(`${source}-${target}`, { sloppy: true });
+            console.log('attempted move from', source, 'to', target);
+            console.log('result', move);
             if (move !== null) {
                 delete this.cooldownMap[source];
                 this.cooldownMap[target] = new Cooldown(5);
@@ -209,30 +188,10 @@ class ChessGame implements IChessGame {
      * Uses Joe's API to fetch the next best move in the current game.
      * This uses artificial intelligence to determine the best move.
      *
-     * @returns The best move in the current game. In the case where
-     * there is no best move, null is returned.
+     * @param color - The color of the player making the move.
      */
-    public async doAIMove(color: 'w' | 'b'): Promise<void> {
-        return new Promise((resolve, reject) => {
-            const moves = this.moveHistory
-                .map(moveRecord => `${moveRecord.move.from}${moveRecord.move.to}`)
-                .join('');
-            const url = `http://chess-api.herokuapp.com/next_best/${moves}`;
-            axios
-                .get(url)
-                .then(response => {
-                    const move: { bestNext: string } = response.data;
-                    if (move.bestNext.length === 4) {
-                        const from = move.bestNext.substring(0, 2) as Square;
-                        const to = move.bestNext.substring(2, 4) as Square;
-                        this.move(from, to, color);
-                        resolve();
-                    } else {
-                        reject(new Error('The Chess AI API did not respond with any valid move'));
-                    }
-                })
-                .catch(err => reject(err));
-        });
+    public requestAIMove(color: 'w' | 'b'): void {
+        // TODO: Reimplement this
     }
 
     /**
@@ -254,6 +213,21 @@ class ChessGame implements IChessGame {
     emitToPlayers(ev: string, ...args: unknown[]) {
         this.blackSocket?.emit(ev, ...args);
         this.whiteSocket?.emit(ev, ...args);
+    }
+
+    /**
+     * Enables autopilot for the specified player at a given rate.
+     *
+     * @param color - The color which autopilot should be enabled for.
+     * @param frequency - The frequency which moves should be made (in milliseconds).
+     */
+    enableAutopilot(color: 'b' | 'w', frequency: number) {
+        const autopilotState = color === 'w' ? this.autopilot.white : this.autopilot.black;
+        if (autopilotState.enabled && autopilotState.job) clearInterval(autopilotState.job);
+        autopilotState.enabled = true;
+        autopilotState.job = setInterval(() => {
+            this.requestAIMove(color).catch(err => Logger.error(err));
+        }, frequency);
     }
 
     /**
