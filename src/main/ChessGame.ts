@@ -201,7 +201,6 @@ class ChessGame implements IChessGame {
      * @param color - The color of the player making the move.
      */
     public requestAIMove(color: 'w' | 'b'): void {
-        // TODO: Reimplement this
         const correctedGame = this.constructGameWithTurn(color);
         const gm = new GrandMaster(correctedGame);
 
