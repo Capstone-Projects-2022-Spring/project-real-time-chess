@@ -7,8 +7,8 @@ import {
 } from 'ionicons/icons';
 import * as React from 'react';
 import ButtonComponent from '../components/ButtonComponent';
-import FriendGameSetupComponent from '../components/FriendGameSetup';
-import MatchmakingLobbyComponent from '../components/MatchmakingLobby';
+import FriendGameSetupComponent from './FriendGameSetup';
+import MatchmakingLobbyComponent from './MatchmakingLobby';
 import HowToPlaySwal from '../components/HowToPlaySwal';
 import CookieManager from '../CookieManager';
 import { NoProps } from '../models/types';

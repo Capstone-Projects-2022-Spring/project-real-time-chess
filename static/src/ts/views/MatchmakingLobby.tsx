@@ -3,9 +3,9 @@ import { Socket, io } from 'socket.io-client';
 import Swal from 'sweetalert2';
 import { NoProps } from '../models/types';
 import CookieManager from '../CookieManager';
-import ButtonComponent from './ButtonComponent';
+import ButtonComponent from '../components/ButtonComponent';
 import UINavigator from '../models/UINavigator';
-import MultiplayerMatch from '../views/MultiplayerMatch';
+import MultiplayerMatch from './MultiplayerMatch';
 
 interface MatchmakingLobbyState {
     status: string;
