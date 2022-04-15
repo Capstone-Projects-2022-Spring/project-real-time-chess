@@ -104,13 +104,21 @@ class RTCServer {
                     uid = _uid.toString();
                     game = GameManager.findGameByUser(uid)!;
                     if (game) {
-                        if (game.black && uid.toString() === game.black._id!.toString()) {
+                        if (
+                            game.black &&
+                            typeof game.black !== 'string' &&
+                            uid.toString() === game.black._id!.toString()
+                        ) {
                             game.bindSocket({
                                 black: socket,
                             });
                             Logger.info(`Authorized Socket Connection with:\nUID: ${uid}`);
                             callback?.(new GameStateAPIResponse(game));
-                        } else if (game.white && uid.toString() === game.white._id!.toString()) {
+                        } else if (
+                            game.white &&
+                            typeof game.white !== 'string' &&
+                            uid.toString() === game.white._id!.toString()
+                        ) {
                             game.bindSocket({
                                 white: socket,
                             });

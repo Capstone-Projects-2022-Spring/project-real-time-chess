@@ -33,7 +33,10 @@ class GameSocketHandler {
      * @param target - The target square of the move.
      */
     static onMovePieceRequest(game: ChessGame, uid: string, source: Square, target: Square) {
-        game.move(source, target, game.white?._id.equals(uid) ? 'w' : 'b');
+        let color: 'w' | 'b';
+        if (game.white && typeof game.white !== 'string' && game.white._id.equals(uid)) color = 'w';
+        else color = 'b';
+        game.move(source, target, color);
     }
 
     /**
@@ -43,7 +46,9 @@ class GameSocketHandler {
      * @param uid - The user who invoked the event
      */
     static onAIMoveRequest(game: ChessGame, uid: string) {
-        const color = game.white?._id.equals(uid) ? 'w' : 'b';
+        let color: 'w' | 'b';
+        if (game.white && typeof game.white !== 'string' && game.white._id.equals(uid)) color = 'w';
+        else color = 'b';
         game.requestAIMove(color);
     }
 
@@ -54,7 +59,9 @@ class GameSocketHandler {
      * @param uid - The user enabling autopilot.
      */
     static enableAutopilot(game: ChessGame, uid: string) {
-        const color = game.white?._id.equals(uid) ? 'w' : 'b';
+        let color: 'w' | 'b';
+        if (game.white && typeof game.white !== 'string' && game.white._id.equals(uid)) color = 'w';
+        else color = 'b';
         game.enableAutopilot(color, 1000);
     }
 
@@ -65,7 +72,9 @@ class GameSocketHandler {
      * @param uid - The user disabling autopilot
      */
     static disableAutopilot(game: ChessGame, uid: string) {
-        const color = game.white?._id.equals(uid) ? 'w' : 'b';
+        let color: 'w' | 'b';
+        if (game.white && typeof game.white !== 'string' && game.white._id.equals(uid)) color = 'w';
+        else color = 'b';
         game.disableAutopilot(color);
     }
 }
