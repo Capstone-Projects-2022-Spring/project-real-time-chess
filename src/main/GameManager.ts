@@ -128,6 +128,10 @@ class GameManager {
 
         const game = new ChessGame(owner, GameManager.generateGameKey());
         GameManager.games.push(game);
+
+        game.black = `AI-${bot1}` as AIString;
+        game.white = `AI-${bot2}` as AIString;
+
         game.addMessage({
             message: 'You created a new AI v AI game',
         });
@@ -137,6 +141,13 @@ class GameManager {
         game.addMessage({
             message: `Bot 2 Difficulty: ${bot2}`,
         });
+
+        setTimeout(() => {
+            game.randomMove();
+            game.enableAutopilot('w', 9000 / bot1);
+            game.enableAutopilot('b', 9000 / bot2);
+        }, 3000);
+
         return game;
     }
 

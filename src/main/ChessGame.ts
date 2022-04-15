@@ -175,6 +175,14 @@ class ChessGame implements IChessGame {
     }
 
     /**
+     * Submit a request for a random legal move
+     * TODO: Make this truly random
+     */
+    public randomMove(): void {
+        this.move('e2', 'e4', 'w');
+    }
+
+    /**
      * Move a piece from a source square to a target square.
      *
      * @param source - The square which the piece is currently located.
