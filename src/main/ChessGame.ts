@@ -123,6 +123,18 @@ class ChessGame implements IChessGame {
     }
 
     /**
+     * Constructs a new (isolated) chess game instance with the specified turn
+     *
+     * @param color - The player who's turn should be next
+     * @returns The new chess.js instance
+     */
+    public constructGameWithTurn(color: 'w' | 'b'): ChessInstance {
+        const tokens = this.game.fen().split(' ');
+        tokens[1] = color;
+        return new Chess(tokens.join(' '));
+    }
+
+    /**
      * Adds a move to the move queue.
      *
      * @param source - The source square
@@ -190,18 +202,22 @@ class ChessGame implements IChessGame {
      */
     public requestAIMove(color: 'w' | 'b'): void {
         // TODO: Reimplement this
-        const gm = new GrandMaster(this.game);
+        const correctedGame = this.constructGameWithTurn(color);
+        const gm = new GrandMaster(correctedGame);
 
-        const bestNextMove = gm.getBestMove(
-            color,
-            gm.evaluateBoard(
-                ModifiedChess(this.game.fen()),
-                this.moveHistory[this.moveHistory.length - 1]!.move,
-                0,
+        if (this.moveHistory.length > 0) {
+            const [bestNextMove] = gm.getBestMove(
                 color,
-            ),
-        )[0];
-        if (bestNextMove) this.move(bestNextMove.from, bestNextMove.to, bestNextMove.color);
+                gm.evaluateBoard(
+                    ModifiedChess(correctedGame.fen()),
+                    this.moveHistory[this.moveHistory.length - 1]!.move,
+                    0,
+                    color,
+                ),
+            );
+
+            if (bestNextMove) this.move(bestNextMove.from, bestNextMove.to, bestNextMove.color);
+        }
     }
 
     /**
