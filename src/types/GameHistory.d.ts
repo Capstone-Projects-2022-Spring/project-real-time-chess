@@ -1,6 +1,6 @@
 interface GameHistory {
-    black: import('mongodb').ObjectId;
-    white: import('mongodb').ObjectId;
+    black: import('mongodb').ObjectId | 'AI';
+    white: import('mongodb').ObjectId | 'AI';
     game_key: string[];
     history: MoveRecord[];
 }

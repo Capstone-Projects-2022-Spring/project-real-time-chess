@@ -11,3 +11,9 @@ interface MoveRecord {
     timestamp: number;
     move: import('chess.js').Move;
 }
+
+interface MoveRequest {
+    source: import('chess.js').Square;
+    target: import('chess.js').Square;
+    color: 'w' | 'b';
+}

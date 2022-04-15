@@ -128,10 +128,10 @@ class RTCServer {
             socket.on('game state', () => GameSocketHandler.onGameStateRequest(socket, game, uid));
 
             socket.on('move piece', (source: Square, target: Square) =>
-                GameSocketHandler.onMovePieceRequest(socket, game, uid, source, target),
+                GameSocketHandler.onMovePieceRequest(game, uid, source, target),
             );
 
-            socket.on('move ai', () => GameSocketHandler.onAIMoveRequest(socket, game, uid));
+            socket.on('move ai', () => GameSocketHandler.onAIMoveRequest(game, uid));
         });
     }
 

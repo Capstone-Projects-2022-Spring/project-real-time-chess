@@ -106,6 +106,7 @@ class GameManager {
     public static endGame(uid: string): void {
         const game = GameManager.findGameByUser(uid);
         if (game) {
+            game.endGame();
             GameManager.games.splice(GameManager.games.indexOf(game), 1);
         }
     }
@@ -145,6 +146,14 @@ class GameManager {
             }
         } while (GameManager.findGameByKey(emojis) !== null);
         return emojis;
+    }
+
+    /**
+     * Ends all games from the games list and then clears the games list.
+     */
+    static clearGames(): void {
+        GameManager.games.forEach(g => g.endGame());
+        GameManager.games = [];
     }
 }
 

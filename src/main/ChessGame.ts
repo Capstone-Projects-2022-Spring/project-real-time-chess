@@ -60,6 +60,15 @@ class ChessGame implements IChessGame {
     private moveHistory: MoveRecord[] = [];
 
     /**
+     * The queue which holds moves
+     */
+    private moveQueue: MoveRequest[] = [];
+
+    private moveJob: NodeJS.Timer;
+
+    private moveJobLock: boolean;
+
+    /**
      * Creates an instance of ChessGame.
      */
     constructor(gameKey: string[]) {
@@ -67,6 +76,17 @@ class ChessGame implements IChessGame {
         this.gameKey = gameKey;
         this.messages = [];
         this.cooldownMap = {} as Record<Square, Cooldown>;
+        this.moveJobLock = false;
+        this.moveJob = setInterval(() => {
+            if (!this.moveJobLock) {
+                this.moveJobLock = true;
+                while (this.moveQueue.length > 0) {
+                    const move = this.moveQueue.shift()!;
+                    this.doSingleMove(move.source, move.target, move.color);
+                }
+                this.moveJobLock = false;
+            }
+        }, 500);
     }
 
     /**
@@ -125,14 +145,26 @@ class ChessGame implements IChessGame {
     }
 
     /**
+     * Adds a move to the move queue.
+     *
+     * @param source - The source square
+     * @param target - The target square
+     * @param color - The color of the piece being moved
+     */
+    public move(source: Square, target: Square, color: 'w' | 'b'): void {
+        this.moveQueue.push({ source, target, color });
+    }
+
+    /**
      * Move a piece from a source square to a target square.
      *
      * @param source - The square which the piece is currently located.
      * @param target - The square which the piece is moving to.
+     * @param color - The color of the piece being moved.
      * @returns A chess.js Move object if the move is valid.
      * If an invalid move (source to target) is attempted, then `null` is returned.
      */
-    move(source: Square, target: Square): Move | null {
+    private doSingleMove(source: Square, target: Square, color: 'w' | 'b'): Move | null {
         let move;
         const cooldown = this.cooldownMap[source];
         if (cooldown === undefined || cooldown.ready()) {
@@ -142,6 +174,11 @@ class ChessGame implements IChessGame {
             if (move !== null) {
                 delete this.cooldownMap[source];
                 this.cooldownMap[target] = new Cooldown(5);
+                this.addMessage({
+                    message: `${
+                        color === 'b' ? 'White' : 'Black'
+                    } moved from ${source} to ${target}`,
+                });
                 this.moveHistory.push({
                     fen: this.game.fen(),
                     timestamp: Date.now(),
@@ -157,14 +194,15 @@ class ChessGame implements IChessGame {
     /**
      * Ends the game and publishes the game to the database.
      */
-    private endGame() {
+    public endGame() {
         const dao = new GameHistoryDAO();
         dao.insertOne({
-            black: this.black!._id!,
-            white: this.white!._id!,
+            black: this.black?._id ?? 'AI',
+            white: this.white?._id ?? 'AI',
             game_key: this.gameKey,
             history: this.moveHistory,
         }).catch(err => Logger.error(err));
+        clearInterval(this.moveJob);
     }
 
     /**
@@ -174,7 +212,7 @@ class ChessGame implements IChessGame {
      * @returns The best move in the current game. In the case where
      * there is no best move, null is returned.
      */
-    public async doAIMove(): Promise<Move | null> {
+    public async doAIMove(color: 'w' | 'b'): Promise<void> {
         return new Promise((resolve, reject) => {
             const moves = this.moveHistory
                 .map(moveRecord => `${moveRecord.move.from}${moveRecord.move.to}`)
@@ -187,7 +225,8 @@ class ChessGame implements IChessGame {
                     if (move.bestNext.length === 4) {
                         const from = move.bestNext.substring(0, 2) as Square;
                         const to = move.bestNext.substring(2, 4) as Square;
-                        resolve(this.move(from, to));
+                        this.move(from, to, color);
+                        resolve();
                     } else {
                         reject(new Error('The Chess AI API did not respond with any valid move'));
                     }

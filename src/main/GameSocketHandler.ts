@@ -1,8 +1,6 @@
 import { Square } from 'chess.js';
 import { Socket } from 'socket.io';
-import { ErrorAPIResponse } from './APIResponse';
 import ChessGame from './ChessGame';
-import UserDAO from './dao/UserDAO';
 import GameStateAPIResponse from './GameStateAPIResponse';
 import Logger from './Logger';
 
@@ -29,119 +27,26 @@ class GameSocketHandler {
     /**
      * The method to invoke when the client requests to move a piece.
      *
-     * @param socket - The requesting socket.
      * @param game - The game to make the move on.
      * @param uid - The user requesting to make the move.
      * @param source - The source square of the move.
      * @param target - The target square of the move.
      */
-    static onMovePieceRequest(
-        socket: Socket,
-        game: ChessGame,
-        uid: string,
-        source: Square,
-        target: Square,
-    ) {
-        const move = game.move(source, target);
-        if (move) {
-            Logger.info(
-                `User successfully made a move\nUID: ${uid}\nMove: ${JSON.stringify(move)}\nFEN: ${
-                    game.fen
-                }`,
-            );
-
-            game.addMessage({
-                message: `${game.turn === 'b' ? 'White' : 'Black'} moved from ${move.from} to ${
-                    move.to
-                }`,
-            });
-
-            game.emitToPlayers('move piece', new GameStateAPIResponse(game));
-
-            const { winner } = game;
-            if (winner !== null) {
-                Logger.debug(`A winner was found: ${winner}`);
-                Logger.debug(
-                    `White: ${JSON.stringify(game.white)}\nBlack: ${JSON.stringify(game.black)}`,
-                );
-                const dao = new UserDAO();
-                if (winner === 'b') {
-                    game.emitToPlayers('blackWin', game.blackName);
-                    dao.recordWin(game.black!._id!).catch(err => Logger.error(err));
-                    dao.recordLoss(game.white!._id!).catch(err => Logger.error(err));
-                } else if (winner === 'w') {
-                    game.emitToPlayers('whiteWin', game.whiteName);
-                    dao.recordWin(game.white!._id!).catch(err => Logger.error(err));
-                    dao.recordLoss(game.black!._id!).catch(err => Logger.error(err));
-                }
-            } else {
-                socket.emit('move piece', new ErrorAPIResponse('Invalid move'));
-                Logger.info(
-                    `User submitted an invalid move\nUID: ${uid}\nFrom: ${source}\nTo: ${target}\nFEN: ${game.fen}`,
-                );
-            }
-        }
+    static onMovePieceRequest(game: ChessGame, uid: string, source: Square, target: Square) {
+        game.move(source, target, game.white?._id.equals(uid) ? 'w' : 'b');
     }
 
     /**
+     * Requests an AI Move
      *
-     * @param socket - The socket which the request came from
      * @param game - The game belonging to the request
      * @param uid - The user who invoked the event
      */
-    static onAIMoveRequest(socket: Socket, game: ChessGame, uid: string) {
-        game.doAIMove()
-            .then(move => {
-                if (move) {
-                    socket.emit('move piece', {
-                        success: true,
-                        gameKey: game.gameKey,
-                        fen: game.fen,
-                        messages: game.getMessages(),
-                        players: {
-                            black: game.black,
-                            white: game.white,
-                        },
-                        move,
-                    });
-
-                    Logger.info(
-                        `AI Move Successful\nUID: ${uid}\nMove: ${JSON.stringify(move)}\nFEN: ${
-                            game.fen
-                        }`,
-                    );
-
-                    game.addMessage({ message: `AI moved from ${move.from} to ${move.to}` });
-
-                    game.emitToPlayers('move piece', new GameStateAPIResponse(game));
-
-                    const { winner } = game;
-                    if (winner !== null) {
-                        Logger.debug(`A winner was found: ${winner}`);
-                        Logger.debug(
-                            `White: ${JSON.stringify(game.white)}\nBlack: ${JSON.stringify(
-                                game.black,
-                            )}`,
-                        );
-                        const dao = new UserDAO();
-                        if (winner === 'b') {
-                            game.emitToPlayers('blackWin', game.blackName);
-                            dao.recordWin(game.black!._id!).catch(err => Logger.error(err));
-                            dao.recordLoss(game.white!._id!).catch(err => Logger.error(err));
-                        } else if (winner === 'w') {
-                            game.emitToPlayers('whiteWin', game.whiteName);
-                            dao.recordWin(game.white!._id!).catch(err => Logger.error(err));
-                            dao.recordLoss(game.black!._id!).catch(err => Logger.error(err));
-                        }
-                    }
-                } else {
-                    socket.emit('move piece', new ErrorAPIResponse('Invalid move'));
-                    Logger.info('AI attempted to make an invalid move');
-                }
-            })
-            .catch(err => {
-                Logger.error(err);
-            });
+    static onAIMoveRequest(game: ChessGame, uid: string) {
+        const color = game.white?._id.equals(uid) ? 'w' : 'b';
+        game.doAIMove(color).catch(err => {
+            Logger.error(err);
+        });
     }
 }
 
