@@ -1,9 +1,10 @@
-import axios from 'axios';
 import { Chess, ChessInstance, Move, Square } from 'chess.js';
 import Cooldown from './Cooldown';
 import GameHistoryDAO from './dao/GameHistoryDAO';
 import GameStateAPIResponse from './GameStateAPIResponse';
+import GrandMaster from './GrandMaster';
 import Logger from './Logger';
+import ModifiedChess from './modified.chess';
 
 /**
  * A wrapper class for a ChessJS game to work with Real-time Chess.
@@ -146,10 +147,7 @@ class ChessGame implements IChessGame {
         const cooldown = this.cooldownMap[source];
         if (cooldown === undefined || cooldown.ready()) {
             this.forceTurnChange(color);
-            console.log(this.turn);
             move = this.game.move(`${source}-${target}`, { sloppy: true });
-            console.log('attempted move from', source, 'to', target);
-            console.log('result', move);
             if (move !== null) {
                 delete this.cooldownMap[source];
                 this.cooldownMap[target] = new Cooldown(5);
@@ -192,6 +190,18 @@ class ChessGame implements IChessGame {
      */
     public requestAIMove(color: 'w' | 'b'): void {
         // TODO: Reimplement this
+        const gm = new GrandMaster(this.game);
+
+        const bestNextMove = gm.getBestMove(
+            color,
+            gm.evaluateBoard(
+                ModifiedChess(this.game.fen()),
+                this.moveHistory[this.moveHistory.length - 1]!.move,
+                0,
+                color,
+            ),
+        )[0];
+        if (bestNextMove) this.move(bestNextMove.from, bestNextMove.to, bestNextMove.color);
     }
 
     /**
@@ -225,9 +235,7 @@ class ChessGame implements IChessGame {
         const autopilotState = color === 'w' ? this.autopilot.white : this.autopilot.black;
         if (autopilotState.enabled && autopilotState.job) clearInterval(autopilotState.job);
         autopilotState.enabled = true;
-        autopilotState.job = setInterval(() => {
-            this.requestAIMove(color).catch(err => Logger.error(err));
-        }, frequency);
+        autopilotState.job = setInterval(() => this.requestAIMove(color), frequency);
     }
 
     /**

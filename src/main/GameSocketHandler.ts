@@ -44,9 +44,7 @@ class GameSocketHandler {
      */
     static onAIMoveRequest(game: ChessGame, uid: string) {
         const color = game.white?._id.equals(uid) ? 'w' : 'b';
-        game.requestAIMove(color).catch(err => {
-            Logger.error(err);
-        });
+        game.requestAIMove(color);
     }
 
     /**
@@ -57,7 +55,7 @@ class GameSocketHandler {
      */
     static enableAutopilot(game: ChessGame, uid: string) {
         const color = game.white?._id.equals(uid) ? 'w' : 'b';
-        console.log('Enabling autopilot for: ' + color);
+        console.log(`Enabling autopilot for: ${color}`);
         game.enableAutopilot(color, 1000);
     }
 }
