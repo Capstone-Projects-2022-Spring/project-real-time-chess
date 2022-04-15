@@ -210,6 +210,16 @@ class ChessGame implements IChessGame {
      * Ends the game and publishes the game to the database.
      */
     public endGame() {
+        if (this.autopilot.black.enabled && this.autopilot.black.job) {
+            clearInterval(this.autopilot.black.job);
+        }
+
+        if (this.autopilot.white.enabled && this.autopilot.white.job) {
+            clearInterval(this.autopilot.white.job);
+        }
+
+        clearInterval(this.moveJob);
+
         const dao = new GameHistoryDAO();
         let black: ObjectId | AIString | 'No Player';
         let white: ObjectId | AIString | 'No Player';
