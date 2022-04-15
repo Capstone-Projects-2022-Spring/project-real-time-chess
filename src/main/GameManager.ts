@@ -26,11 +26,15 @@ class GameManager {
      */
     public static findGameByUser(uid: string | ObjectId): ChessGame | null {
         return (
-            GameManager.games.find(
-                g =>
-                    g.black?._id?.toString() === uid.toString() ||
-                    g.white?._id?.toString() === uid.toString(),
-            ) ?? null
+            GameManager.games.find(g => {
+                if (g.black) {
+                    if (typeof g.black !== 'string' && g.black?._id.equals(uid)) return true;
+                }
+                if (g.white) {
+                    if (typeof g.white !== 'string' && g.white?._id.equals(uid)) return true;
+                }
+                return false;
+            }) ?? null
         );
     }
 

@@ -24,7 +24,7 @@ class GameStateAPIResponse extends BaseAPIResponse implements IGameStateAPIRespo
     /**
      * The players belonging to the game.
      */
-    public players: { black?: ISanitizedUser; white?: ISanitizedUser };
+    public players: { black?: ISanitizedUser | AIString; white?: ISanitizedUser | AIString };
 
     /**
      * Creates an instance of GameStateAPIResponse.
@@ -35,9 +35,22 @@ class GameStateAPIResponse extends BaseAPIResponse implements IGameStateAPIRespo
         this.fen = game.fen;
         this.gameKey = game.gameKey;
         this.messages = game.messages;
+
+        let black;
+        let white;
+
+        if (game.black) {
+            if (typeof game.black === 'string') black = game.black;
+            else black = UserDAO.sanitize(game.black);
+        }
+        if (game.white) {
+            if (typeof game.white === 'string') white = game.white;
+            else white = UserDAO.sanitize(game.white);
+        }
+
         this.players = {
-            black: game.black ? UserDAO.sanitize(game.black) : undefined,
-            white: game.white ? UserDAO.sanitize(game.white) : undefined,
+            black,
+            white,
         };
     }
 }
