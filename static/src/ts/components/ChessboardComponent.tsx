@@ -48,7 +48,7 @@ class ChessboardComponent extends React.Component<
      */
     updateBoardWidth() {
         const container = document.getElementById(this.props.parentContainerId);
-        this.setState({ width: container!.offsetWidth! - 10 });
+        this.setState({ width: container!.offsetWidth! });
     }
 
     /**

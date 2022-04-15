@@ -1,0 +1,26 @@
+.cooldownOverlay {
+    color: green;
+}
+.cooldownOverlay .container {
+    width: 100%;
+    height: 100%;
+    background-color: aqua;
+}
+
+.cooldownOverlay .overlay {
+    width: 100%;
+    height: 100%;
+    background-color: blueviolet;
+}
+
+.cooldownOverlay .row {
+    width: 100%;
+    height: 12.5%;
+}
+
+.cooldownOverlay .square {
+    width: 12.5%;
+    height: 100%;
+    border: 1px;
+    border-color: chocolate;
+}

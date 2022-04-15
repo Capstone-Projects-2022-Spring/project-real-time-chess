@@ -146,6 +146,8 @@ class ChessGame implements IChessGame {
             if (move !== null) {
                 delete this.cooldownMap[source];
                 this.cooldownMap[target] = new Cooldown(this.cooldownTime);
+                this.whiteSocket?.emit('new cooldown', target, this.cooldownTime);
+                this.blackSocket?.emit('new cooldown', target, this.cooldownTime);
                 this.moveHistory.push({
                     fen: this.game.fen(),
                     timestamp: Date.now(),

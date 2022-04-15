@@ -66,21 +66,27 @@ class MultiplayerMatch extends React.Component<MultiplayerMatchProps, Multiplaye
                 </div>
 
                 <div className="row">
-                    <div id="boardContainer" className="col-12 col-md-6 text-center">
-                        <ChessboardComponent
-                        parentContainerId="boardContainer"
-                            orientation={this.props.orientation}
-                            fen={this.state.fen}
-                            onPieceDrop={(source, target) => {
-                                this.socket?.emit('move piece', source, target);
-                            }}
-                            onFENChange={fen =>
-                                this.setState({
-                                    fen,
-                                })
-                            }
-                        />
+                    <div className="col-12 col-md-6 text-center">
+                        <div className="cooldownOverlay container" style={{ zIndex: 10 }}>
+                            <div className="cooldownOverlay overlay" id="overlay"></div>
+                        </div>
+                        <div id="boardContainer" style={{ width: '100%', height: '100%' }}>
+                            <ChessboardComponent
+                                parentContainerId="boardContainer"
+                                orientation={this.props.orientation}
+                                fen={this.state.fen}
+                                onPieceDrop={(source, target) => {
+                                    this.socket?.emit('move piece', source, target);
+                                }}
+                                onFENChange={fen =>
+                                    this.setState({
+                                        fen,
+                                    })
+                                }
+                            />
+                        </div>
                     </div>
+
                     <div className="col-12 col-md-6">
                         <ChatComponent messages={this.state.messages} />
                     </div>
@@ -106,6 +112,45 @@ class MultiplayerMatch extends React.Component<MultiplayerMatchProps, Multiplaye
      */
     componentDidMount() {
         this.bindSocket();
+        const squareArray: string[][] = [
+            ['a1', 'b1', 'c1', 'd1', 'e1', 'f1', 'g1', 'h1'],
+            ['a2', 'b2', 'c2', 'd2', 'e2', 'f2', 'g2', 'h2'],
+            ['a3', 'b3', 'c3', 'd3', 'e3', 'f3', 'g3', 'h3'],
+            ['a4', 'b4', 'c4', 'd4', 'e4', 'f4', 'g4', 'h4'],
+            ['a5', 'b5', 'c5', 'd5', 'e5', 'f5', 'g5', 'h5'],
+            ['a6', 'b6', 'c6', 'd6', 'e6', 'f6', 'g6', 'h6'],
+            ['a7', 'b7', 'c7', 'd7', 'e7', 'f7', 'g7', 'h7'],
+            ['a8', 'b8', 'c8', 'd8', 'e8', 'f8', 'g8', 'h8'],
+        ];
+        const overlayOrientation = this.props.orientation;
+        const table = document.getElementById('overlay');
+        if (overlayOrientation === 'w') {
+            for (let i = 7; i >= 0; i--) {
+                const row = document.createElement('div');
+                row.className = 'cooldownOverlay row';
+                table?.appendChild(row);
+                for (let j = 0; j < 8; j++) {
+                    const square = document.createElement('div');
+                    square.id = squareArray?.at(i)?.at(j) ?? '?';
+                    square.className = 'cooldownOverlay square';
+                    row.appendChild(square);
+                    // square.innerHTML = `<h1>${square.id}</h1>`;
+                }
+            }
+        } else {
+            for (let i = 0; i < 8; i++) {
+                const row = document.createElement('div');
+                row.className = 'cooldownOverlay row';
+                table?.appendChild(row);
+                for (let j = 7; j >= 0; j--) {
+                    const square = document.createElement('div');
+                    square.id = squareArray?.at(i)?.at(j) ?? '?';
+                    square.className = 'cooldownOverlay square';
+                    row.appendChild(square);
+                    // square.innerHTML = `<h1>${square.id}</h1>`;
+                }
+            }
+        }
     }
 
     /**
