@@ -17,6 +17,7 @@ interface MultiplayerMatchState {
     messages: IGameMessage[];
     fen?: string;
     gameKey: string;
+    autopilotEnabled: boolean;
 }
 
 /**
@@ -39,6 +40,7 @@ class MultiplayerMatch extends React.Component<MultiplayerMatchProps, Multiplaye
             messages: [],
             fen: undefined,
             gameKey: '',
+            autopilotEnabled: false,
         };
     }
 
@@ -94,6 +96,18 @@ class MultiplayerMatch extends React.Component<MultiplayerMatchProps, Multiplaye
                             }}
                         >
                             AI Move
+                        </ButtonComponent>
+                    </div>
+
+                    <div className="col">
+                        <ButtonComponent
+                            onClick={() => {
+                                if (this.state.autopilotEnabled) {
+                                    this.socket?.emit('autopilot', 'disable');
+                                } else this.socket?.emit('autopilot', 'enable');
+                            }}
+                        >
+                            {this.state.autopilotEnabled ? 'Disable' : 'Enable'} Autopilot
                         </ButtonComponent>
                     </div>
                 </div>

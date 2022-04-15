@@ -24,8 +24,8 @@ declare interface IGameStateAPIResponse extends APIResponse {
     messages: IGameMessage[];
     gameKey: string[];
     players: {
-        black?: ISanitizedUser;
-        white?: ISanitizedUser;
+        black?: ISanitizedUser | AIString;
+        white?: ISanitizedUser | AIString;
     };
 }
 

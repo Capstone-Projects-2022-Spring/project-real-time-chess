@@ -104,13 +104,21 @@ class RTCServer {
                     uid = _uid.toString();
                     game = GameManager.findGameByUser(uid)!;
                     if (game) {
-                        if (game.black && uid.toString() === game.black._id!.toString()) {
+                        if (
+                            game.black &&
+                            typeof game.black !== 'string' &&
+                            uid.toString() === game.black._id!.toString()
+                        ) {
                             game.bindSocket({
                                 black: socket,
                             });
                             Logger.info(`Authorized Socket Connection with:\nUID: ${uid}`);
                             callback?.(new GameStateAPIResponse(game));
-                        } else if (game.white && uid.toString() === game.white._id!.toString()) {
+                        } else if (
+                            game.white &&
+                            typeof game.white !== 'string' &&
+                            uid.toString() === game.white._id!.toString()
+                        ) {
                             game.bindSocket({
                                 white: socket,
                             });
@@ -128,10 +136,15 @@ class RTCServer {
             socket.on('game state', () => GameSocketHandler.onGameStateRequest(socket, game, uid));
 
             socket.on('move piece', (source: Square, target: Square) =>
-                GameSocketHandler.onMovePieceRequest(socket, game, uid, source, target),
+                GameSocketHandler.onMovePieceRequest(game, uid, source, target),
             );
 
-            socket.on('move ai', () => GameSocketHandler.onAIMoveRequest(socket, game, uid));
+            socket.on('move ai', () => GameSocketHandler.onAIMoveRequest(game, uid));
+
+            socket.on('autopilot', (action: 'enable' | 'disable') => {
+                if (action === 'enable') GameSocketHandler.enableAutopilot(game, uid);
+                else if (action === 'disable') GameSocketHandler.disableAutopilot(game, uid);
+            });
         });
     }
 

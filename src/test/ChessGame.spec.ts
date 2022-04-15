@@ -34,15 +34,12 @@ describe('ChessGame', () => {
         });
     });
 
-    describe('#move()', () => {
-        it('should accept a valid move', () => {
-            const move = game.move('e2', 'e4');
-            expect(move).to.not.be.null;
-        });
-
-        it('should reject an invalid move', () => {
-            const move = game.move('e2', 'b3');
-            expect(move).to.be.null;
+    describe('#forceTurnChange()', () => {
+        it('should force the turn to change from white to black and back to white', () => {
+            game.forceTurnChange('b');
+            expect(game.turn).to.equal('b');
+            game.forceTurnChange('w');
+            expect(game.turn).to.equal('w');
         });
     });
 });
