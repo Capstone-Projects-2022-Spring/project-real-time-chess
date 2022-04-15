@@ -254,6 +254,17 @@ class ChessGame implements IChessGame {
     }
 
     /**
+     * Disables autopilot for the specified player.
+     *
+     * @param color - The player to disable autopilot for.
+     */
+    disableAutopilot(color: 'b' | 'w') {
+        const autopilotState = color === 'w' ? this.autopilot.white : this.autopilot.black;
+        if (autopilotState.enabled && autopilotState.job) clearInterval(autopilotState.job);
+        autopilotState.enabled = false;
+    }
+
+    /**
      * The winner of the game if one exists
      */
     get winner(): 'w' | 'b' | null {

@@ -134,10 +134,8 @@ class RTCServer {
             socket.on('move ai', () => GameSocketHandler.onAIMoveRequest(game, uid));
 
             socket.on('autopilot', (action: 'enable' | 'disable') => {
-                console.log(`Recieved request to ${action} autopilot`);
-                if (action === 'enable') {
-                    GameSocketHandler.enableAutopilot(game, uid);
-                }
+                if (action === 'enable') GameSocketHandler.enableAutopilot(game, uid);
+                else if (action === 'disable') GameSocketHandler.disableAutopilot(game, uid);
             });
         });
     }

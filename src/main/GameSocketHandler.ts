@@ -50,13 +50,23 @@ class GameSocketHandler {
     /**
      * Handles a request to enable autopilot for a player.
      *
-     * @param game - The game to make the move on.
+     * @param game - The game to enable autopilot on.
      * @param uid - The user enabling autopilot.
      */
     static enableAutopilot(game: ChessGame, uid: string) {
         const color = game.white?._id.equals(uid) ? 'w' : 'b';
-        console.log(`Enabling autopilot for: ${color}`);
         game.enableAutopilot(color, 1000);
+    }
+
+    /**
+     * Handles a request to disable autopilot for a player.
+     *
+     * @param game - The game to disable autopilot for.
+     * @param uid - The user disabling autopilot
+     */
+    static disableAutopilot(game: ChessGame, uid: string) {
+        const color = game.white?._id.equals(uid) ? 'w' : 'b';
+        game.disableAutopilot(color);
     }
 }
 
