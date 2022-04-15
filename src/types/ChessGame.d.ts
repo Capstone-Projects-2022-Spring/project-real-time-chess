@@ -1,7 +1,7 @@
 interface IChessGame {
     gameKey: string[];
-    black?: IUser;
-    white?: IUser;
+    black?: IUser | AIString;
+    white?: IUser | AIString;
     messages: IGameMessage[];
     fen: string;
 }

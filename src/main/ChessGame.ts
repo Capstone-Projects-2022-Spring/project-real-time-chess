@@ -1,4 +1,5 @@
 import { Chess, ChessInstance, Move, Square } from 'chess.js';
+import { ObjectId } from 'mongodb';
 import Cooldown from './Cooldown';
 import GameHistoryDAO from './dao/GameHistoryDAO';
 import GameStateAPIResponse from './GameStateAPIResponse';
@@ -12,9 +13,9 @@ import ModifiedChess from './modified.chess';
 class ChessGame implements IChessGame {
     public gameKey: string[];
 
-    public black?: IUser;
+    public black?: IUser | AIString;
 
-    public white?: IUser;
+    public white?: IUser | AIString;
 
     private blackSocket?: ChessGameSocket;
 
@@ -98,17 +99,42 @@ class ChessGame implements IChessGame {
     }
 
     /**
+     * Converts a player/AI/undefined to their first name/AI name.
+     *
+     * @param player - The player to convert
+     * @returns The name of the player. If the player is an AI, then
+     * it returns the difficulty category of the AI along with its
+     * difficulty level. If the player is undefined, then it returns
+     * 'No Player'.
+     */
+    private static playerToName(player?: IUser | AIString): string {
+        if (player && typeof player === 'string') {
+            const difficulty = +(player as string).split('-')[1]!;
+
+            if (difficulty < 2) return `Extremely Easy AI (${difficulty})`;
+            if (difficulty < 4) return `Easy AI (${difficulty})`;
+            if (difficulty < 6) return `Normal AI (${difficulty})`;
+            if (difficulty < 8) return `Hard AI (${difficulty})`;
+
+            return `Extremely Hard AI (${difficulty})`;
+        }
+        if (player) return player.name.first;
+
+        return 'No Player';
+    }
+
+    /**
      * Retrieves the first name of the black player.
      */
-    public get blackName(): string | undefined {
-        return this.black?.name.first;
+    public get blackName(): string {
+        return ChessGame.playerToName(this.black);
     }
 
     /**
      * Retrieves the first name of the white player.
      */
-    public get whiteName(): string | undefined {
-        return this.white?.name.first;
+    public get whiteName(): string {
+        return ChessGame.playerToName(this.white);
     }
 
     /**
@@ -185,9 +211,18 @@ class ChessGame implements IChessGame {
      */
     public endGame() {
         const dao = new GameHistoryDAO();
+        let black: ObjectId | AIString | 'No Player';
+        let white: ObjectId | AIString | 'No Player';
+
+        if (typeof this.black === 'string') black = this.black;
+        else black = this.black?._id ?? 'No Player';
+
+        if (typeof this.white === 'string') white = this.white;
+        else white = this.white?._id ?? 'No Player';
+
         dao.insertOne({
-            black: this.black?._id ?? 'AI',
-            white: this.white?._id ?? 'AI',
+            black,
+            white,
             game_key: this.gameKey,
             history: this.moveHistory,
         }).catch(err => Logger.error(err));
