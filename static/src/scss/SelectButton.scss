@@ -1,0 +1,12 @@
+.select-button-component {
+    width: 100%;
+    border-radius: 1rem;
+    border: 1px solid gray;
+    background: none;
+    padding: 0.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.select-button-component.select-button-component-selected {
+    box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.5);
+}

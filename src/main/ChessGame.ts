@@ -11,6 +11,8 @@ import ModifiedChess from './modified.chess';
  * A wrapper class for a ChessJS game to work with Real-time Chess.
  */
 class ChessGame implements IChessGame {
+    public owner: IUser;
+
     public gameKey: string[];
 
     public black?: IUser | AIString;
@@ -42,7 +44,8 @@ class ChessGame implements IChessGame {
     /**
      * Creates an instance of ChessGame.
      */
-    constructor(gameKey: string[]) {
+    constructor(owner: IUser, gameKey: string[]) {
+        this.owner = owner;
         this.game = new Chess();
         this.gameKey = gameKey;
         this.messages = [];

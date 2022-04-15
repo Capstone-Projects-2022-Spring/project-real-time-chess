@@ -43,6 +43,23 @@ class GameAccess {
                 .catch(err => reject(err));
         });
     }
+
+    /**
+     * Creates a new AI v AI game.
+     *
+     * @param bot1 - The difficulty for bot 1.
+     * @param bot2 - The difficulty for bot 2.
+     *
+     * @returns A promise which resolves when the game is created with the game key.
+     */
+    static async createAIvAIGame(bot1: number, bot2: number): Promise<string[]> {
+        return new Promise((resolve, reject) => {
+            axios
+                .post('/api/game/AIvAI/create', { bot1, bot2 })
+                .then(response => resolve(response.data.gameKey))
+                .catch(err => reject(err));
+        });
+    }
 }
 
 export default GameAccess;

@@ -17,6 +17,7 @@ import BoardScreen from './BoardScreen';
 import Homepage from './Homepage';
 import MultiplayerMatch from './MultiplayerMatch';
 import Profile from './Profile';
+import AIvAISetup from './AIvAISetup';
 
 /**
  * Gameplay options page which allows a user to choose which game mode they want to play.
@@ -110,7 +111,11 @@ class GameplayOptions extends React.Component<
                             });
                         }}
                     >
-                        <ButtonComponent label="AI v AI" width="100%" onClick={() => undefined} />
+                        <ButtonComponent
+                            label="AI v AI"
+                            width="100%"
+                            onClick={() => UINavigator.render(<AIvAISetup />)}
+                        />
                     </div>
                 </div>
 
