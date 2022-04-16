@@ -17,7 +17,7 @@ import BoardScreen from './BoardScreen';
 import Homepage from './Homepage';
 import MultiplayerMatch from './MultiplayerMatch';
 import Profile from './Profile';
-import AIvAISetup from './AIvAISetup';
+import AIvAISetup from './SetupScreens/AIvAISetup';
 
 /**
  * Gameplay options page which allows a user to choose which game mode they want to play.

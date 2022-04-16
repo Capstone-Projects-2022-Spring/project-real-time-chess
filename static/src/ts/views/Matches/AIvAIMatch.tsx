@@ -1,11 +1,11 @@
 import * as React from 'react';
-import ButtonComponent from '../components/ButtonComponent';
-import ChatComponent from '../components/ChatComponent';
-import ChessboardComponent from '../components/ChessboardComponent';
-import CookieManager from '../CookieManager';
-import UINavigator from '../models/UINavigator';
+import ButtonComponent from '../../components/ButtonComponent';
+import ChatComponent from '../../components/ChatComponent';
+import ChessboardComponent from '../../components/ChessboardComponent';
+import CookieManager from '../../CookieManager';
+import UINavigator from '../../models/UINavigator';
 import BaseMatchView, { BaseMatchProps, BaseMatchState } from './BaseMatchView';
-import GameplayOptions from './GameplayOptions';
+import GameplayOptions from '../GameplayOptions';
 
 /**
  * The multiplayer match component. This displays the chessboard and chat components.
