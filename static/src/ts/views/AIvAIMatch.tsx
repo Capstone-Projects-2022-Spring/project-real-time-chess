@@ -26,7 +26,7 @@ interface AIvAIMatchState {
 class AIvAIMatch extends React.Component<AIvAIMatchProps, AIvAIMatchState> {
     socket?: Socket;
 
-    recoloredSquares: Square[];
+    localCooldownUpdateInterval?: number;
 
     /**
      * Creates an instance of MultiplayerMatch.
@@ -40,7 +40,6 @@ class AIvAIMatch extends React.Component<AIvAIMatchProps, AIvAIMatchState> {
             fen: undefined,
             gameKey: '',
         };
-        this.recoloredSquares = [];
     }
 
     /**
@@ -139,36 +138,42 @@ class AIvAIMatch extends React.Component<AIvAIMatchProps, AIvAIMatchState> {
      * @param cooldowns - The cooldown map for the chess pieces.
      */
     private displayCooldowns(cooldowns: Record<Square, CooldownInterface>) {
-        this.recoloredSquares.forEach(square => {
-            const tile = document.querySelector(`[data-square=${square}]`)!.querySelector('div')!;
-            tile.style.background = 'none';
-        });
-        this.recoloredSquares = [];
+        if (this.localCooldownUpdateInterval) {
+            window.clearInterval(this.localCooldownUpdateInterval);
+            this.localCooldownUpdateInterval = undefined;
+        }
 
+        const localCooldowns = cooldowns;
+
+        this.updateCooldownColors(localCooldowns);
+
+        this.localCooldownUpdateInterval = window.setInterval(() => {
+            const keys = Object.keys(localCooldowns) as Square[];
+            keys.forEach(key => localCooldowns[key].time--);
+            this.updateCooldownColors(localCooldowns);
+        }, 1000);
+    }
+
+    /**
+     * Updates the cooldown colors for the chess squaes.
+     *
+     * @param cooldowns - The cooldown map for the chess pieces.
+     */
+    private updateCooldownColors(cooldowns: Record<Square, CooldownInterface>) {
         const cooldownKeys = Object.keys(cooldowns) as Square[];
 
         if (cooldownKeys.length > 0) {
-            let min = cooldowns[cooldownKeys[0]!]!.time;
-
             cooldownKeys.forEach(square => {
                 const tile = document
                     .querySelector(`[data-square=${square}]`)!
                     .querySelector('div')!;
                 const { time } = cooldowns[square];
 
-                if (time < min) min = time;
-
-                if (time === 0) tile.style.background = 'none';
-                else if (time < 2) tile.style.backgroundColor = 'green';
-                else if (time < 4) tile.style.backgroundColor = 'yellow';
+                if (time <= 1) tile.style.background = 'none';
+                else if (time <= 2) tile.style.backgroundColor = 'yellow';
+                else if (time <= 4) tile.style.backgroundColor = 'orange';
                 else tile.style.backgroundColor = 'red';
-
-                this.recoloredSquares.push(square);
             });
-
-            setTimeout(() => {
-                this.socket?.emit('game state');
-            }, min * 1000);
         }
     }
 }
