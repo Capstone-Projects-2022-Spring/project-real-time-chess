@@ -10,10 +10,10 @@ import ChessGame from './ChessGame';
 import DatabaseConnector from './dao/DatabaseConnector';
 import GameManager from './GameManager';
 import GameSocketHandler from './GameSocketHandler';
-import GameStateAPIResponse from './GameStateAPIResponse';
 import Logger from './Logger';
 import MatchmakingManager from './MatchmakingManager';
 import apiRouter from './routes/apiRouter';
+import { GameStateAPIResponse } from './APIResponse';
 
 /**
  * The RTCServer class is responsible for starting the server and handling

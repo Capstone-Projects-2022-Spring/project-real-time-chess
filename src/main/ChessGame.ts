@@ -2,10 +2,10 @@ import { Chess, ChessInstance, Move, Square } from 'chess.js';
 import { ObjectId } from 'mongodb';
 import Cooldown from './Cooldown';
 import GameHistoryDAO from './dao/GameHistoryDAO';
-import GameStateAPIResponse from './GameStateAPIResponse';
-import GrandMaster from './GrandMaster';
 import Logger from './Logger';
-import ModifiedChess from './modified.chess';
+import ModifiedChess from './GrandMaster/modified.chess';
+import { GameStateAPIResponse } from './APIResponse';
+import GrandMaster from './GrandMaster/GrandMaster';
 
 /**
  * A wrapper class for a ChessJS game to work with Real-time Chess.

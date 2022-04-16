@@ -1,7 +1,7 @@
 import { Square } from 'chess.js';
 import { Socket } from 'socket.io';
+import { GameStateAPIResponse } from './APIResponse';
 import ChessGame from './ChessGame';
-import GameStateAPIResponse from './GameStateAPIResponse';
 import Logger from './Logger';
 
 /**

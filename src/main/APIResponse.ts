@@ -1,3 +1,6 @@
+import { Square } from 'chess.js';
+import UserDAO from './dao/UserDAO';
+
 /**
  * The base class for all API responses.
  */
@@ -39,4 +42,110 @@ class ErrorAPIResponse implements IErrorAPIResponse {
     }
 }
 
-export { BaseAPIResponse, ErrorAPIResponse };
+/**
+ * An API response constructor for when the game state is requested or updated.
+ */
+class GameStateAPIResponse extends BaseAPIResponse implements IGameStateAPIResponse {
+    public fen: string;
+
+    public gameKey: string[];
+
+    public messages: IGameMessage[];
+
+    public players: { black?: ISanitizedUser | AIString; white?: ISanitizedUser | AIString };
+
+    public cooldowns: Record<Square, ICooldown>;
+
+    /**
+     * Creates an instance of GameStateAPIResponse.
+     * @param game - The game to extract the state data from
+     */
+    constructor(game: IChessGame) {
+        super(true);
+        this.fen = game.fen;
+        this.gameKey = game.gameKey;
+        this.messages = game.messages;
+        this.cooldowns = game.cooldownMap;
+
+        let black;
+        let white;
+
+        if (game.black) {
+            if (typeof game.black === 'string') black = game.black;
+            else black = UserDAO.sanitize(game.black);
+        }
+        if (game.white) {
+            if (typeof game.white === 'string') white = game.white;
+            else white = UserDAO.sanitize(game.white);
+        }
+
+        this.players = {
+            black,
+            white,
+        };
+    }
+}
+
+/**
+ * The API Response for when a client requests a new game.
+ */
+class GameCreatedAPIResponse extends BaseAPIResponse implements IGameCreatedAPIResponse {
+    /**
+     * The game key for the game that was created.
+     */
+    gameKey: string[];
+
+    /**
+     * Creates an instance of GameCreatedAPIResponse.
+     * @param gameKey - The game key for the game that was created.
+     */
+    constructor(gameKey: string[]) {
+        super(true);
+        this.gameKey = gameKey;
+    }
+}
+
+/**
+ * The response object for when a game mesage is received or sent.
+ */
+class GameMessagesAPIResponse extends BaseAPIResponse implements IGameMessagesAPIResponse {
+    /**
+     * A list of every message in chronological order.
+     */
+    messages: IGameMessage[];
+
+    /**
+     * Creates an instance of GameMessagesAPIResponse.
+     * @param messages - The list of messages for the current game.
+     */
+    constructor(messages: IGameMessage[]) {
+        super(true);
+        this.messages = messages;
+    }
+}
+
+/**
+ * The API response when a successful request is made to log a user in.
+ */
+class LoginAPIResponse extends BaseAPIResponse {
+    auth: AuthInfo;
+
+    /**
+     * Creates an instance of LoginAPIResponse.
+     * @param auth - The authentication information
+     * required for the client to authenticated themselves.
+     */
+    constructor(auth: AuthInfo) {
+        super(true);
+        this.auth = auth;
+    }
+}
+
+export {
+    BaseAPIResponse,
+    ErrorAPIResponse,
+    GameStateAPIResponse,
+    GameCreatedAPIResponse,
+    GameMessagesAPIResponse,
+    LoginAPIResponse,
+};
