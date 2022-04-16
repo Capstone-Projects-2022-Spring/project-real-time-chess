@@ -72,11 +72,15 @@ abstract class BaseMatchView<
         });
 
         this.socket.on('blackWin', name => {
-            new ToastNotification('Winner!', `${name} is the winner!`, 'success').fire();
+            new ToastNotification(`${name} is the winner!`, 10000).fire();
         });
 
         this.socket.on('whiteWin', name => {
-            new ToastNotification('Winner!', `${name} is the winner!`, 'success').fire();
+            new ToastNotification(`${name} is the winner!`, 10000).fire();
+        });
+
+        this.socket.on('move-notification', message => {
+            new ToastNotification(message, 3000).fire();
         });
     }
 

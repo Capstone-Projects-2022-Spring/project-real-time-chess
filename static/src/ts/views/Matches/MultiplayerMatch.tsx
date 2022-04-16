@@ -3,7 +3,6 @@ import CookieManager from '../../access/CookieManager';
 import ChatComponent from '../../components/ChatComponent';
 import ChessboardComponent from '../../components/ChessboardComponent';
 import ButtonComponent from '../../components/UI/ButtonComponent';
-import ToastNotification from '../../components/UI/ToastNotification';
 import SupportedEmojis from '../../models/SupportedEmojis';
 import UINavigator from '../../models/UINavigator';
 import GameplayOptions from '../GameplayOptions';
@@ -125,9 +124,7 @@ class MultiplayerMatch extends BaseMatchView<BaseMatchProps, MultiplayerMatchSta
         super.bindSocket();
 
         this.socket!.on('move piece', (response: IGameStateAPIResponse) => {
-            if (!response.success) {
-                new ToastNotification('Invalid Move', 'You cannot make that move!', 'error').fire();
-            } else {
+            if (response.success) {
                 this.setState({
                     fen: response.fen,
                     messages: response.messages,

@@ -83,6 +83,8 @@ class ChessGame implements IChessGame {
         this.messages.push(message);
         this.blackSocket?.emit('game state', new GameStateAPIResponse(this));
         this.whiteSocket?.emit('game state', new GameStateAPIResponse(this));
+        this.blackSocket?.emit('move-notification', message.message);
+        this.blackSocket?.emit('move-notification', message.message);
     }
 
     /**
