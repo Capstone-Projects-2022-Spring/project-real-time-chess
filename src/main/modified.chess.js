@@ -27,6 +27,15 @@
  *
  *----------------------------------------------------------------------------*/
 
+/*
+ * For real time chess and GrandMaster (Chess AI), this modified version
+ * of Chess.Js MUST be used. The version from the chess-ai GitHub repository
+ * and the original chess.js version will not suffice. The reason is that
+ * RealTime chess and GrandMaster allow for capturing kings. This means
+ * that this modified version of Chess.js recognizes that even when a king
+ * is in check or check-mate, it can still be captured.
+ */
+
 // @ts-ignore
 var Chess = function (fen) {
     var BLACK = 'b';
@@ -573,7 +582,8 @@ var Chess = function (fen) {
         var single_square = false;
 
         /* do we want legal moves? */
-        var legal = typeof options !== 'undefined' && 'legal' in options ? options.legal : true;
+        // var legal = typeof options !== 'undefined' && 'legal' in options ? options.legal : true;
+        var legal = false;
 
         /* are we generating moves for a single square? */
         if (typeof options !== 'undefined' && 'square' in options) {

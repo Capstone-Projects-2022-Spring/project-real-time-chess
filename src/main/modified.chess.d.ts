@@ -27,7 +27,7 @@ declare interface ModifiedChessInstance {
     };
     load: (fen: any) => boolean;
     reset: () => void;
-    moves: (options: any) => {}[];
+    moves: (options: any) => (import('chess.js').Move | import('chess.js').Square)[];
     ugly_moves: (options: any) => any[];
     in_check: () => boolean;
     in_checkmate: () => boolean;
