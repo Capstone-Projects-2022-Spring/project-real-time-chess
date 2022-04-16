@@ -11,6 +11,8 @@ import ModifiedChess from './modified.chess';
  * A wrapper class for a ChessJS game to work with Real-time Chess.
  */
 class ChessGame implements IChessGame {
+    public owner: IUser;
+
     public gameKey: string[];
 
     public black?: IUser | AIString;
@@ -42,7 +44,8 @@ class ChessGame implements IChessGame {
     /**
      * Creates an instance of ChessGame.
      */
-    constructor(gameKey: string[]) {
+    constructor(owner: IUser, gameKey: string[]) {
+        this.owner = owner;
         this.game = new Chess();
         this.gameKey = gameKey;
         this.messages = [];
@@ -172,6 +175,14 @@ class ChessGame implements IChessGame {
     }
 
     /**
+     * Submit a request for a random legal move
+     * TODO: Make this truly random
+     */
+    public randomMove(): void {
+        this.move('e2', 'e4', 'w');
+    }
+
+    /**
      * Move a piece from a source square to a target square.
      *
      * @param source - The square which the piece is currently located.
@@ -210,6 +221,16 @@ class ChessGame implements IChessGame {
      * Ends the game and publishes the game to the database.
      */
     public endGame() {
+        if (this.autopilot.black.enabled && this.autopilot.black.job) {
+            clearInterval(this.autopilot.black.job);
+        }
+
+        if (this.autopilot.white.enabled && this.autopilot.white.job) {
+            clearInterval(this.autopilot.white.job);
+        }
+
+        clearInterval(this.moveJob);
+
         const dao = new GameHistoryDAO();
         let black: ObjectId | AIString | 'No Player';
         let white: ObjectId | AIString | 'No Player';
@@ -248,6 +269,7 @@ class ChessGame implements IChessGame {
                     0,
                     color,
                 ),
+                true,
             );
 
             if (bestNextMove) this.move(bestNextMove.from, bestNextMove.to, bestNextMove.color);

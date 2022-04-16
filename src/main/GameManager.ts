@@ -39,6 +39,19 @@ class GameManager {
     }
 
     /**
+     * Finds a game based on a user ID. This method can be used to quickly find
+     * the current game in progress for a specified user. But this will only
+     * search by owner. To search by player, use `findGameByUser`.
+     *
+     * @param uid - The user ID of the client requesting access to the game.
+     * @returns A ChessGame object if the user is the owner of a game, if no
+     * user exists, or no game exists with the specified user ID, then null is returned.
+     */
+    public static findGameByOwner(uid: string | ObjectId): ChessGame | null {
+        return GameManager.games.find(g => g.owner._id.equals(uid)) ?? null;
+    }
+
+    /**
      * Finds a game by its game key.
      *
      * @param gameKey - The list of emojis representing the game key.
@@ -91,14 +104,50 @@ class GameManager {
      * @returns The game that is created
      */
     public static createGame(user: IUser): ChessGame | null {
-        const game = new ChessGame(GameManager.generateGameKey());
         GameManager.endGame(user._id!.toString());
+
+        const game = new ChessGame(user, GameManager.generateGameKey());
 
         game.black = user;
         GameManager.games.push(game);
         game.addMessage({
             message: `${user.name.first} created the game.`,
         });
+        return game;
+    }
+
+    /**
+     * Creates a new AI v AI game.
+     *
+     * @param owner - The owner of the game.
+     * @param bot1 - The difficulty of bot 1.
+     * @param bot2 - The difficulty of bot 2.
+     */
+    public static createAIvAIGame(owner: IUser, bot1: number, bot2: number) {
+        GameManager.endGame(owner._id.toString());
+
+        const game = new ChessGame(owner, GameManager.generateGameKey());
+        GameManager.games.push(game);
+
+        game.black = `AI-${bot1}` as AIString;
+        game.white = `AI-${bot2}` as AIString;
+
+        game.addMessage({
+            message: 'You created a new AI v AI game',
+        });
+        game.addMessage({
+            message: `Bot 1 Difficulty: ${bot1}`,
+        });
+        game.addMessage({
+            message: `Bot 2 Difficulty: ${bot2}`,
+        });
+
+        setTimeout(() => {
+            game.randomMove();
+            game.enableAutopilot('w', 9000 / bot1);
+            game.enableAutopilot('b', 9000 / bot2);
+        }, 3000);
+
         return game;
     }
 
@@ -112,6 +161,11 @@ class GameManager {
         if (game) {
             game.endGame();
             GameManager.games.splice(GameManager.games.indexOf(game), 1);
+        }
+        const ownedGame = GameManager.findGameByOwner(uid);
+        if (ownedGame) {
+            ownedGame.endGame();
+            GameManager.games.splice(GameManager.games.indexOf(ownedGame), 1);
         }
     }
 

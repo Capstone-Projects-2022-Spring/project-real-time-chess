@@ -1,9 +1,4 @@
-/* eslint-disable no-lonely-if */
-/* eslint-disable radix */
-/* eslint-disable no-var */
-/* eslint-disable vars-on-top */
-/* eslint-disable no-param-reassign */
-/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable complexity */
 import { ChessInstance, Move, PieceType } from 'chess.js';
 import ModifiedChess, { ModifiedChessInstance } from './modified.chess.js';
 
@@ -142,11 +137,22 @@ class GrandMaster {
     /**
      * Calculates the best legal move for the given color.
      */
-    getBestMove(color: 'w' | 'b', currSum: number): [Move | null, number] {
+    getBestMove(color: 'w' | 'b', currSum: number, captureKing?: boolean): [Move | null, number] {
         // this.positionCount = 0;
 
         // This is how deep the AI will recursively search
         const depth = 2;
+
+        if (captureKing && this.game.in_check()) {
+            const possibleMoves = this.game.moves({ verbose: true }) as Move[];
+            const captureKingMove = possibleMoves.filter(move => {
+                const resultSquare = this.game.get(move.to);
+                return resultSquare
+                    ? resultSquare.type === this.game.KING && resultSquare.color !== color
+                    : false;
+            });
+            if (captureKingMove.length > 0) return [captureKingMove[0]!, 10000];
+        }
 
         // const d = new Date().getTime();
         const [bestMove, bestMoveValue] = this.minimax(
@@ -185,12 +191,15 @@ class GrandMaster {
     minimax(
         game: ModifiedChessInstance,
         depth: number,
-        alpha: number,
-        beta: number,
+        _alpha: number,
+        _beta: number,
         isMaximizingPlayer: boolean,
         sum: number,
         color: 'b' | 'w',
     ): [Move | null, number] {
+        let alpha = _alpha;
+        let beta = _beta;
+
         // this.positionCount++;
         const children = game.ugly_moves({
             verbose: true,
@@ -261,7 +270,10 @@ class GrandMaster {
      * Evaluates the board at this point in time,
      * using the material weights and piece square tables.
      */
-    evaluateBoard(game: ModifiedChessInstance, move: Move, prevSum: number, color: 'b' | 'w') {
+    evaluateBoard(game: ModifiedChessInstance, _move: Move, _prevSum: number, color: 'b' | 'w') {
+        let prevSum = _prevSum;
+        const move = _move;
+
         if (game.in_checkmate()) {
             // Opponent is in checkmate (good for us)
             if (move.color === color) {
@@ -287,18 +299,19 @@ class GrandMaster {
             }
         }
 
-        var from = [8 - parseInt(move.from[1]!), move.from.charCodeAt(0) - 'a'.charCodeAt(0)];
-        var to = [8 - parseInt(move.to[1]!), move.to.charCodeAt(0) - 'a'.charCodeAt(0)];
+        const from = [8 - parseInt(move.from[1]!, 10), move.from.charCodeAt(0) - 'a'.charCodeAt(0)];
+        const to = [8 - parseInt(move.to[1]!, 10), move.to.charCodeAt(0) - 'a'.charCodeAt(0)];
 
         // Change endgame behavior for kings
         if (prevSum < -1500) {
             if (move.piece === 'k') {
                 move.piece = 'k_e' as PieceType;
+            } else if ((move.captured as 'k') === 'k') {
+                // Kings can never be captured
+                // But this is enabled for real-time chess
+                // This entire else-if is a hacky way to do this in TypeScript
+                (move.captured as 'k_e') = 'k_e';
             }
-            // Kings can never be captured
-            // else if (move.captured === 'k') {
-            //   move.captured = 'k_e';
-            // }
         }
 
         if ('captured' in move) {
@@ -338,16 +351,15 @@ class GrandMaster {
                     this.weights[move.promotion] +
                     this.pstSelf[move.color][move.promotion][to[0]!]![to[1]!]!;
             }
+        }
+        // The moved piece still exists on the updated board,
+        // so we only need to update the position value
+        else if (move.color !== color) {
+            prevSum += this.pstSelf[move.color][move.piece][from[0]!]![from[1]!]!;
+            prevSum -= this.pstSelf[move.color][move.piece][to[0]!]![to[1]!]!;
         } else {
-            // The moved piece still exists on the updated board,
-            // so we only need to update the position value
-            if (move.color !== color) {
-                prevSum += this.pstSelf[move.color][move.piece][from[0]!]![from[1]!]!;
-                prevSum -= this.pstSelf[move.color][move.piece][to[0]!]![to[1]!]!;
-            } else {
-                prevSum -= this.pstSelf[move.color][move.piece][from[0]!]![from[1]!]!;
-                prevSum += this.pstSelf[move.color][move.piece][to[0]!]![to[1]!]!;
-            }
+            prevSum -= this.pstSelf[move.color][move.piece][from[0]!]![from[1]!]!;
+            prevSum += this.pstSelf[move.color][move.piece][to[0]!]![to[1]!]!;
         }
 
         return prevSum;

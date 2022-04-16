@@ -1,3 +1,4 @@
+import { Square } from 'chess.js';
 import { BaseAPIResponse } from './APIResponse';
 import UserDAO from './dao/UserDAO';
 
@@ -5,26 +6,15 @@ import UserDAO from './dao/UserDAO';
  * An API response constructor for when the game state is requested or updated.
  */
 class GameStateAPIResponse extends BaseAPIResponse implements IGameStateAPIResponse {
-    /**
-     * The FEN string representing the entire game state.
-     */
     public fen: string;
 
-    /**
-     * The list of emoji names which represent the game key
-     */
     public gameKey: string[];
 
-    /**
-     * A list of every game message belonging to the game.
-     * This includes chat messages **and** game history.
-     */
     public messages: IGameMessage[];
 
-    /**
-     * The players belonging to the game.
-     */
     public players: { black?: ISanitizedUser | AIString; white?: ISanitizedUser | AIString };
+
+    public cooldowns: Record<Square, CooldownInterface>;
 
     /**
      * Creates an instance of GameStateAPIResponse.
@@ -35,6 +25,7 @@ class GameStateAPIResponse extends BaseAPIResponse implements IGameStateAPIRespo
         this.fen = game.fen;
         this.gameKey = game.gameKey;
         this.messages = game.messages;
+        this.cooldowns = game.cooldownMap;
 
         let black;
         let white;

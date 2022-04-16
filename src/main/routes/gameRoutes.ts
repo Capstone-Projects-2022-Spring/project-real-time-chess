@@ -40,6 +40,36 @@ class GameRoutes {
     }
 
     /**
+     * Handles requests to create an AI v AI game
+     *
+     * @param req - The create game request
+     * @param res - A response object which will be sent to the client with the game key
+     */
+    static createAIvAIGame(req: CreateAIvAIGameRequest, res: CreateAIvAIGameResponse) {
+        GameManager.verifyUserAccess(req.cookies.uid, req.cookies.auth)
+            .then(user => {
+                const game = GameManager.createAIvAIGame(user, +req.body.bot1, +req.body.bot2);
+                if (game) {
+                    res.send(new GameCreatedAPIResponse(game.gameKey));
+                    Logger.info(
+                        `New game created\nUID: ${req.cookies.uid}\nGame Key: ${game.gameKey.map(
+                            name => SupportedEmojis.find(e => e.name === name)?.emoji,
+                        )}`,
+                    );
+                } else {
+                    res.send(new ErrorAPIResponse('User not found.'));
+                    Logger.warn(`User not found with uid: ${req.cookies.uid}`);
+                }
+            })
+            .catch(err => {
+                res.send(new ErrorAPIResponse(err));
+                Logger.error(
+                    `Error thrown in GameManager.verifyUserAccess (UID=${req.cookies.uid}, AUTH=${req.cookies.auth})\n\n${err}`,
+                );
+            });
+    }
+
+    /**
      * The handler for requests where a user joins a game.
      *
      * @param req - The express request object

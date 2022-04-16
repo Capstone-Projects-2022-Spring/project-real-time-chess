@@ -4,11 +4,11 @@ import GameAccess from '../access/GameAccess';
 import { NoProps } from '../models/types';
 import UINavigator from '../models/UINavigator';
 import SupportedEmojis from '../SupportedEmojis';
-import GameplayOptions from '../views/GameplayOptions';
-import MultiplayerMatch from '../views/MultiplayerMatch';
-import ButtonComponent from './ButtonComponent';
-import CooldownSelectorComponent from './CooldownSelectorComponent';
-import EmojiKeyboard from './EmojiKeyboard';
+import GameplayOptions from './GameplayOptions';
+import MultiplayerMatch from './MultiplayerMatch';
+import ButtonComponent from '../components/ButtonComponent';
+import CooldownSelectorComponent from '../components/CooldownSelectorComponent';
+import EmojiKeyboard from '../components/EmojiKeyboard';
 
 /**
  * The page for setting up a multiplayer game with a friend. This gives the user

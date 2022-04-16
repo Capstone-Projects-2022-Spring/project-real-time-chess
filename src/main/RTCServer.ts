@@ -133,6 +133,28 @@ class RTCServer {
                 },
             );
 
+            socket.on(
+                'authorize-ai-v-ai',
+                (
+                    _uid: string | ObjectId,
+                    _auth: string,
+                    callback?: (response: IGameStateAPIResponse) => void,
+                ) => {
+                    Logger.info(`Authorizing user\nUID: ${_uid}`);
+                    uid = _uid.toString();
+                    game = GameManager.findGameByOwner(uid)!;
+                    if (game) {
+                        game.bindSocket({
+                            black: socket,
+                        });
+                        Logger.info(`Authorized Socket Connection with:\nUID: ${uid}`);
+                        callback?.(new GameStateAPIResponse(game));
+                    } else {
+                        Logger.warn(`No game found for specified user\nUID: ${uid}`);
+                    }
+                },
+            );
+
             socket.on('game state', () => GameSocketHandler.onGameStateRequest(socket, game, uid));
 
             socket.on('move piece', (source: Square, target: Square) =>

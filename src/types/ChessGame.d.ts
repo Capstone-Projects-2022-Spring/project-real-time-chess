@@ -4,6 +4,7 @@ interface IChessGame {
     white?: IUser | AIString;
     messages: IGameMessage[];
     fen: string;
+    cooldownMap: Record<import('chess.js').Square, CooldownInterface>;
 }
 
 interface MoveRecord {

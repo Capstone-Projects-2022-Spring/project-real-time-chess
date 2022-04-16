@@ -7,8 +7,8 @@ import {
 } from 'ionicons/icons';
 import * as React from 'react';
 import ButtonComponent from '../components/ButtonComponent';
-import FriendGameSetupComponent from '../components/FriendGameSetup';
-import MatchmakingLobbyComponent from '../components/MatchmakingLobby';
+import FriendGameSetupComponent from './FriendGameSetup';
+import MatchmakingLobbyComponent from './MatchmakingLobby';
 import HowToPlaySwal from '../components/HowToPlaySwal';
 import CookieManager from '../CookieManager';
 import { NoProps } from '../models/types';
@@ -17,6 +17,7 @@ import BoardScreen from './BoardScreen';
 import Homepage from './Homepage';
 import MultiplayerMatch from './MultiplayerMatch';
 import Profile from './Profile';
+import AIvAISetup from './AIvAISetup';
 
 /**
  * Gameplay options page which allows a user to choose which game mode they want to play.
@@ -110,7 +111,11 @@ class GameplayOptions extends React.Component<
                             });
                         }}
                     >
-                        <ButtonComponent label="AI v AI" width="100%" onClick={() => undefined} />
+                        <ButtonComponent
+                            label="AI v AI"
+                            width="100%"
+                            onClick={() => UINavigator.render(<AIvAISetup />)}
+                        />
                     </div>
                 </div>
 
