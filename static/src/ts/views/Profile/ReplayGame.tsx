@@ -1,6 +1,6 @@
 import * as React from 'react';
-import ButtonComponent from '../components/ButtonComponent';
-import ChessboardComponent from '../components/ChessboardComponent';
+import ButtonComponent from '../../components/ButtonComponent';
+import ChessboardComponent from '../../components/ChessboardComponent';
 // import { ObjectId } from 'mongodb';
 
 interface ReplayGameProps {

@@ -12,7 +12,7 @@ import HowToPlaySwal from '../components/HowToPlaySwal';
 import UINavigator from '../models/UINavigator';
 import Homepage from './Homepage';
 import MultiplayerMatch from './Matches/MultiplayerMatch';
-import Profile from './Profile';
+import Profile from './Profile/Profile';
 import AIvAISetup from './SetupScreens/AIvAISetup';
 import FriendGameSetupComponent from './SetupScreens/FriendGameSetup';
 import MatchmakingLobbyComponent from './SetupScreens/MatchmakingLobby';
