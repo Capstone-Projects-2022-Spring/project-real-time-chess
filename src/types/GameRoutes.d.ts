@@ -53,3 +53,7 @@ declare type ChessGameSocket = import('socket.io').Socket<
     import('socket.io/dist/typed-events').DefaultEventsMap,
     Record<string, unknown>
 >;
+
+type GameHistoryAPIRequest = import('express').Request;
+
+type GameHistoryAPIResponse = import('express').Response<GameHistory[]>;
