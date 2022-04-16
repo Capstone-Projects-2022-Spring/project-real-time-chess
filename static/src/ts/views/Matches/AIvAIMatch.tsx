@@ -2,7 +2,7 @@ import * as React from 'react';
 import ButtonComponent from '../../components/ButtonComponent';
 import ChatComponent from '../../components/ChatComponent';
 import ChessboardComponent from '../../components/ChessboardComponent';
-import CookieManager from '../../CookieManager';
+import CookieManager from '../../access/CookieManager';
 import UINavigator from '../../models/UINavigator';
 import BaseMatchView, { BaseMatchProps, BaseMatchState } from './BaseMatchView';
 import GameplayOptions from '../GameplayOptions';

@@ -10,7 +10,7 @@ import ButtonComponent from '../components/ButtonComponent';
 import FriendGameSetupComponent from './FriendGameSetup';
 import MatchmakingLobbyComponent from './MatchmakingLobby';
 import HowToPlaySwal from '../components/HowToPlaySwal';
-import CookieManager from '../CookieManager';
+import CookieManager from '../access/CookieManager';
 import { NoProps } from '../models/types';
 import UINavigator from '../models/UINavigator';
 import BoardScreen from './BoardScreen';
