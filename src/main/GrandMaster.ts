@@ -1,10 +1,4 @@
 /* eslint-disable complexity */
-/* eslint-disable no-lonely-if */
-/* eslint-disable radix */
-/* eslint-disable no-var */
-/* eslint-disable vars-on-top */
-/* eslint-disable no-param-reassign */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { ChessInstance, Move, PieceType } from 'chess.js';
 import ModifiedChess, { ModifiedChessInstance } from './modified.chess.js';
 
@@ -197,12 +191,15 @@ class GrandMaster {
     minimax(
         game: ModifiedChessInstance,
         depth: number,
-        alpha: number,
-        beta: number,
+        _alpha: number,
+        _beta: number,
         isMaximizingPlayer: boolean,
         sum: number,
         color: 'b' | 'w',
     ): [Move | null, number] {
+        let alpha = _alpha;
+        let beta = _beta;
+
         // this.positionCount++;
         const children = game.ugly_moves({
             verbose: true,
@@ -273,7 +270,10 @@ class GrandMaster {
      * Evaluates the board at this point in time,
      * using the material weights and piece square tables.
      */
-    evaluateBoard(game: ModifiedChessInstance, move: Move, prevSum: number, color: 'b' | 'w') {
+    evaluateBoard(game: ModifiedChessInstance, _move: Move, _prevSum: number, color: 'b' | 'w') {
+        let prevSum = _prevSum;
+        const move = _move;
+
         if (game.in_checkmate()) {
             // Opponent is in checkmate (good for us)
             if (move.color === color) {
@@ -299,8 +299,8 @@ class GrandMaster {
             }
         }
 
-        var from = [8 - parseInt(move.from[1]!), move.from.charCodeAt(0) - 'a'.charCodeAt(0)];
-        var to = [8 - parseInt(move.to[1]!), move.to.charCodeAt(0) - 'a'.charCodeAt(0)];
+        const from = [8 - parseInt(move.from[1]!, 10), move.from.charCodeAt(0) - 'a'.charCodeAt(0)];
+        const to = [8 - parseInt(move.to[1]!, 10), move.to.charCodeAt(0) - 'a'.charCodeAt(0)];
 
         // Change endgame behavior for kings
         if (prevSum < -1500) {
@@ -351,16 +351,15 @@ class GrandMaster {
                     this.weights[move.promotion] +
                     this.pstSelf[move.color][move.promotion][to[0]!]![to[1]!]!;
             }
+        }
+        // The moved piece still exists on the updated board,
+        // so we only need to update the position value
+        else if (move.color !== color) {
+            prevSum += this.pstSelf[move.color][move.piece][from[0]!]![from[1]!]!;
+            prevSum -= this.pstSelf[move.color][move.piece][to[0]!]![to[1]!]!;
         } else {
-            // The moved piece still exists on the updated board,
-            // so we only need to update the position value
-            if (move.color !== color) {
-                prevSum += this.pstSelf[move.color][move.piece][from[0]!]![from[1]!]!;
-                prevSum -= this.pstSelf[move.color][move.piece][to[0]!]![to[1]!]!;
-            } else {
-                prevSum -= this.pstSelf[move.color][move.piece][from[0]!]![from[1]!]!;
-                prevSum += this.pstSelf[move.color][move.piece][to[0]!]![to[1]!]!;
-            }
+            prevSum -= this.pstSelf[move.color][move.piece][from[0]!]![from[1]!]!;
+            prevSum += this.pstSelf[move.color][move.piece][to[0]!]![to[1]!]!;
         }
 
         return prevSum;
