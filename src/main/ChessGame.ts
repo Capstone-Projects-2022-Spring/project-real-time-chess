@@ -269,6 +269,7 @@ class ChessGame implements IChessGame {
                     0,
                     color,
                 ),
+                true,
             );
 
             if (bestNextMove) this.move(bestNextMove.from, bestNextMove.to, bestNextMove.color);

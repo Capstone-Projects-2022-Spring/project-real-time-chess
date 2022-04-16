@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable no-lonely-if */
 /* eslint-disable radix */
 /* eslint-disable no-var */
@@ -142,11 +143,24 @@ class GrandMaster {
     /**
      * Calculates the best legal move for the given color.
      */
-    getBestMove(color: 'w' | 'b', currSum: number): [Move | null, number] {
+    getBestMove(color: 'w' | 'b', currSum: number, captureKing?: boolean): [Move | null, number] {
         // this.positionCount = 0;
 
         // This is how deep the AI will recursively search
         const depth = 2;
+
+        if (captureKing && this.game.in_check()) {
+            const possibleMoves = this.game.moves({ verbose: true }) as Move[];
+            console.log('possibleMoves', possibleMoves);
+            const captureKingMove = possibleMoves.filter(move => {
+                console.log('Move:', move);
+                const resultSquare = this.game.get(move.to);
+                return resultSquare
+                    ? resultSquare.type === this.game.KING && resultSquare.color !== color
+                    : false;
+            });
+            if (captureKingMove.length > 0) return [captureKingMove[0]!, 10000];
+        }
 
         // const d = new Date().getTime();
         const [bestMove, bestMoveValue] = this.minimax(
@@ -294,11 +308,12 @@ class GrandMaster {
         if (prevSum < -1500) {
             if (move.piece === 'k') {
                 move.piece = 'k_e' as PieceType;
+            } else if ((move.captured as 'k') === 'k') {
+                // Kings can never be captured
+                // But this is enabled for real-time chess
+                // This entire else-if is a hacky way to do this in TypeScript
+                (move.captured as 'k_e') = 'k_e';
             }
-            // Kings can never be captured
-            // else if (move.captured === 'k') {
-            //   move.captured = 'k_e';
-            // }
         }
 
         if ('captured' in move) {
