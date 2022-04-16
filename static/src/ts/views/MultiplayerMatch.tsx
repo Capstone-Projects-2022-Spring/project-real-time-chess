@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { io, Socket } from 'socket.io-client';
 import ButtonComponent from '../components/ButtonComponent';
 import ChatComponent from '../components/ChatComponent';
 import ChessboardComponent from '../components/ChessboardComponent';
@@ -7,41 +6,29 @@ import ToastNotification from '../components/ToastNotification';
 import CookieManager from '../CookieManager';
 import UINavigator from '../models/UINavigator';
 import SupportedEmojis from '../SupportedEmojis';
+import BaseMatchView, { BaseMatchProps, BaseMatchState } from './BaseMatchView';
 import GameplayOptions from './GameplayOptions';
 
-interface MultiplayerMatchProps {
-    orientation: 'b' | 'w';
-}
-
-interface MultiplayerMatchState {
-    messages: IGameMessage[];
-    fen?: string;
-    gameKey: string;
+interface MultiplayerMatchState extends BaseMatchState {
     autopilotEnabled: boolean;
 }
 
 /**
  * The multiplayer match component. This displays the chessboard and chat components.
  */
-class MultiplayerMatch extends React.Component<MultiplayerMatchProps, MultiplayerMatchState> {
-    /**
-     * The open socket between the client and the server.
-     */
-    socket?: Socket;
-
+class MultiplayerMatch extends BaseMatchView<BaseMatchProps, MultiplayerMatchState> {
     /**
      * Creates an instance of MultiplayerMatch.
      * @param props - The props for the multiplayer match component.
      * This only includes the board orientation ('b' for black, 'w' for white).
      */
-    constructor(props: MultiplayerMatchProps) {
-        super(props);
-        this.state = {
+    constructor(props: BaseMatchProps) {
+        super(props, {
             messages: [],
             fen: undefined,
             gameKey: '',
             autopilotEnabled: false,
-        };
+        });
     }
 
     /**
@@ -70,7 +57,7 @@ class MultiplayerMatch extends React.Component<MultiplayerMatchProps, Multiplaye
                 <div className="row">
                     <div id="boardContainer" className="col-12 col-md-6 text-center">
                         <ChessboardComponent
-                        parentContainerId="boardContainer"
+                            parentContainerId="boardContainer"
                             orientation={this.props.orientation}
                             fen={this.state.fen}
                             onPieceDrop={(source, target) => {
@@ -123,42 +110,21 @@ class MultiplayerMatch extends React.Component<MultiplayerMatchProps, Multiplaye
     }
 
     /**
+     * Emits an authorize event to the server with the uid and auth key.
+     *
+     * @param onAuthorized - The callback to call when the user is authorized.
+     */
+    emitSocketAuthorization(onAuthorized: (gameState: IGameStateAPIResponse) => void): void {
+        this.socket!.emit('authorize', CookieManager.uid, CookieManager.auth, onAuthorized);
+    }
+
+    /**
      * Opens a new socket with the server and binds the socket to this component.
      */
     bindSocket() {
-        this.socket = io();
-        this.socket.connect();
-        this.socket.emit(
-            'authorize',
-            CookieManager.uid,
-            CookieManager.auth,
-            (gameState: IGameStateAPIResponse) => {
-                this.setState({
-                    gameKey: gameState.gameKey
-                        .map(eName => SupportedEmojis.find(e => e.name === eName)!.emoji)
-                        .join(''),
-                    fen: gameState.fen,
-                    messages: gameState.messages,
-                });
-            },
-        );
+        super.bindSocket();
 
-        this.socket.on('game state', (gameState: IGameStateAPIResponse) => {
-            this.setState({
-                fen: gameState.fen,
-                messages: gameState.messages,
-            });
-        });
-
-        this.socket.on('blackWin', name => {
-            new ToastNotification('Winner!', `${name} is the winner!`, 'success').fire();
-        });
-
-        this.socket.on('whiteWin', name => {
-            new ToastNotification('Winner!', `${name} is the winner!`, 'success').fire();
-        });
-
-        this.socket.on('move piece', (response: IGameStateAPIResponse) => {
+        this.socket!.on('move piece', (response: IGameStateAPIResponse) => {
             if (!response.success) {
                 new ToastNotification('Invalid Move', 'You cannot make that move!', 'error').fire();
             } else {
