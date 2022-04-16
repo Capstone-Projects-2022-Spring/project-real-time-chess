@@ -1,10 +1,10 @@
 import { ObjectId } from 'mongodb';
+import UserDAO from '../dao/UserDAO';
+import InvalidCredentialsError from '../errors/InvalidCredentialsError';
+import SupportedEmojis from '../SupportedEmojis';
+import ArrayUtils from '../utils/ArrayUtils';
 import ChessGame from './ChessGame';
-import UserDAO from './dao/UserDAO';
-import InvalidCredentialsError from './errors/InvalidCredentialsError';
-import Logger from './Logger';
-import SupportedEmojis from './SupportedEmojis';
-import ArrayUtils from './utils/ArrayUtils';
+import Logger from '../Logger';
 
 /**
  * The manager for all chess games which are currently in progress.

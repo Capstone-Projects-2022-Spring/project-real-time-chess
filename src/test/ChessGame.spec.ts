@@ -1,6 +1,6 @@
-import ChessGame from 'src/main/ChessGame';
+import ChessGame from 'src/main/gameplay/ChessGame';
 import { expect } from 'chai';
-import GameManager from 'src/main/GameManager';
+import GameManager from 'src/main/gameplay/GameManager';
 import { TU1 } from './resources/SampleUsers';
 
 let game: ChessGame;

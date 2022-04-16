@@ -6,14 +6,14 @@ import * as http from 'http';
 import { ObjectId } from 'mongodb';
 import * as path from 'path';
 import { Server, Socket } from 'socket.io';
-import ChessGame from './ChessGame';
-import DatabaseConnector from './dao/DatabaseConnector';
-import GameManager from './GameManager';
-import GameSocketHandler from './GameSocketHandler';
-import Logger from './Logger';
-import MatchmakingManager from './MatchmakingManager';
-import apiRouter from './routes/apiRouter';
 import { GameStateAPIResponse } from './APIResponse';
+import DatabaseConnector from './dao/DatabaseConnector';
+import ChessGame from './gameplay/ChessGame';
+import GameManager from './gameplay/GameManager';
+import GameSocketHandler from './gameplay/GameSocketHandler';
+import MatchmakingManager from './gameplay/MatchmakingManager';
+import apiRouter from './routes/apiRouter';
+import Logger from './Logger';
 
 /**
  * The RTCServer class is responsible for starting the server and handling
