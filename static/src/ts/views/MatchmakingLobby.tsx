@@ -18,9 +18,9 @@ interface MatchmakingLobbyState {
 class MatchmakingLobbyComponent extends React.Component<NoProps, MatchmakingLobbyState> {
     socket?: Socket;
 
-    timeout?: NodeJS.Timeout;
+    timeout?: number;
 
-    searchTimeout?: NodeJS.Timeout;
+    searchTimeout?: number;
 
     team?: 'b' | 'w';
 
@@ -89,7 +89,7 @@ class MatchmakingLobbyComponent extends React.Component<NoProps, MatchmakingLobb
                 status: `Searching for game... 0:00
                 Position in queue... ${position}`,
             });
-            this.timeout = setInterval(() => {
+            this.timeout = window.setInterval(() => {
                 timer += 1;
                 this.setState({
                     status: `Searching for game... ${Math.floor(timer / 60)}:${String(
