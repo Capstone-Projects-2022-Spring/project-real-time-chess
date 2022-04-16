@@ -1,7 +1,7 @@
 /**
  * A helper object for tracking the cooldown for a chess piece.
  */
-export default class Cooldown implements CooldownInterface {
+export default class Cooldown implements ICooldown {
     /**
      * The amount of time left on the cooldown timer.
      */

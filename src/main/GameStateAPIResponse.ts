@@ -14,7 +14,7 @@ class GameStateAPIResponse extends BaseAPIResponse implements IGameStateAPIRespo
 
     public players: { black?: ISanitizedUser | AIString; white?: ISanitizedUser | AIString };
 
-    public cooldowns: Record<Square, CooldownInterface>;
+    public cooldowns: Record<Square, ICooldown>;
 
     /**
      * Creates an instance of GameStateAPIResponse.

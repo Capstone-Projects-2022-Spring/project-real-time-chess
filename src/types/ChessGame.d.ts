@@ -4,7 +4,7 @@ interface IChessGame {
     white?: IUser | AIString;
     messages: IGameMessage[];
     fen: string;
-    cooldownMap: Record<import('chess.js').Square, CooldownInterface>;
+    cooldownMap: Record<import('chess.js').Square, ICooldown>;
 }
 
 interface MoveRecord {
@@ -29,7 +29,7 @@ interface AutoPilotGameState {
     white: AutoPilotState;
 }
 
-declare interface CooldownInterface {
+declare interface ICooldown {
     time: number;
 }
 
@@ -51,3 +51,12 @@ type AIString =
     | 'AI-8'
     | 'AI-9'
     | 'AI-10';
+
+declare interface IGameMessage {
+    message: string;
+}
+
+declare interface IGameChatMessage extends IGameMessage {
+    message: string;
+    from: string;
+}

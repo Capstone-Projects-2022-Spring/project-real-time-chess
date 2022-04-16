@@ -1,6 +1,3 @@
-/**
- * The data belonging to a User in the database
- */
 declare interface IUser {
     _id: import('mongodb').ObjectId;
     name: {

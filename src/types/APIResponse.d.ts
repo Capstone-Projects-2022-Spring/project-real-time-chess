@@ -1,6 +1,3 @@
-/**
- * The bare minimum interface to be implemented by a response object.
- */
 declare interface APIResponse {
     success: boolean;
     error?: Error;
@@ -23,7 +20,7 @@ declare interface IGameStateAPIResponse extends APIResponse {
     fen: string;
     messages: IGameMessage[];
     gameKey: string[];
-    cooldowns: Record<import('chess.js').Square, CooldownInterface>;
+    cooldowns: Record<import('chess.js').Square, ICooldown>;
     players: {
         black?: ISanitizedUser | AIString;
         white?: ISanitizedUser | AIString;
