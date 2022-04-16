@@ -6,18 +6,17 @@ import {
     personOutline,
 } from 'ionicons/icons';
 import * as React from 'react';
-import ButtonComponent from '../components/ButtonComponent';
-import FriendGameSetupComponent from './FriendGameSetup';
-import MatchmakingLobbyComponent from './MatchmakingLobby';
-import HowToPlaySwal from '../components/HowToPlaySwal';
 import CookieManager from '../access/CookieManager';
-import { NoProps } from '../models/types';
+import ButtonComponent from '../components/ButtonComponent';
+import HowToPlaySwal from '../components/HowToPlaySwal';
 import UINavigator from '../models/UINavigator';
 import BoardScreen from './BoardScreen';
 import Homepage from './Homepage';
-import MultiplayerMatch from './MultiplayerMatch';
+import MultiplayerMatch from './Matches/MultiplayerMatch';
 import Profile from './Profile';
 import AIvAISetup from './SetupScreens/AIvAISetup';
+import FriendGameSetupComponent from './SetupScreens/FriendGameSetup';
+import MatchmakingLobbyComponent from './SetupScreens/MatchmakingLobby';
 
 /**
  * Gameplay options page which allows a user to choose which game mode they want to play.

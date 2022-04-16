@@ -1,5 +1,4 @@
 import React from 'react';
-import { NoState } from '../models/types';
 
 interface SelectButtonProps {
     value: string;

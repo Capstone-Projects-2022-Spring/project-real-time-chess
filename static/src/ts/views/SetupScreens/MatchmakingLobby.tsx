@@ -1,11 +1,10 @@
 import * as React from 'react';
-import { Socket, io } from 'socket.io-client';
+import { io, Socket } from 'socket.io-client';
 import Swal from 'sweetalert2';
-import { NoProps } from '../models/types';
-import CookieManager from '../CookieManager';
-import ButtonComponent from '../components/ButtonComponent';
-import UINavigator from '../models/UINavigator';
-import MultiplayerMatch from './MultiplayerMatch';
+import CookieManager from '../../access/CookieManager';
+import ButtonComponent from '../../components/ButtonComponent';
+import UINavigator from '../../models/UINavigator';
+import MultiplayerMatch from '../Matches/MultiplayerMatch';
 
 interface MatchmakingLobbyState {
     status: string;

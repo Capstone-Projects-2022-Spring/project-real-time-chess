@@ -1,13 +1,13 @@
-import * as React from 'react';
-import ButtonComponent from '../components/ButtonComponent';
-import ChatComponent from '../components/ChatComponent';
-import ChessboardComponent from '../components/ChessboardComponent';
-import ToastNotification from '../components/ToastNotification';
-import CookieManager from '../CookieManager';
-import UINavigator from '../models/UINavigator';
-import SupportedEmojis from '../SupportedEmojis';
-import BaseMatchView, { BaseMatchProps, BaseMatchState } from './BaseMatchView';
-import GameplayOptions from './GameplayOptions';
+import React from 'react';
+import CookieManager from '../../access/CookieManager';
+import ButtonComponent from '../../components/ButtonComponent';
+import ChatComponent from '../../components/ChatComponent';
+import ChessboardComponent from '../../components/ChessboardComponent';
+import ToastNotification from '../../components/ToastNotification';
+import SupportedEmojis from '../../models/SupportedEmojis';
+import UINavigator from '../../models/UINavigator';
+import GameplayOptions from '../GameplayOptions';
+import BaseMatchView, { BaseMatchState, BaseMatchProps } from './BaseMatchView';
 
 interface MultiplayerMatchState extends BaseMatchState {
     autopilotEnabled: boolean;

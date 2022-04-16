@@ -1,7 +1,6 @@
 import axios from 'axios';
 import * as React from 'react';
 import TextFieldComponent from '../components/TextFieldComponent';
-import { NoProps } from '../models/types';
 
 interface WinstonViewerState {
     logs: { level: string; message: string }[];

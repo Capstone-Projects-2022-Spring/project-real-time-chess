@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { NoState } from '../models/types';
 
 /**
  * Interface for the properties of the ButtonComponent.

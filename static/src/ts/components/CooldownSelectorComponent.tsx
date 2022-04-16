@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { NoProps } from '../models/types';
 
 /**
  * An interface for cooldown string.
