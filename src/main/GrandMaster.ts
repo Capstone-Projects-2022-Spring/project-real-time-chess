@@ -151,9 +151,7 @@ class GrandMaster {
 
         if (captureKing && this.game.in_check()) {
             const possibleMoves = this.game.moves({ verbose: true }) as Move[];
-            console.log('possibleMoves', possibleMoves);
             const captureKingMove = possibleMoves.filter(move => {
-                console.log('Move:', move);
                 const resultSquare = this.game.get(move.to);
                 return resultSquare
                     ? resultSquare.type === this.game.KING && resultSquare.color !== color
