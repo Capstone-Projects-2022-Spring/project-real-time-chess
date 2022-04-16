@@ -1,3 +1,4 @@
+import { Square } from 'chess.js';
 import * as React from 'react';
 import { io, Socket } from 'socket.io-client';
 import ButtonComponent from '../components/ButtonComponent';
@@ -23,10 +24,9 @@ interface AIvAIMatchState {
  * The multiplayer match component. This displays the chessboard and chat components.
  */
 class AIvAIMatch extends React.Component<AIvAIMatchProps, AIvAIMatchState> {
-    /**
-     * The open socket between the client and the server.
-     */
     socket?: Socket;
+
+    recoloredSquares: Square[];
 
     /**
      * Creates an instance of MultiplayerMatch.
@@ -40,6 +40,7 @@ class AIvAIMatch extends React.Component<AIvAIMatchProps, AIvAIMatchState> {
             fen: undefined,
             gameKey: '',
         };
+        this.recoloredSquares = [];
     }
 
     /**
@@ -119,6 +120,7 @@ class AIvAIMatch extends React.Component<AIvAIMatchProps, AIvAIMatchState> {
                 fen: gameState.fen,
                 messages: gameState.messages,
             });
+            this.displayCooldowns(gameState.cooldowns);
         });
 
         this.socket.on('blackWin', name => {
@@ -128,6 +130,44 @@ class AIvAIMatch extends React.Component<AIvAIMatchProps, AIvAIMatchState> {
         this.socket.on('whiteWin', name => {
             new ToastNotification('Winner!', `${name} is the winner!`, 'success').fire();
         });
+    }
+
+    /**
+     * Renders the cooldowns for all the chess pieces
+     * (This directly accesses the DOM without using React).
+     *
+     * @param cooldowns - The cooldown map for the chess pieces.
+     */
+    private displayCooldowns(cooldowns: Record<Square, CooldownInterface>) {
+        this.recoloredSquares.forEach(square => {
+            const tile = document.querySelector(`[data-square=${square}]`)!.querySelector('div')!;
+            tile.style.background = 'none';
+        });
+        this.recoloredSquares = [];
+
+        const cooldownKeys = Object.keys(cooldowns) as Square[];
+
+        if (cooldownKeys.length > 0) {
+            let min = cooldowns[cooldownKeys[0]!]!.time;
+
+            cooldownKeys.forEach(square => {
+                const tile = document
+                    .querySelector(`[data-square=${square}]`)!
+                    .querySelector('div')!;
+                const { time } = cooldowns[square];
+
+                if (time < min) min = time;
+
+                if (time < 2) tile.style.backgroundColor = 'yellow';
+                else tile.style.backgroundColor = 'red';
+
+                this.recoloredSquares.push(square);
+            });
+
+            setTimeout(() => {
+                this.socket?.emit('game state');
+            }, min * 1000);
+        }
     }
 }
 

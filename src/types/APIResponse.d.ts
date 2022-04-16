@@ -23,6 +23,7 @@ declare interface IGameStateAPIResponse extends APIResponse {
     fen: string;
     messages: IGameMessage[];
     gameKey: string[];
+    cooldowns: Record<import('chess.js').Square, CooldownInterface>;
     players: {
         black?: ISanitizedUser | AIString;
         white?: ISanitizedUser | AIString;
