@@ -86,7 +86,7 @@ abstract class BaseMatchView<
      *
      * @param cooldowns - The cooldown map for the chess pieces.
      */
-    private displayCooldowns(cooldowns: Record<Square, CooldownInterface>) {
+    private displayCooldowns(cooldowns: Record<Square, ICooldown>) {
         if (this.localCooldownUpdateInterval) {
             window.clearInterval(this.localCooldownUpdateInterval);
             this.localCooldownUpdateInterval = undefined;
@@ -108,7 +108,7 @@ abstract class BaseMatchView<
      *
      * @param cooldowns - The cooldown map for the chess pieces.
      */
-    private updateCooldownColors(cooldowns: Record<Square, CooldownInterface>) {
+    private updateCooldownColors(cooldowns: Record<Square, ICooldown>) {
         const cooldownKeys = Object.keys(cooldowns) as Square[];
 
         if (cooldownKeys.length > 0) {
