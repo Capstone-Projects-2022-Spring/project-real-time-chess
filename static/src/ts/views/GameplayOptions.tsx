@@ -7,7 +7,7 @@ import {
 } from 'ionicons/icons';
 import * as React from 'react';
 import CookieManager from '../access/CookieManager';
-import ButtonComponent from '../components/ButtonComponent';
+import ButtonComponent from '../components/UI/ButtonComponent';
 import HowToPlaySwal from '../components/HowToPlaySwal';
 import UINavigator from '../models/UINavigator';
 import Homepage from './Homepage';

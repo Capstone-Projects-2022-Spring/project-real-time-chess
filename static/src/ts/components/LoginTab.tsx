@@ -2,10 +2,10 @@ import * as React from 'react';
 import Swal from 'sweetalert2';
 import Users from '../access/Users';
 import UINavigator from '../models/UINavigator';
-import ButtonComponent from './ButtonComponent';
+import ButtonComponent from './UI/ButtonComponent';
 import GameplayOptions from '../views/GameplayOptions';
-import PasswordFieldComponent from './PasswordFieldComponent';
-import TextFieldComponent from './TextFieldComponent';
+import PasswordFieldComponent from './UI/PasswordFieldComponent';
+import TextFieldComponent from './UI/TextFieldComponent';
 
 interface LoginTabProps {
     user?: string;

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import GameAccess from '../../access/GameAccess';
-import ButtonComponent from '../../components/ButtonComponent';
-import SelectButton from '../../components/SelectButton';
+import ButtonComponent from '../../components/UI/ButtonComponent';
+import SelectButton from '../../components/UI/SelectButton';
 import UINavigator from '../../models/UINavigator';
 import AIvAIMatch from '../Matches/AIvAIMatch';
 

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ButtonComponent from '../../components/ButtonComponent';
+import ButtonComponent from '../../components/UI/ButtonComponent';
 import Replays from './Replays';
 import UINavigator from '../../models/UINavigator';
 import Users from '../../access/Users';

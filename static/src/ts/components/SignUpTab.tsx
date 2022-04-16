@@ -2,10 +2,10 @@ import * as React from 'react';
 import Swal from 'sweetalert2';
 import Users from '../access/Users';
 import SignUpModel from '../models/SignUpModel';
-import ButtonComponent from './ButtonComponent';
-import EmailFieldComponent from './EmailFieldComponent';
-import NameFieldComponent from './NameFieldComponent';
-import PasswordFieldComponent from './PasswordFieldComponent';
+import ButtonComponent from './UI/ButtonComponent';
+import EmailFieldComponent from './UI/EmailFieldComponent';
+import NameFieldComponent from './UI/NameFieldComponent';
+import PasswordFieldComponent from './UI/PasswordFieldComponent';
 
 interface SignUpTabProps {
     fname: string;

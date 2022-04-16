@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ButtonComponent from '../../components/ButtonComponent';
+import ButtonComponent from '../../components/UI/ButtonComponent';
 import ChatComponent from '../../components/ChatComponent';
 import ChessboardComponent from '../../components/ChessboardComponent';
 import CookieManager from '../../access/CookieManager';

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { io, Socket } from 'socket.io-client';
 import Swal from 'sweetalert2';
 import CookieManager from '../../access/CookieManager';
-import ButtonComponent from '../../components/ButtonComponent';
+import ButtonComponent from '../../components/UI/ButtonComponent';
 import UINavigator from '../../models/UINavigator';
 import MultiplayerMatch from '../Matches/MultiplayerMatch';
 

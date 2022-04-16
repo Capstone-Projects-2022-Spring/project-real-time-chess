@@ -1,9 +1,9 @@
 import * as React from 'react';
 import Swal from 'sweetalert2';
 import GameAccess from '../../access/GameAccess';
-import ButtonComponent from '../../components/ButtonComponent';
+import ButtonComponent from '../../components/UI/ButtonComponent';
 import CooldownSelectorComponent from '../../components/CooldownSelectorComponent';
-import EmojiKeyboard from '../../components/EmojiKeyboard';
+import EmojiKeyboard from '../../components/UI/EmojiKeyboard';
 import SupportedEmojis from '../../models/SupportedEmojis';
 import UINavigator from '../../models/UINavigator';
 import GameplayOptions from '../GameplayOptions';

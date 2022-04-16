@@ -1,7 +1,7 @@
 import { Square } from 'chess.js';
 import React from 'react';
 import { io, Socket } from 'socket.io-client';
-import ToastNotification from '../../components/ToastNotification';
+import ToastNotification from '../../components/UI/ToastNotification';
 import SupportedEmojis from '../../models/SupportedEmojis';
 
 interface BaseMatchProps {

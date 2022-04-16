@@ -1,7 +1,7 @@
 import { Square } from 'chess.js';
 import * as React from 'react';
 import { Chessboard } from 'react-chessboard';
-import ToastNotification from './ToastNotification';
+import ToastNotification from './UI/ToastNotification';
 
 interface ChessboardComponentProps {
     parentContainerId: string;
