@@ -158,7 +158,9 @@ class AIvAIMatch extends React.Component<AIvAIMatchProps, AIvAIMatchState> {
 
                 if (time < min) min = time;
 
-                if (time < 2) tile.style.backgroundColor = 'yellow';
+                if (time === 0) tile.style.background = 'none';
+                else if (time < 2) tile.style.backgroundColor = 'green';
+                else if (time < 4) tile.style.backgroundColor = 'yellow';
                 else tile.style.backgroundColor = 'red';
 
                 this.recoloredSquares.push(square);
