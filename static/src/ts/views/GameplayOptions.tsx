@@ -10,7 +10,6 @@ import CookieManager from '../access/CookieManager';
 import ButtonComponent from '../components/ButtonComponent';
 import HowToPlaySwal from '../components/HowToPlaySwal';
 import UINavigator from '../models/UINavigator';
-import BoardScreen from './BoardScreen';
 import Homepage from './Homepage';
 import MultiplayerMatch from './Matches/MultiplayerMatch';
 import Profile from './Profile';
@@ -60,13 +59,7 @@ class GameplayOptions extends React.Component<
                             });
                         }}
                     >
-                        <ButtonComponent
-                            label="You v AI"
-                            width="100%"
-                            onClick={() => {
-                                UINavigator.render(<BoardScreen mode={'AI'} username={''} />);
-                            }}
-                        />
+                        <ButtonComponent label="You v AI" width="100%" onClick={() => undefined} />
                     </div>
                     <div
                         className="col"
