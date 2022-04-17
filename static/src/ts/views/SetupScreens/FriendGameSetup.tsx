@@ -1,14 +1,13 @@
 import * as React from 'react';
 import Swal from 'sweetalert2';
-import GameAccess from '../access/GameAccess';
-import { NoProps } from '../models/types';
-import UINavigator from '../models/UINavigator';
-import SupportedEmojis from '../SupportedEmojis';
-import GameplayOptions from './GameplayOptions';
-import MultiplayerMatch from './MultiplayerMatch';
-import ButtonComponent from '../components/ButtonComponent';
-import CooldownSelectorComponent from '../components/CooldownSelectorComponent';
-import EmojiKeyboard from '../components/EmojiKeyboard';
+import GameAccess from '../../access/GameAccess';
+import ButtonComponent from '../../components/UI/ButtonComponent';
+import CooldownSelectorComponent from '../../components/CooldownSelectorComponent';
+import EmojiKeyboard from '../../components/UI/EmojiKeyboard';
+import SupportedEmojis from '../../models/SupportedEmojis';
+import UINavigator from '../../models/UINavigator';
+import GameplayOptions from '../GameplayOptions';
+import MultiplayerMatch from '../Matches/MultiplayerMatch';
 
 /**
  * The page for setting up a multiplayer game with a friend. This gives the user

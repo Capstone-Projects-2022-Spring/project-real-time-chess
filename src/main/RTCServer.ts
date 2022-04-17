@@ -6,14 +6,14 @@ import * as http from 'http';
 import { ObjectId } from 'mongodb';
 import * as path from 'path';
 import { Server, Socket } from 'socket.io';
-import ChessGame from './ChessGame';
+import { GameStateAPIResponse } from './APIResponse';
 import DatabaseConnector from './dao/DatabaseConnector';
-import GameManager from './GameManager';
-import GameSocketHandler from './GameSocketHandler';
-import GameStateAPIResponse from './GameStateAPIResponse';
-import Logger from './Logger';
-import MatchmakingManager from './MatchmakingManager';
+import ChessGame from './gameplay/ChessGame';
+import GameManager from './gameplay/GameManager';
+import GameSocketHandler from './gameplay/GameSocketHandler';
+import MatchmakingManager from './gameplay/MatchmakingManager';
 import apiRouter from './routes/apiRouter';
+import Logger from './Logger';
 
 /**
  * The RTCServer class is responsible for starting the server and handling
@@ -25,8 +25,6 @@ class RTCServer {
 
     private app: express.Express;
 
-    private PORT: number;
-
     private socketIO: Server;
 
     /**
@@ -34,7 +32,6 @@ class RTCServer {
      */
     constructor() {
         this.app = express();
-        this.PORT = parseInt(process.env.PORT ?? '3000', 10);
         this.server = http.createServer(this.app);
         this.socketIO = new Server(this.server);
 
@@ -177,15 +174,24 @@ class RTCServer {
      * defined, then the default port (`3000`) is used.
      */
     listen() {
-        this.server.listen(this.PORT, () => {
+        const PORT = parseInt(process.env.PORT ?? '3000', 10);
+        this.server.listen(PORT, () => {
             Logger.info(`
         ▢----------------------▢--------------------------▢
         | Field                | Value                    |
         ▢----------------------▢--------------------------▢
-          Listening on PORT      ${this.PORT}
-          Website                http://localhost:${this.PORT}
+          Listening on PORT      ${PORT}
+          Website                http://localhost:${PORT}
         ▢----------------------▢--------------------------▢`);
         });
+    }
+
+    /**
+     * Kills the server. As a result, the server will no longer
+     * listen for new requests.
+     */
+    kill() {
+        this.server.close();
     }
 }
 

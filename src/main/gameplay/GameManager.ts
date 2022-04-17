@@ -1,10 +1,10 @@
 import { ObjectId } from 'mongodb';
+import UserDAO from '../dao/UserDAO';
+import InvalidCredentialsError from '../errors/InvalidCredentialsError';
+import SupportedEmojis from '../SupportedEmojis';
+import ArrayUtils from '../utils/ArrayUtils';
 import ChessGame from './ChessGame';
-import UserDAO from './dao/UserDAO';
-import InvalidCredentialsError from './errors/InvalidCredentialsError';
-import Logger from './Logger';
-import SupportedEmojis from './SupportedEmojis';
-import ArrayUtils from './utils/ArrayUtils';
+import Logger from '../Logger';
 
 /**
  * The manager for all chess games which are currently in progress.
@@ -142,13 +142,46 @@ class GameManager {
             message: `Bot 2 Difficulty: ${bot2}`,
         });
 
+        const bot1Freq = GameManager.configureBotFrequency(bot1);
+        const bot2Freq = GameManager.configureBotFrequency(bot2);
+
         setTimeout(() => {
             game.randomMove();
-            game.enableAutopilot('w', 9000 / bot1);
-            game.enableAutopilot('b', 9000 / bot2);
+            game.enableAutopilot('w', bot1Freq);
+            game.enableAutopilot('b', bot2Freq);
         }, 3000);
 
         return game;
+    }
+
+    /**
+     * Decides how frequently an AI bot should make a move based on its difficulty level.
+     *
+     * @param difficulty - The difficulty of the bot.
+     * @returns The frequency at which the bot should makes moves (in milliseconds).
+     */
+    static configureBotFrequency(difficulty: number): number {
+        switch (difficulty) {
+            case 1:
+                return 7000;
+            case 2:
+            case 3:
+                return 5000;
+            case 4:
+            case 5:
+                return 4000;
+            case 6:
+            case 7:
+                return 3000;
+            case 8:
+                return 2000;
+            case 9:
+                return 1000;
+            case 10:
+                return 500;
+            default:
+                return 1000;
+        }
     }
 
     /**

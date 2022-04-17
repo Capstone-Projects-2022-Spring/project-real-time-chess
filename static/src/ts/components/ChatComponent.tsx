@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { NoState } from '../models/types';
 
 interface ChatComponentProps {
     messages: IGameMessage[];

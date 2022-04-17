@@ -1,6 +1,3 @@
-/**
- * The interface for all user registration forms.
- */
 declare interface CreateUserRequestBody {
     name: { first: string; last: string };
     email: string;
@@ -26,14 +23,6 @@ declare type LoginUserResponse = import('express').Response<
     LoginAPIResponseBody | { success: false; error: Error }
 >;
 
-/**
- * Authorization information stored in a cookie on the client side.
- * This is used to verify if a user is logged in.
- *
- * `uid` is saved as `cookies.uid`
- *
- * `key` is saved as `cookies.auth`
- */
 declare interface AuthInfo {
     uid: import('mongodb').ObjectId;
     key: string;

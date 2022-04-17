@@ -1,7 +1,6 @@
-import { ErrorAPIResponse } from '../APIResponse';
+import { ErrorAPIResponse, GameCreatedAPIResponse } from '../APIResponse';
 import GameHistoryDAO from '../dao/GameHistoryDAO';
-import GameCreatedAPIResponse from '../GameCreatedAPIResponse';
-import GameManager from '../GameManager';
+import GameManager from '../gameplay/GameManager';
 import Logger from '../Logger';
 import SupportedEmojis from '../SupportedEmojis';
 

@@ -1,10 +1,9 @@
 import * as React from 'react';
-import GameAccess from '../access/GameAccess';
-import ButtonComponent from '../components/ButtonComponent';
-import SelectButton from '../components/SelectButton';
-import { NoProps } from '../models/types';
-import UINavigator from '../models/UINavigator';
-import AIvAIMatch from './AIvAIMatch';
+import GameAccess from '../../access/GameAccess';
+import ButtonComponent from '../../components/UI/ButtonComponent';
+import SelectButton from '../../components/UI/SelectButton';
+import UINavigator from '../../models/UINavigator';
+import AIvAIMatch from '../Matches/AIvAIMatch';
 
 /**
  * This page allows users to customize two different AI bots to play

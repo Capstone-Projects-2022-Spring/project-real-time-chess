@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import GameManager from 'src/main/GameManager';
+import GameManager from 'src/main/gameplay/GameManager';
 import { TU1, TU2, TU3 } from './resources/SampleUsers';
 
 beforeEach(() => {

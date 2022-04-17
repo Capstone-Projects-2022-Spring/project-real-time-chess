@@ -1,9 +1,9 @@
 import { Socket } from 'socket.io';
 import MatchmakingQueue, { UserSocketPair } from './MatchmakingQueue';
 import GameManager from './GameManager';
-import UserDAO from './dao/UserDAO';
-import Logger from './Logger';
 import ReadyUp from './ReadyUp';
+import UserDAO from '../dao/UserDAO';
+import Logger from '../Logger';
 
 /**
  * class for managing matchmaking queues

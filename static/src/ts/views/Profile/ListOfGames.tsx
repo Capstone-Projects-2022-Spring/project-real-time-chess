@@ -1,12 +1,11 @@
 import * as React from 'react';
-import ButtonComponent from '../components/ButtonComponent';
-import UINavigator from '../models/UINavigator';
+import ButtonComponent from '../../components/UI/ButtonComponent';
+import UINavigator from '../../models/UINavigator';
 import ReplayGame from './ReplayGame';
 
-interface ListOfGamesProps{
-    games: string[]
-    labele: string
-
+interface ListOfGamesProps {
+    games: string[];
+    labele: string;
 }
 
 /**
@@ -19,14 +18,12 @@ class ListOfGames extends React.Component<ListOfGamesProps, Record<string, never
     render() {
         return (
             <div className="container">
-                <div className = "row">
-                    <div className = "col">
+                <div className="row">
+                    <div className="col">
                         <h1 style={{ textAlign: 'center' }}></h1>
                     </div>
                 </div>
-                <div className='row'>
-                    {this.props.games.map(this.makeButton, this)}
-                </div>
+                <div className="row">{this.props.games.map(this.makeButton, this)}</div>
             </div>
         );
     }
@@ -38,13 +35,12 @@ class ListOfGames extends React.Component<ListOfGamesProps, Record<string, never
     makeButton() {
         return (
             <ButtonComponent
-                label = "Here is button"
-                width = "100%"
+                label="Here is button"
+                width="100%"
                 onClick={() => {
                     UINavigator.render(<ReplayGame username={''} orientation={'b'} />);
                 }}
             />
-
         );
     }
 }

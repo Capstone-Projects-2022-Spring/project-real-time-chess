@@ -4,7 +4,7 @@ interface IChessGame {
     white?: IUser | AIString;
     messages: IGameMessage[];
     fen: string;
-    cooldownMap: Record<import('chess.js').Square, CooldownInterface>;
+    cooldownMap: Record<import('chess.js').Square, ICooldown>;
 }
 
 interface MoveRecord {
@@ -27,4 +27,36 @@ interface AutoPilotState {
 interface AutoPilotGameState {
     black: AutoPilotState;
     white: AutoPilotState;
+}
+
+declare interface ICooldown {
+    time: number;
+}
+
+interface GameHistory {
+    black: import('mongodb').ObjectId | AIString | 'No Player';
+    white: import('mongodb').ObjectId | AIString | 'No Player';
+    game_key: string[];
+    history: MoveRecord[];
+}
+
+type AIString =
+    | 'AI-1'
+    | 'AI-2'
+    | 'AI-3'
+    | 'AI-4'
+    | 'AI-5'
+    | 'AI-6'
+    | 'AI-7'
+    | 'AI-8'
+    | 'AI-9'
+    | 'AI-10';
+
+declare interface IGameMessage {
+    message: string;
+}
+
+declare interface IGameChatMessage extends IGameMessage {
+    message: string;
+    from: string;
 }

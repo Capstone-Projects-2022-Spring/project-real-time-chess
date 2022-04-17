@@ -1,4 +1,4 @@
-import InputFieldValidationError from '../errors/InputFieldValidationError';
+import InputFieldValidationError from '../../errors/InputFieldValidationError';
 import TextFieldComponent from './TextFieldComponent';
 
 /**

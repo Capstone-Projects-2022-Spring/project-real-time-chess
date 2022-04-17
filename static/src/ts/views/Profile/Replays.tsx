@@ -1,7 +1,7 @@
 import * as React from 'react';
-import ButtonComponent from '../components/ButtonComponent';
-import UINavigator from '../models/UINavigator';
-import GameplayOptions from './GameplayOptions';
+import ButtonComponent from '../../components/UI/ButtonComponent';
+import UINavigator from '../../models/UINavigator';
+import GameplayOptions from '../GameplayOptions';
 import Profile from './Profile';
 
 type ReplaysProps = Record<string, never>;

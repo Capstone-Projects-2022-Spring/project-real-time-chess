@@ -1,8 +1,7 @@
 import { ObjectId } from 'mongodb';
-import { ErrorAPIResponse } from '../APIResponse';
+import { ErrorAPIResponse, LoginAPIResponse } from '../APIResponse';
 import UserDAO from '../dao/UserDAO';
 import Logger from '../Logger';
-import LoginAPIResponse from '../LoginAPIResponse';
 
 /**
  * A static class which holds all the routes for the user API.
