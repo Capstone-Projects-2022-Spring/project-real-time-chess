@@ -1,4 +1,4 @@
-import { Chess, ChessInstance, Move, Square } from 'chess.js';
+import { Chess, ChessInstance, Move, PieceType, Square } from 'chess.js';
 import { ObjectId } from 'mongodb';
 import { GameStateAPIResponse } from '../APIResponse';
 import GameHistoryDAO from '../dao/GameHistoryDAO';
@@ -176,15 +176,29 @@ class ChessGame implements IChessGame {
             if (move !== null) {
                 delete this.cooldownMap[source];
                 this.cooldownMap[target] = new Cooldown(5);
-                if (color === 'b') {
+
+                if (typeof this.black === 'string' && typeof this.white === 'string') {
                     this.blackSocket?.emit(
                         'move-notification',
-                        `White moves their ${move.piece} to ${target}`,
+                        `${
+                            color === 'w' ? 'White' : 'Black'
+                        } moved their ${ChessGame.pieceTypeToName(move.piece)} to ${target}`,
+                    );
+                    this.whiteSocket?.emit(
+                        'move-notification',
+                        `${
+                            color === 'w' ? 'White' : 'Black'
+                        } moved their ${ChessGame.pieceTypeToName(move.piece)} to ${target}`,
+                    );
+                } else if (color === 'b') {
+                    this.blackSocket?.emit(
+                        'move-notification',
+                        `White moved their ${ChessGame.pieceTypeToName(move.piece)} to ${target}`,
                     );
                 } else if (color === 'w') {
                     this.whiteSocket?.emit(
                         'move-notification',
-                        `Black moves their ${move.piece} to ${target}`,
+                        `Black moved their ${ChessGame.pieceTypeToName(move.piece)} to ${target}`,
                     );
                 }
 
@@ -200,6 +214,31 @@ class ChessGame implements IChessGame {
         }
 
         return move ?? null;
+    }
+
+    /**
+     * Converts a chess.js PieceType string to a human-readable piece name.
+     *
+     * @param piece - The PieceType string to convert to human-readable name.
+     * @returns A human readable name for the piece.
+     */
+    private static pieceTypeToName(piece: PieceType): string {
+        switch (piece) {
+            case 'p':
+                return 'Pawn';
+            case 'r':
+                return 'Rook';
+            case 'n':
+                return 'Knight';
+            case 'b':
+                return 'Bishop';
+            case 'q':
+                return 'Queen';
+            case 'k':
+                return 'King';
+            default:
+                return 'Unknown';
+        }
     }
 
     /**
