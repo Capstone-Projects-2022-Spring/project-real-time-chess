@@ -2,6 +2,21 @@
 import { ChessInstance, Move, PieceType } from 'chess.js';
 import ModifiedChess, { ModifiedChessInstance } from './modified.chess.js';
 
+type ColorPST = {
+    p: number[][];
+    n: number[][];
+    b: number[][];
+    r: number[][];
+    q: number[][];
+    k: number[][];
+    k_e: number[][];
+};
+
+type PerspectivePST = {
+    w: ColorPST;
+    b: ColorPST;
+};
+
 /**
  * The GrandMaster class is an internal library written to retrieve the best move
  * in a game of real-time chess.
@@ -36,7 +51,7 @@ class GrandMaster {
         k_e: number;
     };
 
-    private pst_w = {
+    private pst_w: ColorPST = {
         p: [
             [100, 100, 100, 100, 105, 100, 100, 100],
             [78, 83, 86, 73, 102, 82, 85, 90],
@@ -111,7 +126,7 @@ class GrandMaster {
         ],
     };
 
-    private pst_b = {
+    private pst_b: ColorPST = {
         p: this.pst_w.p.slice().reverse(),
         n: this.pst_w.n.slice().reverse(),
         b: this.pst_w.b.slice().reverse(),
@@ -121,9 +136,9 @@ class GrandMaster {
         k_e: this.pst_w.k_e.slice().reverse(),
     };
 
-    private pstOpponent = { w: this.pst_b, b: this.pst_w };
+    private pstOpponent: PerspectivePST = { w: this.pst_b, b: this.pst_w };
 
-    private pstSelf = { w: this.pst_w, b: this.pst_b };
+    private pstSelf: PerspectivePST = { w: this.pst_w, b: this.pst_b };
 
     /**
      * Creates an instance of GrandMaster.
