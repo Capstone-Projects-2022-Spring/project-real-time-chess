@@ -69,11 +69,7 @@ class ChessboardComponent extends React.Component<
                             return true;
                         }
 
-                        new ToastNotification(
-                            'Invalid Move',
-                            `You cannot make that move! Current turn: ${this.props.fen}`,
-                            'error',
-                        ).fire();
+                        new ToastNotification('Invalid Move', 3000).fire();
 
                         return false;
                     }}

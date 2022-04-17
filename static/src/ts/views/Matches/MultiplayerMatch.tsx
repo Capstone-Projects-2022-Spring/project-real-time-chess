@@ -1,9 +1,7 @@
 import React from 'react';
 import CookieManager from '../../access/CookieManager';
-import ChatComponent from '../../components/ChatComponent';
 import ChessboardComponent from '../../components/ChessboardComponent';
 import ButtonComponent from '../../components/UI/ButtonComponent';
-import ToastNotification from '../../components/UI/ToastNotification';
 import SupportedEmojis from '../../models/SupportedEmojis';
 import UINavigator from '../../models/UINavigator';
 import GameplayOptions from '../GameplayOptions';
@@ -24,7 +22,6 @@ class MultiplayerMatch extends BaseMatchView<BaseMatchProps, MultiplayerMatchSta
      */
     constructor(props: BaseMatchProps) {
         super(props, {
-            messages: [],
             fen: undefined,
             gameKey: '',
             autopilotEnabled: false,
@@ -55,6 +52,7 @@ class MultiplayerMatch extends BaseMatchView<BaseMatchProps, MultiplayerMatchSta
                 </div>
 
                 <div className="row">
+                    <div className="col"></div>
                     <div id="boardContainer" className="col-12 col-md-6 text-center">
                         <ChessboardComponent
                             parentContainerId="boardContainer"
@@ -70,9 +68,7 @@ class MultiplayerMatch extends BaseMatchView<BaseMatchProps, MultiplayerMatchSta
                             }
                         />
                     </div>
-                    <div className="col-12 col-md-6">
-                        <ChatComponent messages={this.state.messages} />
-                    </div>
+                    <div className="col"></div>
                 </div>
 
                 <div className="row">
@@ -103,13 +99,6 @@ class MultiplayerMatch extends BaseMatchView<BaseMatchProps, MultiplayerMatchSta
     }
 
     /**
-     * Binds the socket to this component when it mounts.
-     */
-    componentDidMount() {
-        this.bindSocket();
-    }
-
-    /**
      * Emits an authorize event to the server with the uid and auth key.
      *
      * @param onAuthorized - The callback to call when the user is authorized.
@@ -125,12 +114,9 @@ class MultiplayerMatch extends BaseMatchView<BaseMatchProps, MultiplayerMatchSta
         super.bindSocket();
 
         this.socket!.on('move piece', (response: IGameStateAPIResponse) => {
-            if (!response.success) {
-                new ToastNotification('Invalid Move', 'You cannot make that move!', 'error').fire();
-            } else {
+            if (response.success) {
                 this.setState({
                     fen: response.fen,
-                    messages: response.messages,
                     gameKey: response.gameKey
                         .map(eName => SupportedEmojis.find(e => e.name === eName)?.emoji)
                         .join(''),

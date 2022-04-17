@@ -12,13 +12,8 @@ declare interface IGameCreatedAPIResponse extends APIResponse {
     gameKey: string[];
 }
 
-declare interface IGameMessagesAPIResponse extends APIResponse {
-    messages: IGameMessage[];
-}
-
 declare interface IGameStateAPIResponse extends APIResponse {
     fen: string;
-    messages: IGameMessage[];
     gameKey: string[];
     cooldowns: Record<import('chess.js').Square, ICooldown>;
     players: {

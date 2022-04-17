@@ -9,7 +9,6 @@ interface BaseMatchProps {
 }
 
 interface BaseMatchState {
-    messages: IGameMessage[];
     fen?: string;
     gameKey: string;
 }
@@ -59,24 +58,26 @@ abstract class BaseMatchView<
                     .map(eName => SupportedEmojis.find(e => e.name === eName)!.emoji)
                     .join(''),
                 fen: gameState.fen,
-                messages: gameState.messages,
             });
         });
 
         this.socket.on('game state', (gameState: IGameStateAPIResponse) => {
             this.setState({
                 fen: gameState.fen,
-                messages: gameState.messages,
             });
             this.displayCooldowns(gameState.cooldowns);
         });
 
         this.socket.on('blackWin', name => {
-            new ToastNotification('Winner!', `${name} is the winner!`, 'success').fire();
+            new ToastNotification(`${name} is the winner!`, 10000).fire();
         });
 
         this.socket.on('whiteWin', name => {
-            new ToastNotification('Winner!', `${name} is the winner!`, 'success').fire();
+            new ToastNotification(`${name} is the winner!`, 10000).fire();
+        });
+
+        this.socket.on('move-notification', message => {
+            new ToastNotification(message, 3000).fire();
         });
     }
 

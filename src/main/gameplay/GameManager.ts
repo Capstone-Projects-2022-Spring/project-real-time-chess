@@ -110,9 +110,7 @@ class GameManager {
 
         game.black = user;
         GameManager.games.push(game);
-        game.addMessage({
-            message: `${user.name.first} created the game.`,
-        });
+
         return game;
     }
 
@@ -131,16 +129,6 @@ class GameManager {
 
         game.black = `AI-${bot1}` as AIString;
         game.white = `AI-${bot2}` as AIString;
-
-        game.addMessage({
-            message: 'You created a new AI v AI game',
-        });
-        game.addMessage({
-            message: `Bot 1 Difficulty: ${bot1}`,
-        });
-        game.addMessage({
-            message: `Bot 2 Difficulty: ${bot2}`,
-        });
 
         const bot1Freq = GameManager.configureBotFrequency(bot1);
         const bot2Freq = GameManager.configureBotFrequency(bot2);
@@ -214,9 +202,6 @@ class GameManager {
         const game = GameManager.findGameByKey(gameKey);
         if (game) {
             game.white = user;
-            game.addMessage({
-                message: `${user.name.first} joined the game.`,
-            });
             return game;
         }
         return null;

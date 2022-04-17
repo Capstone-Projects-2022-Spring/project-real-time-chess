@@ -18,21 +18,6 @@ describe('ChessGame', () => {
         it('Should Generate a 5-emoji game key', () => {
             expect(game.gameKey).to.have.lengthOf(5);
         });
-
-        it('Should generate an empty messages list', () => {
-            expect(game.getMessages()).to.have.lengthOf(0);
-        });
-    });
-
-    describe('#addMessage()', () => {
-        it('Should add a message to the messages list', () => {
-            game.addMessage({
-                message: 'Bob joined the game',
-            });
-
-            expect(game.getMessages()).to.have.lengthOf(1);
-            expect(game.getMessages()[0]!.message).to.equal('Bob joined the game');
-        });
     });
 
     describe('#forceTurnChange()', () => {

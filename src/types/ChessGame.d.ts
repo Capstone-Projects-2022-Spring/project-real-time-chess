@@ -2,7 +2,6 @@ interface IChessGame {
     gameKey: string[];
     black?: IUser | AIString;
     white?: IUser | AIString;
-    messages: IGameMessage[];
     fen: string;
     cooldownMap: Record<import('chess.js').Square, ICooldown>;
 }
@@ -51,12 +50,3 @@ type AIString =
     | 'AI-8'
     | 'AI-9'
     | 'AI-10';
-
-declare interface IGameMessage {
-    message: string;
-}
-
-declare interface IGameChatMessage extends IGameMessage {
-    message: string;
-    from: string;
-}

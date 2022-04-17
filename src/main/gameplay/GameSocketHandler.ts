@@ -2,7 +2,6 @@ import { Square } from 'chess.js';
 import { Socket } from 'socket.io';
 import { GameStateAPIResponse } from '../APIResponse';
 import ChessGame from './ChessGame';
-import Logger from '../Logger';
 
 /**
  * Contains static handlers for the game sockets in RTCServer
@@ -13,15 +12,9 @@ class GameSocketHandler {
      *
      * @param socket - The socket which the request came from
      * @param game - The game belonging to the request
-     * @param uid - The user who invoked the event
      */
-    static onGameStateRequest(socket: Socket, game: ChessGame, uid: string) {
+    static onGameStateRequest(socket: Socket, game: ChessGame) {
         socket.emit('game state', new GameStateAPIResponse(game));
-        Logger.info(
-            `Game State Request Successful\nUID: ${uid}\nFEN: ${game.fen}\n${
-                game.getMessages().length
-            } messages`,
-        );
     }
 
     /**
