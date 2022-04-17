@@ -50,8 +50,6 @@ class GameStateAPIResponse extends BaseAPIResponse implements IGameStateAPIRespo
 
     public gameKey: string[];
 
-    public messages: IGameMessage[];
-
     public players: { black?: ISanitizedUser | AIString; white?: ISanitizedUser | AIString };
 
     public cooldowns: Record<Square, ICooldown>;
@@ -64,7 +62,6 @@ class GameStateAPIResponse extends BaseAPIResponse implements IGameStateAPIRespo
         super(true);
         this.fen = game.fen;
         this.gameKey = game.gameKey;
-        this.messages = game.messages;
         this.cooldowns = game.cooldownMap;
 
         let black;
@@ -108,21 +105,6 @@ class GameCreatedAPIResponse extends BaseAPIResponse implements IGameCreatedAPIR
 /**
  * The response object for when a game mesage is received or sent.
  */
-class GameMessagesAPIResponse extends BaseAPIResponse implements IGameMessagesAPIResponse {
-    /**
-     * A list of every message in chronological order.
-     */
-    messages: IGameMessage[];
-
-    /**
-     * Creates an instance of GameMessagesAPIResponse.
-     * @param messages - The list of messages for the current game.
-     */
-    constructor(messages: IGameMessage[]) {
-        super(true);
-        this.messages = messages;
-    }
-}
 
 /**
  * The API response when a successful request is made to log a user in.
@@ -146,6 +128,5 @@ export {
     ErrorAPIResponse,
     GameStateAPIResponse,
     GameCreatedAPIResponse,
-    GameMessagesAPIResponse,
     LoginAPIResponse,
 };

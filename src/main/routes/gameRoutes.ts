@@ -81,7 +81,6 @@ class GameRoutes {
                     const game = GameManager.findGameByKey(req.body.gameKey);
                     if (game) {
                         game.white = user;
-                        game.addMessage({ message: `${user.name.first} joined the game.` });
                         res.send(new GameCreatedAPIResponse(game.gameKey));
                         Logger.info(`User (uid=${user._id}) joined game`);
                     } else {

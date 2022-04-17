@@ -25,8 +25,6 @@ class ChessGame implements IChessGame {
 
     private game: ChessInstance;
 
-    public messages: IGameMessage[];
-
     public cooldownMap: Record<Square, Cooldown>;
 
     public static readonly COOLDOWN_TIME = 5;
@@ -48,7 +46,6 @@ class ChessGame implements IChessGame {
         this.owner = owner;
         this.game = new Chess();
         this.gameKey = gameKey;
-        this.messages = [];
         this.cooldownMap = {} as Record<Square, Cooldown>;
         this.moveJobLock = false;
         this.moveJob = setInterval(() => {
@@ -69,29 +66,6 @@ class ChessGame implements IChessGame {
                 enabled: false,
             },
         };
-    }
-
-    /**
-     * Adds a message to the list of messages associated with this game.
-     * All messages are added to the end of the array.
-     *
-     * @param message - The IGameMessage object to add. The only required field is
-     * `{ message: string }`, however, additional fields can be added for
-     * different types of messages (which will be handled by the front-end).
-     */
-    public addMessage(message: IGameMessage) {
-        this.messages.push(message);
-        this.blackSocket?.emit('game state', new GameStateAPIResponse(this));
-        this.whiteSocket?.emit('game state', new GameStateAPIResponse(this));
-        this.blackSocket?.emit('move-notification', message.message);
-        this.blackSocket?.emit('move-notification', message.message);
-    }
-
-    /**
-     * @returns The array of messages associated with this game.
-     */
-    public getMessages(): IGameMessage[] {
-        return this.messages;
     }
 
     /**
@@ -202,17 +176,26 @@ class ChessGame implements IChessGame {
             if (move !== null) {
                 delete this.cooldownMap[source];
                 this.cooldownMap[target] = new Cooldown(5);
-                this.addMessage({
-                    message: `${
-                        color === 'b' ? 'White' : 'Black'
-                    } moved from ${source} to ${target}`,
-                });
+                if (color === 'b') {
+                    this.blackSocket?.emit(
+                        'move-notification',
+                        `White moves their ${move.piece} to ${target}`,
+                    );
+                } else if (color === 'w') {
+                    this.whiteSocket?.emit(
+                        'move-notification',
+                        `Black moves their ${move.piece} to ${target}`,
+                    );
+                }
+
                 this.moveHistory.push({
                     fen: this.game.fen(),
                     timestamp: Date.now(),
                     move,
                 });
                 if (this.winner !== null) this.endGame();
+
+                this.emitToPlayers('game state', new GameStateAPIResponse(this));
             }
         }
 

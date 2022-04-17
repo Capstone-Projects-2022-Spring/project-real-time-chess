@@ -152,7 +152,7 @@ class RTCServer {
                 },
             );
 
-            socket.on('game state', () => GameSocketHandler.onGameStateRequest(socket, game, uid));
+            socket.on('game state', () => GameSocketHandler.onGameStateRequest(socket, game));
 
             socket.on('move piece', (source: Square, target: Square) =>
                 GameSocketHandler.onMovePieceRequest(game, uid, source, target),

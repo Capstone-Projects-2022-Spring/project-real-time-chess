@@ -118,7 +118,6 @@ class MultiplayerMatch extends BaseMatchView<BaseMatchProps, MultiplayerMatchSta
             if (response.success) {
                 this.setState({
                     fen: response.fen,
-                    messages: response.messages,
                     gameKey: response.gameKey
                         .map(eName => SupportedEmojis.find(e => e.name === eName)?.emoji)
                         .join(''),
