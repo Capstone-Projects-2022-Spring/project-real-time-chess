@@ -8,7 +8,7 @@ class PasswordFieldComponent extends InputField {
     /**
      * The characters allowed to be entered in the password input field.
      */
-    private static readonly allowedChars =
+    private static readonly allowedChars: string =
         "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!@#$%^&*()<>?;:'[]{}-=_+|";
 
     /**
