@@ -1,6 +1,5 @@
 import React from 'react';
 import CookieManager from '../../access/CookieManager';
-import ChatComponent from '../../components/ChatComponent';
 import ChessboardComponent from '../../components/ChessboardComponent';
 import ButtonComponent from '../../components/UI/ButtonComponent';
 import SupportedEmojis from '../../models/SupportedEmojis';
@@ -54,6 +53,7 @@ class MultiplayerMatch extends BaseMatchView<BaseMatchProps, MultiplayerMatchSta
                 </div>
 
                 <div className="row">
+                    <div className="col"></div>
                     <div id="boardContainer" className="col-12 col-md-6 text-center">
                         <ChessboardComponent
                             parentContainerId="boardContainer"
@@ -69,9 +69,7 @@ class MultiplayerMatch extends BaseMatchView<BaseMatchProps, MultiplayerMatchSta
                             }
                         />
                     </div>
-                    <div className="col-12 col-md-6">
-                        <ChatComponent messages={this.state.messages} />
-                    </div>
+                    <div className="col"></div>
                 </div>
 
                 <div className="row">
@@ -99,13 +97,6 @@ class MultiplayerMatch extends BaseMatchView<BaseMatchProps, MultiplayerMatchSta
                 </div>
             </div>
         );
-    }
-
-    /**
-     * Binds the socket to this component when it mounts.
-     */
-    componentDidMount() {
-        this.bindSocket();
     }
 
     /**

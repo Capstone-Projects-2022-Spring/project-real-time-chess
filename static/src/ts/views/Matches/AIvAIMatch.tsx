@@ -1,6 +1,5 @@
 import * as React from 'react';
 import ButtonComponent from '../../components/UI/ButtonComponent';
-import ChatComponent from '../../components/ChatComponent';
 import ChessboardComponent from '../../components/ChessboardComponent';
 import CookieManager from '../../access/CookieManager';
 import UINavigator from '../../models/UINavigator';
@@ -48,6 +47,7 @@ class AIvAIMatch extends BaseMatchView<BaseMatchProps, BaseMatchState> {
                 </div>
 
                 <div className="row">
+                    <div className="col"></div>
                     <div id="boardContainer" className="col-12 col-md-6 text-center">
                         <ChessboardComponent
                             parentContainerId="boardContainer"
@@ -60,9 +60,7 @@ class AIvAIMatch extends BaseMatchView<BaseMatchProps, BaseMatchState> {
                             }
                         />
                     </div>
-                    <div className="col-12 col-md-6">
-                        <ChatComponent messages={this.state.messages} />
-                    </div>
+                    <div className="col"></div>
                 </div>
             </div>
         );
