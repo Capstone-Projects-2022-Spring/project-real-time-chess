@@ -1,6 +1,8 @@
 import { Square } from 'chess.js';
 import UserDAO from './dao/UserDAO';
 
+type SanitizedPlayers = { black?: ISanitizedUser | AIString; white?: ISanitizedUser | AIString };
+
 /**
  * The base class for all API responses.
  */
@@ -50,7 +52,7 @@ class GameStateAPIResponse extends BaseAPIResponse implements IGameStateAPIRespo
 
     public gameKey: string[];
 
-    public players: { black?: ISanitizedUser | AIString; white?: ISanitizedUser | AIString };
+    public players: SanitizedPlayers;
 
     public cooldowns: Record<Square, ICooldown>;
 
