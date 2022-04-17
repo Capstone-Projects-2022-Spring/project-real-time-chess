@@ -17,7 +17,6 @@ class AIvAIMatch extends BaseMatchView<BaseMatchProps, BaseMatchState> {
      */
     constructor(props: BaseMatchProps) {
         super(props, {
-            messages: [],
             fen: undefined,
             gameKey: '',
         });

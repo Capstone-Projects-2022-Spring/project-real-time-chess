@@ -22,7 +22,6 @@ class MultiplayerMatch extends BaseMatchView<BaseMatchProps, MultiplayerMatchSta
      */
     constructor(props: BaseMatchProps) {
         super(props, {
-            messages: [],
             fen: undefined,
             gameKey: '',
             autopilotEnabled: false,

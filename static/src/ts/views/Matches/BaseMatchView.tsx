@@ -9,7 +9,6 @@ interface BaseMatchProps {
 }
 
 interface BaseMatchState {
-    messages: IGameMessage[];
     fen?: string;
     gameKey: string;
 }
@@ -59,14 +58,12 @@ abstract class BaseMatchView<
                     .map(eName => SupportedEmojis.find(e => e.name === eName)!.emoji)
                     .join(''),
                 fen: gameState.fen,
-                messages: gameState.messages,
             });
         });
 
         this.socket.on('game state', (gameState: IGameStateAPIResponse) => {
             this.setState({
                 fen: gameState.fen,
-                messages: gameState.messages,
             });
             this.displayCooldowns(gameState.cooldowns);
         });
