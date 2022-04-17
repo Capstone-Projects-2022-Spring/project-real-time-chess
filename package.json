@@ -86,6 +86,7 @@
         "prettier": "^2.5.1",
         "sass": "^1.49.9",
         "sinon": "^13.0.2",
+        "source-map-loader": "^3.0.1",
         "tplant": "^3.1.0",
         "ts-loader": "^9.2.6",
         "ts-node-test-register": "^10.0.0",
