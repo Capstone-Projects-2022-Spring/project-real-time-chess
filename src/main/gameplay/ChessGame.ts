@@ -159,6 +159,18 @@ class ChessGame implements IChessGame {
     }
 
     /**
+     * Checks if the game is in stalemate. The game is determined to
+     * be in a stalemate if both players have each made three consecutive
+     * moves. This is not a conclusive check, but it is a check that
+     * can be used to determine if the game should be over
+     *
+     * @returns True if the game is in stalemate, false otherwise.
+     */
+    private isStalemate(): boolean {
+        return this.game.in_stalemate();
+    }
+
+    /**
      * Move a piece from a source square to a target square.
      *
      * @param source - The square which the piece is currently located.
@@ -207,6 +219,11 @@ class ChessGame implements IChessGame {
                     timestamp: Date.now(),
                     move,
                 });
+
+                if (this.isStalemate()) {
+                    this.endGame();
+                }
+
                 if (this.winner !== null) this.endGame();
 
                 this.emitToPlayers('game state', new GameStateAPIResponse(this));
