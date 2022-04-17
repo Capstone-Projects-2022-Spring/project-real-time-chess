@@ -9,7 +9,7 @@ import Logger from '../Logger';
  * class for managing matchmaking queues
  * use instance() to get singleton instance
  */
-export class MatchmakingManager {
+class MatchmakingManager {
     /**
      * singleton instance of MatchmakingManager
      */
