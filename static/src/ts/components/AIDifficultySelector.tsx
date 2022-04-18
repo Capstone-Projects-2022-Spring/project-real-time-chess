@@ -23,6 +23,7 @@ class AIDifficultySelector extends React.Component<AIDifficultySelectorProps> {
                         this.props.onChange(+e);
                     }}
                     selected={this.props.selected === 1}
+                    color="rgb(0, 255, 0)"
                 >
                     AI Level 1
                 </SelectButton>
@@ -35,6 +36,7 @@ class AIDifficultySelector extends React.Component<AIDifficultySelectorProps> {
                                 this.props.onChange(+e);
                             }}
                             selected={this.props.selected === 2}
+                            color="rgb(0, 255, 155)"
                         >
                             AI Level 2
                         </SelectButton>
@@ -46,6 +48,7 @@ class AIDifficultySelector extends React.Component<AIDifficultySelectorProps> {
                                 this.props.onChange(+e);
                             }}
                             selected={this.props.selected === 3}
+                            color="#c9eb34"
                         >
                             AI Level 3
                         </SelectButton>
@@ -61,6 +64,7 @@ class AIDifficultySelector extends React.Component<AIDifficultySelectorProps> {
                                 this.props.onChange(+e);
                             }}
                             selected={this.props.selected === 4}
+                            color="#e5eb34"
                         >
                             AI Level 4
                         </SelectButton>
@@ -73,6 +77,7 @@ class AIDifficultySelector extends React.Component<AIDifficultySelectorProps> {
                                 this.props.onChange(+e);
                             }}
                             selected={this.props.selected === 5}
+                            color="#ebe534"
                         >
                             AI Level 5
                         </SelectButton>
@@ -88,6 +93,7 @@ class AIDifficultySelector extends React.Component<AIDifficultySelectorProps> {
                                 this.props.onChange(+e);
                             }}
                             selected={this.props.selected === 6}
+                            color="#ebc334"
                         >
                             AI Level 6
                         </SelectButton>
@@ -99,6 +105,7 @@ class AIDifficultySelector extends React.Component<AIDifficultySelectorProps> {
                                 this.props.onChange(+e);
                             }}
                             selected={this.props.selected === 7}
+                            color="#ebb434"
                         >
                             AI Level 7
                         </SelectButton>
@@ -114,6 +121,7 @@ class AIDifficultySelector extends React.Component<AIDifficultySelectorProps> {
                                 this.props.onChange(+e);
                             }}
                             selected={this.props.selected === 8}
+                            color="#eb8c34"
                         >
                             AI Level 8
                         </SelectButton>
@@ -125,6 +133,7 @@ class AIDifficultySelector extends React.Component<AIDifficultySelectorProps> {
                                 this.props.onChange(+e);
                             }}
                             selected={this.props.selected === 9}
+                            color="#eb6534"
                         >
                             AI Level 9
                         </SelectButton>
@@ -136,6 +145,7 @@ class AIDifficultySelector extends React.Component<AIDifficultySelectorProps> {
                                 this.props.onChange(+e);
                             }}
                             selected={this.props.selected === 10}
+                            color="#eb3434"
                         >
                             AI Level 10
                         </SelectButton>
