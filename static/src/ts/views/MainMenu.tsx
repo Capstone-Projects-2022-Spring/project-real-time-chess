@@ -152,7 +152,7 @@ class GameplayOptions extends React.Component<
                     <div className="col-12 col-md-6 col-lg-3 mb-2">
                         <ButtonComponent
                             onClick={() => {
-                                UINavigator.render(<Profile email="" />);
+                                UINavigator.render(<Profile />);
                             }}
                             width="100%"
                         >

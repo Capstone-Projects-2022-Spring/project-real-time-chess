@@ -1,70 +1,43 @@
 import * as React from 'react';
-import ButtonComponent from '../../components/UI/ButtonComponent';
-import Replays from './Replays';
-import UINavigator from '../../models/UINavigator';
-import Users from '../../access/Users';
-import GameplayOptions from '../MainMenu';
-
-interface ProfileProps {
-    email: string;
-}
+import GameAccess from '../../access/GameAccess';
+import GameHistoryItem from '../../components/GameHistoryItem';
+import Titlebar from '../../components/Titlebar';
+import ToastNotification from '../../components/UI/ToastNotification';
+import UserProfileCard from '../../components/UserProfileCard';
+import SupportedEmojis from '../../models/SupportedEmojis';
 
 interface ProfileState {
-    userFirst: string;
-    userLast: string;
-    email: string;
-    wins: number;
-    losses: number;
-    totalGames: number;
-    info: string;
+    gameHistory: GameHistory[];
 }
 
 /**
  * The profile screen component.
  */
-class Profile extends React.Component<ProfileProps, ProfileState, { info: string }> {
+class Profile extends React.Component<NoProps, ProfileState> {
     /**
      * Creates an instance of Profile.
      * @param props - No props.
      */
-    constructor(props: ProfileProps) {
+    constructor(props: NoProps) {
         super(props);
         this.state = {
-            userFirst: '',
-            userLast: '',
-            email: '',
-            info: '',
-            wins: 0,
-            losses: 0,
-            totalGames: 0,
+            gameHistory: [],
         };
     }
 
     /**
-     * Gets the user information from the users collection database.
+     * Pulls information about the user and updates the state
+     * with the correct information.
      */
-    componentDidMount() {
-        Users.getInfo()
-            .then(user => {
-                if (user) {
-                    this.setState({
-                        userFirst: user.name.first,
-                        userLast: user.name.last,
-                        email: user.email,
-                        wins: user.wins,
-                        losses: user.losses,
-                        totalGames: user.wins + user.losses,
-                    });
-                } else {
-                    this.setState({
-                        userFirst: 'else',
-                    });
-                }
+    async componentDidMount() {
+        GameAccess.getHistory()
+            .then(gameHistory => {
+                let last5 = gameHistory.sort((a, b) => b.timestamp - a.timestamp);
+                if (last5.length > 5) last5 = last5.slice(0, 5);
+                this.setState({ gameHistory });
             })
             .catch(() => {
-                this.setState({
-                    userFirst: 'promise did not resolve',
-                });
+                ToastNotification.notify('There was error fetching your game history', 15000);
             });
     }
 
@@ -73,85 +46,26 @@ class Profile extends React.Component<ProfileProps, ProfileState, { info: string
      */
     render() {
         return (
-            <div className="container">
-                <div className="row">
-                    <h1 style={{ textAlign: 'center' }}>Profile</h1>
-                    <div className="col" style={{ paddingBottom: '10px' }}>
-                        <ButtonComponent
-                            label="Home"
-                            width="100%"
-                            onClick={() => {
-                                UINavigator.render(<GameplayOptions />);
-                            }}
-                        />
+            <div className="container-fluid">
+                <Titlebar title="Profile" />
+
+                <div className="row p-4">
+                    <div className="col-12 col-md-6 col-lg-4 p-4">
+                        <UserProfileCard />
                     </div>
-                    <div className="col" style={{ paddingBottom: '10px' }}>
-                        <ButtonComponent
-                            label="Back"
-                            width="100%"
-                            onClick={() => {
-                                UINavigator.render(<GameplayOptions />);
-                            }}
-                        />
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col">
-                        <ButtonComponent
-                            label="User Info"
-                            width="100%"
-                            onClick={() => {
-                                this.userStatsToggle('collapse');
-                                this.userInfoToggle('visible');
-                            }}
-                        />
-                    </div>
-                    <div className="col">
-                        <ButtonComponent
-                            label="User Stats"
-                            width="100%"
-                            onClick={() => {
-                                this.userInfoToggle('collapse');
-                                this.userStatsToggle('visible');
-                            }}
-                        />
-                    </div>
-                    <div className="col">
-                        <ButtonComponent
-                            label="View Past Games"
-                            width="100%"
-                            onClick={() => {
-                                UINavigator.render(<Replays />);
-                            }}
-                        />
-                    </div>
-                    <div className="row">
-                        <table style={{ width: '50%' }}>
-                            <tr id="firstName" style={{ visibility: 'collapse' }}>
-                                <td style={{ fontSize: '28px' }}>First Name:</td>
-                                <td style={{ fontSize: '20px' }}>{this.state.userFirst}</td>
-                            </tr>
-                            <tr id="lastName" style={{ visibility: 'collapse' }}>
-                                <td style={{ fontSize: '28px' }}>Last Name:</td>
-                                <td style={{ fontSize: '20px' }}>{this.state.userLast}</td>
-                            </tr>
-                            <tr id="email" style={{ visibility: 'collapse' }}>
-                                <td style={{ fontSize: '28px' }}>Email:</td>
-                                <td style={{ fontSize: '20px' }}>{this.state.email}</td>
-                            </tr>
-                            <tr id="wins" style={{ visibility: 'collapse' }}>
-                                <td style={{ fontSize: '28px' }}>Wins:</td>
-                                <td style={{ fontSize: '20px' }}>{this.state.wins}</td>
-                            </tr>
-                            <tr id="losses" style={{ visibility: 'collapse' }}>
-                                <td style={{ fontSize: '28px' }}>Losses:</td>
-                                <td style={{ fontSize: '20px' }}>{this.state.losses}</td>
-                            </tr>
-                            <tr id="total" style={{ visibility: 'collapse' }}>
-                                <td style={{ fontSize: '28px' }}>Total Games:</td>
-                                <td style={{ fontSize: '20px' }}>{this.state.totalGames}</td>
-                            </tr>
-                        </table>
+                    <div className="col-12 col-md-6 col-lg-8 p-4">
+                        {this.state.gameHistory.map((gameHistory, index) => (
+                            <GameHistoryItem
+                                label={gameHistory.label}
+                                gameKey={gameHistory.game_key
+                                    .map(e => SupportedEmojis.find(obj => obj.name === e)!.emoji)
+                                    .join('')}
+                                key={index}
+                            />
+                        ))}
+                        {this.state.gameHistory.length > 0 ? (
+                            <div className="game-history-item">View entire game history</div>
+                        ) : null}
                     </div>
                 </div>
             </div>
@@ -181,4 +95,3 @@ class Profile extends React.Component<ProfileProps, ProfileState, { info: string
 }
 
 export default Profile;
-export { ProfileProps, ProfileState };

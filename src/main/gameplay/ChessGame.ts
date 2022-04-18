@@ -266,6 +266,7 @@ class ChessGame implements IChessGame {
      * Ends the game and publishes the game to the database.
      */
     public endGame() {
+        clearInterval(this.moveJob);
         if (this.autopilot.black.enabled && this.autopilot.black.job) {
             clearInterval(this.autopilot.black.job);
         }
@@ -273,8 +274,6 @@ class ChessGame implements IChessGame {
         if (this.autopilot.white.enabled && this.autopilot.white.job) {
             clearInterval(this.autopilot.white.job);
         }
-
-        clearInterval(this.moveJob);
 
         const dao = new GameHistoryDAO();
         let black: ObjectId | AIString | 'No Player';
@@ -289,10 +288,11 @@ class ChessGame implements IChessGame {
         dao.insertOne({
             black,
             white,
+            label: `${this.whiteName} vs ${this.blackName}`,
             game_key: this.gameKey,
             history: this.moveHistory,
+            timestamp: Date.now(),
         }).catch(err => Logger.error(err));
-        clearInterval(this.moveJob);
     }
 
     /**
