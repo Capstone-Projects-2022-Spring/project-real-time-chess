@@ -43,13 +43,19 @@ class GameHistoryView extends React.Component<NoProps, GameHistoryState> {
                 <Titlebar title="Game History" />
                 <div className="row p-4">
                     {this.state.gameHistory.map((gameHistory, index) => (
-                        <GameHistoryItem
-                            label={gameHistory.label}
-                            gameKey={gameHistory.game_key
-                                .map(name => SupportedEmojis.find(obj => obj.name === name)!.emoji)
-                                .join('')}
-                            key={index}
-                        />
+                        <div className="col-12 col-md-6 col-lg-4">
+                            <GameHistoryItem
+                                label={gameHistory.label}
+                                gameKey={gameHistory.game_key
+                                    .map(
+                                        name =>
+                                            SupportedEmojis.find(obj => obj.name === name)!.emoji,
+                                    )
+                                    .join('')}
+                                timestamp={gameHistory.timestamp}
+                                key={index}
+                            />
+                        </div>
                     ))}
                 </div>
             </div>
