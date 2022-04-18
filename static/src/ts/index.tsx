@@ -6,6 +6,7 @@ import GameplayOptions from './views/MainMenu';
 import UINavigator from './models/UINavigator';
 import Homepage from './views/Homepage';
 import Preferences from './views/Preferences';
+import CookieManager from './access/CookieManager';
 
 ReactDOM.render(<Homepage />, document.getElementById('react-app-target'));
 
@@ -23,4 +24,4 @@ if (Users.hasCert()) {
         });
 }
 
-UINavigator.render(<Preferences />);
+// if (CookieManager.getCookie('pref-set') !== 'true') UINavigator.render(<Preferences />);
