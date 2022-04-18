@@ -42,7 +42,7 @@ class AIvAISetup extends React.Component<
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col-12 col-md-6">
+                    <div className="col-12 col-md-6 bg-light text-dark p-4">
                         <h2>Bot #1 (White)</h2>
                         <AIDifficultySelector
                             onChange={val => {
@@ -51,7 +51,7 @@ class AIvAISetup extends React.Component<
                             selected={this.state.bot1Difficulty}
                         />
                     </div>
-                    <div className="col-12 col-md-6">
+                    <div className="col-12 col-md-6 bg-dark text-light p-4">
                         <h2>Bot #2 (Black)</h2>
                         <AIDifficultySelector
                             onChange={val => {
