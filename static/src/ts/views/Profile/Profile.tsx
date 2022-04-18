@@ -63,6 +63,9 @@ class Profile extends React.Component<NoProps, ProfileState> {
                                 key={index}
                             />
                         ))}
+                        {this.state.gameHistory.length > 0 ? (
+                            <div className="game-history-item">View entire game history</div>
+                        ) : null}
                     </div>
                 </div>
             </div>
