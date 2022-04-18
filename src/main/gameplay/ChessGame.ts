@@ -285,14 +285,16 @@ class ChessGame implements IChessGame {
         if (typeof this.white === 'string') white = this.white;
         else white = this.white?._id ?? 'No Player';
 
-        dao.insertOne({
-            black,
-            white,
-            label: `${this.whiteName} vs ${this.blackName}`,
-            game_key: this.gameKey,
-            history: this.moveHistory,
-            timestamp: Date.now(),
-        }).catch(err => Logger.error(err));
+        if (black !== 'No Player' && white !== 'No Player') {
+            dao.insertOne({
+                black,
+                white,
+                label: `${this.whiteName} vs ${this.blackName}`,
+                game_key: this.gameKey,
+                history: this.moveHistory,
+                timestamp: Date.now(),
+            }).catch(err => Logger.error(err));
+        }
     }
 
     /**
