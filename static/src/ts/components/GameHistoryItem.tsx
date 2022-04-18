@@ -14,9 +14,9 @@ class GameHistoryItem extends React.Component<GameHistoryItemProps> {
      */
     render() {
         return (
-            <div>
-                <h3>{this.props.label}</h3>
-                <p>{this.props.gameKey}</p>
+            <div className="game-history-item">
+                <h4>{this.props.label}</h4>
+                <p className="game-history-emoji-key">{this.props.gameKey}</p>
             </div>
         );
     }
