@@ -37,7 +37,7 @@ class FriendGameSetupComponent extends React.Component<NoProps, { gameKey: strin
             <div className="container-fluid">
                 <Titlebar title="Friend Game Setup" />
                 <div className="row">
-                    <div className="col-12 col-md-6">
+                    <div className="col-12 col-md-6 p-4">
                         <h2>Create Game</h2>
                         <p>
                             Create a game. Then you will be given a game code. Send the game code to
@@ -50,7 +50,7 @@ class FriendGameSetupComponent extends React.Component<NoProps, { gameKey: strin
                         />
                     </div>
 
-                    <div className="col-12 col-md-6">
+                    <div className="col-12 col-md-6 p-4">
                         <h2>Join Game</h2>
                         <p>Get the game code from whoever created the game.</p>
                         <EmojiKeyboard
