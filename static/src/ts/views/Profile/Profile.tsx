@@ -1,9 +1,9 @@
 import * as React from 'react';
-import ButtonComponent from '../../components/UI/ButtonComponent';
-import Replays from './Replays';
-import UINavigator from '../../models/UINavigator';
 import Users from '../../access/Users';
-import GameplayOptions from '../MainMenu';
+import Titlebar from '../../components/Titlebar';
+import ButtonComponent from '../../components/UI/ButtonComponent';
+import UINavigator from '../../models/UINavigator';
+import Replays from './Replays';
 
 interface ProfileProps {
     email: string;
@@ -74,27 +74,8 @@ class Profile extends React.Component<ProfileProps, ProfileState, { info: string
     render() {
         return (
             <div className="container">
-                <div className="row">
-                    <h1 style={{ textAlign: 'center' }}>Profile</h1>
-                    <div className="col" style={{ paddingBottom: '10px' }}>
-                        <ButtonComponent
-                            label="Home"
-                            width="100%"
-                            onClick={() => {
-                                UINavigator.render(<GameplayOptions />);
-                            }}
-                        />
-                    </div>
-                    <div className="col" style={{ paddingBottom: '10px' }}>
-                        <ButtonComponent
-                            label="Back"
-                            width="100%"
-                            onClick={() => {
-                                UINavigator.render(<GameplayOptions />);
-                            }}
-                        />
-                    </div>
-                </div>
+                <Titlebar title="Profile" />
+
                 <div className="row">
                     <div className="col">
                         <ButtonComponent

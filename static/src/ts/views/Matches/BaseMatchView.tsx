@@ -5,7 +5,7 @@ import Swal from 'sweetalert2';
 import ToastNotification from '../../components/UI/ToastNotification';
 import SupportedEmojis from '../../models/SupportedEmojis';
 import UINavigator from '../../models/UINavigator';
-import GameplayOptions from '../GameplayOptions';
+import MainMenu from '../MainMenu';
 
 interface BaseMatchProps {
     orientation: 'b' | 'w';
@@ -76,10 +76,10 @@ abstract class BaseMatchView<
                 title: 'Winner',
                 text: `${name} won the game!`,
                 didClose: () => {
-                    UINavigator.render(<GameplayOptions />);
+                    UINavigator.render(<MainMenu />);
                 },
             }).catch(() => {
-                UINavigator.render(<GameplayOptions />);
+                UINavigator.render(<MainMenu />);
             });
         });
 
@@ -88,10 +88,10 @@ abstract class BaseMatchView<
                 title: 'Winner',
                 text: `${name} won the game!`,
                 didClose: () => {
-                    UINavigator.render(<GameplayOptions />);
+                    UINavigator.render(<MainMenu />);
                 },
             }).catch(() => {
-                UINavigator.render(<GameplayOptions />);
+                UINavigator.render(<MainMenu />);
             });
         });
 
