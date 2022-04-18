@@ -1,8 +1,7 @@
-import { IonIcon } from '@ionic/react';
-import { homeOutline } from 'ionicons/icons';
 import * as React from 'react';
 import CookieManager from '../../access/CookieManager';
 import ChessboardComponent from '../../components/ChessboardComponent';
+import Titlebar from '../../components/Titlebar';
 import BaseMatchView, { BaseMatchProps, BaseMatchState } from './BaseMatchView';
 
 /**
@@ -27,14 +26,7 @@ class AIvAIMatch extends BaseMatchView<BaseMatchProps, BaseMatchState> {
     render() {
         return (
             <div className="container-fluid">
-                <div className="row bg-dark text-light">
-                    <div className="col">
-                        <h1>
-                            <IonIcon icon={homeOutline} />
-                            Artificial Intelligence Game
-                        </h1>
-                    </div>
-                </div>
+                <Titlebar title="Artificial Intelligence Game" />
                 <div className="row" style={{ backgroundColor: 'rgb(200, 200, 200)' }}>
                     <div className="col-12 p-2">Game Key: {this.state.gameKey}</div>
                 </div>
