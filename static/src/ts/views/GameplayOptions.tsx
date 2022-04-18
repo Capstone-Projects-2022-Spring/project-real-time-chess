@@ -43,9 +43,12 @@ class GameplayOptions extends React.Component<
         return (
             <div className="container">
                 <div className="row">
-                    <div className="col">
-                        <h1 style={{ textAlign: 'center' }}>Gameplay Options</h1>
+                    <div className="col"></div>
+                    <div className="col-12 col-md-6 col-lg-4 mt-2 text-center game-mode-hover-img-container light-shadow">
+                        <img src={this.state.hoverImage} className="w-100" />
+                        {this.state.hoverImageCaption}
                     </div>
+                    <div className="col"></div>
                 </div>
 
                 <div className="row mb-2">
@@ -171,33 +174,6 @@ class GameplayOptions extends React.Component<
                             <span>How to Play</span>
                         </ButtonComponent>
                     </div>
-                </div>
-
-                {/* <div className="row">
-                    <div className="col-12 mt-4">
-                        <div className="alert alert-primary" role="alert">
-                            <div>
-                                Click{' '}
-                                <a
-                                    href="#"
-                                    onClick={() => HowToPlaySwal.displayHowToPlay()}
-                                    className="alert-link"
-                                >
-                                    here
-                                </a>{' '}
-                                to learn how to play.
-                            </div>
-                        </div>
-                    </div>
-                </div> */}
-
-                <div className="row">
-                    <div className="col"></div>
-                    <div className="col-12 col-md-6 col-lg-4 mt-2 text-center game-mode-hover-img-container light-shadow">
-                        <img src={this.state.hoverImage} className="w-100" />
-                        {this.state.hoverImageCaption}
-                    </div>
-                    <div className="col"></div>
                 </div>
             </div>
         );
