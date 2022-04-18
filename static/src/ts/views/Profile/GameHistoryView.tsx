@@ -52,6 +52,7 @@ class GameHistoryView extends React.Component<NoProps, GameHistoryState> {
                                             SupportedEmojis.find(obj => obj.name === name)!.emoji,
                                     )
                                     .join('')}
+                                moves={gameHistory.history}
                                 timestamp={gameHistory.timestamp}
                                 key={index}
                             />

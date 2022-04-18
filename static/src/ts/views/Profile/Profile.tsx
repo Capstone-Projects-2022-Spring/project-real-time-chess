@@ -63,6 +63,7 @@ class Profile extends React.Component<NoProps, ProfileState> {
                                     .map(e => SupportedEmojis.find(obj => obj.name === e)!.emoji)
                                     .join('')}
                                 timestamp={gameHistory.timestamp}
+                                moves={gameHistory.history}
                                 key={index}
                             />
                         ))}

@@ -1,9 +1,12 @@
 import React from 'react';
+import UINavigator from '../models/UINavigator';
+import ReplayMatch from '../views/Matches/ReplayMatch';
 
 interface GameHistoryItemProps {
     label: string;
     gameKey: string;
     timestamp: number;
+    moves: MoveRecord[];
 }
 
 /**
@@ -15,7 +18,19 @@ class GameHistoryItem extends React.Component<GameHistoryItemProps> {
      */
     render() {
         return (
-            <div className="game-history-item">
+            <div
+                className="game-history-item"
+                onClick={() =>
+                    UINavigator.render(
+                        <ReplayMatch
+                            label={this.props.label}
+                            gameKey={this.props.gameKey}
+                            timestamp={this.props.timestamp}
+                            moves={this.props.moves}
+                        />,
+                    )
+                }
+            >
                 <h4 style={{ display: 'flex', justifyContent: 'space-between' }}>
                     {this.props.label}
                     <small style={{ color: 'gray' }}>
