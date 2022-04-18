@@ -17,15 +17,8 @@ import Profile from './Profile/Profile';
 import AIvAISetup from './SetupScreens/AIvAISetup';
 import FriendGameSetupComponent from './SetupScreens/FriendGameSetup';
 import MatchmakingLobbyComponent from './SetupScreens/MatchmakingLobby';
-<<<<<<< HEAD
 import SinglePlayerSetup from './SetupScreens/SinglePlayerSetup';
-=======
 import GameAccess from '../access/GameAccess';
-<<<<<<< HEAD
->>>>>>> d28475d (rejoin game now works as intended)
-=======
-import SinglePlayerSetup from './SetupScreens/SinglPlayerSetup';
->>>>>>> c309d2c (fix for merge issue)
 
 /**
  * Gameplay options page which allows a user to choose which game mode they want to play.
@@ -198,7 +191,6 @@ class GameplayOptions extends React.Component<
             .then(game => {
                 let gameOrientation: 'b' | 'w';
                 if (game.success) {
-                    console.log(game);
                     gameOrientation = game.black === CookieManager.uid ? 'b' : 'w';
                     UINavigator.render(<MultiplayerMatch orientation={gameOrientation} />);
                 } else this.noGame(1);
