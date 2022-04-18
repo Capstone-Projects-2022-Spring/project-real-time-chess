@@ -2,6 +2,29 @@
 import { ChessInstance, Move, PieceType } from 'chess.js';
 import ModifiedChess, { ModifiedChessInstance } from './modified.chess.js';
 
+type ColorPST = {
+    p: number[][];
+    n: number[][];
+    b: number[][];
+    r: number[][];
+    q: number[][];
+    k: number[][];
+    k_e: number[][];
+};
+
+type PerspectivePST = {
+    w: ColorPST;
+    b: ColorPST;
+};
+
+type MinimaxPruneParams = {
+    depth: number;
+    alpha: number;
+    beta: number;
+};
+
+type BestMove = [Move | null, number];
+
 /**
  * The GrandMaster class is an internal library written to retrieve the best move
  * in a game of real-time chess.
@@ -36,7 +59,7 @@ class GrandMaster {
         k_e: number;
     };
 
-    private pst_w = {
+    private pst_w: ColorPST = {
         p: [
             [100, 100, 100, 100, 105, 100, 100, 100],
             [78, 83, 86, 73, 102, 82, 85, 90],
@@ -111,7 +134,7 @@ class GrandMaster {
         ],
     };
 
-    private pst_b = {
+    private pst_b: ColorPST = {
         p: this.pst_w.p.slice().reverse(),
         n: this.pst_w.n.slice().reverse(),
         b: this.pst_w.b.slice().reverse(),
@@ -121,9 +144,9 @@ class GrandMaster {
         k_e: this.pst_w.k_e.slice().reverse(),
     };
 
-    private pstOpponent = { w: this.pst_b, b: this.pst_w };
+    private pstOpponent: PerspectivePST = { w: this.pst_b, b: this.pst_w };
 
-    private pstSelf = { w: this.pst_w, b: this.pst_b };
+    private pstSelf: PerspectivePST = { w: this.pst_w, b: this.pst_b };
 
     /**
      * Creates an instance of GrandMaster.
@@ -137,7 +160,7 @@ class GrandMaster {
     /**
      * Calculates the best legal move for the given color.
      */
-    getBestMove(color: 'w' | 'b', currSum: number, captureKing?: boolean): [Move | null, number] {
+    getBestMove(color: 'w' | 'b', currSum: number, captureKing?: boolean): BestMove {
         // this.positionCount = 0;
 
         // This is how deep the AI will recursively search
@@ -157,9 +180,11 @@ class GrandMaster {
         // const d = new Date().getTime();
         const [bestMove, bestMoveValue] = this.minimax(
             this.game,
-            depth,
-            Number.NEGATIVE_INFINITY,
-            Number.POSITIVE_INFINITY,
+            {
+                depth,
+                alpha: Number.NEGATIVE_INFINITY,
+                beta: Number.POSITIVE_INFINITY,
+            },
             true,
             currSum,
             color,
@@ -182,7 +207,7 @@ class GrandMaster {
      *
      * @param game - The chess instance (from chess.js)
      * @param depth - The depth of the search tree (i.e. height limit)
-     * @param isMaximizingPlayer - True if the current layer is maximizing, false otherwise
+     * @param maxingPlayer - True if the current layer is maximizing, false otherwise
      * @param sum - The sum (evaluation) so far at the current layer
      * @param color - The color of the current player
      *
@@ -190,15 +215,13 @@ class GrandMaster {
      */
     minimax(
         game: ModifiedChessInstance,
-        depth: number,
-        _alpha: number,
-        _beta: number,
-        isMaximizingPlayer: boolean,
+        params: MinimaxPruneParams,
+        maxingPlayer: boolean,
         sum: number,
         color: 'b' | 'w',
-    ): [Move | null, number] {
-        let alpha = _alpha;
-        let beta = _beta;
+    ): BestMove {
+        let { alpha, beta } = params;
+        const { depth } = params;
 
         // this.positionCount++;
         const children = game.ugly_moves({
@@ -226,17 +249,15 @@ class GrandMaster {
             const newSum = this.evaluateBoard(game, currPrettyMove, sum, color);
             const childValue = this.minimax(
                 game,
-                depth - 1,
-                alpha,
-                beta,
-                !isMaximizingPlayer,
+                { depth: depth - 1, alpha, beta },
+                !maxingPlayer,
                 newSum,
                 color,
             )[1];
 
             game.undo();
 
-            if (isMaximizingPlayer) {
+            if (maxingPlayer) {
                 if (childValue! > maxValue) {
                     maxValue = childValue as number;
                     bestMove = currPrettyMove;
@@ -260,7 +281,7 @@ class GrandMaster {
             }
         }
 
-        if (isMaximizingPlayer) {
+        if (maxingPlayer) {
             return [bestMove ?? null, maxValue];
         }
         return [bestMove ?? null, minValue];

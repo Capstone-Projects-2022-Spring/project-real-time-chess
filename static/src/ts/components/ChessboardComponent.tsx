@@ -3,11 +3,13 @@ import * as React from 'react';
 import { Chessboard } from 'react-chessboard';
 import ToastNotification from './UI/ToastNotification';
 
+type PieceDropCallback = (source: Square, target: Square) => void;
+
 interface ChessboardComponentProps {
     parentContainerId: string;
     orientation: 'b' | 'w';
     fen?: string;
-    onPieceDrop?: (source: Square, target: Square) => void;
+    onPieceDrop?: PieceDropCallback;
     onFENChange: (fen: string) => void;
 }
 

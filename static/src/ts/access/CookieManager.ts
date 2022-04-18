@@ -29,16 +29,9 @@ class CookieManager {
      *
      * @param cname - The cookie name.
      * @param cvalue - The cookie's value.
-     * @param exdays - The number of days until the cookie expires.
      */
-    static setCookie(cname: string, cvalue: string, exdays?: number) {
-        let expires = '';
-        if (exdays) {
-            const d = new Date();
-            d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
-            expires = `expires=${d.toUTCString()}`;
-        }
-        document.cookie = `${cname}=${cvalue};${expires};path=/`;
+    static setCookie(cname: string, cvalue: string) {
+        document.cookie = `${cname}=${cvalue};path=/`;
     }
 
     /**
