@@ -21,7 +21,11 @@ import MatchmakingLobbyComponent from './SetupScreens/MatchmakingLobby';
 import SinglePlayerSetup from './SetupScreens/SinglePlayerSetup';
 =======
 import GameAccess from '../access/GameAccess';
+<<<<<<< HEAD
 >>>>>>> d28475d (rejoin game now works as intended)
+=======
+import SinglePlayerSetup from './SetupScreens/SinglPlayerSetup';
+>>>>>>> c309d2c (fix for merge issue)
 
 /**
  * Gameplay options page which allows a user to choose which game mode they want to play.
