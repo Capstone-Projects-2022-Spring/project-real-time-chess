@@ -1,15 +1,21 @@
-import { IonIcon } from '@ionic/react';
 import {
+    play,
+    playBack,
     playBackOutline,
+    playForward,
     playForwardOutline,
     playOutline,
+    playSkipBack,
     playSkipBackOutline,
+    playSkipForward,
     playSkipForwardOutline,
+    reload,
     reloadOutline,
 } from 'ionicons/icons';
 import React from 'react';
 import ChessboardComponent from '../../components/ChessboardComponent';
 import Titlebar from '../../components/Titlebar';
+import IconButton from '../../components/UI/IconButton';
 
 interface ReplayMatchProps {
     label: string;
@@ -47,13 +53,33 @@ class ReplayMatch extends React.Component<ReplayMatchProps, ReplayMatchState> {
                 <Titlebar title={`Replay Match: ${this.props.label}`} />
 
                 <div className="row" style={{ backgroundColor: 'rgb(230, 230, 230)' }}>
-                    <div className="col">
-                        <IonIcon icon={playBackOutline} />
-                        <IonIcon icon={playSkipBackOutline} />
-                        <IonIcon icon={playOutline} />
-                        <IonIcon icon={playSkipForwardOutline} />
-                        <IonIcon icon={playForwardOutline} />
-                        <IonIcon icon={reloadOutline} />
+                    <div className="col text-center">
+                        <IconButton
+                            icon={playBackOutline}
+                            hoverIcon={playBack}
+                            onClick={() => undefined}
+                        />
+                        <IconButton
+                            icon={playSkipBackOutline}
+                            hoverIcon={playSkipBack}
+                            onClick={() => undefined}
+                        />
+                        <IconButton icon={playOutline} hoverIcon={play} onClick={() => undefined} />
+                        <IconButton
+                            icon={playSkipForwardOutline}
+                            hoverIcon={playSkipForward}
+                            onClick={() => undefined}
+                        />
+                        <IconButton
+                            icon={playForwardOutline}
+                            hoverIcon={playForward}
+                            onClick={() => undefined}
+                        />
+                        <IconButton
+                            icon={reloadOutline}
+                            hoverIcon={reload}
+                            onClick={() => undefined}
+                        />
                     </div>
                 </div>
 
