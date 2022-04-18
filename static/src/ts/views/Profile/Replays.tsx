@@ -49,7 +49,7 @@ class Replays extends React.Component<ReplaysProps, ReplaysState, { info: string
                             label="Back"
                             width="100%"
                             onClick={() => {
-                                UINavigator.render(<Profile email="" />);
+                                UINavigator.render(<Profile />);
                             }}
                         />
                     </div>

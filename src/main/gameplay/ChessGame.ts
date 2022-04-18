@@ -289,8 +289,10 @@ class ChessGame implements IChessGame {
         dao.insertOne({
             black,
             white,
+            label: `${this.whiteName} vs ${this.blackName}`,
             game_key: this.gameKey,
             history: this.moveHistory,
+            timestamp: Date.now(),
         }).catch(err => Logger.error(err));
         clearInterval(this.moveJob);
     }

@@ -35,8 +35,10 @@ declare interface ICooldown {
 interface GameHistory {
     black: import('mongodb').ObjectId | AIString | 'No Player';
     white: import('mongodb').ObjectId | AIString | 'No Player';
+    label: string;
     game_key: string[];
     history: MoveRecord[];
+    timestamp: number;
 }
 
 type AIString =

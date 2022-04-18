@@ -1,71 +1,43 @@
 import * as React from 'react';
-import Users from '../../access/Users';
+import GameAccess from '../../access/GameAccess';
+import GameHistoryItem from '../../components/GameHistoryItem';
 import Titlebar from '../../components/Titlebar';
-import ButtonComponent from '../../components/UI/ButtonComponent';
+import ToastNotification from '../../components/UI/ToastNotification';
 import UserProfileCard from '../../components/UserProfileCard';
-import UINavigator from '../../models/UINavigator';
-import Replays from './Replays';
-
-interface ProfileProps {
-    email: string;
-}
+import SupportedEmojis from '../../models/SupportedEmojis';
 
 interface ProfileState {
-    userFirst: string;
-    userLast: string;
-    email: string;
-    wins: number;
-    losses: number;
-    totalGames: number;
-    info: string;
+    gameHistory: GameHistory[];
 }
 
 /**
  * The profile screen component.
  */
-class Profile extends React.Component<ProfileProps, ProfileState, { info: string }> {
+class Profile extends React.Component<NoProps, ProfileState> {
     /**
      * Creates an instance of Profile.
      * @param props - No props.
      */
-    constructor(props: ProfileProps) {
+    constructor(props: NoProps) {
         super(props);
         this.state = {
-            userFirst: '',
-            userLast: '',
-            email: '',
-            info: '',
-            wins: 0,
-            losses: 0,
-            totalGames: 0,
+            gameHistory: [],
         };
     }
 
     /**
-     * Gets the user information from the users collection database.
+     * Pulls information about the user and updates the state
+     * with the correct information.
      */
-    componentDidMount() {
-        Users.getInfo()
-            .then(user => {
-                if (user) {
-                    this.setState({
-                        userFirst: user.name.first,
-                        userLast: user.name.last,
-                        email: user.email,
-                        wins: user.wins,
-                        losses: user.losses,
-                        totalGames: user.wins + user.losses,
-                    });
-                } else {
-                    this.setState({
-                        userFirst: 'else',
-                    });
-                }
+    async componentDidMount() {
+        GameAccess.getHistory()
+            .then(gameHistory => {
+                let last5 = gameHistory.sort((a, b) => b.timestamp - a.timestamp);
+                if (last5.length > 5) last5 = last5.slice(0, 5);
+                this.setState({ gameHistory });
             })
             .catch(() => {
-                this.setState({
-                    userFirst: 'promise did not resolve',
-                });
+                ToastNotification.notify('There was error fetching your game history', 15000);
             });
     }
 
@@ -77,11 +49,21 @@ class Profile extends React.Component<ProfileProps, ProfileState, { info: string
             <div className="container-fluid">
                 <Titlebar title="Profile" />
 
-                <div className="row">
-                    <div className="col-12 col-md-6 col-lg-4">
+                <div className="row p-4">
+                    <div className="col-12 col-md-6 col-lg-4 p-4">
                         <UserProfileCard />
                     </div>
-                    <div className="col-12 col-md-6 col-lg-8"></div>
+                    <div className="col-12 col-md-6 col-lg-8 p-4">
+                        {this.state.gameHistory.map((gameHistory, index) => (
+                            <GameHistoryItem
+                                label={gameHistory.label}
+                                gameKey={gameHistory.game_key
+                                    .map(e => SupportedEmojis.find(obj => obj.name === e)!.emoji)
+                                    .join('')}
+                                key={index}
+                            />
+                        ))}
+                    </div>
                 </div>
             </div>
         );
@@ -110,4 +92,3 @@ class Profile extends React.Component<ProfileProps, ProfileState, { info: string
 }
 
 export default Profile;
-export { ProfileProps, ProfileState };
