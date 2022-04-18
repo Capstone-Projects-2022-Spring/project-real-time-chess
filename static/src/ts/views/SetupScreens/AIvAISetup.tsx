@@ -1,7 +1,7 @@
 import * as React from 'react';
 import GameAccess from '../../access/GameAccess';
 import AIDifficultySelector from '../../components/AIDifficultySelector';
-import HomeButton from '../../components/HomeButton';
+import Titlebar from '../../components/Titlebar';
 import ButtonComponent from '../../components/UI/ButtonComponent';
 import UINavigator from '../../models/UINavigator';
 import AIvAIMatch from '../Matches/AIvAIMatch';
@@ -33,14 +33,7 @@ class AIvAISetup extends React.Component<
     render() {
         return (
             <div className="container-fluid">
-                <div className="row primary-gradient hue-rotate">
-                    <div className="col ">
-                        <h1 style={{ marginBottom: 0 }}>
-                            <HomeButton />
-                            &nbsp;&nbsp; AI v AI Setup
-                        </h1>
-                    </div>
-                </div>
+                <Titlebar title="AIvAI Setup" />
                 <div className="row">
                     <div className="col-12 col-md-6 bg-light text-dark p-4">
                         <h2>Bot #1 (White)</h2>

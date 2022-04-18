@@ -2,7 +2,7 @@ import * as React from 'react';
 import Swal from 'sweetalert2';
 import GameAccess from '../../access/GameAccess';
 import CooldownSelectorComponent from '../../components/CooldownSelectorComponent';
-import HomeButton from '../../components/HomeButton';
+import Titlebar from '../../components/Titlebar';
 import ButtonComponent from '../../components/UI/ButtonComponent';
 import EmojiKeyboard from '../../components/UI/EmojiKeyboard';
 import SupportedEmojis from '../../models/SupportedEmojis';
@@ -35,14 +35,7 @@ class FriendGameSetupComponent extends React.Component<NoProps, { gameKey: strin
     render() {
         return (
             <div className="container-fluid">
-                <div className="row text-light mb-4 primary-gradient hue-rotate">
-                    <div className="col">
-                        <h1 style={{ marginBottom: 0 }}>
-                            <HomeButton />
-                            &nbsp;&nbsp; Friend v Friend Game Setup
-                        </h1>
-                    </div>
-                </div>
+                <Titlebar title="Friend Game Setup" />
                 <div className="row">
                     <div className="col-12 col-md-6">
                         <h2>Create Game</h2>
