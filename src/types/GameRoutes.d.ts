@@ -52,3 +52,12 @@ declare type ChessGameSocket = import('socket.io').Socket<
 type GameHistoryAPIRequest = import('express').Request;
 
 type GameHistoryAPIResponse = import('express').Response<GameHistory[]>;
+
+type GameRecentAPIRequest = import('express').Request<
+    EmptyRecord,
+    IGameFoundResponse | IErrorAPIResponse,
+    EmptyRecord,
+    EmptyRecord
+>;
+
+type GameRecentAPIResponse = import('express').Response<IGameFoundResponse | IErrorAPIResponse>;
