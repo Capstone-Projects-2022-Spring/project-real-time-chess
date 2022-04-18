@@ -105,6 +105,26 @@ class GameCreatedAPIResponse extends BaseAPIResponse implements IGameCreatedAPIR
 }
 
 /**
+ * API response when searching for recent game
+ */
+class GameFoundAPIResponse extends BaseAPIResponse implements IGameFoundResponse {
+    white: string;
+
+    black: string;
+
+    /**
+     * Creates a new instance of GameFoundAPIResponse
+     * @param white - uid of white player
+     * @param black - uid of black player
+     */
+    constructor(white: string, black: string) {
+        super(true);
+        this.white = white;
+        this.black = black;
+    }
+}
+
+/**
  * The response object for when a game mesage is received or sent.
  */
 
@@ -130,5 +150,6 @@ export {
     ErrorAPIResponse,
     GameStateAPIResponse,
     GameCreatedAPIResponse,
+    GameFoundAPIResponse,
     LoginAPIResponse,
 };

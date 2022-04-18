@@ -25,3 +25,8 @@ declare interface IGameStateAPIResponse extends APIResponse {
 declare interface IMatchCreatedAPIResponse extends APIResponse {
     queuePosition: number;
 }
+
+declare interface IGameFoundResponse extends APIResponse {
+    white: string;
+    black: string;
+}

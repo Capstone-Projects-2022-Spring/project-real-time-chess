@@ -45,6 +45,19 @@ class GameAccess {
     }
 
     /**
+     * Retrieves an object containing the uids of both players from a recent game
+     * @returns The uids of both players
+     */
+    static async getRecent(): Promise<IGameFoundResponse> {
+        return new Promise((resolve, reject) => {
+            axios
+                .get('api/game/recent')
+                .then(response => resolve(response.data))
+                .catch(err => reject(err));
+        });
+    }
+
+    /**
      * Creates a new AI v AI game.
      *
      * @param bot1 - The difficulty for bot 1.
