@@ -63,6 +63,7 @@ class ReplayMatch extends React.Component<ReplayMatchProps, ReplayMatchState> {
                         <IconButton
                             icon={reloadOutline}
                             hoverIcon={reload}
+                            size="1.5rem"
                             onClick={() => undefined}
                         />
                     </div>
@@ -70,26 +71,31 @@ class ReplayMatch extends React.Component<ReplayMatchProps, ReplayMatchState> {
                         <IconButton
                             icon={playBackOutline}
                             hoverIcon={playBack}
+                            size="1.5rem"
                             onClick={() => this.play(-1)}
                         />
                         <IconButton
                             icon={playSkipBackOutline}
                             hoverIcon={playSkipBack}
+                            size="1.5rem"
                             onClick={() => this.setState({ move: this.state.move - 1 })}
                         />
                         <IconButton
                             icon={playOutline}
                             hoverIcon={play}
+                            size="1.5rem"
                             onClick={() => this.play(1)}
                         />
                         <IconButton
                             icon={playSkipForwardOutline}
                             hoverIcon={playSkipForward}
+                            size="1.5rem"
                             onClick={() => this.setState({ move: this.state.move + 1 })}
                         />
                         <IconButton
                             icon={playForwardOutline}
                             hoverIcon={playForward}
+                            size="1.5rem"
                             onClick={() => this.play(2)}
                         />
                     </div>

@@ -2,6 +2,9 @@ import { IonIcon } from '@ionic/react';
 import React from 'react';
 
 interface IconButtonProps {
+    size?: string;
+    prepend?: string;
+    append?: string;
     icon: string;
     hoverIcon?: string;
     onClick: () => void;
@@ -39,8 +42,11 @@ class IconButton extends React.Component<IconButtonProps, IconButtonState> {
                 onMouseOver={() => this.setState({ icon: this.props.hoverIcon ?? this.props.icon })}
                 onMouseOut={() => this.setState({ icon: this.props.icon })}
                 onClick={() => this.props.onClick()}
+                style={{ fontSize: this.props.size }}
             >
+                {this.props.prepend ? this.props.prepend : null}
                 <IonIcon icon={this.state.icon} />
+                {this.props.append ? this.props.append : null}
             </button>
         );
     }
