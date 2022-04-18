@@ -36,19 +36,19 @@ class AIvAISetup extends React.Component<
                     <div className="col-12 col-md-6">
                         <h2>Bot #1 (White)</h2>
                         <AIDifficultySelector
-                            onChange={val =>
-                                this.setState({
-                                    bot1Difficulty: val,
-                                })
-                            }
-                            selected={this.bot1Difficulty}
+                            onChange={val => {
+                                this.bot1Difficulty = val;
+                            }}
+                            selected={this.state.bot1Difficulty}
                         />
                     </div>
                     <div className="col-12 col-md-6">
                         <h2>Bot #2 (Black)</h2>
                         <AIDifficultySelector
-                            onChange={val => this.setState({ bot2Difficulty: val })}
-                            selected={this.bot2Difficulty}
+                            onChange={val => {
+                                this.bot2Difficulty = val;
+                            }}
+                            selected={this.state.bot2Difficulty}
                         />
                     </div>
                 </div>
