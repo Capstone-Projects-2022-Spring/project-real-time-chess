@@ -7,10 +7,10 @@ import {
 } from 'ionicons/icons';
 import * as React from 'react';
 import CookieManager from '../access/CookieManager';
-import HowToPlaySwal from '../components/HowToPlaySwal';
 import ButtonComponent from '../components/UI/ButtonComponent';
 import UINavigator from '../models/UINavigator';
 import Homepage from './Homepage';
+import HowToPlay from './HowToPlay';
 import MultiplayerMatch from './Matches/MultiplayerMatch';
 import Profile from './Profile/Profile';
 import AIvAISetup from './SetupScreens/AIvAISetup';
@@ -166,7 +166,7 @@ class GameplayOptions extends React.Component<
 
                     <div className="col-12 col-md-6 col-lg-3 mb-2">
                         <ButtonComponent
-                            onClick={() => HowToPlaySwal.displayHowToPlay()}
+                            onClick={() => UINavigator.render(<HowToPlay />)}
                             width="100%"
                         >
                             <IonIcon
