@@ -385,8 +385,14 @@ class ChessGame implements IChessGame {
             });
         });
         if (kings[0] && kings[1]) return null;
-        if (kings[0]) return 'w';
-        if (kings[1]) return 'b';
+        if (kings[0]) {
+            this.emitToPlayers('whiteWin', this.whiteName);
+            return 'w';
+        }
+        if (kings[1]) {
+            this.emitToPlayers('blackWin', this.blackName);
+            return 'b';
+        }
         return null;
     }
 

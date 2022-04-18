@@ -1,8 +1,11 @@
 import { Square } from 'chess.js';
 import React from 'react';
 import { io, Socket } from 'socket.io-client';
+import Swal from 'sweetalert2';
 import ToastNotification from '../../components/UI/ToastNotification';
 import SupportedEmojis from '../../models/SupportedEmojis';
+import UINavigator from '../../models/UINavigator';
+import GameplayOptions from '../GameplayOptions';
 
 interface BaseMatchProps {
     orientation: 'b' | 'w';
@@ -69,11 +72,27 @@ abstract class BaseMatchView<
         });
 
         this.socket.on('blackWin', name => {
-            new ToastNotification(`${name} is the winner!`, 10000).fire();
+            Swal.fire({
+                title: 'Winner',
+                text: `${name} won the game!`,
+                didClose: () => {
+                    UINavigator.render(<GameplayOptions />);
+                },
+            }).catch(() => {
+                UINavigator.render(<GameplayOptions />);
+            });
         });
 
         this.socket.on('whiteWin', name => {
-            new ToastNotification(`${name} is the winner!`, 10000).fire();
+            Swal.fire({
+                title: 'Winner',
+                text: `${name} won the game!`,
+                didClose: () => {
+                    UINavigator.render(<GameplayOptions />);
+                },
+            }).catch(() => {
+                UINavigator.render(<GameplayOptions />);
+            });
         });
 
         this.socket.on('move-notification', message => {
