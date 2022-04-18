@@ -6,7 +6,7 @@ import CooldownSelectorComponent from '../../components/CooldownSelectorComponen
 import EmojiKeyboard from '../../components/UI/EmojiKeyboard';
 import SupportedEmojis from '../../models/SupportedEmojis';
 import UINavigator from '../../models/UINavigator';
-import GameplayOptions from '../GameplayOptions';
+import GameplayOptions from '../MainMenu';
 import MultiplayerMatch from '../Matches/MultiplayerMatch';
 
 /**

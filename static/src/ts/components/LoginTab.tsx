@@ -2,7 +2,7 @@ import * as React from 'react';
 import Users from '../access/Users';
 import UINavigator from '../models/UINavigator';
 import ButtonComponent from './UI/ButtonComponent';
-import GameplayOptions from '../views/GameplayOptions';
+import GameplayOptions from '../views/MainMenu';
 import PasswordFieldComponent from './UI/PasswordFieldComponent';
 import TextFieldComponent from './UI/TextFieldComponent';
 import ToastNotification from './UI/ToastNotification';

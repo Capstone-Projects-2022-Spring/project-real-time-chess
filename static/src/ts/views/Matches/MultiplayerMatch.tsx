@@ -4,7 +4,7 @@ import ChessboardComponent from '../../components/ChessboardComponent';
 import ButtonComponent from '../../components/UI/ButtonComponent';
 import SupportedEmojis from '../../models/SupportedEmojis';
 import UINavigator from '../../models/UINavigator';
-import GameplayOptions from '../GameplayOptions';
+import GameplayOptions from '../MainMenu';
 import BaseMatchView, { BaseMatchProps, BaseMatchState } from './BaseMatchView';
 
 interface MultiplayerMatchState extends BaseMatchState {

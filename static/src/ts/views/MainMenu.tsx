@@ -44,16 +44,18 @@ class GameplayOptions extends React.Component<
             <div className="container">
                 <div className="row">
                     <div className="col"></div>
-                    <div className="col-12 col-md-6 col-lg-4 mt-2 text-center game-mode-hover-img-container light-shadow">
-                        <img src={this.state.hoverImage} className="w-100" />
+                    <div className="col-12 col-md-6 col-lg-3 mt-2 mb-4 text-center d-none d-md-block">
+                        <div className="game-mode-hover-img-container light-shadow mb-4">
+                            <img src={this.state.hoverImage} className="w-100" />
+                        </div>
                         {this.state.hoverImageCaption}
                     </div>
                     <div className="col"></div>
                 </div>
 
-                <div className="row mb-2">
+                <div className="row">
                     <div
-                        className="col"
+                        className="col-12 col-md-6 col-lg-3 mb-2"
                         onMouseOver={() => {
                             this.setState({
                                 hoverImage: '/img/YouVAI.png',
@@ -65,7 +67,7 @@ class GameplayOptions extends React.Component<
                         <ButtonComponent label="You v AI" width="100%" onClick={() => undefined} />
                     </div>
                     <div
-                        className="col"
+                        className="col-12 col-md-6 col-lg-3 mb-2"
                         onMouseOver={() => {
                             this.setState({
                                 hoverImage: '/img/YouVFriend.png',
@@ -81,7 +83,7 @@ class GameplayOptions extends React.Component<
                         />
                     </div>
                     <div
-                        className="col"
+                        className="col-12 col-md-6 col-lg-3 mb-2"
                         onMouseOver={() => {
                             this.setState({
                                 hoverImage: '/img/YouVRandom.png',
@@ -97,7 +99,7 @@ class GameplayOptions extends React.Component<
                         />
                     </div>
                     <div
-                        className="col"
+                        className="col-12 col-md-6 col-lg-3 mb-2"
                         onMouseOver={() => {
                             this.setState({
                                 hoverImage: '/img/AIVAI.png',
@@ -115,7 +117,7 @@ class GameplayOptions extends React.Component<
                 </div>
 
                 <div className="row">
-                    <div className="col">
+                    <div className="col-12 col-md-6 col-lg-3 mb-2">
                         <ButtonComponent
                             onClick={() => {
                                 UINavigator.render(<MultiplayerMatch orientation={'b'} />);
@@ -130,7 +132,7 @@ class GameplayOptions extends React.Component<
                         </ButtonComponent>
                     </div>
 
-                    <div className="col">
+                    <div className="col-12 col-md-6 col-lg-3 mb-2">
                         <ButtonComponent
                             onClick={() => {
                                 CookieManager.uid = '';
@@ -147,7 +149,7 @@ class GameplayOptions extends React.Component<
                         </ButtonComponent>
                     </div>
 
-                    <div className="col">
+                    <div className="col-12 col-md-6 col-lg-3 mb-2">
                         <ButtonComponent
                             onClick={() => {
                                 UINavigator.render(<Profile email="" />);
@@ -162,7 +164,7 @@ class GameplayOptions extends React.Component<
                         </ButtonComponent>
                     </div>
 
-                    <div className="col">
+                    <div className="col-12 col-md-6 col-lg-3 mb-2">
                         <ButtonComponent
                             onClick={() => HowToPlaySwal.displayHowToPlay()}
                             width="100%"
