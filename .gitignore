@@ -8,3 +8,4 @@ tsconfig.tsbuildinfo
 docs
 .nyc_output
 coverage
+cpd
