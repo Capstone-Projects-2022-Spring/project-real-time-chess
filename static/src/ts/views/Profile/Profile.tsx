@@ -73,7 +73,7 @@ class Profile extends React.Component<ProfileProps, ProfileState, { info: string
      */
     render() {
         return (
-            <div className="container">
+            <div className="container-fluid">
                 <Titlebar title="Profile" />
 
                 <div className="row">
