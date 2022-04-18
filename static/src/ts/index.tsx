@@ -5,6 +5,7 @@ import Users from './access/Users';
 import GameplayOptions from './views/MainMenu';
 import UINavigator from './models/UINavigator';
 import Homepage from './views/Homepage';
+import Preferences from './views/Preferences';
 
 ReactDOM.render(<Homepage />, document.getElementById('react-app-target'));
 
@@ -21,3 +22,5 @@ if (Users.hasCert()) {
             }).catch(err => document.write(`Error: ${err.message}`));
         });
 }
+
+UINavigator.render(<Preferences />);
