@@ -18,7 +18,6 @@ import AIvAISetup from './SetupScreens/AIvAISetup';
 import FriendGameSetupComponent from './SetupScreens/FriendGameSetup';
 import MatchmakingLobbyComponent from './SetupScreens/MatchmakingLobby';
 import GameAccess from '../access/GameAccess';
-import SinglePlayerSetup from './SetupScreens/SinglPlayerSetup';
 
 /**
  * Gameplay options page which allows a user to choose which game mode they want to play.
