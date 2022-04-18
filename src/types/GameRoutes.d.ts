@@ -20,6 +20,17 @@ declare type CreateAIvAIGameResponse = import('express').Response<
     { gameKey: string[] } | IErrorAPIResponse
 >;
 
+declare type CreateSinglePlayerGameRequest = import('express').Request<
+    EmptyRecord,
+    { gameKey: string[] } | IErrorAPIResponse,
+    { bot: number },
+    EmptyRecord
+>;
+
+declare type CreateSinglePlayerGameResponse = import('express').Response<
+    { gameKey: string[] } | IErrorAPIResponse
+>;
+
 declare type JoinGameRequest = import('express').Request<
     EmptyRecord,
     IGameCreatedAPIResponse | IErrorAPIResponse,

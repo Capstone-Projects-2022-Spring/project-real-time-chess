@@ -1,9 +1,13 @@
 import { arrowForward } from 'ionicons/icons';
 import React from 'react';
+import GameAccess from '../../access/GameAccess';
 import AIDifficultySelector from '../../components/AIDifficultySelector';
 import SubTitlebar from '../../components/SubTitlebar';
 import Titlebar from '../../components/Titlebar';
 import IconButton from '../../components/UI/IconButton';
+import ToastNotification from '../../components/UI/ToastNotification';
+import UINavigator from '../../models/UINavigator';
+import SinglePlayerMatch from '../Matches/SinglePlayerMatch';
 
 interface SinglePlayerSetupState {
     difficulty: number;
@@ -34,7 +38,26 @@ class SinglePlayerSetup extends React.Component<NoProps, SinglePlayerSetupState>
                 <Titlebar title="You v AI" />
                 <SubTitlebar>
                     <div className="col" style={{ textAlign: 'right' }}>
-                        <IconButton icon={arrowForward} prepend="Start" onClick={() => undefined} />
+                        <IconButton
+                            icon={arrowForward}
+                            prepend="Start"
+                            onClick={() => {
+                                GameAccess.createSinglePlayerGame(this.state.difficulty)
+                                    .then(key => {
+                                        if (key) {
+                                            UINavigator.render(
+                                                <SinglePlayerMatch orientation={'w'} />,
+                                            );
+                                        }
+                                    })
+                                    .catch(() => {
+                                        ToastNotification.notify(
+                                            'Could not create the game.',
+                                            5000,
+                                        );
+                                    });
+                            }}
+                        />
                     </div>
                 </SubTitlebar>
                 <div className="row">

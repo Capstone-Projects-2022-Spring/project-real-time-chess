@@ -143,6 +143,30 @@ class GameManager {
     }
 
     /**
+     * Creates a new single player game.
+     *
+     * @param user - The player creating the game.
+     * @param bot - The difficulty of the AI bot.
+     */
+    public static createSinglePlayerGame(user: IUser, bot: number) {
+        GameManager.endGame(user._id.toString());
+
+        const game = new ChessGame(user, GameManager.generateGameKey());
+        GameManager.games.push(game);
+
+        game.black = `AI-${bot}` as AIString;
+        game.white = user;
+
+        const botFreq = GameManager.configureBotFrequency(bot);
+
+        setTimeout(() => {
+            game.enableAutopilot('b', botFreq);
+        }, 3000);
+
+        return game;
+    }
+
+    /**
      * Decides how frequently an AI bot should make a move based on its difficulty level.
      *
      * @param difficulty - The difficulty of the bot.

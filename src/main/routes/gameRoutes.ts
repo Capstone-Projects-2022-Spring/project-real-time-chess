@@ -69,6 +69,39 @@ class GameRoutes {
     }
 
     /**
+     * Handles requests to create a single-player AI game
+     *
+     * @param req - The create game request
+     * @param res - A response object which will be sent to the client with the game key
+     */
+    static createSinglePlayerGame(
+        req: CreateSinglePlayerGameRequest,
+        res: CreateSinglePlayerGameResponse,
+    ) {
+        GameManager.verifyUserAccess(req.cookies.uid, req.cookies.auth)
+            .then(user => {
+                const game = GameManager.createSinglePlayerGame(user, +req.body.bot);
+                if (game) {
+                    res.send(new GameCreatedAPIResponse(game.gameKey));
+                    Logger.info(
+                        `New game created\nUID: ${req.cookies.uid}\nGame Key: ${game.gameKey.map(
+                            name => SupportedEmojis.find(e => e.name === name)?.emoji,
+                        )}`,
+                    );
+                } else {
+                    res.send(new ErrorAPIResponse('User not found.'));
+                    Logger.warn(`User not found with uid: ${req.cookies.uid}`);
+                }
+            })
+            .catch(err => {
+                res.send(new ErrorAPIResponse(err));
+                Logger.error(
+                    `Error thrown in GameManager.verifyUserAccess (UID=${req.cookies.uid}, AUTH=${req.cookies.auth})\n\n${err}`,
+                );
+            });
+    }
+
+    /**
      * The handler for requests where a user joins a game.
      *
      * @param req - The express request object
