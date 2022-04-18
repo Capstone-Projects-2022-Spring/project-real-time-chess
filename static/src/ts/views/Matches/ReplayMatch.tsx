@@ -58,6 +58,13 @@ class ReplayMatch extends React.Component<ReplayMatchProps, ReplayMatchState> {
                 <Titlebar title={`Replay Match: ${this.props.label}`} />
 
                 <div className="row" style={{ backgroundColor: 'rgb(230, 230, 230)' }}>
+                    <div className="col text-left">
+                        <IconButton
+                            icon={reloadOutline}
+                            hoverIcon={reload}
+                            onClick={() => undefined}
+                        />
+                    </div>
                     <div className="col text-center">
                         <IconButton
                             icon={playBackOutline}
@@ -84,12 +91,8 @@ class ReplayMatch extends React.Component<ReplayMatchProps, ReplayMatchState> {
                             hoverIcon={playForward}
                             onClick={() => this.play(2)}
                         />
-                        <IconButton
-                            icon={reloadOutline}
-                            hoverIcon={reload}
-                            onClick={() => undefined}
-                        />
                     </div>
+                    <div className="col"></div>
                 </div>
 
                 <div className="row mt-4">
