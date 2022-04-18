@@ -77,22 +77,11 @@ class Profile extends React.Component<ProfileProps, ProfileState, { info: string
             <div className="container-fluid">
                 <Titlebar title="Profile" />
 
-                <div className="row p-4">
-                    <div className="col">
-                        <ButtonComponent
-                            label="View Past Games"
-                            width="100%"
-                            onClick={() => {
-                                UINavigator.render(<Replays />);
-                            }}
-                        />
-                    </div>
-                </div>
-
                 <div className="row">
                     <div className="col-12 col-md-6 col-lg-4">
                         <UserProfileCard />
                     </div>
+                    <div className="col-12 col-md-6 col-lg-8"></div>
                 </div>
             </div>
         );
