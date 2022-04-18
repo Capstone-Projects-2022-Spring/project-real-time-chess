@@ -1,8 +1,10 @@
+import { airplane, airplaneOutline, helpBuoy, helpBuoyOutline } from 'ionicons/icons';
 import React from 'react';
 import CookieManager from '../../access/CookieManager';
 import ChessboardComponent from '../../components/ChessboardComponent';
+import SubTitlebar from '../../components/SubTitlebar';
 import Titlebar from '../../components/Titlebar';
-import ButtonComponent from '../../components/UI/ButtonComponent';
+import IconButton from '../../components/UI/IconButton';
 import SupportedEmojis from '../../models/SupportedEmojis';
 import BaseMatchView, { BaseMatchProps, BaseMatchState } from './BaseMatchView';
 
@@ -32,13 +34,28 @@ class MultiplayerMatch extends BaseMatchView<BaseMatchProps, MultiplayerMatchSta
      */
     render() {
         return (
-            <div className="container">
+            <div className="container-fluid">
                 <Titlebar title="Multiplayer Game" />
-                <div className="row">
-                    <div className="col" style={{ fontSize: '2rem' }}>
-                        Game Key: {this.state.gameKey}
+                <SubTitlebar>
+                    <div className="col" style={{ fontSize: '1.5rem' }}>
+                        {this.state.gameKey}
                     </div>
-                </div>
+                    <div className="col-12 col-md-6 text-center">
+                        <IconButton
+                            size="0.75rem"
+                            icon={helpBuoyOutline}
+                            hoverIcon={helpBuoy}
+                            onClick={() => undefined}
+                        />
+                        <IconButton
+                            size="0.75rem"
+                            icon={airplaneOutline}
+                            hoverIcon={airplane}
+                            onClick={() => undefined}
+                        />
+                    </div>
+                    <div className="col"></div>
+                </SubTitlebar>
 
                 <div className="row">
                     <div className="col"></div>
@@ -58,30 +75,6 @@ class MultiplayerMatch extends BaseMatchView<BaseMatchProps, MultiplayerMatchSta
                         />
                     </div>
                     <div className="col"></div>
-                </div>
-
-                <div className="row">
-                    <div className="col">
-                        <ButtonComponent
-                            onClick={() => {
-                                this.socket?.emit('move ai');
-                            }}
-                        >
-                            AI Move
-                        </ButtonComponent>
-                    </div>
-
-                    <div className="col">
-                        <ButtonComponent
-                            onClick={() => {
-                                if (this.state.autopilotEnabled) {
-                                    this.socket?.emit('autopilot', 'disable');
-                                } else this.socket?.emit('autopilot', 'enable');
-                            }}
-                        >
-                            {this.state.autopilotEnabled ? 'Disable' : 'Enable'} Autopilot
-                        </ButtonComponent>
-                    </div>
                 </div>
             </div>
         );

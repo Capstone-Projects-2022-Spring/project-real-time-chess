@@ -16,7 +16,7 @@ class Titlebar extends React.Component<TitlebarProps> {
         return (
             <div className="row primary-gradient hue-rotate p-2 text-light">
                 <div className="col">
-                    <h1 style={{ marginBottom: 0 }}>
+                    <h1 style={{ marginBottom: 0, fontSize: '1rem', fontWeight: 'bold' }}>
                         <HomeButton />
                         &nbsp;&nbsp; {this.props.title}
                     </h1>

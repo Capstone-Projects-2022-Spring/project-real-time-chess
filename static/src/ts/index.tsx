@@ -2,9 +2,9 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import Swal from 'sweetalert2';
 import Users from './access/Users';
-import GameplayOptions from './views/MainMenu';
 import UINavigator from './models/UINavigator';
 import Homepage from './views/Homepage';
+import GameplayOptions from './views/MainMenu';
 
 ReactDOM.render(<Homepage />, document.getElementById('react-app-target'));
 
@@ -21,3 +21,5 @@ if (Users.hasCert()) {
             }).catch(err => document.write(`Error: ${err.message}`));
         });
 }
+
+// if (CookieManager.getCookie('pref-set') !== 'true') UINavigator.render(<Preferences />);

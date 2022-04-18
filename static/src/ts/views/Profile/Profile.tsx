@@ -5,6 +5,8 @@ import Titlebar from '../../components/Titlebar';
 import ToastNotification from '../../components/UI/ToastNotification';
 import UserProfileCard from '../../components/UserProfileCard';
 import SupportedEmojis from '../../models/SupportedEmojis';
+import UINavigator from '../../models/UINavigator';
+import GameHistoryView from './GameHistoryView';
 
 interface ProfileState {
     gameHistory: GameHistory[];
@@ -60,11 +62,18 @@ class Profile extends React.Component<NoProps, ProfileState> {
                                 gameKey={gameHistory.game_key
                                     .map(e => SupportedEmojis.find(obj => obj.name === e)!.emoji)
                                     .join('')}
+                                timestamp={gameHistory.timestamp}
+                                moves={gameHistory.history}
                                 key={index}
                             />
                         ))}
                         {this.state.gameHistory.length > 0 ? (
-                            <div className="game-history-item">View entire game history</div>
+                            <div
+                                className="game-history-item"
+                                onClick={() => UINavigator.render(<GameHistoryView />)}
+                            >
+                                View entire game history
+                            </div>
                         ) : null}
                     </div>
                 </div>

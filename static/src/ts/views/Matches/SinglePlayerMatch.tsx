@@ -8,7 +8,7 @@ import BaseMatchView, { BaseMatchProps, BaseMatchState } from './BaseMatchView';
 /**
  * The multiplayer match component. This displays the chessboard and chat components.
  */
-class AIvAIMatch extends BaseMatchView<BaseMatchProps, BaseMatchState> {
+class SinglePlayerMatch extends BaseMatchView<BaseMatchProps, BaseMatchState> {
     /**
      * Creates an instance of MultiplayerMatch.
      * @param props - The props for the multiplayer match component.
@@ -39,6 +39,9 @@ class AIvAIMatch extends BaseMatchView<BaseMatchProps, BaseMatchState> {
                             parentContainerId="boardContainer"
                             orientation={this.props.orientation}
                             fen={this.state.fen}
+                            onPieceDrop={(source, target) => {
+                                this.socket?.emit('move piece', source, target);
+                            }}
                             onFENChange={fen =>
                                 this.setState({
                                     fen,
@@ -58,8 +61,13 @@ class AIvAIMatch extends BaseMatchView<BaseMatchProps, BaseMatchState> {
      * @param onAuthorized - The callback to call when the user is authorized.
      */
     emitSocketAuthorization(onAuthorized: (gameState: IGameStateAPIResponse) => void): void {
-        this.socket!.emit('authorize-ai-v-ai', CookieManager.uid, CookieManager.auth, onAuthorized);
+        this.socket!.emit(
+            'authorize-single-player',
+            CookieManager.uid,
+            CookieManager.auth,
+            onAuthorized,
+        );
     }
 }
 
-export default AIvAIMatch;
+export default SinglePlayerMatch;

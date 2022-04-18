@@ -16,7 +16,7 @@ class AIDifficultySelector extends React.Component<AIDifficultySelectorProps> {
     render() {
         return (
             <div>
-                <h5>Extemely Easy</h5>
+                <h5 className="mt-4 mb-2">Extemely Easy</h5>
                 <SelectButton
                     value="1"
                     onClick={e => {
@@ -27,7 +27,7 @@ class AIDifficultySelector extends React.Component<AIDifficultySelectorProps> {
                 >
                     AI Level 1
                 </SelectButton>
-                <h5>Easy</h5>
+                <h5 className="mt-4 mb-2">Easy</h5>
                 <div className="row">
                     <div className="col-6">
                         <SelectButton
@@ -55,7 +55,7 @@ class AIDifficultySelector extends React.Component<AIDifficultySelectorProps> {
                     </div>
                 </div>
 
-                <h5>Medium</h5>
+                <h5 className="mt-4 mb-2">Medium</h5>
                 <div className="row">
                     <div className="col-6">
                         <SelectButton
@@ -84,7 +84,7 @@ class AIDifficultySelector extends React.Component<AIDifficultySelectorProps> {
                     </div>
                 </div>
 
-                <h5>Hard</h5>
+                <h5 className="mt-4 mb-2">Hard</h5>
                 <div className="row">
                     <div className="col-6">
                         <SelectButton
@@ -112,7 +112,7 @@ class AIDifficultySelector extends React.Component<AIDifficultySelectorProps> {
                     </div>
                 </div>
 
-                <h5>Extremely Hard</h5>
+                <h5 className="mt-4 mb-2">Extremely Hard</h5>
                 <div className="row">
                     <div className="col-4">
                         <SelectButton

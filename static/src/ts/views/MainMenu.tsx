@@ -16,6 +16,7 @@ import Profile from './Profile/Profile';
 import AIvAISetup from './SetupScreens/AIvAISetup';
 import FriendGameSetupComponent from './SetupScreens/FriendGameSetup';
 import MatchmakingLobbyComponent from './SetupScreens/MatchmakingLobby';
+import SinglePlayerSetup from './SetupScreens/SinglePlayerSetup';
 
 /**
  * Gameplay options page which allows a user to choose which game mode they want to play.
@@ -64,7 +65,11 @@ class GameplayOptions extends React.Component<
                             });
                         }}
                     >
-                        <ButtonComponent label="You v AI" width="100%" onClick={() => undefined} />
+                        <ButtonComponent
+                            label="You v AI"
+                            width="100%"
+                            onClick={() => UINavigator.render(<SinglePlayerSetup />)}
+                        />
                     </div>
                     <div
                         className="col-12 col-md-6 col-lg-3 mb-2"
