@@ -1,7 +1,8 @@
 import * as React from 'react';
 import GameAccess from '../../access/GameAccess';
+import AIDifficultySelector from '../../components/AIDifficultySelector';
+import Titlebar from '../../components/Titlebar';
 import ButtonComponent from '../../components/UI/ButtonComponent';
-import SelectButton from '../../components/UI/SelectButton';
 import UINavigator from '../../models/UINavigator';
 import AIvAIMatch from '../Matches/AIvAIMatch';
 
@@ -31,193 +32,29 @@ class AIvAISetup extends React.Component<
      */
     render() {
         return (
-            <div className="container">
+            <div className="container-fluid">
+                <Titlebar title="AIvAI Setup" />
                 <div className="row">
-                    <div className="col-12 col-md-6">
+                    <div
+                        className="col-12 col-md-6 bg-light text-dark p-4"
+                        style={{ borderBottom: '2px solid gray' }}
+                    >
                         <h2>Bot #1 (White)</h2>
-                        <SelectButton
-                            value="1"
-                            onClick={e => {
-                                this.bot1Difficulty = +e;
+                        <AIDifficultySelector
+                            onChange={val => {
+                                this.bot1Difficulty = val;
                             }}
-                            selected={this.state.bot1Difficulty === 1}
-                        >
-                            1
-                        </SelectButton>
-                        <SelectButton
-                            value="2"
-                            onClick={e => {
-                                this.bot1Difficulty = +e;
-                            }}
-                            selected={this.state.bot1Difficulty === 2}
-                        >
-                            2
-                        </SelectButton>
-                        <SelectButton
-                            value="3"
-                            onClick={e => {
-                                this.bot1Difficulty = +e;
-                            }}
-                            selected={this.state.bot1Difficulty === 3}
-                        >
-                            3
-                        </SelectButton>
-                        <SelectButton
-                            value="4"
-                            onClick={e => {
-                                this.bot1Difficulty = +e;
-                            }}
-                            selected={this.state.bot1Difficulty === 4}
-                        >
-                            4
-                        </SelectButton>
-                        <SelectButton
-                            value="5"
-                            onClick={e => {
-                                this.bot1Difficulty = +e;
-                            }}
-                            selected={this.state.bot1Difficulty === 5}
-                        >
-                            5
-                        </SelectButton>
-                        <SelectButton
-                            value="6"
-                            onClick={e => {
-                                this.bot1Difficulty = +e;
-                            }}
-                            selected={this.state.bot1Difficulty === 6}
-                        >
-                            6
-                        </SelectButton>
-                        <SelectButton
-                            value="7"
-                            onClick={e => {
-                                this.bot1Difficulty = +e;
-                            }}
-                            selected={this.state.bot1Difficulty === 7}
-                        >
-                            7
-                        </SelectButton>
-                        <SelectButton
-                            value="8"
-                            onClick={e => {
-                                this.bot1Difficulty = +e;
-                            }}
-                            selected={this.state.bot1Difficulty === 8}
-                        >
-                            8
-                        </SelectButton>
-                        <SelectButton
-                            value="9"
-                            onClick={e => {
-                                this.bot1Difficulty = +e;
-                            }}
-                            selected={this.state.bot1Difficulty === 9}
-                        >
-                            9
-                        </SelectButton>
-                        <SelectButton
-                            value="10"
-                            onClick={e => {
-                                this.bot1Difficulty = +e;
-                            }}
-                            selected={this.state.bot1Difficulty === 10}
-                        >
-                            10
-                        </SelectButton>
+                            selected={this.state.bot1Difficulty}
+                        />
                     </div>
-                    <div className="col-12 col-md-6">
+                    <div className="col-12 col-md-6 bg-dark text-light p-4">
                         <h2>Bot #2 (Black)</h2>
-                        <SelectButton
-                            value="1"
-                            onClick={e => {
-                                this.bot2Difficulty = +e;
+                        <AIDifficultySelector
+                            onChange={val => {
+                                this.bot2Difficulty = val;
                             }}
-                            selected={this.state.bot2Difficulty === 1}
-                        >
-                            1
-                        </SelectButton>
-                        <SelectButton
-                            value="2"
-                            onClick={e => {
-                                this.bot2Difficulty = +e;
-                            }}
-                            selected={this.state.bot2Difficulty === 2}
-                        >
-                            2
-                        </SelectButton>
-                        <SelectButton
-                            value="3"
-                            onClick={e => {
-                                this.bot2Difficulty = +e;
-                            }}
-                            selected={this.state.bot2Difficulty === 3}
-                        >
-                            3
-                        </SelectButton>
-                        <SelectButton
-                            value="4"
-                            onClick={e => {
-                                this.bot2Difficulty = +e;
-                            }}
-                            selected={this.state.bot2Difficulty === 4}
-                        >
-                            4
-                        </SelectButton>
-                        <SelectButton
-                            value="5"
-                            onClick={e => {
-                                this.bot2Difficulty = +e;
-                            }}
-                            selected={this.state.bot2Difficulty === 5}
-                        >
-                            5
-                        </SelectButton>
-                        <SelectButton
-                            value="6"
-                            onClick={e => {
-                                this.bot2Difficulty = +e;
-                            }}
-                            selected={this.state.bot2Difficulty === 6}
-                        >
-                            6
-                        </SelectButton>
-                        <SelectButton
-                            value="7"
-                            onClick={e => {
-                                this.bot2Difficulty = +e;
-                            }}
-                            selected={this.state.bot2Difficulty === 7}
-                        >
-                            7
-                        </SelectButton>
-                        <SelectButton
-                            value="8"
-                            onClick={e => {
-                                this.bot2Difficulty = +e;
-                            }}
-                            selected={this.state.bot2Difficulty === 8}
-                        >
-                            8
-                        </SelectButton>
-                        <SelectButton
-                            value="9"
-                            onClick={e => {
-                                this.bot2Difficulty = +e;
-                            }}
-                            selected={this.state.bot2Difficulty === 9}
-                        >
-                            9
-                        </SelectButton>
-                        <SelectButton
-                            value="10"
-                            onClick={e => {
-                                this.bot2Difficulty = +e;
-                            }}
-                            selected={this.state.bot2Difficulty === 10}
-                        >
-                            10
-                        </SelectButton>
+                            selected={this.state.bot2Difficulty}
+                        />
                     </div>
                 </div>
                 <div className="row">

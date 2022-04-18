@@ -1,12 +1,12 @@
 import * as React from 'react';
 import Swal from 'sweetalert2';
 import GameAccess from '../../access/GameAccess';
-import ButtonComponent from '../../components/UI/ButtonComponent';
 import CooldownSelectorComponent from '../../components/CooldownSelectorComponent';
+import Titlebar from '../../components/Titlebar';
+import ButtonComponent from '../../components/UI/ButtonComponent';
 import EmojiKeyboard from '../../components/UI/EmojiKeyboard';
 import SupportedEmojis from '../../models/SupportedEmojis';
 import UINavigator from '../../models/UINavigator';
-import GameplayOptions from '../GameplayOptions';
 import MultiplayerMatch from '../Matches/MultiplayerMatch';
 
 /**
@@ -34,19 +34,11 @@ class FriendGameSetupComponent extends React.Component<NoProps, { gameKey: strin
      */
     render() {
         return (
-            <div className="container">
+            <div className="container-fluid">
+                <Titlebar title="Friend Game Setup" />
                 <div className="row">
-                    <div className="col-12 col-md-6">
+                    <div className="col-12 col-md-6 p-4">
                         <h2>Create Game</h2>
-                        <div className="col" style={{ paddingBottom: '10px' }}>
-                            <ButtonComponent
-                                label="Home"
-                                width="200px"
-                                onClick={() => {
-                                    UINavigator.render(<GameplayOptions />);
-                                }}
-                            />
-                        </div>
                         <p>
                             Create a game. Then you will be given a game code. Send the game code to
                             your friend so they can join the game.
@@ -58,7 +50,7 @@ class FriendGameSetupComponent extends React.Component<NoProps, { gameKey: strin
                         />
                     </div>
 
-                    <div className="col-12 col-md-6">
+                    <div className="col-12 col-md-6 p-4">
                         <h2>Join Game</h2>
                         <p>Get the game code from whoever created the game.</p>
                         <EmojiKeyboard

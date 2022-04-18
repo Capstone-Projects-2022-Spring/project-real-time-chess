@@ -184,7 +184,11 @@ class ChessGame implements IChessGame {
         const cooldown = this.cooldownMap[source];
         if (cooldown === undefined || cooldown.ready()) {
             this.forceTurnChange(color);
-            move = this.game.move(`${source}-${target}`, { sloppy: true });
+            try {
+                move = this.game.move(`${source}-${target}`, { sloppy: true });
+            } catch (e) {
+                move = null;
+            }
             if (move !== null) {
                 delete this.cooldownMap[source];
                 this.cooldownMap[target] = new Cooldown(5);

@@ -1,10 +1,9 @@
 import React from 'react';
 import CookieManager from '../../access/CookieManager';
 import ChessboardComponent from '../../components/ChessboardComponent';
+import Titlebar from '../../components/Titlebar';
 import ButtonComponent from '../../components/UI/ButtonComponent';
 import SupportedEmojis from '../../models/SupportedEmojis';
-import UINavigator from '../../models/UINavigator';
-import GameplayOptions from '../GameplayOptions';
 import BaseMatchView, { BaseMatchProps, BaseMatchState } from './BaseMatchView';
 
 interface MultiplayerMatchState extends BaseMatchState {
@@ -34,18 +33,8 @@ class MultiplayerMatch extends BaseMatchView<BaseMatchProps, MultiplayerMatchSta
     render() {
         return (
             <div className="container">
+                <Titlebar title="Multiplayer Game" />
                 <div className="row">
-                    <div className="col"></div>
-                    <h1 style={{ textAlign: 'center' }}>Multiplayer Match</h1>
-                    <div className="col" style={{ paddingBottom: '10px' }}>
-                        <ButtonComponent
-                            label="Home"
-                            width="100%"
-                            onClick={() => {
-                                UINavigator.render(<GameplayOptions />);
-                            }}
-                        />
-                    </div>
                     <div className="col" style={{ fontSize: '2rem' }}>
                         Game Key: {this.state.gameKey}
                     </div>

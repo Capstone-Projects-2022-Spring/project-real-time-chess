@@ -1,10 +1,8 @@
 import * as React from 'react';
-import ButtonComponent from '../../components/UI/ButtonComponent';
-import ChessboardComponent from '../../components/ChessboardComponent';
 import CookieManager from '../../access/CookieManager';
-import UINavigator from '../../models/UINavigator';
+import ChessboardComponent from '../../components/ChessboardComponent';
+import Titlebar from '../../components/Titlebar';
 import BaseMatchView, { BaseMatchProps, BaseMatchState } from './BaseMatchView';
-import GameplayOptions from '../GameplayOptions';
 
 /**
  * The multiplayer match component. This displays the chessboard and chat components.
@@ -27,27 +25,15 @@ class AIvAIMatch extends BaseMatchView<BaseMatchProps, BaseMatchState> {
      */
     render() {
         return (
-            <div className="container">
-                <div className="row">
-                    <div className="col"></div>
-                    <h1 style={{ textAlign: 'center' }}>Multiplayer Match</h1>
-                    <div className="col" style={{ paddingBottom: '10px' }}>
-                        <ButtonComponent
-                            label="Home"
-                            width="100%"
-                            onClick={() => {
-                                UINavigator.render(<GameplayOptions />);
-                            }}
-                        />
-                    </div>
-                    <div className="col" style={{ fontSize: '2rem' }}>
-                        Game Key: {this.state.gameKey}
-                    </div>
+            <div className="container-fluid">
+                <Titlebar title="Artificial Intelligence Game" />
+                <div className="row" style={{ backgroundColor: 'rgb(200, 200, 200)' }}>
+                    <div className="col-12 p-2">Game Key: {this.state.gameKey}</div>
                 </div>
 
                 <div className="row">
                     <div className="col"></div>
-                    <div id="boardContainer" className="col-12 col-md-6 text-center">
+                    <div id="boardContainer" className="col-12 col-md-4 text-center">
                         <ChessboardComponent
                             parentContainerId="boardContainer"
                             orientation={this.props.orientation}

@@ -3,7 +3,7 @@ import ButtonComponent from '../../components/UI/ButtonComponent';
 import Replays from './Replays';
 import UINavigator from '../../models/UINavigator';
 import Users from '../../access/Users';
-import GameplayOptions from '../GameplayOptions';
+import GameplayOptions from '../MainMenu';
 
 interface ProfileProps {
     email: string;

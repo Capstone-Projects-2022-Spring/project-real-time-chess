@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import Swal from 'sweetalert2';
 import Users from './access/Users';
-import GameplayOptions from './views/GameplayOptions';
+import GameplayOptions from './views/MainMenu';
 import UINavigator from './models/UINavigator';
 import Homepage from './views/Homepage';
 
