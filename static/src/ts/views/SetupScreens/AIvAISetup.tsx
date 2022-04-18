@@ -1,8 +1,10 @@
+import { arrowForward } from 'ionicons/icons';
 import * as React from 'react';
 import GameAccess from '../../access/GameAccess';
 import AIDifficultySelector from '../../components/AIDifficultySelector';
+import SubTitlebar from '../../components/SubTitlebar';
 import Titlebar from '../../components/Titlebar';
-import ButtonComponent from '../../components/UI/ButtonComponent';
+import IconButton from '../../components/UI/IconButton';
 import UINavigator from '../../models/UINavigator';
 import AIvAIMatch from '../Matches/AIvAIMatch';
 
@@ -34,6 +36,23 @@ class AIvAISetup extends React.Component<
         return (
             <div className="container-fluid">
                 <Titlebar title="AIvAI Setup" />
+
+                <SubTitlebar>
+                    <div className="col" style={{ textAlign: 'right' }}>
+                        <IconButton
+                            size="0.75rem"
+                            icon={arrowForward}
+                            prepend="Start"
+                            onClick={() =>
+                                AIvAISetup.createGame(
+                                    this.state.bot1Difficulty,
+                                    this.state.bot2Difficulty,
+                                )
+                            }
+                        />
+                    </div>
+                </SubTitlebar>
+
                 <div className="row">
                     <div
                         className="col-12 col-md-6 bg-light text-dark p-4"
@@ -55,20 +74,6 @@ class AIvAISetup extends React.Component<
                             }}
                             selected={this.state.bot2Difficulty}
                         />
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col-12">
-                        <ButtonComponent
-                            onClick={() =>
-                                AIvAISetup.createGame(
-                                    this.state.bot1Difficulty,
-                                    this.state.bot2Difficulty,
-                                )
-                            }
-                        >
-                            Start
-                        </ButtonComponent>
                     </div>
                 </div>
             </div>

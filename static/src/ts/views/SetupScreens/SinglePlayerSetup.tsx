@@ -41,6 +41,7 @@ class SinglePlayerSetup extends React.Component<NoProps, SinglePlayerSetupState>
                         <IconButton
                             icon={arrowForward}
                             prepend="Start"
+                            size="0.75rem"
                             onClick={() => {
                                 GameAccess.createSinglePlayerGame(this.state.difficulty)
                                     .then(key => {
