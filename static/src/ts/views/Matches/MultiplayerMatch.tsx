@@ -1,6 +1,7 @@
 import React from 'react';
 import CookieManager from '../../access/CookieManager';
 import ChessboardComponent from '../../components/ChessboardComponent';
+import SubTitlebar from '../../components/SubTitlebar';
 import Titlebar from '../../components/Titlebar';
 import ButtonComponent from '../../components/UI/ButtonComponent';
 import SupportedEmojis from '../../models/SupportedEmojis';
@@ -32,13 +33,13 @@ class MultiplayerMatch extends BaseMatchView<BaseMatchProps, MultiplayerMatchSta
      */
     render() {
         return (
-            <div className="container">
+            <div className="container-fluid">
                 <Titlebar title="Multiplayer Game" />
-                <div className="row">
+                <SubTitlebar>
                     <div className="col" style={{ fontSize: '2rem' }}>
                         Game Key: {this.state.gameKey}
                     </div>
-                </div>
+                </SubTitlebar>
 
                 <div className="row">
                     <div className="col"></div>

@@ -14,6 +14,7 @@ import {
 } from 'ionicons/icons';
 import React from 'react';
 import ChessboardComponent from '../../components/ChessboardComponent';
+import SubTitlebar from '../../components/SubTitlebar';
 import Titlebar from '../../components/Titlebar';
 import IconButton from '../../components/UI/IconButton';
 
@@ -57,7 +58,7 @@ class ReplayMatch extends React.Component<ReplayMatchProps, ReplayMatchState> {
             <div className="container-fluid">
                 <Titlebar title={`Replay Match: ${this.props.label}`} />
 
-                <div className="row" style={{ backgroundColor: 'rgb(230, 230, 230)' }}>
+                <SubTitlebar>
                     <div className="col text-left">
                         <IconButton
                             icon={reloadOutline}
@@ -93,7 +94,7 @@ class ReplayMatch extends React.Component<ReplayMatchProps, ReplayMatchState> {
                         />
                     </div>
                     <div className="col"></div>
-                </div>
+                </SubTitlebar>
 
                 <div className="row mt-4">
                     <div className="col"></div>

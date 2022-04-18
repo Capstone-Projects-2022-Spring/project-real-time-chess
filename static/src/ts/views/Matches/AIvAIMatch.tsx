@@ -1,6 +1,7 @@
 import * as React from 'react';
 import CookieManager from '../../access/CookieManager';
 import ChessboardComponent from '../../components/ChessboardComponent';
+import SubTitlebar from '../../components/SubTitlebar';
 import Titlebar from '../../components/Titlebar';
 import BaseMatchView, { BaseMatchProps, BaseMatchState } from './BaseMatchView';
 
@@ -27,9 +28,9 @@ class AIvAIMatch extends BaseMatchView<BaseMatchProps, BaseMatchState> {
         return (
             <div className="container-fluid">
                 <Titlebar title="Artificial Intelligence Game" />
-                <div className="row" style={{ backgroundColor: 'rgb(200, 200, 200)' }}>
+                <SubTitlebar>
                     <div className="col-12 p-2">Game Key: {this.state.gameKey}</div>
-                </div>
+                </SubTitlebar>
 
                 <div className="row">
                     <div className="col"></div>
