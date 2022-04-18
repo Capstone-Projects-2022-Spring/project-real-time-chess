@@ -35,7 +35,10 @@ class AIvAISetup extends React.Component<
             <div className="container-fluid">
                 <Titlebar title="AIvAI Setup" />
                 <div className="row">
-                    <div className="col-12 col-md-6 bg-light text-dark p-4">
+                    <div
+                        className="col-12 col-md-6 bg-light text-dark p-4"
+                        style={{ borderBottom: '2px solid gray' }}
+                    >
                         <h2>Bot #1 (White)</h2>
                         <AIDifficultySelector
                             onChange={val => {
