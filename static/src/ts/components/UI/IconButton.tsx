@@ -38,6 +38,7 @@ class IconButton extends React.Component<IconButtonProps, IconButtonState> {
                 className="icon-button-component"
                 onMouseOver={() => this.setState({ icon: this.props.hoverIcon ?? this.props.icon })}
                 onMouseOut={() => this.setState({ icon: this.props.icon })}
+                onClick={() => this.props.onClick()}
             >
                 <IonIcon icon={this.state.icon} />
             </button>
