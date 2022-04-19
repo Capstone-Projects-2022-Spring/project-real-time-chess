@@ -6,6 +6,7 @@ import {
     personOutline,
 } from 'ionicons/icons';
 import * as React from 'react';
+import Swal from 'sweetalert2';
 import CookieManager from '../access/CookieManager';
 import ButtonComponent from '../components/UI/ButtonComponent';
 import UINavigator from '../models/UINavigator';
@@ -17,6 +18,7 @@ import AIvAISetup from './SetupScreens/AIvAISetup';
 import FriendGameSetupComponent from './SetupScreens/FriendGameSetup';
 import MatchmakingLobbyComponent from './SetupScreens/MatchmakingLobby';
 import SinglePlayerSetup from './SetupScreens/SinglePlayerSetup';
+import GameAccess from '../access/GameAccess';
 
 /**
  * Gameplay options page which allows a user to choose which game mode they want to play.
@@ -123,12 +125,7 @@ class GameplayOptions extends React.Component<
 
                 <div className="row">
                     <div className="col-12 col-md-6 col-lg-3 mb-2">
-                        <ButtonComponent
-                            onClick={() => {
-                                UINavigator.render(<MultiplayerMatch orientation={'b'} />);
-                            }}
-                            width="100%"
-                        >
+                        <ButtonComponent onClick={() => this.rejoinGame()} width="100%">
                             <IonIcon
                                 style={{ fontSize: '4rem', marginBottom: '0.5rem' }}
                                 icon={cloudOfflineOutline}
@@ -184,6 +181,31 @@ class GameplayOptions extends React.Component<
                 </div>
             </div>
         );
+    }
+
+    /**
+     * Attempts to rejoin the last game played
+     */
+    rejoinGame() {
+        GameAccess.getRecent()
+            .then(game => {
+                let gameOrientation: 'b' | 'w';
+                if (game.success) {
+                    gameOrientation = game.black === CookieManager.uid ? 'b' : 'w';
+                    UINavigator.render(<MultiplayerMatch orientation={gameOrientation} />);
+                } else this.noGame(1);
+            })
+            .catch(() => this.noGame(2));
+    }
+
+    /**
+     * Sweet alert for when no game is found to be joinable
+     */
+    noGame(errCode: number) {
+        Swal.fire({
+            title: 'Error',
+            text: `No recent game to rejoin(${errCode}).`,
+        }).catch(swalError => document.write(`Error: ${swalError.message}`));
     }
 }
 

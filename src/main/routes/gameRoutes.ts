@@ -1,4 +1,4 @@
-import { ErrorAPIResponse, GameCreatedAPIResponse } from '../APIResponse';
+import { ErrorAPIResponse, GameCreatedAPIResponse, GameFoundAPIResponse } from '../APIResponse';
 import GameHistoryDAO from '../dao/GameHistoryDAO';
 import GameManager from '../gameplay/GameManager';
 import Logger from '../Logger';
@@ -152,6 +152,23 @@ class GameRoutes {
         dao.getAllGames(req.cookies.uid)
             .then(games => res.send(games))
             .catch(() => res.send(undefined));
+    }
+
+    /**
+     * Returns an object containing the uids of the white and black players from a recent game
+     * @param req - The express request object
+     * @param res - The express response object
+     */
+    static getRecent(req: GameRecentAPIRequest, res: GameRecentAPIResponse) {
+        const game = GameManager.findGameByUser(req.cookies.uid);
+        if (game) {
+            const white = typeof game.white !== 'string' ? game.white?._id : game.white;
+            const black = typeof game.black !== 'string' ? game.black?._id : game.black;
+            res.send(new GameFoundAPIResponse(String(white), String(black)));
+        } else {
+            res.send(new ErrorAPIResponse('No game found.'));
+            Logger.error(`Error thrown in GameManager.FindGameByUser (UID=${req.cookies.uid})`);
+        }
     }
 }
 
