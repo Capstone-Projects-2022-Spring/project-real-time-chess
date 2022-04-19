@@ -139,16 +139,7 @@ class RTCServer {
                 ) => {
                     Logger.info(`Authorizing user\nUID: ${_uid}`);
                     uid = _uid.toString();
-                    game = GameManager.findGameByOwner(uid)!;
-                    if (game) {
-                        game.bindSocket({
-                            black: socket,
-                        });
-                        Logger.info(`Authorized Socket Connection with:\nUID: ${uid}`);
-                        callback?.(new GameStateAPIResponse(game));
-                    } else {
-                        Logger.warn(`No game found for specified user\nUID: ${uid}`);
-                    }
+                    game = RTCServer.authorizeUserWithAI(new ObjectId(_uid), socket, callback);
                 },
             );
 
@@ -161,16 +152,7 @@ class RTCServer {
                 ) => {
                     Logger.info(`Authorizing user\nUID: ${_uid}`);
                     uid = _uid.toString();
-                    game = GameManager.findGameByOwner(uid)!;
-                    if (game) {
-                        game.bindSocket({
-                            black: socket,
-                        });
-                        Logger.info(`Authorized Socket Connection with:\nUID: ${uid}`);
-                        callback?.(new GameStateAPIResponse(game));
-                    } else {
-                        Logger.warn(`No game found for specified user\nUID: ${uid}`);
-                    }
+                    game = RTCServer.authorizeUserWithAI(new ObjectId(_uid), socket, callback);
                 },
             );
 
@@ -187,6 +169,30 @@ class RTCServer {
                 else if (action === 'disable') GameSocketHandler.disableAutopilot(game, uid);
             });
         });
+    }
+
+    /**
+     * Authorizes a user with a socket
+     *
+     * @param uid - The user's ID
+     */
+    private static authorizeUserWithAI(
+        uid: ObjectId,
+        socket: ChessGameSocket,
+        callback?: (response: GameStateAPIResponse) => void,
+    ) {
+        Logger.info(`Authorizing user\nUID: ${uid.toString()}`);
+        const game = GameManager.findGameByOwner(uid)!;
+        if (game) {
+            game.bindSocket({
+                black: socket,
+            });
+            Logger.info(`Authorized Socket Connection with:\nUID: ${uid}`);
+            callback?.(new GameStateAPIResponse(game));
+        } else {
+            Logger.warn(`No game found for specified user\nUID: ${uid}`);
+        }
+        return game;
     }
 
     /**
