@@ -30,3 +30,7 @@ declare interface IGameFoundResponse extends APIResponse {
     white: string;
     black: string;
 }
+
+declare type Req = import('express').Request;
+
+declare type Res = import('express').Response;
