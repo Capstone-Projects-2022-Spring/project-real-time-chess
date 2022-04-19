@@ -1,5 +1,7 @@
+import { Request, Response } from 'express';
 import { ErrorAPIResponse, GameCreatedAPIResponse, GameFoundAPIResponse } from '../APIResponse';
 import GameHistoryDAO from '../dao/GameHistoryDAO';
+import ChessGame from '../gameplay/ChessGame';
 import GameManager from '../gameplay/GameManager';
 import Logger from '../Logger';
 import SupportedEmojis from '../SupportedEmojis';
@@ -8,6 +10,27 @@ import SupportedEmojis from '../SupportedEmojis';
  * Utility class for all the game routes
  */
 class GameRoutes {
+    /**
+     * Handles responding to any kind of create game request.
+     *
+     * @param game - The gmae that was created.
+     * @param req - The API request object. (Provided by ExpressJS)
+     * @param res - The API response object. (Provided by ExpressJS)
+     */
+    private static respondToGameCreated(game: ChessGame | null, req: Request, res: Response) {
+        if (game) {
+            res.send(new GameCreatedAPIResponse(game.gameKey));
+            Logger.info(
+                `New game created\nUID: ${req.cookies.uid}\nGame Key: ${game.gameKey.map(
+                    name => SupportedEmojis.find(e => e.name === name)?.emoji,
+                )}`,
+            );
+        } else {
+            res.send(new ErrorAPIResponse('User not found.'));
+            Logger.warn(`User not found with uid: ${req.cookies.uid}`);
+        }
+    }
+
     /**
      * The handler for requests where a game is created
      *
@@ -18,17 +41,7 @@ class GameRoutes {
         GameManager.verifyUserAccess(req.cookies.uid, req.cookies.auth)
             .then(user => {
                 const game = GameManager.createGame(user);
-                if (game) {
-                    res.send(new GameCreatedAPIResponse(game.gameKey));
-                    Logger.info(
-                        `New game created\nUID: ${req.cookies.uid}\nGame Key: ${game.gameKey.map(
-                            name => SupportedEmojis.find(e => e.name === name)?.emoji,
-                        )}`,
-                    );
-                } else {
-                    res.send(new ErrorAPIResponse('User not found.'));
-                    Logger.warn(`User not found with uid: ${req.cookies.uid}`);
-                }
+                GameRoutes.respondToGameCreated(game, req, res);
             })
             .catch(err => {
                 res.send(new ErrorAPIResponse(err));
@@ -48,17 +61,7 @@ class GameRoutes {
         GameManager.verifyUserAccess(req.cookies.uid, req.cookies.auth)
             .then(user => {
                 const game = GameManager.createAIvAIGame(user, +req.body.bot1, +req.body.bot2);
-                if (game) {
-                    res.send(new GameCreatedAPIResponse(game.gameKey));
-                    Logger.info(
-                        `New game created\nUID: ${req.cookies.uid}\nGame Key: ${game.gameKey.map(
-                            name => SupportedEmojis.find(e => e.name === name)?.emoji,
-                        )}`,
-                    );
-                } else {
-                    res.send(new ErrorAPIResponse('User not found.'));
-                    Logger.warn(`User not found with uid: ${req.cookies.uid}`);
-                }
+                GameRoutes.respondToGameCreated(game, req, res);
             })
             .catch(err => {
                 res.send(new ErrorAPIResponse(err));
@@ -81,17 +84,7 @@ class GameRoutes {
         GameManager.verifyUserAccess(req.cookies.uid, req.cookies.auth)
             .then(user => {
                 const game = GameManager.createSinglePlayerGame(user, +req.body.bot);
-                if (game) {
-                    res.send(new GameCreatedAPIResponse(game.gameKey));
-                    Logger.info(
-                        `New game created\nUID: ${req.cookies.uid}\nGame Key: ${game.gameKey.map(
-                            name => SupportedEmojis.find(e => e.name === name)?.emoji,
-                        )}`,
-                    );
-                } else {
-                    res.send(new ErrorAPIResponse('User not found.'));
-                    Logger.warn(`User not found with uid: ${req.cookies.uid}`);
-                }
+                GameRoutes.respondToGameCreated(game, req, res);
             })
             .catch(err => {
                 res.send(new ErrorAPIResponse(err));
@@ -112,20 +105,7 @@ class GameRoutes {
             .then(user => {
                 if (user) {
                     const game = GameManager.findGameByKey(req.body.gameKey);
-                    if (game) {
-                        game.white = user;
-                        res.send(new GameCreatedAPIResponse(game.gameKey));
-                        Logger.info(`User (uid=${user._id}) joined game`);
-                    } else {
-                        res.send(new ErrorAPIResponse('Could not find game'));
-                        Logger.warn(
-                            `User (uid=${
-                                req.cookies.uid
-                            }) tried joining game, but none was found.\nGame Key: ${req.body.gameKey!.map(
-                                name => SupportedEmojis.find(e => e.name === name)?.emoji,
-                            )}`,
-                        );
-                    }
+                    GameRoutes.respondToGameCreated(game, req, res);
                 } else {
                     res.send(new ErrorAPIResponse('Invalid User'));
                     Logger.warn(
