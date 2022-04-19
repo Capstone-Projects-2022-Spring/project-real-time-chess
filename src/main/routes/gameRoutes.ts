@@ -37,7 +37,7 @@ class GameRoutes {
      * @param req - The express request object
      * @param res - The express response object
      */
-    static createGame(req: CreateGameRequest, res: CreateGameResponse) {
+    static createGame(req: Request, res: Response) {
         GameManager.verifyUserAccess(req.cookies.uid, req.cookies.auth)
             .then(user => {
                 const game = GameManager.createGame(user);
@@ -57,7 +57,7 @@ class GameRoutes {
      * @param req - The create game request
      * @param res - A response object which will be sent to the client with the game key
      */
-    static createAIvAIGame(req: CreateAIvAIGameRequest, res: CreateAIvAIGameResponse) {
+    static createAIvAIGame(req: Request, res: Response) {
         GameManager.verifyUserAccess(req.cookies.uid, req.cookies.auth)
             .then(user => {
                 const game = GameManager.createAIvAIGame(user, +req.body.bot1, +req.body.bot2);
@@ -77,10 +77,7 @@ class GameRoutes {
      * @param req - The create game request
      * @param res - A response object which will be sent to the client with the game key
      */
-    static createSinglePlayerGame(
-        req: CreateSinglePlayerGameRequest,
-        res: CreateSinglePlayerGameResponse,
-    ) {
+    static createSinglePlayerGame(req: Request, res: Response) {
         GameManager.verifyUserAccess(req.cookies.uid, req.cookies.auth)
             .then(user => {
                 const game = GameManager.createSinglePlayerGame(user, +req.body.bot);
@@ -100,7 +97,7 @@ class GameRoutes {
      * @param req - The express request object
      * @param res - The express response object
      */
-    static joinGame(req: JoinGameRequest, res: JoinGameResponse) {
+    static joinGame(req: Request, res: Response) {
         GameManager.verifyUserAccess(req.cookies.uid, req.cookies.auth)
             .then(user => {
                 if (user) {
@@ -127,7 +124,7 @@ class GameRoutes {
      * @param req - The express request object
      * @param res - The express response object
      */
-    static getHistory(req: GameHistoryAPIRequest, res: GameHistoryAPIResponse) {
+    static getHistory(req: Request, res: Response) {
         const dao = new GameHistoryDAO();
         dao.getAllGames(req.cookies.uid)
             .then(games => res.send(games))
@@ -139,7 +136,7 @@ class GameRoutes {
      * @param req - The express request object
      * @param res - The express response object
      */
-    static getRecent(req: GameRecentAPIRequest, res: GameRecentAPIResponse) {
+    static getRecent(req: Request, res: Response) {
         const game = GameManager.findGameByUser(req.cookies.uid);
         if (game) {
             const white = typeof game.white !== 'string' ? game.white?._id : game.white;
