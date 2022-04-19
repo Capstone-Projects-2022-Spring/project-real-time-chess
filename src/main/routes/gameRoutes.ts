@@ -16,7 +16,7 @@ class GameRoutes {
      * @param req - The API request object. (Provided by ExpressJS)
      * @param res - The API response object. (Provided by ExpressJS)
      */
-    private static respondToGameCreated(game: ChessGame | null, req: Req, res: Res) {
+    private static onGameCreated(game: ChessGame | null, req: Req, res: Res) {
         if (game) {
             res.send(new GameCreatedAPIResponse(game.gameKey));
             Logger.info(
@@ -25,9 +25,23 @@ class GameRoutes {
                 )}`,
             );
         } else {
-            res.send(new ErrorAPIResponse('User not found.'));
-            Logger.warn(`User not found with uid: ${req.cookies.uid}`);
+            GameRoutes.onGameNotCreated(new Error('Game could not be created.'), req, res);
         }
+    }
+
+    /**
+     * Handles response to a game created request when there was an
+     * error creating the game.
+     *
+     * @param error - The error that was raised.
+     * @param req - The API request object. (Provided by ExpressJS)
+     * @param res - The API response object. (Provided by ExpressJS)
+     */
+    private static onGameNotCreated(err: Error, req: Req, res: Res) {
+        res.send(new ErrorAPIResponse(err));
+        Logger.error(
+            `Error thrown in GameManager.verifyUserAccess (UID=${req.cookies.uid}, AUTH=${req.cookies.auth})\n\n${err}`,
+        );
     }
 
     /**
@@ -40,14 +54,9 @@ class GameRoutes {
         GameManager.verifyUserAccess(req.cookies.uid, req.cookies.auth)
             .then(user => {
                 const game = GameManager.createGame(user);
-                GameRoutes.respondToGameCreated(game, req, res);
+                GameRoutes.onGameCreated(game, req, res);
             })
-            .catch(err => {
-                res.send(new ErrorAPIResponse(err));
-                Logger.error(
-                    `Error thrown in GameManager.verifyUserAccess (UID=${req.cookies.uid}, AUTH=${req.cookies.auth})\n\n${err}`,
-                );
-            });
+            .catch(err => GameRoutes.onGameNotCreated(err, req, res));
     }
 
     /**
@@ -60,14 +69,9 @@ class GameRoutes {
         GameManager.verifyUserAccess(req.cookies.uid, req.cookies.auth)
             .then(user => {
                 const game = GameManager.createAIvAIGame(user, +req.body.bot1, +req.body.bot2);
-                GameRoutes.respondToGameCreated(game, req, res);
+                GameRoutes.onGameCreated(game, req, res);
             })
-            .catch(err => {
-                res.send(new ErrorAPIResponse(err));
-                Logger.error(
-                    `Error thrown in GameManager.verifyUserAccess (UID=${req.cookies.uid}, AUTH=${req.cookies.auth})\n\n${err}`,
-                );
-            });
+            .catch(err => GameRoutes.onGameNotCreated(err, req, res));
     }
 
     /**
@@ -80,14 +84,9 @@ class GameRoutes {
         GameManager.verifyUserAccess(req.cookies.uid, req.cookies.auth)
             .then(user => {
                 const game = GameManager.createSinglePlayerGame(user, +req.body.bot);
-                GameRoutes.respondToGameCreated(game, req, res);
+                GameRoutes.onGameCreated(game, req, res);
             })
-            .catch(err => {
-                res.send(new ErrorAPIResponse(err));
-                Logger.error(
-                    `Error thrown in GameManager.verifyUserAccess (UID=${req.cookies.uid}, AUTH=${req.cookies.auth})\n\n${err}`,
-                );
-            });
+            .catch(err => GameRoutes.onGameNotCreated(err, req, res));
     }
 
     /**
@@ -101,7 +100,7 @@ class GameRoutes {
             .then(user => {
                 if (user) {
                     const game = GameManager.findGameByKey(req.body.gameKey);
-                    GameRoutes.respondToGameCreated(game, req, res);
+                    GameRoutes.onGameCreated(game, req, res);
                 } else {
                     res.send(new ErrorAPIResponse('Invalid User'));
                     Logger.warn(
