@@ -6,7 +6,11 @@ import SubTitlebar from '../../components/SubTitlebar';
 import Titlebar from '../../components/Titlebar';
 import IconButton from '../../components/UI/IconButton';
 import SupportedEmojis from '../../models/SupportedEmojis';
-import BaseMatchView, { BaseMatchProps, BaseMatchState } from './BaseMatchView';
+import BaseMatchView, {
+    BaseMatchProps,
+    BaseMatchState,
+    SocketAuthorizationCallback,
+} from './BaseMatchView';
 
 interface MultiplayerMatchState extends BaseMatchState {
     autopilotEnabled: boolean;
@@ -85,7 +89,7 @@ class MultiplayerMatch extends BaseMatchView<BaseMatchProps, MultiplayerMatchSta
      *
      * @param onAuthorized - The callback to call when the user is authorized.
      */
-    emitSocketAuthorization(onAuthorized: (gameState: IGameStateAPIResponse) => void): void {
+    emitSocketAuthorization(onAuthorized: SocketAuthorizationCallback): void {
         this.socket!.emit('authorize', CookieManager.uid, CookieManager.auth, onAuthorized);
     }
 

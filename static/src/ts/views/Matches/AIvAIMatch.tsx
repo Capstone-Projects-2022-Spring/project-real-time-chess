@@ -3,7 +3,11 @@ import CookieManager from '../../access/CookieManager';
 import ChessboardComponent from '../../components/ChessboardComponent';
 import SubTitlebar from '../../components/SubTitlebar';
 import Titlebar from '../../components/Titlebar';
-import BaseMatchView, { BaseMatchProps, BaseMatchState } from './BaseMatchView';
+import BaseMatchView, {
+    BaseMatchProps,
+    BaseMatchState,
+    SocketAuthorizationCallback,
+} from './BaseMatchView';
 
 /**
  * The multiplayer match component. This displays the chessboard and chat components.
@@ -57,7 +61,7 @@ class AIvAIMatch extends BaseMatchView<BaseMatchProps, BaseMatchState> {
      *
      * @param onAuthorized - The callback to call when the user is authorized.
      */
-    emitSocketAuthorization(onAuthorized: (gameState: IGameStateAPIResponse) => void): void {
+    emitSocketAuthorization(onAuthorized: SocketAuthorizationCallback): void {
         this.socket!.emit('authorize-ai-v-ai', CookieManager.uid, CookieManager.auth, onAuthorized);
     }
 }
