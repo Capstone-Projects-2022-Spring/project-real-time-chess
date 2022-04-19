@@ -43,7 +43,7 @@ runPhase('DEPS', 'Installing NPM Dependencies', 'npm install', 'installation')
     .then(() => {
         Promise.all([
             runPhase('BUILD', 'Building server-side TS project', 'npm run build:server', 'tsc'),
-            runPhase('BUILD', 'Building client-side TS project', 'webpack', 'webpack'),
+            runPhase('BUILD', 'Building client-side TS project', 'npx webpack', 'webpack'),
             runPhase('BUILD', 'Building SCSS files > CSS', 'npm run build:scss', 'sass'),
         ])
             .then(() => {
