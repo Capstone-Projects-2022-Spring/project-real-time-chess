@@ -53,10 +53,6 @@ type AIString =
     | 'AI-9'
     | 'AI-10';
 
-/**
- * Type alias for a SocketIO socket to live on the server-side
- * for a player currently assigned to a game.
- */
 declare type ChessGameSocket = import('socket.io').Socket<
     import('socket.io/dist/typed-events').DefaultEventsMap,
     import('socket.io/dist/typed-events').DefaultEventsMap,
