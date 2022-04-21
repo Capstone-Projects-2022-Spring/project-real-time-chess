@@ -44,6 +44,14 @@ class RTCServer {
     }
 
     /**
+     * TESTING TOOL
+     * @returns the socketIO server instance attached to the Server
+     */
+    public getIO() {
+        return this.socketIO;
+    }
+
+    /**
      * Binds all the middleware for the Realtime Chess server.
      */
     bindMiddleware() {
