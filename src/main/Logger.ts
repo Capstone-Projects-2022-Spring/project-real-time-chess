@@ -4,33 +4,21 @@ const RTCLogFormat = winston.format.printf(
     ({ level, message, label, timestamp }) => `${timestamp} [${label}] ${level}: ${message}`,
 );
 
-const transports = [];
+const transports: winston.transport[] = [
+    new winston.transports.File({
+        filename: process.env.NODE_ENV === 'test' ? 'server.test.log' : 'server.log',
+        format: winston.format.combine(
+            winston.format.label({ label: 'RTC-Server' }),
+            winston.format.timestamp(),
+            winston.format.prettyPrint(),
+            winston.format.colorize(),
+            RTCLogFormat,
+        ),
+    }),
+];
 
-if (process.env.NODE_ENV === 'test') {
+if (process.env.NODE_ENV !== 'test') {
     transports.push(
-        new winston.transports.File({
-            filename: 'server.test.log',
-            format: winston.format.combine(
-                winston.format.label({ label: 'RTC-Server' }),
-                winston.format.timestamp(),
-                winston.format.prettyPrint(),
-                winston.format.colorize(),
-                RTCLogFormat,
-            ),
-        }),
-    );
-} else {
-    transports.push(
-        new winston.transports.File({
-            filename: 'server.log',
-            format: winston.format.combine(
-                winston.format.label({ label: 'RTC-Server' }),
-                winston.format.timestamp(),
-                winston.format.prettyPrint(),
-                winston.format.colorize(),
-                RTCLogFormat,
-            ),
-        }),
         new winston.transports.Console({
             format: winston.format.combine(
                 winston.format.label({ label: 'RTC-Server' }),

@@ -13,7 +13,7 @@ class UserRoutes {
      * @param req - The Express request object.
      * @param res - The Express response object.
      */
-    static createUserRoute(req: CreateUserRequest, res: CreateUserResponse) {
+    static createUserRoute(req: Req, res: Res) {
         const dao = new UserDAO();
         dao.createUser(req.body)
             .then(() =>
@@ -30,7 +30,7 @@ class UserRoutes {
      * @param req - The Express request object
      * @param res - The Express response object
      */
-    static loginUserRoute(req: LoginUserRequest, res: LoginUserResponse) {
+    static loginUserRoute(req: Req, res: Res) {
         const dao = new UserDAO();
         dao.authenticateLogin(req.body)
             .then(auth => {
@@ -47,7 +47,7 @@ class UserRoutes {
      * @param req - The Express request object.
      * @param res - The Express response object.
      */
-    static authenticateUserRoute(req: AuthenticateUserRequest, res: AuthenticateUserResponse) {
+    static authenticateUserRoute(req: Req, res: Res) {
         const dao = new UserDAO();
         dao.authenticateKey(new ObjectId(req.cookies.uid), req.cookies.auth)
             .then(passed => {
@@ -63,7 +63,7 @@ class UserRoutes {
      * @param req - The express request object
      * @param res - The express response object
      */
-    static getUserRoute(req: GetUserRequest, res: GetUserResponse) {
+    static getUserRoute(req: Req, res: Res) {
         const dao = new UserDAO();
         dao.retrieveUser(req.cookies.uid)
             .then(user => {

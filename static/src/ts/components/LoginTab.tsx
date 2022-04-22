@@ -21,15 +21,7 @@ interface LoginTabState {
  * The login tab component which appears in the Signup/Login TabbedComponent.
  */
 class LoginTabComponent extends React.Component<LoginTabProps, LoginTabState> {
-    private static readonly failedLoginToast = new ToastNotification(
-        'Login Failed!',
-        60000,
-        undefined,
-        {
-            background: 'linear-gradient(120deg, #f093fb 0%, #f5576c 100%);',
-            color: 'white',
-        },
-    );
+    private static readonly failedLoginToast = new ToastNotification('Login Failed!', 60000);
 
     /**
      * Creates an instance of LoginTabComponent.

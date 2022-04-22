@@ -52,3 +52,10 @@ type AIString =
     | 'AI-8'
     | 'AI-9'
     | 'AI-10';
+
+declare type ChessGameSocket = import('socket.io').Socket<
+    import('socket.io/dist/typed-events').DefaultEventsMap,
+    import('socket.io/dist/typed-events').DefaultEventsMap,
+    import('socket.io/dist/typed-events').DefaultEventsMap,
+    Record<string, unknown>
+>;

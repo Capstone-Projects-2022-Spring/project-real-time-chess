@@ -7,6 +7,8 @@ import SupportedEmojis from '../../models/SupportedEmojis';
 import UINavigator from '../../models/UINavigator';
 import MainMenu from '../MainMenu';
 
+type SocketAuthorizationCallback = (gameState: IGameStateAPIResponse) => void;
+
 interface BaseMatchProps {
     orientation: 'b' | 'w';
 }
@@ -44,9 +46,7 @@ abstract class BaseMatchView<
         this.bindSocket();
     }
 
-    abstract emitSocketAuthorization(
-        onAuthorized: (gameState: IGameStateAPIResponse) => void,
-    ): void;
+    abstract emitSocketAuthorization(onAuthorized: SocketAuthorizationCallback): void;
 
     /**
      * Opens a new socket with the server and binds the socket to this component.
@@ -148,4 +148,4 @@ abstract class BaseMatchView<
 }
 
 export default BaseMatchView;
-export { BaseMatchProps, BaseMatchState };
+export { BaseMatchProps, BaseMatchState, SocketAuthorizationCallback };

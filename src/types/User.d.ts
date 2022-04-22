@@ -24,3 +24,8 @@ declare interface ISanitizedUser {
     wins: number;
     losses: number;
 }
+
+declare interface AuthInfo {
+    uid: import('mongodb').ObjectId;
+    key: string;
+}

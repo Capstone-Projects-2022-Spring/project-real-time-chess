@@ -1,6 +1,6 @@
 {
     "include": ["./src", "src/types"],
-    "exclude": ["./static", "node_modules", "dist"],
+    "exclude": ["./static", "node_modules", "dist", "deployments"],
     "compilerOptions": {
         "target": "ES2017",
         "module": "commonjs",
