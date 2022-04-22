@@ -9,3 +9,4 @@ docs
 .nyc_output
 coverage
 cpd
+deployments
