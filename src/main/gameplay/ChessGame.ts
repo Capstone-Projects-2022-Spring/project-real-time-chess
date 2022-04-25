@@ -209,14 +209,14 @@ class ChessGame implements IChessGame {
                         } moved their ${ChessGame.pieceTypeToName(move.piece)} to ${target}`,
                     );
                 } else if (color === 'b') {
-                    this.blackSocket?.emit(
-                        'move-notification',
-                        `White moved their ${ChessGame.pieceTypeToName(move.piece)} to ${target}`,
-                    );
-                } else if (color === 'w') {
                     this.whiteSocket?.emit(
                         'move-notification',
                         `Black moved their ${ChessGame.pieceTypeToName(move.piece)} to ${target}`,
+                    );
+                } else if (color === 'w') {
+                    this.blackSocket?.emit(
+                        'move-notification',
+                        `White moved their ${ChessGame.pieceTypeToName(move.piece)} to ${target}`,
                     );
                 }
 
