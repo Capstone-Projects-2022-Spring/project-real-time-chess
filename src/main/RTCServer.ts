@@ -166,15 +166,29 @@ class RTCServer {
 
             socket.on('game state', () => GameSocketHandler.onGameStateRequest(socket, game));
 
-            socket.on('move piece', (source: Square, target: Square) =>
-                GameSocketHandler.onMovePieceRequest(game, uid, source, target),
-            );
+            socket.on('move piece', (source: Square, target: Square) => {
+                try {
+                    GameSocketHandler.onMovePieceRequest(game, uid, source, target);
+                } catch (e) {
+                    Logger.error(e);
+                }
+            });
 
-            socket.on('move ai', () => GameSocketHandler.onAIMoveRequest(game, uid));
+            socket.on('move ai', () => {
+                try {
+                    GameSocketHandler.onAIMoveRequest(game, uid);
+                } catch (e) {
+                    Logger.error(e);
+                }
+            });
 
             socket.on('autopilot', (action: 'enable' | 'disable') => {
-                if (action === 'enable') GameSocketHandler.enableAutopilot(game, uid);
-                else if (action === 'disable') GameSocketHandler.disableAutopilot(game, uid);
+                try {
+                    if (action === 'enable') GameSocketHandler.enableAutopilot(game, uid);
+                    else if (action === 'disable') GameSocketHandler.disableAutopilot(game, uid);
+                } catch (e) {
+                    Logger.error(e);
+                }
             });
         });
     }
