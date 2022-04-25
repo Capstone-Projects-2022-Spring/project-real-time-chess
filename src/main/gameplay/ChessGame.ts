@@ -1,11 +1,11 @@
 /* eslint-disable complexity */
-import { Chess, ChessInstance, Move, PieceType, Square } from 'chess.js';
+import { Move, PieceType, Square } from 'chess.js';
 import { ObjectId } from 'mongodb';
 import { GameStateAPIResponse } from '../APIResponse';
 import GameHistoryDAO from '../dao/GameHistoryDAO';
 import UserDAO from '../dao/UserDAO';
 import GrandMaster from '../GrandMaster/GrandMaster';
-import ModifiedChess from '../GrandMaster/modified.chess';
+import ModifiedChess, { ModifiedChessInstance } from '../GrandMaster/modified.chess';
 import Logger from '../Logger';
 import Cooldown from './Cooldown';
 
@@ -25,7 +25,7 @@ class ChessGame implements IChessGame {
 
     private whiteSocket?: ChessGameSocket;
 
-    private game: ChessInstance;
+    private game: ModifiedChessInstance;
 
     public cooldownMap: Record<Square, Cooldown>;
 
@@ -48,7 +48,7 @@ class ChessGame implements IChessGame {
      */
     constructor(owner: IUser, gameKey: string[], cooldown?: number) {
         this.owner = owner;
-        this.game = new Chess();
+        this.game = ModifiedChess();
         this.gameKey = gameKey;
         this.cooldownMap = {} as Record<Square, Cooldown>;
         this.cooldown = cooldown || ChessGame.COOLDOWN_TIME;
@@ -141,10 +141,10 @@ class ChessGame implements IChessGame {
      * @param color - The player who's turn should be next
      * @returns The new chess.js instance
      */
-    public constructGameWithTurn(color: 'w' | 'b'): ChessInstance {
+    public constructGameWithTurn(color: 'w' | 'b'): ModifiedChessInstance {
         const tokens = this.game.fen().split(' ');
         tokens[1] = color;
-        return new Chess(tokens.join(' '));
+        return ModifiedChess(tokens.join(' '));
     }
 
     /**
@@ -194,7 +194,7 @@ class ChessGame implements IChessGame {
             } piece from ${source} to ${target}`,
         );
 
-        let move;
+        let move: Move | null = null;
         const cooldown = this.cooldownMap[source];
         if (cooldown === undefined || cooldown.ready()) {
             Logger.debug(`Piece at ${source} is not in cooldown`);
@@ -256,7 +256,7 @@ class ChessGame implements IChessGame {
             Logger.debug(`The piece on square ${source} is on cooldown`);
         }
 
-        return move ?? null;
+        return move;
     }
 
     /**

@@ -1,3 +1,4 @@
+import { Chess } from 'chess.js';
 import { airplane, airplaneOutline, helpBuoy, helpBuoyOutline } from 'ionicons/icons';
 import React from 'react';
 import CookieManager from '../../access/CookieManager';
@@ -79,6 +80,9 @@ class MultiplayerMatch extends BaseMatchView<BaseMatchProps, MultiplayerMatchSta
                             fen={this.state.fen}
                             onPieceDrop={(source, target) => {
                                 this.socket?.emit('move piece', source, target);
+                                const chessGameInstance = new Chess(this.state.fen);
+                                chessGameInstance.move(`${source}-${target}`, { sloppy: true });
+                                this.setState({ fen: chessGameInstance.fen() });
                             }}
                             onFENChange={fen =>
                                 this.setState({

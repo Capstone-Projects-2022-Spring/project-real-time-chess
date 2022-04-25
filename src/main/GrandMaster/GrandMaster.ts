@@ -151,7 +151,7 @@ class GrandMaster {
     /**
      * Creates an instance of GrandMaster.
      */
-    constructor(game: ChessInstance) {
+    constructor(game: ChessInstance | ModifiedChessInstance) {
         // this.positionCount = 0;
         this.game = ModifiedChess(game.fen());
         this.weights = { p: 100, n: 280, b: 320, r: 479, q: 929, k: 60000, k_e: 60000 };

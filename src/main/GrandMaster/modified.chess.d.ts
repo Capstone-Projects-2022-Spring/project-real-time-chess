@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/ban-types */
 export default ModifiedChess;
 
-declare function ModifiedChess(fen: string): ModifiedChessInstance;
+declare function ModifiedChess(fen?: string): ModifiedChessInstance;
 
 export { ModifiedChessInstance };
 
@@ -50,8 +50,8 @@ declare interface ModifiedChessInstance {
     load_pgn: (pgn: any, options: any) => boolean;
     header: (...args: any[]) => {};
     ascii: () => string;
-    turn: () => string;
-    move: (move: any, options: any) => {};
+    turn: () => 'w' | 'b';
+    move: (move: any, options: any) => import('chess.js').Move;
     ugly_move: (move_obj: any, options?: any) => import('chess.js').Move;
     undo: () => {};
     clear: () => void;
