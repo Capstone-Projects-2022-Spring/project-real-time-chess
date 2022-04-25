@@ -43,6 +43,8 @@ class ChessGame implements IChessGame {
 
     private cooldown: number;
 
+    public status: 'playing' | 'ended';
+
     /**
      * Creates an instance of ChessGame.
      */
@@ -53,6 +55,7 @@ class ChessGame implements IChessGame {
         this.cooldownMap = {} as Record<Square, Cooldown>;
         this.cooldown = cooldown || ChessGame.COOLDOWN_TIME;
         this.moveJobLock = false;
+        this.status = 'playing';
         this.moveJob = setInterval(() => {
             if (!this.moveJobLock) {
                 this.moveJobLock = true;
@@ -288,6 +291,7 @@ class ChessGame implements IChessGame {
      * Ends the game and publishes the game to the database.
      */
     public endGame() {
+        this.status = 'ended';
         clearInterval(this.moveJob);
         if (this.autopilot.black.enabled && this.autopilot.black.job) {
             clearInterval(this.autopilot.black.job);

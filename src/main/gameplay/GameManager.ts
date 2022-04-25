@@ -208,12 +208,12 @@ class GameManager {
     public static endGame(uid: string): void {
         const game = GameManager.findGameByUser(uid);
         if (game) {
-            game.endGame();
+            if (game.status === 'playing') game.endGame();
             GameManager.games.splice(GameManager.games.indexOf(game), 1);
         }
         const ownedGame = GameManager.findGameByOwner(uid);
         if (ownedGame) {
-            ownedGame.endGame();
+            if (ownedGame.status === 'playing') ownedGame.endGame();
             GameManager.games.splice(GameManager.games.indexOf(ownedGame), 1);
         }
     }
