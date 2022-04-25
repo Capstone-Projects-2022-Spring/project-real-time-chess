@@ -1,25 +1,15 @@
 import * as React from 'react';
 
-/**
- * An interface for cooldown string.
- */
-interface CooldownSelectorState {
+interface CooldownSelectorProps {
     value: number;
+    onChange: (value: number) => void;
 }
 
 /**
  * CooldownSelectorComponent Class
  * This class has the option of three different cooldown times (in seconds).
  */
-class CooldownSelectorComponent extends React.Component<NoProps, CooldownSelectorState> {
-    /**
-     * Constructor for CooldownSelectorComponent
-     */
-    constructor(props: NoProps) {
-        super(props);
-        this.state = { value: 5 };
-    }
-
+class CooldownSelectorComponent extends React.Component<CooldownSelectorProps> {
     /**
      * Method to render component.
      * @returns Buttons rendered to screen for cooldowntime.
@@ -34,14 +24,13 @@ class CooldownSelectorComponent extends React.Component<NoProps, CooldownSelecto
                     type="range"
                     min="1"
                     max="10"
-                    value={this.state.value}
-                    onChange={e => this.setState({ value: +e.target.value })}
+                    value={this.props.value}
+                    onChange={e => this.props.onChange(+e.target.value)}
                 />
-                <span style={{ paddingLeft: '1rem' }}>{this.state.value}s</span>
+                <span style={{ paddingLeft: '1rem' }}>{this.props.value}s</span>
             </div>
         );
     }
 }
 
 export default CooldownSelectorComponent;
-export { CooldownSelectorState };

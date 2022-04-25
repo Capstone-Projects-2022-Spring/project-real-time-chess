@@ -41,14 +41,17 @@ class ChessGame implements IChessGame {
 
     private autopilot: AutoPilotGameState;
 
+    private cooldown: number;
+
     /**
      * Creates an instance of ChessGame.
      */
-    constructor(owner: IUser, gameKey: string[]) {
+    constructor(owner: IUser, gameKey: string[], cooldown?: number) {
         this.owner = owner;
         this.game = new Chess();
         this.gameKey = gameKey;
         this.cooldownMap = {} as Record<Square, Cooldown>;
+        this.cooldown = cooldown || ChessGame.COOLDOWN_TIME;
         this.moveJobLock = false;
         this.moveJob = setInterval(() => {
             if (!this.moveJobLock) {
@@ -68,6 +71,9 @@ class ChessGame implements IChessGame {
                 enabled: false,
             },
         };
+        Logger.debug(`Created a new game with the following properties:
+        Owner: ${this.owner.name.first} ${this.owner.name.last}
+        Cooldown: ${this.cooldown}`);
     }
 
     /**
@@ -182,18 +188,28 @@ class ChessGame implements IChessGame {
      * If an invalid move (source to target) is attempted, then `null` is returned.
      */
     private doSingleMove(source: Square, target: Square, color: 'w' | 'b'): Move | null {
+        Logger.debug(
+            `Processing move of ${
+                color === 'w' ? 'White' : 'Black'
+            } piece from ${source} to ${target}`,
+        );
+
         let move;
         const cooldown = this.cooldownMap[source];
         if (cooldown === undefined || cooldown.ready()) {
+            Logger.debug(`Piece at ${source} is not in cooldown`);
             this.forceTurnChange(color);
             try {
                 move = this.game.move(`${source}-${target}`, { sloppy: true });
             } catch (e) {
+                Logger.debug(`There was an error with the move from ${source} to ${target}`);
                 move = null;
             }
+
             if (move !== null) {
+                Logger.debug(`Move from ${source} to ${target} was successful`);
                 delete this.cooldownMap[source];
-                this.cooldownMap[target] = new Cooldown(5);
+                this.cooldownMap[target] = new Cooldown(this.cooldown);
 
                 if (typeof this.black === 'string' && typeof this.white === 'string') {
                     this.blackSocket?.emit(
@@ -209,14 +225,14 @@ class ChessGame implements IChessGame {
                         } moved their ${ChessGame.pieceTypeToName(move.piece)} to ${target}`,
                     );
                 } else if (color === 'b') {
-                    this.blackSocket?.emit(
-                        'move-notification',
-                        `White moved their ${ChessGame.pieceTypeToName(move.piece)} to ${target}`,
-                    );
-                } else if (color === 'w') {
                     this.whiteSocket?.emit(
                         'move-notification',
                         `Black moved their ${ChessGame.pieceTypeToName(move.piece)} to ${target}`,
+                    );
+                } else if (color === 'w') {
+                    this.blackSocket?.emit(
+                        'move-notification',
+                        `White moved their ${ChessGame.pieceTypeToName(move.piece)} to ${target}`,
                     );
                 }
 
@@ -233,7 +249,11 @@ class ChessGame implements IChessGame {
                 if (this.winner !== null) this.endGame();
 
                 this.emitToPlayers('game state', new GameStateAPIResponse(this));
+            } else {
+                Logger.debug(`The piece at ${source} cannot move to ${target}. Invalid move.`);
             }
+        } else {
+            Logger.debug(`The piece on square ${source} is on cooldown`);
         }
 
         return move ?? null;
