@@ -1,16 +1,10 @@
 import {
     play,
-    playBack,
-    playBackOutline,
-    playForward,
-    playForwardOutline,
     playOutline,
     playSkipBack,
     playSkipBackOutline,
     playSkipForward,
     playSkipForwardOutline,
-    reload,
-    reloadOutline,
 } from 'ionicons/icons';
 import React from 'react';
 import ChessboardComponent from '../../components/ChessboardComponent';
@@ -59,26 +53,16 @@ class ReplayMatch extends React.Component<ReplayMatchProps, ReplayMatchState> {
                 <Titlebar title={`Replay Match: ${this.props.label}`} />
 
                 <SubTitlebar>
-                    <div className="col text-left">
-                        <IconButton
-                            icon={reloadOutline}
-                            hoverIcon={reload}
-                            size="1.5rem"
-                            onClick={() => undefined}
-                        />
-                    </div>
+                    <div className="col text-left"></div>
                     <div className="col text-center">
-                        <IconButton
-                            icon={playBackOutline}
-                            hoverIcon={playBack}
-                            size="1.5rem"
-                            onClick={() => this.play(-1)}
-                        />
                         <IconButton
                             icon={playSkipBackOutline}
                             hoverIcon={playSkipBack}
                             size="1.5rem"
-                            onClick={() => this.setState({ move: this.state.move - 1 })}
+                            onClick={() => {
+                                this.setState({ move: this.state.move - 1 });
+                                this.play(0);
+                            }}
                         />
                         <IconButton
                             icon={playOutline}
@@ -90,13 +74,10 @@ class ReplayMatch extends React.Component<ReplayMatchProps, ReplayMatchState> {
                             icon={playSkipForwardOutline}
                             hoverIcon={playSkipForward}
                             size="1.5rem"
-                            onClick={() => this.setState({ move: this.state.move + 1 })}
-                        />
-                        <IconButton
-                            icon={playForwardOutline}
-                            hoverIcon={playForward}
-                            size="1.5rem"
-                            onClick={() => this.play(2)}
+                            onClick={() => {
+                                this.setState({ move: this.state.move + 1 });
+                                this.play(0);
+                            }}
                         />
                     </div>
                     <div className="col"></div>
