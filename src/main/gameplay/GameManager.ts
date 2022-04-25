@@ -222,6 +222,9 @@ class GameManager {
      * @returns The chess game associated with the game key.
      */
     public static joinGame(user: IUser, gameKey: string[]): ChessGame | null {
+        Logger.debug(`User (${user.email}) attempting to join game with key: ${gameKey}`);
+        Logger.debug(`Available Games: ${GameManager.games.map(g => g.gameKey)}`);
+
         GameManager.endGame(user._id!.toString());
         const game = GameManager.findGameByKey(gameKey);
         if (game) {

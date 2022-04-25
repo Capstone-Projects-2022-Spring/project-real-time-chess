@@ -1,7 +1,9 @@
+/* eslint-disable complexity */
 import { Chess, ChessInstance, Move, PieceType, Square } from 'chess.js';
 import { ObjectId } from 'mongodb';
 import { GameStateAPIResponse } from '../APIResponse';
 import GameHistoryDAO from '../dao/GameHistoryDAO';
+import UserDAO from '../dao/UserDAO';
 import GrandMaster from '../GrandMaster/GrandMaster';
 import ModifiedChess from '../GrandMaster/modified.chess';
 import Logger from '../Logger';
@@ -275,7 +277,9 @@ class ChessGame implements IChessGame {
             clearInterval(this.autopilot.white.job);
         }
 
-        const dao = new GameHistoryDAO();
+        const gameHistoryDao = new GameHistoryDAO();
+        const userDao = new UserDAO();
+
         let black: ObjectId | AIString | 'No Player';
         let white: ObjectId | AIString | 'No Player';
 
@@ -286,14 +290,53 @@ class ChessGame implements IChessGame {
         else white = this.white?._id ?? 'No Player';
 
         if (black !== 'No Player' && white !== 'No Player') {
-            dao.insertOne({
-                black,
-                white,
-                label: `${this.whiteName} vs ${this.blackName}`,
-                game_key: this.gameKey,
-                history: this.moveHistory,
-                timestamp: Date.now(),
-            }).catch(err => Logger.error(err));
+            gameHistoryDao
+                .insertOne({
+                    black,
+                    white,
+                    label: `${this.whiteName} vs ${this.blackName}`,
+                    game_key: this.gameKey,
+                    history: this.moveHistory,
+                    timestamp: Date.now(),
+                })
+                .catch(err => Logger.error(err));
+            const { winner } = this;
+            if (winner === 'b') {
+                const promises = [];
+                if (typeof this.black === 'object') {
+                    promises.push(userDao.recordWin(this.black!._id));
+                }
+
+                if (typeof this.white === 'object') {
+                    promises.push(userDao.recordLoss(this.white!._id));
+                }
+
+                Promise.all(promises)
+                    .then(() => {
+                        this.emitToPlayers('blackWin', this.blackName);
+                    })
+                    .catch(err => {
+                        Logger.error(err);
+                    });
+            } else if (winner === 'w') {
+                const promises = [];
+
+                if (typeof this.white === 'object') {
+                    promises.push(userDao.recordWin(this.white!._id));
+                }
+
+                if (typeof this.black === 'object') {
+                    promises.push(userDao.recordLoss(this.black!._id));
+                }
+
+                Promise.all(promises)
+                    .then(() => {
+                        this.emitToPlayers('whiteWin', this.whiteName);
+                    })
+                    .catch(err => {
+                        Logger.error(err);
+                    });
+            }
         }
     }
 
@@ -387,12 +430,11 @@ class ChessGame implements IChessGame {
             });
         });
         if (kings[0] && kings[1]) return null;
+        // TODO: Figure out where to emit to players
         if (kings[0]) {
-            this.emitToPlayers('whiteWin', this.whiteName);
             return 'w';
         }
         if (kings[1]) {
-            this.emitToPlayers('blackWin', this.blackName);
             return 'b';
         }
         return null;
