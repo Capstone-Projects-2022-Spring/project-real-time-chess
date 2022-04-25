@@ -239,9 +239,9 @@ var Chess = function (fen) {
         var position = tokens[0];
         var square = 0;
 
-        if (!validate_fen(fen).valid) {
-            return false;
-        }
+        // if (!validate_fen(fen).valid) {
+        //     return false;
+        // }
 
         clear(keep_headers);
 
