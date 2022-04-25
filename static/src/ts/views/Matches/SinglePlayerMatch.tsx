@@ -1,3 +1,4 @@
+import { Chess } from 'chess.js';
 import * as React from 'react';
 import CookieManager from '../../access/CookieManager';
 import ChessboardComponent from '../../components/ChessboardComponent';
@@ -45,6 +46,9 @@ class SinglePlayerMatch extends BaseMatchView<BaseMatchProps, BaseMatchState> {
                             fen={this.state.fen}
                             onPieceDrop={(source, target) => {
                                 this.socket?.emit('move piece', source, target);
+                                const chessGameInstance = new Chess(this.state.fen);
+                                chessGameInstance.move(`${source}-${target}`, { sloppy: true });
+                                this.setState({ fen: chessGameInstance.fen() });
                             }}
                             onFENChange={fen =>
                                 this.setState({
