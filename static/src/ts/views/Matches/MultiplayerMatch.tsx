@@ -49,13 +49,22 @@ class MultiplayerMatch extends BaseMatchView<BaseMatchProps, MultiplayerMatchSta
                             size="0.75rem"
                             icon={helpBuoyOutline}
                             hoverIcon={helpBuoy}
-                            onClick={() => undefined}
+                            onClick={() => this.socket?.emit('move ai')}
                         />
                         <IconButton
                             size="0.75rem"
                             icon={airplaneOutline}
                             hoverIcon={airplane}
-                            onClick={() => undefined}
+                            onClick={() => {
+                                this.setState(
+                                    { autopilotEnabled: !this.state.autopilotEnabled },
+                                    () =>
+                                        this.socket?.emit(
+                                            'autopilot',
+                                            this.state.autopilotEnabled ? 'enable' : 'disable',
+                                        ),
+                                );
+                            }}
                         />
                     </div>
                     <div className="col"></div>
