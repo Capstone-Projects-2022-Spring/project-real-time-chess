@@ -41,14 +41,17 @@ class ChessGame implements IChessGame {
 
     private autopilot: AutoPilotGameState;
 
+    private cooldown: number;
+
     /**
      * Creates an instance of ChessGame.
      */
-    constructor(owner: IUser, gameKey: string[]) {
+    constructor(owner: IUser, gameKey: string[], cooldown?: number) {
         this.owner = owner;
         this.game = new Chess();
         this.gameKey = gameKey;
         this.cooldownMap = {} as Record<Square, Cooldown>;
+        this.cooldown = cooldown || ChessGame.COOLDOWN_TIME;
         this.moveJobLock = false;
         this.moveJob = setInterval(() => {
             if (!this.moveJobLock) {
@@ -193,7 +196,7 @@ class ChessGame implements IChessGame {
             }
             if (move !== null) {
                 delete this.cooldownMap[source];
-                this.cooldownMap[target] = new Cooldown(5);
+                this.cooldownMap[target] = new Cooldown(this.cooldown);
 
                 if (typeof this.black === 'string' && typeof this.white === 'string') {
                     this.blackSocket?.emit(

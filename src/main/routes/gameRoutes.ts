@@ -53,7 +53,7 @@ class GameRoutes {
     static createGame(req: Req, res: Res) {
         GameManager.verifyUserAccess(req.cookies.uid, req.cookies.auth)
             .then(user => {
-                const game = GameManager.createGame(user);
+                const game = GameManager.createGame(user, req.body.cooldown ?? 5);
                 GameRoutes.onGameCreated(game, req, res);
             })
             .catch(err => GameRoutes.onGameNotCreated(err, req, res));

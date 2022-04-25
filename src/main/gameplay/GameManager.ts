@@ -103,10 +103,14 @@ class GameManager {
      * @param user - The user who is creating the game.
      * @returns The game that is created
      */
-    public static createGame(user: IUser): ChessGame | null {
+    public static createGame(user: IUser, cooldown?: number): ChessGame | null {
         GameManager.endGame(user._id!.toString());
 
-        const game = new ChessGame(user, GameManager.generateGameKey());
+        const game = new ChessGame(
+            user,
+            GameManager.generateGameKey(),
+            cooldown ?? ChessGame.COOLDOWN_TIME,
+        );
 
         game.black = user;
         GameManager.games.push(game);
