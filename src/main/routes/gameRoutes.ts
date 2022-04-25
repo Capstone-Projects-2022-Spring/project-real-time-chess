@@ -99,8 +99,9 @@ class GameRoutes {
         GameManager.verifyUserAccess(req.cookies.uid, req.cookies.auth)
             .then(user => {
                 if (user) {
-                    const game = GameManager.findGameByKey(req.body.gameKey);
-                    GameRoutes.onGameCreated(game, req, res);
+                    const game = GameManager.joinGame(user, req.body.gameKey);
+                    if (game) res.send({ success: true, gameKey: game.gameKey });
+                    else res.send({ success: false });
                 } else {
                     res.send(new ErrorAPIResponse('Invalid User'));
                     Logger.warn(
