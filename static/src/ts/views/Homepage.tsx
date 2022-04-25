@@ -1,8 +1,7 @@
 import * as React from 'react';
 import LoginTabComponent from '../components/LoginTab';
 import SignUpTabComponent from '../components/SignUpTab';
-import TabbedComponent from '../components/TabbedComponent';
-import { NoProps, NoState } from '../models/types';
+import TabbedComponent from '../components/UI/TabbedComponent';
 
 /**
  * The homepage component which displays the login/signup forms.

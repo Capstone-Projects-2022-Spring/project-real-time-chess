@@ -16,5 +16,9 @@ userApiRouter.get('/info', UserRoutes.getUserRoute);
 
 gameApiRouter.post('/create', GameRoutes.createGame);
 gameApiRouter.post('/join', GameRoutes.joinGame);
+gameApiRouter.post('/AIvAI/create', GameRoutes.createAIvAIGame);
+gameApiRouter.post('/single-player/create', GameRoutes.createSinglePlayerGame);
+gameApiRouter.get('/history', GameRoutes.getHistory);
+gameApiRouter.get('/recent', GameRoutes.getRecent);
 
 export default apiRouter;

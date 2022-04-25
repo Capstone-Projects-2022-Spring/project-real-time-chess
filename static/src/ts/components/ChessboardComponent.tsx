@@ -1,13 +1,15 @@
 import { Square } from 'chess.js';
 import * as React from 'react';
 import { Chessboard } from 'react-chessboard';
-import ToastNotification from './ToastNotification';
+import ToastNotification from './UI/ToastNotification';
+
+type PieceDropCallback = (source: Square, target: Square) => void;
 
 interface ChessboardComponentProps {
     parentContainerId: string;
     orientation: 'b' | 'w';
     fen?: string;
-    onPieceDrop?: (source: Square, target: Square) => void;
+    onPieceDrop?: PieceDropCallback;
     onFENChange: (fen: string) => void;
 }
 
@@ -69,11 +71,7 @@ class ChessboardComponent extends React.Component<
                             return true;
                         }
 
-                        new ToastNotification(
-                            'Invalid Move',
-                            `You cannot make that move! Current turn: ${this.props.fen}`,
-                            'error',
-                        ).fire();
+                        new ToastNotification('Invalid Move', 3000).fire();
 
                         return false;
                     }}

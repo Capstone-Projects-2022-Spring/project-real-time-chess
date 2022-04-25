@@ -10,7 +10,7 @@ module.exports = {
     ],
     rules: {
         '@typescript-eslint/no-non-null-assertion': 'off',
-        'max-classes-per-file': ['error', 2],
+        'max-classes-per-file': ['error', 7],
         'no-await-in-loop': ['error'],
         'no-loss-of-precision': ['error'],
         'no-promise-executor-return': ['error'],
@@ -47,5 +47,5 @@ module.exports = {
     parserOptions: {
         project: ['./tsconfig.json', './static/src/ts/tsconfig.json'],
     },
-    ignorePatterns: ['*.js', 'dist/**/*', 'src/test/**/*'],
+    ignorePatterns: ['*.js', 'dist/**/*', 'src/test/**/*', 'deployments/**/*'],
 };

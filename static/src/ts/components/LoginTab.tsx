@@ -1,11 +1,11 @@
 import * as React from 'react';
-import Swal from 'sweetalert2';
 import Users from '../access/Users';
 import UINavigator from '../models/UINavigator';
-import ButtonComponent from './ButtonComponent';
-import GameplayOptions from '../views/GameplayOptions';
-import PasswordFieldComponent from './PasswordFieldComponent';
-import TextFieldComponent from './TextFieldComponent';
+import ButtonComponent from './UI/ButtonComponent';
+import GameplayOptions from '../views/MainMenu';
+import PasswordFieldComponent from './UI/PasswordFieldComponent';
+import TextFieldComponent from './UI/TextFieldComponent';
+import ToastNotification from './UI/ToastNotification';
 
 interface LoginTabProps {
     user?: string;
@@ -21,6 +21,8 @@ interface LoginTabState {
  * The login tab component which appears in the Signup/Login TabbedComponent.
  */
 class LoginTabComponent extends React.Component<LoginTabProps, LoginTabState> {
+    private static readonly failedLoginToast = new ToastNotification('Login Failed!', 60000);
+
     /**
      * Creates an instance of LoginTabComponent.
      *
@@ -81,19 +83,15 @@ class LoginTabComponent extends React.Component<LoginTabProps, LoginTabState> {
                                     .then(success => {
                                         if (success) UINavigator.render(<GameplayOptions />);
                                         else {
-                                            Swal.fire({
-                                                title: 'Login Failed',
-                                                text: 'Incorrect username or password',
-                                            }).catch(err =>
-                                                document.write(`Error: ${err.message}`),
+                                            LoginTabComponent.failedLoginToast.fire();
+                                            ToastNotification.notify(
+                                                'Incorrect username or password',
+                                                60000,
                                             );
                                         }
                                     })
-                                    .catch(error => {
-                                        Swal.fire({
-                                            title: 'Login Failed',
-                                            text: error.message,
-                                        }).catch(err => document.write(`Error: ${err.message}`));
+                                    .catch(() => {
+                                        LoginTabComponent.failedLoginToast.fire();
                                     });
                             }}
                         />

@@ -2,10 +2,11 @@ import * as React from 'react';
 import Swal from 'sweetalert2';
 import Users from '../access/Users';
 import SignUpModel from '../models/SignUpModel';
-import ButtonComponent from './ButtonComponent';
-import EmailFieldComponent from './EmailFieldComponent';
-import NameFieldComponent from './NameFieldComponent';
-import PasswordFieldComponent from './PasswordFieldComponent';
+import ButtonComponent from './UI/ButtonComponent';
+import EmailFieldComponent from './UI/EmailFieldComponent';
+import NameFieldComponent from './UI/NameFieldComponent';
+import PasswordFieldComponent from './UI/PasswordFieldComponent';
+import ToastNotification from './UI/ToastNotification';
 
 interface SignUpTabProps {
     fname: string;
@@ -112,28 +113,24 @@ class SignUpTabComponent extends React.Component<SignUpTabProps, SignUpTabState>
                                 Users.signup(this.getFormData())
                                     .then(created => {
                                         if (created) {
-                                            Swal.fire({
-                                                title: 'Signup Successful',
-                                                text: `${this.state.fname}, good news. You're signed up!`,
-                                            }).catch(err =>
-                                                document.write(`Error: ${err.message}`),
-                                            );
+                                            ToastNotification.notify('You are signed up!', 60000);
                                         } else {
-                                            Swal.fire({
-                                                title: 'Signup Failed',
-                                                text: 'We do not know why',
-                                            }).catch(err =>
-                                                document.write(`Error: ${err.message}`),
+                                            ToastNotification.notify(
+                                                'There was an error signing up.',
+                                                60000,
+                                            );
+                                            ToastNotification.notify(
+                                                'Please try again later.',
+                                                60000,
                                             );
                                         }
                                     })
-                                    .catch(err => {
-                                        Swal.fire({
-                                            title: 'Signup Failed',
-                                            text: `Reason: ${err.message}`,
-                                        }).catch(swalError =>
-                                            document.write(`Error: ${swalError.message}`),
+                                    .catch(() => {
+                                        ToastNotification.notify(
+                                            'There was an error signing up.',
+                                            60000,
                                         );
+                                        ToastNotification.notify('Please try again later.', 60000);
                                     });
                             }}
                         />

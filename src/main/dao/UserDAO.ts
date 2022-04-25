@@ -1,6 +1,7 @@
 import { ObjectId } from 'mongodb';
 import InvalidCredentialsError from '../errors/InvalidCredentialsError';
 import Logger from '../Logger';
+import PromiseUtils from '../utils/PromiseUtils';
 import BaseDAO from './BaseDAO';
 
 /**
@@ -154,9 +155,11 @@ class UserDAO extends BaseDAO<IUserDocument> {
                     let wins: number;
                     if (user.wins === undefined) wins = 1;
                     else wins = user.wins + 1;
-                    this.updateOne({ _id: uid }, { $set: { wins } })
-                        .then(() => resolve())
-                        .catch(err => reject(err));
+                    PromiseUtils.handleDefault(
+                        this.updateOne({ _id: uid }, { $set: { wins } }),
+                        resolve,
+                        reject,
+                    );
                 })
                 .catch(err => {
                     Logger.error(err);
@@ -178,9 +181,11 @@ class UserDAO extends BaseDAO<IUserDocument> {
                     let losses: number;
                     if (user.losses === undefined) losses = 1;
                     else losses = user.losses + 1;
-                    this.updateOne({ _id: uid }, { $set: { losses } })
-                        .then(() => resolve())
-                        .catch(err => reject(err));
+                    PromiseUtils.handleDefault(
+                        this.updateOne({ _id: uid }, { $set: { losses } }),
+                        resolve,
+                        reject,
+                    );
                 })
                 .catch(err => {
                     Logger.error(err);

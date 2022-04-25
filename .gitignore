@@ -3,7 +3,10 @@ dist
 static/public/css
 static/public/js
 server.log
+server.test.log
 tsconfig.tsbuildinfo
 docs
 .nyc_output
 coverage
+cpd
+deployments

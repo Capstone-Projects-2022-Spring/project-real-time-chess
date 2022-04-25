@@ -1,6 +1,3 @@
-/**
- * The data belonging to a User in the database
- */
 declare interface IUser {
     _id: import('mongodb').ObjectId;
     name: {
@@ -26,4 +23,9 @@ declare interface ISanitizedUser {
     email: string;
     wins: number;
     losses: number;
+}
+
+declare interface AuthInfo {
+    uid: import('mongodb').ObjectId;
+    key: string;
 }

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import CookieManager from '../CookieManager';
+import CookieManager from './CookieManager';
 import LoginModel from '../models/LoginModel';
 import SignUpModel from '../models/SignUpModel';
 

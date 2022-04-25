@@ -1,3 +1,5 @@
+@import './Variables.scss';
+
 @keyframes HueRotation {
     0% {
         filter: hue-rotate(0deg);
@@ -9,6 +11,16 @@
 }
 
 .rtc-brand-logo {
+    animation-name: HueRotation;
+    animation-duration: 10s;
+    animation-iteration-count: infinite;
+}
+
+.primary-gradient {
+    background-image: $primary-gradient;
+}
+
+.hue-rotate {
     animation-name: HueRotation;
     animation-duration: 10s;
     animation-iteration-count: infinite;
