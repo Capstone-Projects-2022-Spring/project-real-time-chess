@@ -188,16 +188,26 @@ class ChessGame implements IChessGame {
      * If an invalid move (source to target) is attempted, then `null` is returned.
      */
     private doSingleMove(source: Square, target: Square, color: 'w' | 'b'): Move | null {
+        Logger.debug(
+            `Processing move of ${
+                color === 'w' ? 'White' : 'Black'
+            } piece from ${source} to ${target}`,
+        );
+
         let move;
         const cooldown = this.cooldownMap[source];
         if (cooldown === undefined || cooldown.ready()) {
+            Logger.debug(`Piece at ${source} is not in cooldown`);
             this.forceTurnChange(color);
             try {
                 move = this.game.move(`${source}-${target}`, { sloppy: true });
             } catch (e) {
+                Logger.debug(`There was an error with the move from ${source} to ${target}`);
                 move = null;
             }
+
             if (move !== null) {
+                Logger.debug(`Move from ${source} to ${target} was successful`);
                 delete this.cooldownMap[source];
                 this.cooldownMap[target] = new Cooldown(this.cooldown);
 
@@ -239,7 +249,11 @@ class ChessGame implements IChessGame {
                 if (this.winner !== null) this.endGame();
 
                 this.emitToPlayers('game state', new GameStateAPIResponse(this));
+            } else {
+                Logger.debug(`The piece at ${source} cannot move to ${target}. Invalid move.`);
             }
+        } else {
+            Logger.debug(`The piece on square ${source} is on cooldown`);
         }
 
         return move ?? null;
