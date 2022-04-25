@@ -107,7 +107,6 @@ class RTCServer {
                 ) => {
                     Logger.info(`Authorizing user\nUID: ${_uid}`);
                     uid = _uid.toString();
-                    Logger.debug(GameManager.games.map(g => `[${g.white} and ${g.black}]`).join());
                     game = GameManager.findGameByUser(uid)!;
                     if (game) {
                         if (
