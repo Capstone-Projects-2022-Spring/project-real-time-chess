@@ -71,6 +71,9 @@ class ChessGame implements IChessGame {
                 enabled: false,
             },
         };
+        Logger.debug(`Created a new game with the following properties:
+        Owner: ${this.owner.name.first} ${this.owner.name.last}
+        Cooldown: ${this.cooldown}`);
     }
 
     /**

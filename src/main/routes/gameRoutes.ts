@@ -53,6 +53,7 @@ class GameRoutes {
     static createGame(req: Req, res: Res) {
         GameManager.verifyUserAccess(req.cookies.uid, req.cookies.auth)
             .then(user => {
+                Logger.debug(`User specified cooldown: ${req.body.cooldown}`);
                 const game = GameManager.createGame(user, req.body.cooldown ?? 5);
                 GameRoutes.onGameCreated(game, req, res);
             })
