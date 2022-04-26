@@ -2,10 +2,7 @@ import React from 'react';
 import Titlebar from '../components/Titlebar';
 
 /**
- * Displays a page with instructions on how to play the game.
- * It will also provide an explanation of all the game rules,
- * justifications, and other important information about
- * real-time chess.
+ * Displays a page with the creators of this application
  */
 class Authors extends React.Component {
     /**
