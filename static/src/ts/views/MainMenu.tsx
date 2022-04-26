@@ -181,13 +181,14 @@ class GameplayOptions extends React.Component<
                     </div>
                     <div className="col-12 col-md-6 col-lg-3 mb-2">
                             <ButtonComponent
-                                onClick={() => UINavigator.render(<Authors />)}>
+                                onClick={() => UINavigator.render(<Authors />)}
                                 width="100%"
-
+                            >
                                 <IonIcon
                                     style={{ fontSize: '4rem', marginBottom: '0.5rem' }}
                                     icon={personOutline}
                                 />
+                                <span>Authors</span>
                             </ButtonComponent>
                     </div>
                 </div>
