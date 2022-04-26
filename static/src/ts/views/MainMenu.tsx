@@ -12,6 +12,7 @@ import ButtonComponent from '../components/UI/ButtonComponent';
 import UINavigator from '../models/UINavigator';
 import Homepage from './Homepage';
 import HowToPlay from './HowToPlay';
+import Authors from './Authors';
 import MultiplayerMatch from './Matches/MultiplayerMatch';
 import Profile from './Profile/Profile';
 import AIvAISetup from './SetupScreens/AIvAISetup';
@@ -177,6 +178,17 @@ class GameplayOptions extends React.Component<
                             />
                             <span>How to Play</span>
                         </ButtonComponent>
+                    </div>
+                    <div className="col-12 col-md-6 col-lg-3 mb-2">
+                            <ButtonComponent
+                                onClick={() => UINavigator.render(<Authors />)}>
+                                width="100%"
+
+                                <IonIcon
+                                    style={{ fontSize: '4rem', marginBottom: '0.5rem' }}
+                                    icon={personOutline}
+                                />
+                            </ButtonComponent>
                     </div>
                 </div>
             </div>
